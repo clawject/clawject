@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Clawject configuration schema",
+    "additionalItems": false,
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+        "unsafeTSVersion": {
+            "type": "boolean",
+            "default": false,
+            "title": "Allows to use TypeScript version that is not officially supported by this version of Clawject",
+            "examples": [
+                true,
+                false
+            ]
+        },
+        "features": {
+            "type": "object",
+            "properties": {
+                "advancedTypeInference": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Enables advanced type inference for property Beans, check TODO",
+                    "examples": [
+                        true,
+                        false
+                    ]
+                },
+                "keepContextNames": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Keeps context class names in generated code, it's can be useful for debugging purposes",
+                    "examples": [
+                        true,
+                        false
+                    ]
+                }
+            },
+            "additionalProperties": false
+        }
+    }
+}
