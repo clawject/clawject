@@ -14,6 +14,15 @@
                 false
             ]
         },
+        "mode": {
+            "type": "string",
+            "default": "atomic",
+            "title": "TODO",
+            "examples": [
+                "application",
+                "atomic"
+            ]
+        },
         "features": {
             "type": "object",
             "properties": {

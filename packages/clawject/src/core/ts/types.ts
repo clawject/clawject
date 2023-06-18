@@ -15,3 +15,7 @@ export interface ClassPropertyWithArrowFunctionInitializer extends PropertyDecla
 export interface ClassPropertyWithExpressionInitializer extends PropertyDeclaration {
     initializer: ts.Expression;
 }
+
+export interface ClassPropertyWithoutInitializer extends PropertyDeclaration {
+    initializer: undefined;
+}

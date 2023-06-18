@@ -2,8 +2,14 @@ import ts from 'typescript';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
 import { getCompilationContext } from '../../../transformers/getCompilationContext';
 
-export type Decorators = 'Bean' | 'EmbeddedBean' | 'PostConstruct' | 'BeforeDestruct';
-const LIBRARY_DECORATORS = new Set<Decorators>(['Bean', 'EmbeddedBean', 'PostConstruct', 'BeforeDestruct']);
+export type Decorators = 'Bean' | 'EmbeddedBean' | 'PostConstruct' | 'BeforeDestruct' | 'Configuration';
+const LIBRARY_DECORATORS = new Set<Decorators>([
+    'Bean',
+    'EmbeddedBean',
+    'PostConstruct',
+    'BeforeDestruct',
+    'Configuration',
+]);
 
 export function isDecoratorFromLibrary(decorator: ts.ModifierLike, name: Decorators | undefined): boolean {
     if (!ts.isDecorator(decorator)) {

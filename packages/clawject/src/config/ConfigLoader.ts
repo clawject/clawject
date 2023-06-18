@@ -9,6 +9,7 @@ import { merge } from 'lodash';
 
 export class ConfigLoader {
     private static defaultConfig: IDIConfig = {
+        mode: 'atomic',
         unsafeTSVersion: false,
         features: {
             advancedTypeInference: true,
