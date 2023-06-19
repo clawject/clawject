@@ -1,22 +1,18 @@
 import ts from 'typescript';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { DIType } from './DIType';
 import { CONSTANTS } from '../../constants';
 import { DITypeBuilder } from './DITypeBuilder';
 import { ___TypeTable___ } from '../../external/___TypeTable___';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
-class BaseTypes implements Record<keyof ___TypeTable___, DIType> {
-    declare array: DIType;
-    declare set: DIType;
-    declare map: DIType;
-    declare mapStringToAny: DIType;
-    declare runClawjectApplication: DIType;
-}
+type BaseTypes = Record<keyof ___TypeTable___, DIType>;
 
 export class BaseTypesRepository {
     private static baseTypes: BaseTypes | null = null;
 
-    static init(compilationContext: CompilationContext): void {
+    static init(): void {
+        const compilationContext = getCompilationContext();
+
         if (this.baseTypes !== null) {
             return;
         }
@@ -41,13 +37,13 @@ export class BaseTypesRepository {
                 return acc;
             }, {} as Record<string, ts.TypeElement>);
 
-        this.baseTypes = new BaseTypes();
-
-        this.baseTypes.array = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['array']));
-        this.baseTypes.set = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set']));
-        this.baseTypes.map = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map']));
-        this.baseTypes.mapStringToAny = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny']));
-        this.baseTypes.runClawjectApplication = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication']));
+        this.baseTypes = {
+            array: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['array'])),
+            set: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set'])),
+            map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map'])),
+            mapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny'])),
+            runClawjectApplication: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication'])),
+        };
     }
 
     static getBaseTypes(): BaseTypes {

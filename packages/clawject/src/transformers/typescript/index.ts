@@ -19,7 +19,7 @@ export default (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
     return context => sourceFile => {
         compilationContext.clearMessagesByFilePath(sourceFile.fileName);
         ConfigurationRepository.clearByFileName(sourceFile.fileName);
-        BaseTypesRepository.init(compilationContext);
+        BaseTypesRepository.init();
 
         const mode = ConfigLoader.get().mode;
         let transformedSourceFile: ts.SourceFile;
