@@ -1,8 +1,8 @@
-import { BeanDependency } from '../../bean-dependency/BeanDependency';
+import { Dependency } from '../../dependency/Dependency';
 import ts, { factory } from 'typescript';
 import { getBeanAccessExpression } from './getBeanAccessExpression';
 
-export const getDependencyValueExpression = (dependency: BeanDependency): ts.Expression | undefined => {
+export const getDependencyValueExpression = (dependency: Dependency): ts.Expression | undefined => {
     const qualifiedBean = dependency.qualifiedBean;
     const qualifiedBeans = dependency.qualifiedBeans;
 

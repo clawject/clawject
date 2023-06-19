@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { DIType } from '../type-system/DIType';
 import { Bean } from '../bean/Bean';
 
-export class BeanDependency {
+export class Dependency {
     declare parameterName: string;
     declare diType: DIType;
     declare node: ts.ParameterDeclaration;

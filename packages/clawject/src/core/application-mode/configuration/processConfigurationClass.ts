@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { ConfigurationRepository } from '../../configuration/ConfigurationRepository';
 import { BeanKind } from '../../bean/BeanKind';
 import { registerBeans } from '../../bean/registerBeans';
-import { registerBeanDependencies } from '../../bean-dependency/registerBeanDependencies';
+import { registerBeanDependencies } from '../../dependency/registerBeanDependencies';
 import { registerAutowired } from '../../autowired/registerAutowired';
 import { getCompilationContext } from '../../../transformers/getCompilationContext';
 import { NotSupportedError } from '../../../compilation-context/messages/errors/NotSupportedError';

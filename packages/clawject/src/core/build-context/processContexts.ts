@@ -5,7 +5,7 @@ import { registerBeans } from '../bean/registerBeans';
 import {
     checkIsAllBeansRegisteredInContextAndFillBeanRequierness
 } from '../bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness';
-import { registerBeanDependencies } from '../bean-dependency/registerBeanDependencies';
+import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
 import { reportAboutCyclicDependencies } from '../report-cyclic-dependencies/reportAboutCyclicDependencies';
 import { enrichWithAdditionalProperties } from './transformers/enrichWithAdditionalProperties';
 import { InternalCatContext } from '../../external/InternalCatContext';

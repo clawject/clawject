@@ -1,7 +1,7 @@
 import { Configuration } from '../configuration/Configuration';
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { DependencyGraph } from './DependencyGraph';
-import { BeanDependency } from '../bean-dependency/BeanDependency';
+import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
 
@@ -25,7 +25,7 @@ export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration
 function buildForBaseType(
     bean: Bean,
     allBeansWithoutCurrent: Set<Bean>,
-    dependency: BeanDependency,
+    dependency: Dependency,
     context: Configuration,
 ): void {
     const compilationContext = getCompilationContext();
@@ -75,7 +75,7 @@ function buildForBaseType(
 function buildForCollectionOrArray(
     bean: Bean,
     allBeansWithoutCurrent: Set<Bean>,
-    dependency: BeanDependency,
+    dependency: Dependency,
 ): void {
     let matched: Bean[];
 

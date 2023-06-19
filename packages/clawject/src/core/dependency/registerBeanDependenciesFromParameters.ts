@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from '../bean/Bean';
-import { BeanDependency } from './BeanDependency';
+import { Dependency } from './Dependency';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const registerBeanDependenciesFromParameters = (
@@ -14,7 +14,7 @@ export const registerBeanDependenciesFromParameters = (
         const parameterType = typeChecker.getTypeAtLocation(parameter);
         const diType = DITypeBuilder.build(parameterType);
 
-        const dependency = new BeanDependency();
+        const dependency = new Dependency();
         bean.dependencies.add(dependency);
 
         dependency.parameterName = parameter.name.getText();
