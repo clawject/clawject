@@ -9,6 +9,7 @@ class BaseTypes {
     declare set: DIType;
     declare map: DIType;
     declare mapStringToAny: DIType;
+    declare runClawjectApplication: DIType;
 }
 
 export class BaseTypesRepository {
@@ -45,6 +46,7 @@ export class BaseTypesRepository {
         this.baseTypes.set = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set']));
         this.baseTypes.map = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map']));
         this.baseTypes.mapStringToAny = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny']));
+        this.baseTypes.runClawjectApplication = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication']));
     }
 
     static getBaseTypes(): BaseTypes {

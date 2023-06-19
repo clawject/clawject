@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "type": "commonjs",
     "scripts": {
+        "run:upgradeClawject": "yarn upgrade clawject",
         "run:ttsc": "cross-env CLAWJECT_DEBUG_MODE=true ttsc"
     },
     "dependencies": {

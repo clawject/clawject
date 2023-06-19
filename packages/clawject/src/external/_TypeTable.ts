@@ -1,3 +1,5 @@
+import type { runClawjectApplication } from './runClawjectApplication';
+
 /**
  * This is an interface for internal usage only, it's not used in any other api of this library.
  *
@@ -8,4 +10,5 @@ export interface _TypeTable {
     set: ReadonlySet<any> | Set<any>;
     map: ReadonlyMap<any, any> | Map<any, any>;
     mapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
+    runClawjectApplication: runClawjectApplication;
 }

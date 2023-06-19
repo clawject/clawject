@@ -5,6 +5,7 @@ import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary'
 import { processConfigurationClass } from './configuration/processConfigurationClass';
 import { processComponent } from './component/processComponent';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
+import { registerEntrypoint } from './registerEntrypoint';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
     //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
@@ -13,6 +14,9 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
     }
 
     let shouldAddImports = false;
+
+    //TODO create function that will register entrypoint and verify all classes for not allowed and members
+    registerEntrypoint(sourceFile, tsContext);
 
     //Processing only top level statements
     //TODO inspect nested statements for not allowed decorators
@@ -33,8 +37,7 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
                 statement,
                 null,
             ));
-            //TODO report to compilation context
-            throw new Error(`Class ${statement.name?.escapedText} cannot be both @Component and @Configuration`);
+            return statement;
         }
 
         if (isConfiguration) {
@@ -60,44 +63,4 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
         sourceFile.hasNoDefaultLib,
         sourceFile.libReferenceDirectives,
     );
-
-    // const transformedFile = ts.visitNode(sourceFile, visitor);
-    //
-    // const updatedStatements = Array.from(transformedFile.statements);
-    //
-    // if (shouldAddImports) {
-    //     const pathForInternalCatContext = upath.join(
-    //         getImportPathToExternalDirectory(),
-    //         'InternalCatContext',
-    //     );
-    //     const internalCatContextImport = factory.createImportDeclaration(
-    //         undefined,
-    //         factory.createImportClause(
-    //             false,
-    //             undefined,
-    //             factory.createNamespaceImport(
-    //                 factory.createIdentifier(INTERNAL_CAT_CONTEXT_IMPORT)
-    //             )
-    //         ),
-    //         factory.createStringLiteral(pathForInternalCatContext)
-    //     );
-    //
-    //     updatedStatements.unshift(internalCatContextImport);
-    // }
-    //
-    // return ts.factory.updateSourceFile(
-    //     sourceFile,
-    //     updatedStatements,
-    //     sourceFile.isDeclarationFile,
-    //     sourceFile.referencedFiles,
-    //     sourceFile.typeReferenceDirectives,
-    //     sourceFile.hasNoDefaultLib,
-    //     sourceFile.libReferenceDirectives,
-    // );
 };
-
-(() => {
-    class A {
-
-    }
-})();
