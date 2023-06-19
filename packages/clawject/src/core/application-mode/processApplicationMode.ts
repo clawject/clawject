@@ -5,7 +5,7 @@ import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary'
 import { processConfigurationClass } from './configuration/processConfigurationClass';
 import { processComponent } from './component/processComponent';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
-import { registerEntrypoint } from './registerEntrypoint';
+import { registerEntrypoint } from './entrypoint/registerEntrypoint';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
     //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
