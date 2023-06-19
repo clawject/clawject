@@ -20,7 +20,7 @@ export const transformPropertyBean = (bean: Bean<ClassPropertyWithCallExpression
 };
 
 function getBeanBlock(bean: Bean<ClassPropertyWithCallExpressionInitializer>): ts.Block {
-    const dependencies = Array.from(bean.dependencies);
+    const dependencies = Array.from(bean.constructorDependencies);
 
     const dependenciesStatements = dependencies.map(getDependencyValueExpression);
 

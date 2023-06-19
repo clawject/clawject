@@ -4,7 +4,7 @@ import { compact } from 'lodash';
 import { getDependencyValueExpression } from './getDependencyValueExpression';
 
 export const getDependenciesVariables = (bean: Bean): ts.VariableStatement[] => {
-    const dependenciesStatements = Array.from(bean.dependencies).map(dependency => {
+    const dependenciesStatements = Array.from(bean.constructorDependencies).map(dependency => {
         const dependencyValue = getDependencyValueExpression(dependency);
 
         return factory.createVariableStatement(

@@ -34,7 +34,7 @@ export class Bean<T = BeanNode> {
     scope: BeanScope = BeanScope.SINGLETON;
     lifecycle: BeanLifecycle[] | null = null;
     public = false;
-    dependencies = new Set<Dependency>();
+    constructorDependencies = new Set<Dependency>();
 
     get fullName(): string {
         if (this.nestedProperty === null) {

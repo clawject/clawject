@@ -23,9 +23,9 @@ export class ConfigurationRepository {
             configuration.name = unquoteString(classDeclaration.name.getText());
         }
 
-        const descriptors = this.fileNameToConfigurations.get(sourceFile.fileName) ?? [];
-        this.fileNameToConfigurations.set(sourceFile.fileName, descriptors);
-        descriptors.push(configuration);
+        const configurations = this.fileNameToConfigurations.get(sourceFile.fileName) ?? [];
+        this.fileNameToConfigurations.set(sourceFile.fileName, configurations);
+        configurations.push(configuration);
 
         this.configurationIdToConfiguration.set(configuration.id, configuration);
 
