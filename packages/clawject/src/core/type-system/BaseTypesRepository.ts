@@ -3,8 +3,9 @@ import { CompilationContext } from '../../compilation-context/CompilationContext
 import { DIType } from './DIType';
 import { CONSTANTS } from '../../constants';
 import { DITypeBuilder } from './DITypeBuilder';
+import { ___TypeTable___ } from '../../external/___TypeTable___';
 
-class BaseTypes {
+class BaseTypes implements Record<keyof ___TypeTable___, DIType> {
     declare array: DIType;
     declare set: DIType;
     declare map: DIType;
