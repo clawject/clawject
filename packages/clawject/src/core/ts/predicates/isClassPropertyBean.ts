@@ -1,13 +1,12 @@
 import ts from 'typescript';
 import { ClassPropertyWithCallExpressionInitializer } from '../types';
-import { CompilationContext } from '../../../compilation-context/CompilationContext';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 
-export const isClassPropertyBean = (node: ts.Node, compilationContext: CompilationContext): node is ClassPropertyWithCallExpressionInitializer =>
-    ts.isPropertyDeclaration(node) && hasBeanCallExpression(node, compilationContext);
+export const isClassPropertyBean = (node: ts.Node): node is ClassPropertyWithCallExpressionInitializer =>
+    ts.isPropertyDeclaration(node) && hasBeanCallExpression(node);
 
-function hasBeanCallExpression(node: ts.PropertyDeclaration, compilationContext: CompilationContext): boolean {
+function hasBeanCallExpression(node: ts.PropertyDeclaration): boolean {
     let initializer = node.initializer;
 
     if (initializer === undefined) {
@@ -20,7 +19,7 @@ function hasBeanCallExpression(node: ts.PropertyDeclaration, compilationContext:
         return false;
     }
 
-    const nodeSourceDescriptors = getNodeSourceDescriptor(initializer.expression, compilationContext);
+    const nodeSourceDescriptors = getNodeSourceDescriptor(initializer.expression);
 
     if (nodeSourceDescriptors === null) {
         return false;

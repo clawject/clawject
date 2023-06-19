@@ -1,12 +1,12 @@
 import ts, { factory } from 'typescript';
 import { getBeanConfigObjectLiteral } from './getBeanConfigObjectLiteral';
-import { Context } from '../../context/Context';
+import { Configuration } from '../../configuration/Configuration';
 import { BeanKind } from '../../bean/BeanKind';
 import { BeanLifecycle } from '../../../external/InternalCatContext';
 import { compact } from 'lodash';
 import { ConfigLoader } from '../../../config/ConfigLoader';
 
-export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, context: Context): ts.ClassDeclaration => {
+export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, context: Configuration): ts.ClassDeclaration => {
     const contextName = ConfigLoader.get().features.keepContextNames && context.name ?
         factory.createStringLiteral(context.name)
         : undefined;
@@ -71,13 +71,13 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
     );
 };
 
-const getLifecycleConfigProperty = (context: Context): ts.ObjectLiteralExpression | null => {
+const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExpression | null => {
     const lifecycleBeanData: Record<BeanLifecycle, string[]> = {
         'post-construct': [],
         'before-destruct': [],
     };
 
-    context.beans.forEach(bean => {
+    context.beanRegister.elements.forEach(bean => {
         if (bean.kind === BeanKind.LIFECYCLE_METHOD || bean.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION) {
             bean.lifecycle?.forEach(lifecycle => {
                 lifecycleBeanData[lifecycle].push(bean.classMemberName);

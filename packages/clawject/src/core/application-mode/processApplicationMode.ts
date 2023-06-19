@@ -2,8 +2,9 @@ import ts from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
 import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
-import { processAutowiredMember } from './processAutowiredMember';
-import { processClassMembers } from './processClassMembers';
+import { processConfigurationClass } from './configuration/processConfigurationClass';
+import { processComponent } from './component/processComponent';
+import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
     //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
@@ -11,55 +12,54 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
         return sourceFile;
     }
 
-    const shouldAddImports = false;
+    let shouldAddImports = false;
 
-    const visitor = (node: ts.Node): ts.Node => {
-        if (!ts.isClassDeclaration(node)) {
-            return ts.visitEachChild(node, visitor, tsContext);
+    //Processing only top level statements
+    //TODO inspect nested statements for not allowed decorators
+    const updatedStatements = sourceFile.statements.map(statement => {
+        if (!ts.isClassDeclaration(statement)) {
+            return statement;
         }
 
-        //Registering configuration classes
-        const classDecorators = getDecoratorsOnly(node);
-        const configurationDecorators = classDecorators
-            .find(it => isDecoratorFromLibrary(it, 'Configuration'));
+        const classDecorators = getDecoratorsOnly(statement);
 
-        processClassMembers(compilationContext, node);
+        const isComponent = classDecorators.some(it => isDecoratorFromLibrary(it, 'Component'));
+        const isConfiguration = classDecorators.some(it => isDecoratorFromLibrary(it, 'Configuration'));
 
-        return ts.visitEachChild(node, visitor, tsContext);
+        if (isComponent && isConfiguration) {
+            compilationContext.report(new NotSupportedError(
+                //TODO use stereotype names instead of @Component
+                'Class cannot be both @Component and @Configuration',
+                statement,
+                null,
+            ));
+            //TODO report to compilation context
+            throw new Error(`Class ${statement.name?.escapedText} cannot be both @Component and @Configuration`);
+        }
 
-        // shouldAddImports = true;
-        //
-        // const context = ContextRepository.register(node);
-        //
-        // const restrictedClassMembersByName = node.members
-        //     .filter(it => InternalCatContext.reservedNames.has(it.name?.getText() ?? ''));
-        //
-        // if (restrictedClassMembersByName.length !== 0) {
-        //     restrictedClassMembersByName.forEach(it => {
-        //         compilationContext.report(new IncorrectNameError(
-        //             `"${it.name?.getText()}" name is reserved for the di-container.`,
-        //             it,
-        //             context.node,
-        //         ));
-        //     });
-        //     return ts.visitEachChild(node, visitor, tsContext);
-        // }
-        //
-        // //Processing beans
-        // registerBeans(compilationContext, context);
-        // checkIsAllBeansRegisteredInContextAndFillBeanRequierness(compilationContext, context);
-        // registerBeanDependencies(compilationContext, context);
-        // buildDependencyGraphAndFillQualifiedBeans(compilationContext, context);
-        // reportAboutCyclicDependencies(compilationContext, context);
-        //
-        // const enrichedWithAdditionalProperties = enrichWithAdditionalProperties(node, context);
-        // const replacedExtendingFromCatContext = replaceExtendingFromCatContext(enrichedWithAdditionalProperties);
-        // const withProcessedMembers = processMembers(replacedExtendingFromCatContext, context);
-        //
-        // return withProcessedMembers;
-    };
+        if (isConfiguration) {
+            shouldAddImports = true;
+            return processConfigurationClass(statement);
+        }
 
-    return sourceFile;
+        if (isComponent) {
+            shouldAddImports = true;
+            processComponent(statement);
+        }
+
+        return statement;
+    });
+
+
+    return ts.factory.updateSourceFile(
+        sourceFile,
+        updatedStatements,
+        sourceFile.isDeclarationFile,
+        sourceFile.referencedFiles,
+        sourceFile.typeReferenceDirectives,
+        sourceFile.hasNoDefaultLib,
+        sourceFile.libReferenceDirectives,
+    );
 
     // const transformedFile = ts.visitNode(sourceFile, visitor);
     //
@@ -95,3 +95,9 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
     //     sourceFile.libReferenceDirectives,
     // );
 };
+
+(() => {
+    class A {
+
+    }
+})();

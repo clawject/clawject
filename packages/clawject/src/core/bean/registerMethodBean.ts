@@ -1,28 +1,28 @@
 import ts from 'typescript';
 import { getPropertyDecoratorBeanInfo } from '../ts/bean-info/getPropertyDecoratorBeanInfo';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { Context } from '../context/Context';
-import { ContextBean } from './ContextBean';
+import { Configuration } from '../configuration/Configuration';
+import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const registerMethodBean = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     classElement: ts.MethodDeclaration,
 ): void => {
+    const compilationContext = getCompilationContext();
     if (classElement.body === undefined) {
         compilationContext.report(new MissingInitializerError(
             'Method Bean should have a body.',
             classElement.name,
-            context.node,
+            configuration.node,
         ));
         return;
     }
 
-    const beanInfo = getPropertyDecoratorBeanInfo(compilationContext, context, classElement);
+    const beanInfo = getPropertyDecoratorBeanInfo(configuration, classElement);
     const typeChecker = compilationContext.typeChecker;
     const signature = typeChecker.getSignatureFromDeclaration(classElement);
 
@@ -30,21 +30,20 @@ export const registerMethodBean = (
         compilationContext.report(new TypeQualifyError(
             'Can not resolve method return type.',
             classElement.name,
-            context.node,
+            configuration.node,
         ));
         return;
     }
 
     const returnType = typeChecker.getReturnTypeOfSignature(signature);
-    const diType = DITypeBuilder.build(returnType, compilationContext);
+    const diType = DITypeBuilder.build(returnType);
 
-    const contextBean  = new ContextBean({
-        context: context,
+    const contextBean = new Bean({
         classMemberName: classElement.name.getText(),
         diType: diType,
         node: classElement,
         kind: BeanKind.METHOD,
         scope: beanInfo.scope,
     });
-    context.registerBean(contextBean);
+    configuration.beanRegister.register(contextBean);
 };

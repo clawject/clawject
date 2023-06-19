@@ -1,13 +1,13 @@
 import ts, { factory } from 'typescript';
-import { Context } from '../../context/Context';
+import { Configuration } from '../../configuration/Configuration';
 import { compact } from 'lodash';
 
-export function getBeanConfigObjectLiteral(context: Context): ts.ObjectLiteralExpression | undefined {
-    if (context.beans.size === 0) {
+export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLiteralExpression | undefined {
+    if (context.beanRegister.elements.size === 0) {
         return undefined;
     }
 
-    const notNestedContextBeans = Array.from(context.beans).filter(it => it.nestedProperty === null);
+    const notNestedContextBeans = Array.from(context.beanRegister.elements).filter(it => it.nestedProperty === null);
 
     const objectLiteralMembers: ts.PropertyAssignment[] = notNestedContextBeans.map(bean => (
         factory.createPropertyAssignment(

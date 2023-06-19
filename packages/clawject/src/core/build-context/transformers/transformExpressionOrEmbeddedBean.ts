@@ -1,9 +1,9 @@
 import ts, { factory } from 'typescript';
 import { ClassPropertyWithExpressionInitializer } from '../../ts/types';
-import { ContextBean } from '../../bean/ContextBean';
+import { Bean } from '../../bean/Bean';
 import { isDecoratorFromLibrary } from '../../ts/predicates/isDecoratorFromLibrary';
 
-export const transformExpressionOrEmbeddedBean = (bean: ContextBean<ClassPropertyWithExpressionInitializer>): ts.PropertyDeclaration => {
+export const transformExpressionOrEmbeddedBean = (bean: Bean<ClassPropertyWithExpressionInitializer>): ts.PropertyDeclaration => {
     const newExpression = factory.createArrowFunction(
         undefined,
         undefined,

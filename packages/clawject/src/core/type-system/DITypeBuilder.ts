@@ -4,7 +4,7 @@ import { get, hasIn } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
 import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 /**
  * notes:
@@ -14,16 +14,16 @@ import { CompilationContext } from '../../compilation-context/CompilationContext
  * */
 
 export class DITypeBuilder {
-    static build(tsType: ts.Type, compilationContext: CompilationContext): DIType {
-        return this._build(tsType, compilationContext.typeChecker);
+    static build(tsType: ts.Type): DIType {
+        return this._build(tsType, getCompilationContext().typeChecker);
     }
 
-    static buildSyntheticIntersection(tsTypes: ts.Type[], compilationContext: CompilationContext): DIType {
+    static buildSyntheticIntersection(tsTypes: ts.Type[]): DIType {
         const diType = new DIType();
         diType.tsTypeFlags = ts.TypeFlags.Intersection;
         diType.parsedTSTypeFlags = new Set([ts.TypeFlags.Intersection]);
         diType.typeFlag = DITypeFlag.INTERSECTION;
-        diType.unionOrIntersectionTypes = tsTypes.map(tsType => this._build(tsType, compilationContext.typeChecker));
+        diType.unionOrIntersectionTypes = tsTypes.map(tsType => this._build(tsType, getCompilationContext().typeChecker));
 
         return diType;
     }

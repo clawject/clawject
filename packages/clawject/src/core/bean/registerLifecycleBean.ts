@@ -1,4 +1,3 @@
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import ts from 'typescript';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
@@ -6,20 +5,21 @@ import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
 import { BeanLifecycle } from '../../external/InternalCatContext';
 import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
-import { ContextBean } from './ContextBean';
+import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const registerLifecycleBean = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     classElement: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer,
 ): void => {
+    const compilationContext = getCompilationContext();
     if (ts.isMethodDeclaration(classElement) && !classElement.body) {
         compilationContext.report(new MissingInitializerError(
             'Lifecycle method should have a body.',
             classElement.name,
-            context.node,
+            configuration.node,
         ));
         return;
     }
@@ -38,13 +38,12 @@ export const registerLifecycleBean = (
         return;
     }
 
-    const contextBean = new ContextBean({
-        context:context,
-        classMemberName:classElement.name.getText(),
-        diType:DITypeBuilder.empty(),
-        node:classElement,
+    const bean = new Bean({
+        classMemberName: classElement.name.getText(),
+        diType: DITypeBuilder.empty(),
+        node: classElement,
         kind: ts.isMethodDeclaration(classElement) ? BeanKind.LIFECYCLE_METHOD : BeanKind.LIFECYCLE_ARROW_FUNCTION,
         lifecycle: Array.from(lifecycles),
     });
-    context.registerBean(contextBean);
+    configuration.beanRegister.register(bean);
 };

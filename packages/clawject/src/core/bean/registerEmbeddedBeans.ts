@@ -1,20 +1,20 @@
 import ts from 'typescript';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { MissingTypeDefinitionError } from '../../compilation-context/messages/errors/MissingTypeDefinitionError';
 import { IncorrectTypeDefinitionError } from '../../compilation-context/messages/errors/IncorrectTypeDefinitionError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { ContextBean } from './ContextBean';
+import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const registerEmbeddedBean = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     classElement: ts.PropertyDeclaration
 ): void => {
+    const compilationContext = getCompilationContext();
     const typeChecker = compilationContext.typeChecker;
     const type = typeChecker.getTypeAtLocation(classElement);
-    const diTypeRoot = DITypeBuilder.build(type, compilationContext);
+    const diTypeRoot = DITypeBuilder.build(type);
     const typeSymbol = type.getSymbol();
 
     if (!typeSymbol) {
@@ -22,7 +22,7 @@ export const registerEmbeddedBean = (
         compilationContext.report(new MissingTypeDefinitionError(
             null,
             classElement,
-            context.node,
+            configuration.node,
         ));
         return;
     }
@@ -34,7 +34,7 @@ export const registerEmbeddedBean = (
             //TODO add error
             null,
             classElement,
-            context.node,
+            configuration.node,
         ));
         return;
     }
@@ -44,7 +44,7 @@ export const registerEmbeddedBean = (
             //TODO add found declarations
             'Type of Embedded bean should be defined only once.',
             classElement.type ?? classElement,
-            context.node,
+            configuration.node,
         ));
         return;
     }
@@ -53,25 +53,23 @@ export const registerEmbeddedBean = (
     const declarationType = typeChecker.getTypeAtLocation(declaration);
     declarationType.getProperties().forEach(property => {
         const type = typeChecker.getTypeOfSymbolAtLocation(property, declaration);
-        const diType = DITypeBuilder.build(type, compilationContext);
+        const diType = DITypeBuilder.build(type);
 
-        const contextBean = new ContextBean({
-            context: context,
+        const bean = new Bean({
             classMemberName: classElement.name.getText(),
             nestedProperty: property.name,
             diType: diType,
             node: classElement,
             kind: BeanKind.EMBEDDED,
         });
-        context.registerBean(contextBean);
+        configuration.beanRegister.register(bean);
     });
 
-    const rootContextBean = new ContextBean({
-        context: context,
+    const rootBean = new Bean({
         classMemberName: classElement.name.getText(),
         diType: diTypeRoot,
         node: classElement,
         kind: BeanKind.EMBEDDED,
     });
-    context.registerBean(rootContextBean);
+    configuration.beanRegister.register(rootBean);
 };

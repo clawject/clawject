@@ -1,12 +1,12 @@
 import { alg, Graph } from 'graphlib';
-import { ContextBean } from '../bean/ContextBean';
-import { Context } from '../context/Context';
-import { ContextRepository } from '../context/ContextRepository';
+import { Bean } from '../bean/Bean';
+import { Configuration } from '../configuration/Configuration';
+import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 
 export class DependencyGraph {
     private static graph = new Graph({directed: true});
 
-    static addNodeWithEdges(node: ContextBean, edges: ContextBean[]) {
+    static addNodeWithEdges(node: Bean, edges: Bean[]) {
         this.graph.setNodes(
             [
                 node.id,
@@ -17,28 +17,28 @@ export class DependencyGraph {
         edges.forEach(edge => this.graph.setEdge(node.id, edge.id));
     }
 
-    static getCycle(): Map<Context, ContextBean[][]> {
+    static getCycle(): Map<Configuration, Bean[][]> {
         const cycledBeanIds = alg.findCycles(this.graph);
-        const relatedContexts = this.getRelatedContexts(cycledBeanIds);
-        const resultMap = new Map<Context, ContextBean[][]>();
+        const relatedConfigurations = this.getRelatedConfigurations(cycledBeanIds);
+        const resultMap = new Map<Configuration, Bean[][]>();
 
         cycledBeanIds.forEach(idsList => {
             //Assuming that all beans are placed in the same context
-            const relatedContext = relatedContexts.get(idsList[0]);
+            const relatedConfiguration = relatedConfigurations.get(idsList[0]);
 
-            if (!relatedContext) {
+            if (!relatedConfiguration) {
                 //TODO warn for debug mode
                 return;
             }
 
             const beans = this.mapFilter(
                 idsList,
-                it => relatedContext.getBeanById(it) ?? null,
-                (it): it is ContextBean => it !== null,
+                it => relatedConfiguration.beanRegister.getById(it) ?? null,
+                (it): it is Bean => it !== null,
             );
 
-            const addedBeans = resultMap.get(relatedContext) ?? [];
-            resultMap.set(relatedContext, addedBeans);
+            const addedBeans = resultMap.get(relatedConfiguration) ?? [];
+            resultMap.set(relatedConfiguration, addedBeans);
 
             addedBeans.push(beans);
         });
@@ -46,8 +46,8 @@ export class DependencyGraph {
         return resultMap;
     }
 
-    static clearByContext(context: Context): void {
-        context.beans.forEach(bean => {
+    static clearByConfiguration(configuration: Configuration): void {
+        configuration.beanRegister.elements.forEach(bean => {
             this.graph.removeNode(bean.id);
         });
     }
@@ -56,12 +56,12 @@ export class DependencyGraph {
         this.graph = new Graph({directed: true});
     }
 
-    //returns beanId to Context
-    private static getRelatedContexts(beanIds: string[][] | string[]): Map<string, Context> {
+    //returns beanId to Configuration
+    private static getRelatedConfigurations(beanIds: string[][] | string[]): Map<string, Configuration> {
         return new Map(this.mapFilter(
             beanIds.flat(),
-            it => [it, ContextRepository.getContextByBeanId(it)],
-            (it): it is [string, Context] => it[1] !== null,
+            it => [it, ConfigurationRepository.getConfigurationByBeanId(it)],
+            (it): it is [string, Configuration] => it[1] !== null,
         ));
     }
 

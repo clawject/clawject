@@ -1,32 +1,32 @@
 import ts from 'typescript';
 import { ClassPropertyWithCallExpressionInitializer } from '../ts/types';
 import { getPropertyBeanInfo } from '../ts/bean-info/getPropertyBeanInfo';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { ContextBean } from './ContextBean';
+import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
 import { getNodeSourceDescriptor } from '../ts/utils/getNodeSourceDescriptor';
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { DIType } from '../type-system/DIType';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const registerPropertyBean = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     classElement: ClassPropertyWithCallExpressionInitializer,
 ): void => {
-    const beanInfo = getPropertyBeanInfo(compilationContext, context, classElement);
+    const compilationContext = getCompilationContext();
+    const beanInfo = getPropertyBeanInfo(compilationContext, configuration, classElement);
 
     const firstArgument = unwrapExpressionFromRoundBrackets(classElement.initializer).arguments[0];
-    const nodeSourceDescriptors = getNodeSourceDescriptor(firstArgument, compilationContext);
+    const nodeSourceDescriptors = getNodeSourceDescriptor(firstArgument);
 
     if (nodeSourceDescriptors === null) {
         compilationContext.report(new DependencyResolvingError(
             'Try to use method bean instead.',
             firstArgument,
-            context.node,
+            configuration.node,
         ));
         return;
     }
@@ -37,7 +37,7 @@ export const registerPropertyBean = (
         compilationContext.report(new DependencyResolvingError(
             'Can not resolve class declaration, try to use method bean instead.',
             firstArgument,
-            context.node,
+            configuration.node,
         ));
         return;
     }
@@ -46,7 +46,7 @@ export const registerPropertyBean = (
         compilationContext.report(new DependencyResolvingError(
             `Found ${classDeclarations.length} class declarations, try to use method bean instead.`,
             firstArgument,
-            context.node,
+            configuration.node,
         ));
         return;
     }
@@ -65,14 +65,12 @@ export const registerPropertyBean = (
 
         diType = DITypeBuilder.buildSyntheticIntersection(
             [baseType, ...implementsClauseTypes],
-            compilationContext,
         );
     } else {
-        diType = DITypeBuilder.build(baseType, compilationContext);
+        diType = DITypeBuilder.build(baseType);
     }
 
-    const contextBean = new ContextBean({
-        context: context,
+    const contextBean = new Bean({
         classMemberName: classElement.name.getText(),
         diType: diType,
         node: classElement,
@@ -80,5 +78,5 @@ export const registerPropertyBean = (
         scope: beanInfo.scope,
         classDeclaration: classDeclaration,
     });
-    context.registerBean(contextBean);
+    configuration.beanRegister.register(contextBean);
 };

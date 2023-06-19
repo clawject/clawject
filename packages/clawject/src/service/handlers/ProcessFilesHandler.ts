@@ -8,7 +8,7 @@ import { AbstractCompilationMessage } from '../../compilation-context/messages/A
 import { StatisticsCollector } from '../statistics/StatisticsCollector';
 import { getTransformerFactory } from '../../core/build-context/getTransformerFactory';
 import ts from 'typescript';
-import { ContextRepository } from '../../core/context/ContextRepository';
+import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
 
 export class ProcessFilesHandler implements ICommandHandler<IProcessFilesCommand, Promise<IProcessFilesResponse>>, IDisposable {
     constructor(
@@ -45,7 +45,7 @@ export class ProcessFilesHandler implements ICommandHandler<IProcessFilesCommand
 
     dispose(): void {
         DependencyGraph.clear();
-        ContextRepository.clear();
+        ConfigurationRepository.clear();
     }
 
     private collectCompilationMessages(

@@ -2,8 +2,8 @@ import { Compilation, Compiler, NormalModule } from 'webpack';
 import { RebuildStatusRepository } from './RebuildStatusRepository';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
 import { BuildErrorFormatter } from '../../compilation-context/BuildErrorFormatter';
-import { ContextRepository } from '../../core/context/ContextRepository';
-import { Context } from '../../core/context/Context';
+import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
+import { Configuration } from '../../core/configuration/Configuration';
 
 const reportDIErrorsHook = (compilation: Compilation) => {
     const compilationContext = getCompilationContext();
@@ -42,16 +42,16 @@ export default class ClawjectWebpackPlugin {
                 : Array.from(compiler.modifiedFiles ?? []);
             const changedFilesSet = new Set(changedFiles);
 
-            const relatedPathToContexts = Array.from(ContextRepository.contextIdToContext.values())
+            const relatedPathToContexts = Array.from(ConfigurationRepository.configurationIdToConfiguration.values())
                 .reduce((acc, context) => {
                     context.relatedPaths.forEach(path => {
-                        const set = acc.get(path) ?? new Set<Context>();
+                        const set = acc.get(path) ?? new Set<Configuration>();
                         set.add(context);
                         acc.set(path, set);
                     });
 
                     return acc;
-                }, new Map<string, Set<Context>>());
+                }, new Map<string, Set<Configuration>>());
 
             const contextsToRebuild = changedFiles.reduce((acc, changedFileName) => {
                 relatedPathToContexts.get(changedFileName)?.forEach(context => {

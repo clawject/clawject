@@ -1,14 +1,22 @@
 import ts from 'typescript';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
-import { getCompilationContext } from '../../../transformers/getCompilationContext';
 
-export type Decorators = 'Bean' | 'EmbeddedBean' | 'PostConstruct' | 'BeforeDestruct' | 'Configuration';
+export type Decorators =
+    'Bean' |
+    'EmbeddedBean' |
+    'PostConstruct' |
+    'BeforeDestruct' |
+    'Configuration' |
+    'Component' |
+    'Autowired';
 const LIBRARY_DECORATORS = new Set<Decorators>([
     'Bean',
     'EmbeddedBean',
     'PostConstruct',
     'BeforeDestruct',
     'Configuration',
+    'Component',
+    'Autowired',
 ]);
 
 export function isDecoratorFromLibrary(decorator: ts.ModifierLike, name: Decorators | undefined): boolean {
@@ -16,10 +24,8 @@ export function isDecoratorFromLibrary(decorator: ts.ModifierLike, name: Decorat
         return false;
     }
 
-    const compilationContext = getCompilationContext();
-
     if (ts.isIdentifier(decorator.expression)) {
-        const nodeSourceDescriptors = getNodeSourceDescriptor(decorator.expression, compilationContext);
+        const nodeSourceDescriptors = getNodeSourceDescriptor(decorator.expression);
 
         if (nodeSourceDescriptors === null) {
             return false;
@@ -29,7 +35,7 @@ export function isDecoratorFromLibrary(decorator: ts.ModifierLike, name: Decorat
     }
 
     if (ts.isCallExpression(decorator.expression)) {
-        const nodeSourceDescriptors = getNodeSourceDescriptor(decorator.expression.expression, compilationContext);
+        const nodeSourceDescriptors = getNodeSourceDescriptor(decorator.expression.expression);
 
         if (nodeSourceDescriptors === null) {
             return false;

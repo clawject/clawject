@@ -1,15 +1,12 @@
-import { CompilationContext } from '../../compilation-context/CompilationContext';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { DependencyGraph } from './DependencyGraph';
 import { BeanDependency } from '../bean-dependency/BeanDependency';
-import { ContextBean } from '../bean/ContextBean';
+import { Bean } from '../bean/Bean';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
-export const buildDependencyGraphAndFillQualifiedBeans = (
-    compilationContext: CompilationContext,
-    context: Context
-) => {
-    const contextBeans = context.beans;
+export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
+    const contextBeans = context.beanRegister.elements;
 
     contextBeans.forEach(bean => {
         const allBeansWithoutCurrent = new Set(contextBeans);
@@ -19,19 +16,19 @@ export const buildDependencyGraphAndFillQualifiedBeans = (
             if (dependency.diType.isArray || dependency.diType.isSet || dependency.diType.isMapStringToAny) {
                 buildForCollectionOrArray(bean, allBeansWithoutCurrent, dependency);
             } else {
-                buildForBaseType(bean, allBeansWithoutCurrent, dependency, context, compilationContext);
+                buildForBaseType(bean, allBeansWithoutCurrent, dependency, context);
             }
         });
     });
 };
 
 function buildForBaseType(
-    bean: ContextBean,
-    allBeansWithoutCurrent: Set<ContextBean>,
+    bean: Bean,
+    allBeansWithoutCurrent: Set<Bean>,
     dependency: BeanDependency,
-    context: Context,
-    compilationContext: CompilationContext
+    context: Configuration,
 ): void {
+    const compilationContext = getCompilationContext();
     const matchedByType = Array.from(allBeansWithoutCurrent)
         .filter(it => dependency.diType.isCompatible(it.diType));
 
@@ -76,11 +73,11 @@ function buildForBaseType(
 }
 
 function buildForCollectionOrArray(
-    bean: ContextBean,
-    allBeansWithoutCurrent: Set<ContextBean>,
+    bean: Bean,
+    allBeansWithoutCurrent: Set<Bean>,
     dependency: BeanDependency,
 ): void {
-    let matched: ContextBean[];
+    let matched: Bean[];
 
     if (dependency.diType.isMapStringToAny) {
         matched = Array.from(allBeansWithoutCurrent)

@@ -1,8 +1,7 @@
 import ts from 'typescript';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
-import { CompilationContext } from '../../../compilation-context/CompilationContext';
 
-export const isExtendsClassFromLibrary = (node: ts.Node, className: 'CatContext', compilationContext: CompilationContext): node is ts.ClassDeclaration => {
+export const isExtendsClassFromLibrary = (node: ts.Node, className: 'CatContext'): node is ts.ClassDeclaration => {
     if (!ts.isClassDeclaration(node)) {
         return false;
     }
@@ -13,7 +12,7 @@ export const isExtendsClassFromLibrary = (node: ts.Node, className: 'CatContext'
         return false;
     }
 
-    const nodeSourceDescriptors = getNodeSourceDescriptor(extendsHeritageClause.types[0].expression, compilationContext);
+    const nodeSourceDescriptors = getNodeSourceDescriptor(extendsHeritageClause.types[0].expression);
 
     if (!nodeSourceDescriptors) {
         return false;

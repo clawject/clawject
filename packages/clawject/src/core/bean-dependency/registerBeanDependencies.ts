@@ -3,29 +3,25 @@ import { registerMethodBeanDependencies } from './registerMethodBeanDependencies
 import { registerPropertyBeanDependencies } from './registerPropertyBeanDependencies';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer } from '../ts/types';
 import { registerArrowFunctionBeanDependencies } from './registerArrowFunctionBeanDependencies';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
 import { BeanKind } from '../bean/BeanKind';
-import { ContextBean } from '../bean/ContextBean';
+import { Bean } from '../bean/Bean';
 
-export const registerBeanDependencies = (
-    compilationContext: CompilationContext,
-    context: Context,
-) => {
-    context.beans.forEach(bean => {
+export const registerBeanDependencies = (configuration: Configuration) => {
+    configuration.beanRegister.elements.forEach(bean => {
         switch (bean.kind) {
         case BeanKind.PROPERTY:
-            registerPropertyBeanDependencies(compilationContext, bean as ContextBean<ClassPropertyWithCallExpressionInitializer>);
+            registerPropertyBeanDependencies(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
             break;
 
         case BeanKind.METHOD:
         case BeanKind.LIFECYCLE_METHOD:
-            registerMethodBeanDependencies(compilationContext, bean as ContextBean<ts.MethodDeclaration>);
+            registerMethodBeanDependencies(bean as Bean<ts.MethodDeclaration>);
             break;
 
         case BeanKind.ARROW_FUNCTION:
         case BeanKind.LIFECYCLE_ARROW_FUNCTION:
-            registerArrowFunctionBeanDependencies(compilationContext, bean as ContextBean<ClassPropertyWithArrowFunctionInitializer>);
+            registerArrowFunctionBeanDependencies(bean as Bean<ClassPropertyWithArrowFunctionInitializer>);
             break;
         }
     });

@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { CONSTANTS } from '../../../constants';
 import { isNamedDeclaration } from '../predicates/isNamedDeclaration';
 import upath from 'upath';
-import { CompilationContext } from '../../../compilation-context/CompilationContext';
+import { getCompilationContext } from '../../../transformers/getCompilationContext';
 
 export interface INodeSource {
     fileName: string;
@@ -11,7 +11,8 @@ export interface INodeSource {
     originalNode: ts.Node;
 }
 
-export const getNodeSourceDescriptor = (node: ts.Node, compilationContext: CompilationContext): INodeSource[] | null => {
+export const getNodeSourceDescriptor = (node: ts.Node): INodeSource[] | null => {
+    const compilationContext = getCompilationContext();
     const typeChecker = compilationContext.typeChecker;
     const symbol = typeChecker.getSymbolAtLocation(node);
 

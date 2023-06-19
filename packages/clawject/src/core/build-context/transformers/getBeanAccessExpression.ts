@@ -1,7 +1,7 @@
 import ts, { factory } from 'typescript';
-import { ContextBean } from '../../bean/ContextBean';
+import { Bean } from '../../bean/Bean';
 
-export const getBeanAccessExpression = (bean: ContextBean): ts.Expression => {
+export const getBeanAccessExpression = (bean: Bean): ts.Expression => {
     let beanAccessExpression: ts.Expression = factory.createCallExpression(
         factory.createPropertyAccessExpression(
             factory.createThis(),

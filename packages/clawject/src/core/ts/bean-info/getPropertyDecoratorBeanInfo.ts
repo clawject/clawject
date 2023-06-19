@@ -3,18 +3,18 @@ import { getScopeValue } from './getScopeValue';
 import { isDecoratorFromLibrary } from '../predicates/isDecoratorFromLibrary';
 import { ICompilationBeanInfo } from './ICompilationBeanInfo';
 import { ClassPropertyWithArrowFunctionInitializer } from '../types';
-import { CompilationContext } from '../../../compilation-context/CompilationContext';
 import { UnknownError } from '../../../compilation-context/messages/errors/UnknownError';
 import { IncorrectArgumentError } from '../../../compilation-context/messages/errors/IncorrectArgumentError';
 import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { BeanScope } from '../../bean/BeanScope';
-import { Context } from '../../context/Context';
+import { Configuration } from '../../configuration/Configuration';
+import { getCompilationContext } from '../../../transformers/getCompilationContext';
 
 export const getPropertyDecoratorBeanInfo = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     node: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer | ts.PropertyDeclaration
 ): ICompilationBeanInfo => {
+    const compilationContext = getCompilationContext();
     const bean = getDecoratorsOnly(node)
         .find(it => isDecoratorFromLibrary(it, 'Bean')) ?? null;
 
@@ -22,7 +22,7 @@ export const getPropertyDecoratorBeanInfo = (
         compilationContext.report(new UnknownError(
             'Bean do not have @Bean decorator.',
             node,
-            context.node,
+            configuration.node,
         ));
 
         return {
@@ -46,7 +46,7 @@ export const getPropertyDecoratorBeanInfo = (
             compilationContext.report(new IncorrectArgumentError(
                 'Configuration object should be an object literal.',
                 firstArg,
-                context.node,
+                configuration.node,
             ));
 
             return {
@@ -55,7 +55,7 @@ export const getPropertyDecoratorBeanInfo = (
         }
 
         return {
-            scope: getScopeValue(compilationContext, context, firstArg),
+            scope: getScopeValue(compilationContext, configuration, firstArg),
         };
     }
 

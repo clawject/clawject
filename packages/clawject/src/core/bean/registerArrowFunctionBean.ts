@@ -1,20 +1,19 @@
 import { getPropertyDecoratorBeanInfo } from '../ts/bean-info/getPropertyDecoratorBeanInfo';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { ContextBean } from './ContextBean';
+import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
-import ts from 'typescript';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const registerArrowFunctionBean = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     classElement: ClassPropertyWithArrowFunctionInitializer,
 ): void => {
-    const beanInfo = getPropertyDecoratorBeanInfo(compilationContext, context, classElement);
+    const compilationContext = getCompilationContext();
+    const beanInfo = getPropertyDecoratorBeanInfo(configuration, classElement);
 
     const typeChecker = compilationContext.typeChecker;
     const signature = typeChecker.getSignatureFromDeclaration(unwrapExpressionFromRoundBrackets(classElement.initializer));
@@ -22,21 +21,20 @@ export const registerArrowFunctionBean = (
         compilationContext.report(new TypeQualifyError(
             'Can not resolve function return type.',
             classElement.initializer,
-            context.node,
+            configuration.node,
         ));
         return;
     }
 
     const returnType = typeChecker.getReturnTypeOfSignature(signature);
-    const diType = DITypeBuilder.build(returnType, compilationContext);
+    const diType = DITypeBuilder.build(returnType);
 
-    const contextBean = new ContextBean({
-        context: context,
+    const contextBean = new Bean({
         classMemberName: classElement.name.getText(),
         diType: diType,
         node: classElement,
         kind: BeanKind.ARROW_FUNCTION,
         scope: beanInfo.scope,
     });
-    context.registerBean(contextBean);
+    configuration.beanRegister.register(contextBean);
 };

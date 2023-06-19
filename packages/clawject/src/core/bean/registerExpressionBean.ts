@@ -1,29 +1,27 @@
 import ts from 'typescript';
 import { getPropertyDecoratorBeanInfo } from '../ts/bean-info/getPropertyDecoratorBeanInfo';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { ContextBean } from './ContextBean';
+import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const registerExpressionBean = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     classElement: ts.PropertyDeclaration,
 ): void => {
-    const beanInfo = getPropertyDecoratorBeanInfo(compilationContext, context, classElement);
+    const beanInfo = getPropertyDecoratorBeanInfo(configuration, classElement);
 
-    const typeChecker = compilationContext.typeChecker;
+    const typeChecker = getCompilationContext().typeChecker;
     const type = typeChecker.getTypeAtLocation(classElement);
-    const diType = DITypeBuilder.build(type, compilationContext);
+    const diType = DITypeBuilder.build(type);
 
-    const contextBean = new ContextBean({
-        context: context,
+    const contextBean = new Bean({
         classMemberName: classElement.name.getText(),
-        diType:  diType,
+        diType: diType,
         node: classElement,
         kind: BeanKind.EXPRESSION,
         scope: beanInfo.scope,
     });
-    context.registerBean(contextBean);
+    configuration.beanRegister.register(contextBean);
 };

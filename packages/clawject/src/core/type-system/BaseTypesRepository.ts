@@ -41,10 +41,10 @@ export class BaseTypesRepository {
 
         this.baseTypes = new BaseTypes();
 
-        this.baseTypes.array = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['array']), compilationContext);
-        this.baseTypes.set = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set']), compilationContext);
-        this.baseTypes.map = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map']), compilationContext);
-        this.baseTypes.mapStringToAny = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny']), compilationContext);
+        this.baseTypes.array = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['array']));
+        this.baseTypes.set = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set']));
+        this.baseTypes.map = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map']));
+        this.baseTypes.mapStringToAny = DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny']));
     }
 
     static getBaseTypes(): BaseTypes {

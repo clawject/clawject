@@ -3,11 +3,11 @@ import { unquoteString } from '../../utils/unquoteString';
 import { CompilationContext } from '../../../compilation-context/CompilationContext';
 import { IncorrectArgumentError } from '../../../compilation-context/messages/errors/IncorrectArgumentError';
 import { BeanScope } from '../../bean/BeanScope';
-import { Context } from '../../context/Context';
+import { Configuration } from '../../configuration/Configuration';
 
 export const getScopeValue = (
     compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     expression: ts.ObjectLiteralExpression
 ): BeanScope => {
     const scopeNode = expression.properties.find(it => it.name?.getText() === 'scope');
@@ -23,7 +23,7 @@ export const getScopeValue = (
             compilationContext.report(new IncorrectArgumentError(
                 'Bean scope value should be a string literal.',
                 scopeNode,
-                context.node,
+                configuration.node,
             ));
             return BeanScope.SINGLETON;
         }
@@ -38,7 +38,7 @@ export const getScopeValue = (
     compilationContext.report(new IncorrectArgumentError(
         'Bean scope value should be a a "prototype" or "singleton".',
         scopeNode,
-        context.node,
+        configuration.node,
     ));
 
     return BeanScope.SINGLETON;

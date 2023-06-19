@@ -8,7 +8,7 @@ import {
 } from '../ts/types';
 import { BeanScope } from './BeanScope';
 import { BeanKind } from './BeanKind';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
 import { BeanDependency } from '../bean-dependency/BeanDependency';
 
 export type BeanNode = ts.MethodDeclaration
@@ -17,13 +17,13 @@ export type BeanNode = ts.MethodDeclaration
     | ts.PropertyDeclaration
     | ClassPropertyWithExpressionInitializer;
 
-export class ContextBean<T = BeanNode> {
-    constructor(values: Partial<ContextBean> = {}) {
+export class Bean<T = BeanNode> {
+    constructor(values: Partial<Bean> = {}) {
         Object.assign(this, values);
     }
 
-    declare id: string; //Set by Context during registration
-    declare context: Context;
+    declare id: string; //Set by Context or Configuration during registration
+    declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
     declare classMemberName: string;
     declare diType: DIType;
     declare node: T;

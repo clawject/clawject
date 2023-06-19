@@ -1,15 +1,13 @@
 import ts from 'typescript';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { IncorrectTypeDefinitionError } from '../../compilation-context/messages/errors/IncorrectTypeDefinitionError';
 import { MissingBeanDeclarationError } from '../../compilation-context/messages/errors/MissingBeanDeclarationError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { Context } from '../context/Context';
-import { ContextBean } from './ContextBean';
+import { Configuration } from '../configuration/Configuration';
+import { Bean } from './Bean';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
-export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (
-    compilationContext: CompilationContext,
-    context: Context
-): void => {
+export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context: Configuration): void => {
+    const compilationContext = getCompilationContext();
     const extendsHeritageClause = context.node.heritageClauses
         ?.find(clause => clause.token === ts.SyntaxKind.ExtendsKeyword);
 
@@ -28,7 +26,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (
 
     const typeChecker = compilationContext.typeChecker;
     const type = typeChecker.getTypeAtLocation(typeNode);
-    const diType = DITypeBuilder.build(type, compilationContext);
+    const diType = DITypeBuilder.build(type);
 
     if (!diType.isObject) {
         compilationContext.report(new IncorrectTypeDefinitionError(
@@ -41,16 +39,16 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (
 
     context.registerDIType(diType);
     const typeProperties = type.getProperties();
-    const beans = Array.from(context.beans)
+    const beans = Array.from(context.beanRegister.elements)
         .reduce((acc, curr) => {
             acc.set(curr.classMemberName, curr);
             return acc;
-        }, new Map<string, ContextBean>());
+        }, new Map<string, Bean>());
 
     typeProperties.forEach((property) => {
         const propertyName = property.getName();
         const propertyType = typeChecker.getTypeOfSymbolAtLocation(property, typeNode);
-        const propertyDIType = DITypeBuilder.build(propertyType, compilationContext);
+        const propertyDIType = DITypeBuilder.build(propertyType);
         const bean = beans.get(propertyName);
 
         if (!bean) {

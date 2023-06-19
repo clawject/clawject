@@ -1,18 +1,18 @@
 import ts from 'typescript';
 import { isClassPropertyBean } from './isClassPropertyBean';
 import { isExpressionBean } from './isExpressionBean';
-import { CompilationContext } from '../../../compilation-context/CompilationContext';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
 import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
-import { Context } from '../../context/Context';
+import { Configuration } from '../../configuration/Configuration';
 import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
+import { getCompilationContext } from '../../../transformers/getCompilationContext';
 
 export const isEmbeddedBean = (
-    compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     node: ts.Node
 ): node is ts.PropertyDeclaration => {
-    if (isClassPropertyBean(node, compilationContext) || isExpressionBean(compilationContext, context, node)) {
+    const compilationContext = getCompilationContext();
+    if (isClassPropertyBean(node) || isExpressionBean(configuration, node)) {
         return false;
     }
 
@@ -28,7 +28,7 @@ export const isEmbeddedBean = (
         compilationContext.report(new MissingInitializerError(
             null,
             node,
-            context.node,
+            configuration.node,
         ));
 
         return false;

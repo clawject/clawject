@@ -1,11 +1,11 @@
 import ts, { factory } from 'typescript';
 import { ClassPropertyWithArrowFunctionInitializer } from '../../ts/types';
-import { ContextBean } from '../../bean/ContextBean';
+import { Bean } from '../../bean/Bean';
 import { unwrapExpressionFromRoundBrackets } from '../../ts/utils/unwrapExpressionFromRoundBrackets';
 import { getDependenciesVariables } from './getDependenciesVariables';
 import { isDecoratorFromLibrary } from '../../ts/predicates/isDecoratorFromLibrary';
 
-export const transformArrowFunctionBean = (bean: ContextBean<ClassPropertyWithArrowFunctionInitializer>): ts.PropertyDeclaration => {
+export const transformArrowFunctionBean = (bean: Bean<ClassPropertyWithArrowFunctionInitializer>): ts.PropertyDeclaration => {
     const newArrowFunction = getTransformedArrowFunction(bean);
 
     return factory.updatePropertyDeclaration(
@@ -18,7 +18,7 @@ export const transformArrowFunctionBean = (bean: ContextBean<ClassPropertyWithAr
     );
 };
 
-function getTransformedArrowFunction(bean: ContextBean<ClassPropertyWithArrowFunctionInitializer>): ts.ArrowFunction {
+function getTransformedArrowFunction(bean: Bean<ClassPropertyWithArrowFunctionInitializer>): ts.ArrowFunction {
     const arrowFunction = unwrapExpressionFromRoundBrackets(bean.node.initializer);
     const beansVariables = getDependenciesVariables(bean);
 

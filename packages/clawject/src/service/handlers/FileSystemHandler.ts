@@ -5,7 +5,7 @@ import { FileSystem } from '../../file-system/FileSystem';
 import { ICommandHandler } from './ICommandHandler';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { DependencyGraph } from '../../core/dependencies/DependencyGraph';
-import { ContextRepository } from '../../core/context/ContextRepository';
+import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
 
 //TODO
 export class FileSystemHandler implements ICommandHandler<IBatchFileSystemCommand> {
@@ -63,7 +63,7 @@ export class FileSystemHandler implements ICommandHandler<IBatchFileSystemComman
 
         if (wasConfigChanged) {
             DependencyGraph.clear();
-            ContextRepository.clear();
+            ConfigurationRepository.clear();
 
             contentOfNewConfigFile === null
                 ? ConfigLoader.clear()

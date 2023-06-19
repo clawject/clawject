@@ -1,12 +1,12 @@
 import { DependencyGraph } from '../dependencies/DependencyGraph';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { CyclicDependenciesError } from '../../compilation-context/messages/errors/CyclicDependenciesError';
-import { Context } from '../context/Context';
+import { Configuration } from '../configuration/Configuration';
+import { getCompilationContext } from '../../transformers/getCompilationContext';
 
 export const reportAboutCyclicDependencies = (
-    compilationContext: CompilationContext,
-    context: Context
+    context: Configuration
 ) => {
+    const compilationContext = getCompilationContext();
     const cycle = DependencyGraph.getCycle();
 
     cycle.forEach((cycles, currentContext) => {

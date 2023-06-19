@@ -17,11 +17,11 @@ export abstract class AbstractCompilationMessage implements ICompilationMessage 
     public constructor(
         public details: string | null,
         node: ts.Node,
-        contextNode: ts.ClassDeclaration | null
+        configurationNode: ts.ClassDeclaration | null
     ) {
         this.position = getPositionOfNode(node);
         this.filePath = node.getSourceFile().fileName;
-        this.contextDetails = this.getContextDetails(contextNode);
+        this.contextDetails = this.getContextDetails(configurationNode);
     }
 
     private getContextDetails(contextNode: ts.ClassDeclaration | null): IContextDetails | null {

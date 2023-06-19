@@ -3,17 +3,15 @@ import { getScopeValue } from './getScopeValue';
 import { ClassPropertyWithCallExpressionInitializer } from '../types';
 import { ICompilationBeanInfo } from './ICompilationBeanInfo';
 import { CompilationContext } from '../../../compilation-context/CompilationContext';
-import {
-    IncorrectArgumentsLengthError
-} from '../../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
+import { IncorrectArgumentsLengthError } from '../../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
 import { IncorrectArgumentError } from '../../../compilation-context/messages/errors/IncorrectArgumentError';
-import { Context } from '../../context/Context';
+import { Configuration } from '../../configuration/Configuration';
 import { BeanScope } from '../../bean/BeanScope';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 
 export function getPropertyBeanInfo(
     compilationContext: CompilationContext,
-    context: Context,
+    configuration: Configuration,
     propertyDeclaration: ClassPropertyWithCallExpressionInitializer
 ): ICompilationBeanInfo {
     const beanCall = unwrapExpressionFromRoundBrackets(propertyDeclaration.initializer);
@@ -22,7 +20,7 @@ export function getPropertyBeanInfo(
         compilationContext.report(new IncorrectArgumentsLengthError(
             null,
             propertyDeclaration,
-            context.node,
+            configuration.node,
         ));
 
         return {
@@ -43,7 +41,7 @@ export function getPropertyBeanInfo(
         compilationContext.report(new IncorrectArgumentError(
             'Configuration object should be an object literal.',
             secondArg,
-            context.node,
+            configuration.node,
         ));
 
         return {
@@ -52,6 +50,6 @@ export function getPropertyBeanInfo(
     }
 
     return {
-        scope: getScopeValue(compilationContext, context, secondArg),
+        scope: getScopeValue(compilationContext, configuration, secondArg),
     };
 }
