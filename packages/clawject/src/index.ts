@@ -5,7 +5,7 @@ export { Bean } from './external/Bean';
 export { PostConstruct } from './external/PostConstruct';
 export { BeforeDestruct } from './external/BeforeDesctruct';
 export { EmbeddedBean } from './external/EmbeddedBean';
-export { _TypeTable } from './external/_TypeTable';
+export { ___TypeTable___ } from './external/___TypeTable___';
 
 //Application mode only
 export { Configuration } from './external/Configuration';

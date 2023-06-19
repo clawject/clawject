@@ -5,7 +5,7 @@ import type { runClawjectApplication } from './runClawjectApplication';
  *
  * Please don't rely on this interface in your own code.
  * */
-export interface _TypeTable {
+export interface ___TypeTable___ {
     array: ReadonlyArray<any> | Array<any> | any[];
     set: ReadonlySet<any> | Set<any>;
     map: ReadonlyMap<any, any> | Map<any, any>;

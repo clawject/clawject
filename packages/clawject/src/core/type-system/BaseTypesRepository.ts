@@ -27,7 +27,7 @@ export class BaseTypesRepository {
         }
 
         const typeTableDeclaration = libraryDeclarationFile.statements
-            .find((it): it is ts.InterfaceDeclaration => ts.isInterfaceDeclaration(it) && it.name.getText() === '_TypeTable');
+            .find((it): it is ts.InterfaceDeclaration => ts.isInterfaceDeclaration(it) && it.name.getText() === '___TypeTable___');
 
         if (!typeTableDeclaration) {
             throw new Error(`${CONSTANTS.libraryName} type table declaration not found`);
