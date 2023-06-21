@@ -9,6 +9,6 @@ export const registerBeanDependenciesFromParameters = (
     parameters.forEach(parameter => {
         const dependency = buildDependencyFromParameter(parameter);
 
-        bean.constructorDependencies.add(dependency);
+        bean.dependencies.add(dependency);
     });
 };

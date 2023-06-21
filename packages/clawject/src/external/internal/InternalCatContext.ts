@@ -1,4 +1,4 @@
-import { ErrorBuilder } from './ErrorBuilder';
+import { ErrorBuilder } from '../ErrorBuilder';
 
 export interface IBeanConfig {
     scope: 'prototype' | 'singleton';

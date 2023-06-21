@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { getBeanConfigObjectLiteral } from './getBeanConfigObjectLiteral';
 import { Configuration } from '../../configuration/Configuration';
 import { BeanKind } from '../../bean/BeanKind';
-import { BeanLifecycle } from '../../../external/InternalCatContext';
+import { BeanLifecycle } from '../../../external/internal/InternalCatContext';
 import { compact } from 'lodash';
 import { ConfigLoader } from '../../../config/ConfigLoader';
 

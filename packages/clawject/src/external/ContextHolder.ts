@@ -1,4 +1,4 @@
-import { InternalCatContext } from './InternalCatContext';
+import { InternalCatContext } from './internal/InternalCatContext';
 import { Context } from './Context';
 
 export class ContextHolder implements Context<any> {

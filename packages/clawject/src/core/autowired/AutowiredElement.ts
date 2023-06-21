@@ -2,6 +2,7 @@ import { Component } from '../application-mode/component/Component';
 import { DIType } from '../type-system/DIType';
 import ts from 'typescript';
 import { Configuration } from '../configuration/Configuration';
+import { IDProvider } from '../utils/IDProvider';
 
 export class AutowiredElement {
     constructor(values: Partial<AutowiredElement> = {}) {
@@ -13,6 +14,8 @@ export class AutowiredElement {
     declare name: string;
     declare diType: DIType;
     declare node: ts.Node;
+
+    runtimeId = IDProvider.next();
 
     //TODO
     resolved: unknown | null = null;

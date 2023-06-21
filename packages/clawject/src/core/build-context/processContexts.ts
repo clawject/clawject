@@ -1,25 +1,19 @@
-import ts, { factory } from 'typescript';
+import ts from 'typescript';
 import { isExtendsClassFromLibrary } from '../ts/predicates/isExtendsClassFromLibrary';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { registerBeans } from '../bean/registerBeans';
-import {
-    checkIsAllBeansRegisteredInContextAndFillBeanRequierness
-} from '../bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness';
+import { checkIsAllBeansRegisteredInContextAndFillBeanRequierness } from '../bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness';
 import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
 import { reportAboutCyclicDependencies } from '../report-cyclic-dependencies/reportAboutCyclicDependencies';
 import { enrichWithAdditionalProperties } from './transformers/enrichWithAdditionalProperties';
-import { InternalCatContext } from '../../external/InternalCatContext';
+import { InternalCatContext } from '../../external/internal/InternalCatContext';
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
-import {
-    INTERNAL_CAT_CONTEXT_IMPORT,
-    replaceExtendingFromCatContext
-} from './transformers/replaceExtendingFromCatContext';
-import upath from 'upath';
-import { getImportPathToExternalDirectory } from './utils/getImportPathToExternalDirectory';
+import { replaceExtendingFromCatContext } from './transformers/replaceExtendingFromCatContext';
 import { processMembers } from './transformers/processMembers';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { buildDependencyGraphAndFillQualifiedBeans } from '../dependencies/buildDependencyGraphAndFillQualifiedBeans';
 import { BeanKind } from '../bean/BeanKind';
+import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
 
 const ALLOWED_BEAN_KINDS = new Set([
     BeanKind.METHOD,
@@ -84,23 +78,7 @@ export const processContexts = (compilationContext: CompilationContext, tsContex
     const updatedStatements = Array.from(transformedFile.statements);
 
     if (shouldAddImports) {
-        const pathForInternalCatContext = upath.join(
-            getImportPathToExternalDirectory(),
-            'InternalCatContext',
-        );
-        const internalCatContextImport = factory.createImportDeclaration(
-            undefined,
-            factory.createImportClause(
-                false,
-                undefined,
-                factory.createNamespaceImport(
-                    factory.createIdentifier(INTERNAL_CAT_CONTEXT_IMPORT)
-                )
-            ),
-            factory.createStringLiteral(pathForInternalCatContext)
-        );
-
-        updatedStatements.unshift(internalCatContextImport);
+        updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
     }
 
     return ts.factory.updateSourceFile(

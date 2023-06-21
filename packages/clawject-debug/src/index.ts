@@ -1,4 +1,4 @@
-import { Configuration, Autowired, runClawjectApplication } from 'clawject';
+import { Configuration, Autowired, runClawjectApplication, CatContext, Bean } from 'clawject';
 
 @Configuration
 export class TestContext {
@@ -6,3 +6,7 @@ export class TestContext {
 }
 
 runClawjectApplication();
+
+// class MyContext extends CatContext {
+//     @Bean property: string = '';
+// }

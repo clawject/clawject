@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { DIType } from '../type-system/DIType';
-import { BeanLifecycle } from '../../external/InternalCatContext';
+import { BeanLifecycle } from '../../external/internal/InternalCatContext';
 import {
     ClassPropertyWithArrowFunctionInitializer,
     ClassPropertyWithCallExpressionInitializer,
@@ -10,6 +10,8 @@ import { BeanScope } from './BeanScope';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { Dependency } from '../dependency/Dependency';
+import { IDProvider } from '../utils/IDProvider';
+import { InternalApplicationFactory } from '../../external/internal/InternalApplicationFactory';
 
 export type BeanNode = ts.MethodDeclaration
     | ClassPropertyWithCallExpressionInitializer
@@ -34,7 +36,8 @@ export class Bean<T = BeanNode> {
     scope: BeanScope = BeanScope.SINGLETON;
     lifecycle: BeanLifecycle[] | null = null;
     public = false;
-    constructorDependencies = new Set<Dependency>();
+    dependencies = new Set<Dependency>();
+    runtimeId = IDProvider.next();
 
     get fullName(): string {
         if (this.nestedProperty === null) {

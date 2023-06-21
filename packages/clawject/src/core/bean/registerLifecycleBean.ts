@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
-import { BeanLifecycle } from '../../external/InternalCatContext';
+import { BeanLifecycle } from '../../external/internal/InternalCatContext';
 import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Bean } from './Bean';

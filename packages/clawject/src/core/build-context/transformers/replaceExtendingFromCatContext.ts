@@ -1,27 +1,22 @@
 import ts, { factory } from 'typescript';
-import { getDecoratorsOnly } from '../../ts/utils/getDecoratorsOnly';
-import { PRIVATE_TOKEN } from '../constants';
-
-export const INTERNAL_CAT_CONTEXT_IMPORT = `INTERNAL_CAT_CONTEXT_IMPORT${PRIVATE_TOKEN}`;
+import { ElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 
 export const replaceExtendingFromCatContext = (node: ts.ClassDeclaration): ts.ClassDeclaration => {
-    const newHeritageClause = factory.createHeritageClause(
+    const newExtendsHeritageClause = factory.createHeritageClause(
         ts.SyntaxKind.ExtendsKeyword,
         [factory.createExpressionWithTypeArguments(
-            factory.createPropertyAccessExpression(
-                factory.createIdentifier(INTERNAL_CAT_CONTEXT_IMPORT),
-                factory.createIdentifier('InternalCatContext')
-            ),
+            InternalsAccessBuilder.internalPropertyAccessExpression(ElementKind.InternalCatContext),
             undefined
         )]
     );
+    const implementsHeritageClause = node.heritageClauses?.filter(it => it.token === ts.SyntaxKind.ImplementsKeyword) ?? [];
 
     return ts.factory.updateClassDeclaration(
         node,
-        [...getDecoratorsOnly(node), ...node.modifiers ?? []],
+        node.modifiers,
         node.name,
         node.typeParameters,
-        [newHeritageClause],
+        [newExtendsHeritageClause, ...implementsHeritageClause],
         node.members
     );
 };

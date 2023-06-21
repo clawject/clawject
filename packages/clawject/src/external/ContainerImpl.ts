@@ -1,7 +1,7 @@
 import { CatContext } from './CatContext';
 import { ContextHolder } from './ContextHolder';
 import { Context } from './Context';
-import { InternalCatContext } from './InternalCatContext';
+import { InternalCatContext } from './internal/InternalCatContext';
 import { ContextProps, ContextPropsWithConfig, Container } from './Container';
 import { ErrorBuilder } from './ErrorBuilder';
 
