@@ -1,4 +1,4 @@
-import { CatContext, Bean } from 'clawject';
+import { Bean, CatContext } from 'clawject';
 
 // @Configuration
 // export class TestContext {
@@ -10,12 +10,11 @@ import { CatContext, Bean } from 'clawject';
 // runClawjectApplication();
 
 interface IMyContext {
-    myBeann: string;
+    myBean: 'myBean';
 }
 
 class MyContext extends CatContext<IMyContext> {
-    @Bean
-        myBean = 'myBean';
+    @Bean myBean = 'myBean' as const;
 
     myClass = Bean(MyClass);
 }
@@ -23,6 +22,6 @@ class MyContext extends CatContext<IMyContext> {
 class MyClass {
     constructor(
         myBean: string,
-        my: number,
-    ) {}
+    ) {
+    }
 }
