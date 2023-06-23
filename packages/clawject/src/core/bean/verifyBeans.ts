@@ -7,8 +7,9 @@ import { Decorators, isDecoratorFromLibrary } from '../ts/predicates/isDecorator
 import { DecoratorsCountError } from '../../compilation-context/messages/errors/DecoratorsCountError';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
-import ts from 'typescript';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
+import ts from 'typescript';
+import chalk from 'chalk';
 
 const UNSUPPORTED_TYPES = new Set([
     DITypeFlag.UNSUPPORTED,
@@ -16,6 +17,12 @@ const UNSUPPORTED_TYPES = new Set([
     DITypeFlag.UNKNOWN,
     DITypeFlag.VOID,
     DITypeFlag.UNDEFINED,
+]);
+const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
+    [ts.SyntaxKind.AbstractKeyword, 'abstract'],
+    [ts.SyntaxKind.AsyncKeyword, 'async'],
+    [ts.SyntaxKind.StaticKeyword, 'static'],
+    [ts.SyntaxKind.DeclareKeyword, 'declare'],
 ]);
 
 export const verifyBeans = (configuration: Configuration): void => {
@@ -25,7 +32,8 @@ export const verifyBeans = (configuration: Configuration): void => {
         verifyAllowedBeanKinds(bean);
         verifyBeanType(bean);
         verifyDecoratorsCount(bean);
-        verifyPropertyName(bean);
+        verifyName(bean);
+        verifyModifiers(bean);
     });
 };
 
@@ -148,7 +156,7 @@ function verifyAllowedBeanKinds(bean: Bean): void {
     }
 }
 
-function verifyPropertyName(bean: Bean): void {
+function verifyName(bean: Bean): void {
     const compilationContext = getCompilationContext();
     const name = bean.node.name;
 
@@ -158,6 +166,22 @@ function verifyPropertyName(bean: Bean): void {
 
     compilationContext.report(new NotSupportedError(
         'Bean property name should be statically known.',
+        bean.node.name,
+        bean.parentConfiguration.node
+    ));
+    bean.parentConfiguration.beanRegister.deregister(bean);
+}
+
+function verifyModifiers(bean: Bean): void {
+    const compilationContext = getCompilationContext();
+    const restrictedModifier = bean.node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
+
+    if (!restrictedModifier) {
+        return;
+    }
+
+    compilationContext.report(new NotSupportedError(
+        `Bean declaration should not have modifier ${chalk.bold(RESTRICTED_MODIFIERS.get(restrictedModifier.kind))}.`,
         bean.node.name,
         bean.parentConfiguration.node
     ));

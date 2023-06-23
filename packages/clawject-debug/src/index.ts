@@ -10,13 +10,7 @@ import { Bean, CatContext } from 'clawject';
 // runClawjectApplication();
 
 interface IMyContext {
-    myBean: 'myBean';
-}
-
-class MyContext extends CatContext<IMyContext> {
-    @Bean myBean = 'myBean' as const;
-
-    myClass = Bean(MyClass);
+    myBean: string;
 }
 
 class MyClass {
@@ -24,4 +18,10 @@ class MyClass {
         myBean: string,
     ) {
     }
+}
+
+class MyContext extends CatContext<IMyContext> {
+    @Bean myBean = 'myBean' as const;
+
+    myClass = Bean(MyClass);
 }

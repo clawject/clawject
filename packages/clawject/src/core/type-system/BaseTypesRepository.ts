@@ -2,10 +2,10 @@ import ts from 'typescript';
 import { DIType } from './DIType';
 import { CONSTANTS } from '../../constants';
 import { DITypeBuilder } from './DITypeBuilder';
-import { ___TypeTable___ } from '../../external/___TypeTable___';
+import { ___TypeReferenceTable___ } from '../../external/___TypeReferenceTable___';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
 
-type BaseTypes = Record<keyof ___TypeTable___, DIType>;
+type BaseTypes = Record<keyof ___TypeReferenceTable___, DIType> & { runClawjectApplication: DIType };
 
 export class BaseTypesRepository {
     private static baseTypes: BaseTypes | null = null;
@@ -24,7 +24,7 @@ export class BaseTypesRepository {
         }
 
         const typeTableDeclaration = libraryDeclarationFile.statements
-            .find((it): it is ts.InterfaceDeclaration => ts.isInterfaceDeclaration(it) && it.name.getText() === '___TypeTable___');
+            .find((it): it is ts.InterfaceDeclaration => ts.isInterfaceDeclaration(it) && it.name.getText() === '___TypeReferenceTable___');
 
         if (!typeTableDeclaration) {
             throw new Error(`${CONSTANTS.libraryName} type table declaration not found`);
@@ -42,7 +42,8 @@ export class BaseTypesRepository {
             set: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set'])),
             map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map'])),
             mapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny'])),
-            runClawjectApplication: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication'])),
+            runClawjectApplication: DITypeBuilder.empty(),
+            // runClawjectApplication: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication'])),
         };
     }
 
