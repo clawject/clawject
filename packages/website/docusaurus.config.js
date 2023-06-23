@@ -18,8 +18,9 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'clawject', // Usually your GitHub org/user name.
-  projectName: 'clawject', // Usually your repo name.
+  // organizationName: 'clawject', // Usually your GitHub org/user name.
+  // projectName: 'clawject', // Usually your repo name.
+  deploymentBranch: 'gh-pages', // The branch of your docs repo that you are going to deploy to GitHub pages.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
