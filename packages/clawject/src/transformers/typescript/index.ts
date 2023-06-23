@@ -6,7 +6,7 @@ import { BuildErrorFormatter } from '../../compilation-context/BuildErrorFormatt
 import { BaseTypesRepository } from '../../core/type-system/BaseTypesRepository';
 import { verifyTSVersion } from '../verifyTSVersion';
 import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
-import { processContexts } from '../../core/build-context/processContexts';
+import { processAtomicMode } from '../../core/build-context/processAtomicMode';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { processApplicationMode } from '../../core/application-mode/processApplicationMode';
 
@@ -29,7 +29,7 @@ export default (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
             transformedSourceFile = processApplicationMode(compilationContext, context, sourceFile);
             break;
         case 'atomic':
-            transformedSourceFile = processContexts(compilationContext, context, sourceFile);
+            transformedSourceFile = processAtomicMode(compilationContext, context, sourceFile);
             break;
         default:
             transformedSourceFile = sourceFile;

@@ -1,5 +1,5 @@
 import { AbstractStatistics, StatisticsType } from '../AbstractStatistics';
-import { getPositionOfNode } from '../../../core/ts/utils/getPositionOfNode';
+import { getNodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import upath from 'upath';
 import { ILinkPositionDescriptor, ILinkStatistics, LinkType } from './ILinkStatistics';
 
@@ -11,7 +11,7 @@ export class QualifiedBeanDeclarationLinkStatistics extends AbstractStatistics i
         dependencyDescriptor.qualifiedBeans.forEach(beanDescriptor => {
             const linkPosition: ILinkPositionDescriptor = {
                 path: upath.normalize(dependencyDescriptor.node.getSourceFile().fileName),
-                nodePosition: getPositionOfNode(dependencyDescriptor.node.name),
+                nodePosition: getNodeDetails(dependencyDescriptor.node.name),
             };
 
             result.push(new QualifiedBeanDeclarationLinkStatistics(beanDescriptor, linkPosition));
@@ -34,7 +34,7 @@ export class QualifiedBeanDeclarationLinkStatistics extends AbstractStatistics i
 
         this.toPosition = {
             path: descriptor.contextDescriptor.fileName,
-            nodePosition: getPositionOfNode(descriptor.node)
+            nodePosition: getNodeDetails(descriptor.node)
         };
 
         this.presentableName = `${descriptor.contextDescriptor.name}::${descriptor.classMemberName}`;

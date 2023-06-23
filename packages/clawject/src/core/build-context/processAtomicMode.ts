@@ -26,8 +26,7 @@ const ALLOWED_BEAN_KINDS = new Set([
 ]);
 
 
-//TODO rename to processAtomicMode
-export const processContexts = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
+export const processAtomicMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
     //Skipping declaration files
     if (sourceFile.isDeclarationFile) {
         return sourceFile;

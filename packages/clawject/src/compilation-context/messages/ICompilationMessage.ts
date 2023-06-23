@@ -1,13 +1,13 @@
 import { MessageCode } from './MessageCode';
 import { MessageType } from './MessageType';
-import { INodePosition } from '../../core/ts/utils/getPositionOfNode';
+import { NodeDetails } from '../../core/ts/utils/getNodeDetails';
 
 export interface ICompilationMessage {
     details: string | null;
     code: MessageCode
     type: MessageType
     description: string
-    position: INodePosition;
+    nodeDetails: NodeDetails;
     contextDetails: IContextDetails | null;
     filePath: string;
 }
@@ -15,5 +15,5 @@ export interface ICompilationMessage {
 export interface IContextDetails {
     name: string;
     path: string;
-    namePosition: INodePosition;
+    nameNodeDetails: NodeDetails;
 }

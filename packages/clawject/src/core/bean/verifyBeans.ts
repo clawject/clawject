@@ -8,6 +8,7 @@ import { DecoratorsCountError } from '../../compilation-context/messages/errors/
 import { getCompilationContext } from '../../transformers/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import ts from 'typescript';
+import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 
 const UNSUPPORTED_TYPES = new Set([
     DITypeFlag.UNSUPPORTED,
@@ -151,7 +152,7 @@ function verifyPropertyName(bean: Bean): void {
     const compilationContext = getCompilationContext();
     const name = bean.node.name;
 
-    if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) {
+    if (isStaticallyKnownPropertyName(name)) {
         return;
     }
 

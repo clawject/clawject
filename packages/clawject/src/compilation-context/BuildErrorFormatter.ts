@@ -1,6 +1,8 @@
 import { AbstractCompilationMessage } from './messages/AbstractCompilationMessage';
-import { INodePosition } from '../core/ts/utils/getPositionOfNode';
+import { NodeDetails } from '../core/ts/utils/getNodeDetails';
 import chalk from 'chalk';
+import { MissingBeanDeclarationError } from './messages/errors/MissingBeanDeclarationError';
+import upath from 'upath';
 
 export class BuildErrorFormatter {
     static formatErrors(compilationErrors: AbstractCompilationMessage[]): string | null {
@@ -18,7 +20,7 @@ export class BuildErrorFormatter {
 
             const contextDetails = errors[0].contextDetails!;
 
-            const contextPrefix = `${chalk.red('\nErrors occurred in')}: ${contextDetails.name} ${this.getPathWithPosition(contextPath, contextDetails.namePosition)}`;
+            const contextPrefix = `${chalk.red('\nErrors occurred in')}: ${contextDetails.name}. ${this.getPathWithPosition(contextPath, contextDetails.nameNodeDetails)}`;
 
             formattedCompilationErrors.add(contextPrefix + '\n' + formattedErrors);
         });
@@ -45,19 +47,38 @@ export class BuildErrorFormatter {
     }
 
     private static formatError(error: AbstractCompilationMessage): string {
-        const filePathWithPosition = this.getPathWithPosition(error.filePath, error.position);
+        const filePathWithPosition = this.getPathWithPosition(error.filePath, error.nodeDetails);
 
         const errorDetails = error.details === null
             ? ''
             : ` ${error.details}`;
 
-        return `${chalk.red('Error')} ${chalk.gray(error.code + ':')} ${error.description}${errorDetails} ${filePathWithPosition}`;
+        const baseMessage = `${chalk.red('Error')} ${chalk.gray(error.code + ':')} ${error.description}${errorDetails} ${filePathWithPosition}`;
+
+        if (error instanceof MissingBeanDeclarationError) {
+            const candidatesByName = this.formatCandidates(error.candidatesByName);
+            const candidatesByType = this.formatCandidates(error.candidatesByType);
+            const messageCandidatesByName = candidatesByName ? `${chalk.red('  Possibly suitable candidates by name:')}\n${candidatesByName}` : '';
+            const messageCandidatesByType = candidatesByType ? `${chalk.red('  Possibly suitable candidates by type:')}\n${candidatesByType}` : '';
+
+            return [baseMessage, messageCandidatesByName, messageCandidatesByType].filter(it => it).join('\n');
+        }
+
+        return baseMessage;
     }
 
     private static getPathWithPosition(
         path: string,
-        position: INodePosition,
+        nodeDetails: NodeDetails,
     ): string {
-        return `file://${path}:${position.line}:${position.startColumn}`;
+        return `file://${upath.normalize(path)}:${nodeDetails.start.line}:${nodeDetails.start.col}`;
+    }
+
+    private static formatCandidates(candidates: NodeDetails[]): string {
+        return candidates.map(it => {
+            const declarationName = it.declarationName ? `${it.declarationName}: `: '';
+
+            return `    ${declarationName}${this.getPathWithPosition(it.filePath, it)}`;
+        }).join('\n');
     }
 }

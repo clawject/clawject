@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import upath from 'upath';
 import { AbstractStatistics, StatisticsType } from '../AbstractStatistics';
-import { getPositionOfNode } from '../../../core/ts/utils/getPositionOfNode';
+import { getNodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { ILinkPositionDescriptor, ILinkStatistics, LinkType } from './ILinkStatistics';
 import { isNamedClassDeclaration } from '../../../core/ts/predicates/isNamedClassDeclaration';
 
@@ -12,13 +12,13 @@ export class BeanUsageLinkStatistics extends AbstractStatistics implements ILink
 
         const fromPosition: ILinkPositionDescriptor = {
             path: beanDescriptor.contextDescriptor.fileName,
-            nodePosition: getPositionOfNode(beanDescriptor.node.name),
+            nodePosition: getNodeDetails(beanDescriptor.node.name),
         };
 
         dependencyDescriptors.forEach(dependencyDescriptor => {
             const toPosition: ILinkPositionDescriptor = {
                 path: upath.normalize(dependencyDescriptor.node.getSourceFile().fileName),
-                nodePosition: getPositionOfNode(dependencyDescriptor.node.name)
+                nodePosition: getNodeDetails(dependencyDescriptor.node.name)
             };
 
             const presentableName = this.buildPresentableName(dependencyDescriptor);
@@ -29,7 +29,7 @@ export class BeanUsageLinkStatistics extends AbstractStatistics implements ILink
         if (beanDescriptor.publicInfo !== null) {
             const toPosition: ILinkPositionDescriptor = {
                 path: upath.normalize(beanDescriptor.publicInfo.publicNode.getSourceFile().fileName),
-                nodePosition: getPositionOfNode(beanDescriptor.publicInfo.publicNode.name),
+                nodePosition: getNodeDetails(beanDescriptor.publicInfo.publicNode.name),
             };
 
             let parentName: string | null = null;

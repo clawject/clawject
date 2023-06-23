@@ -1,4 +1,4 @@
-import { INodePosition } from '../../../core/ts/utils/getPositionOfNode';
+import { NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 
 export interface ILinkStatistics {
     linkType: LinkType;
@@ -9,7 +9,7 @@ export interface ILinkStatistics {
 
 export interface ILinkPositionDescriptor {
     path: string;
-    nodePosition: INodePosition;
+    nodePosition: NodeDetails;
 }
 
 export enum LinkType {

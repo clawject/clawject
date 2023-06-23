@@ -5,6 +5,8 @@ import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { nameMatcher } from '../utils/nameMatcher';
+import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 
 export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context: Configuration): void => {
     const compilationContext = getCompilationContext();
@@ -39,7 +41,8 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
 
     context.registerDIType(diType);
     const typeProperties = type.getProperties();
-    const beans = Array.from(context.beanRegister.elements)
+    const contextBeans = Array.from(context.beanRegister.elements);
+    const beans = contextBeans
         .reduce((acc, curr) => {
             acc.set(curr.classMemberName, curr);
             return acc;
@@ -52,11 +55,17 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
         const bean = beans.get(propertyName);
 
         if (!bean) {
-            //TODO add beans that could be used by type and name
+            const [
+                byName,
+                byType,
+            ] = getPossibleBeanCandidates(propertyName, propertyDIType, contextBeans);
+
             compilationContext.report(new MissingBeanDeclarationError(
                 null,
                 property.valueDeclaration ?? typeNode,
                 context.node,
+                byName,
+                byType,
             ));
             return;
         }

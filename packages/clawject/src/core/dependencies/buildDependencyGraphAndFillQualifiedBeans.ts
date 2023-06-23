@@ -1,9 +1,10 @@
 import { Configuration } from '../configuration/Configuration';
-import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { DependencyGraph } from './DependencyGraph';
 import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { MissingBeanDeclarationError } from '../../compilation-context/messages/errors/MissingBeanDeclarationError';
+import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
     const contextBeans = context.beanRegister.elements;
@@ -29,7 +30,8 @@ function buildForBaseType(
     context: Configuration,
 ): void {
     const compilationContext = getCompilationContext();
-    const matchedByType = Array.from(allBeansWithoutCurrent)
+    const allBeansWithoutCurrentArray = Array.from(allBeansWithoutCurrent);
+    const matchedByType = allBeansWithoutCurrentArray
         .filter(it => dependency.diType.isCompatible(it.diType));
 
     if (matchedByType.length === 1) {
@@ -39,10 +41,17 @@ function buildForBaseType(
     }
 
     if (matchedByType.length === 0) {
-        compilationContext.report(new DependencyResolvingError(
-            'Can not find Bean candidate for parameter.',
+        const [
+            byName,
+            byType,
+        ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrentArray);
+
+        compilationContext.report(new MissingBeanDeclarationError(
+            'Can not find suitable Bean candidate for parameter.',
             dependency.node,
             context.node,
+            byName,
+            byType,
         ));
         return;
     }
@@ -64,10 +73,17 @@ function buildForBaseType(
         return;
     }
 
-    compilationContext.report(new DependencyResolvingError(
+    const [
+        byName,
+        byType,
+    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrentArray);
+
+    compilationContext.report(new MissingBeanDeclarationError(
         `Found ${matchedByType.length} candidates for parameter "${dependency.parameterName}". Rename parameter to match Bean name, to specify which Bean should be injected.`,
         dependency.node,
         context.node,
+        byName,
+        byType,
     ));
     return;
 }

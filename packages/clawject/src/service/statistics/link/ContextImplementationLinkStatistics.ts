@@ -1,6 +1,6 @@
 import { AbstractStatistics, StatisticsType } from '../AbstractStatistics';
 import { ILinkPositionDescriptor, ILinkStatistics, LinkType } from './ILinkStatistics';
-import { getPositionOfNode } from '../../../core/ts/utils/getPositionOfNode';
+import { getNodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import upath from 'upath';
 
 export class ContextImplementationLinkStatistics extends AbstractStatistics implements ILinkStatistics {
@@ -26,12 +26,12 @@ export class ContextImplementationLinkStatistics extends AbstractStatistics impl
 
         this.toPosition = {
             path: contextInterfaceDescriptor.contextDescriptor.fileName,
-            nodePosition: getPositionOfNode(contextInterfaceDescriptor.contextDescriptor.node.name)
+            nodePosition: getNodeDetails(contextInterfaceDescriptor.contextDescriptor.node.name)
         };
 
         this.fromPosition = {
             path: upath.normalize(contextInterfaceDescriptor.node.getSourceFile().fileName),
-            nodePosition: getPositionOfNode(contextInterfaceDescriptor.node.name)
+            nodePosition: getNodeDetails(contextInterfaceDescriptor.node.name)
         };
 
         this.presentableName = contextInterfaceDescriptor.contextDescriptor.name;

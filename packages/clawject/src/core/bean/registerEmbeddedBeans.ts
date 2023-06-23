@@ -6,6 +6,7 @@ import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 
 export const registerEmbeddedBean = (
     configuration: Configuration,
@@ -18,9 +19,8 @@ export const registerEmbeddedBean = (
     const typeSymbol = type.getSymbol();
 
     if (!typeSymbol) {
-        //TODO add error
-        compilationContext.report(new MissingTypeDefinitionError(
-            null,
+        compilationContext.report(new TypeQualifyError(
+            'Could not resolve type, try specify type explicitly.',
             classElement,
             configuration.node,
         ));
@@ -30,9 +30,8 @@ export const registerEmbeddedBean = (
     const declarations = typeSymbol.declarations ?? [];
 
     if (declarations.length === 0) {
-        compilationContext.report(new MissingTypeDefinitionError(
-            //TODO add error
-            null,
+        compilationContext.report(new TypeQualifyError(
+            'Could not resolve type, try specify type explicitly.',
             classElement,
             configuration.node,
         ));
@@ -41,8 +40,7 @@ export const registerEmbeddedBean = (
 
     if (declarations.length > 1) {
         compilationContext.report(new IncorrectTypeDefinitionError(
-            //TODO add found declarations
-            'Type of Embedded bean should be defined only once.',
+            'Found more than 1 type declarations of Embedded Bean, type should be defined only once.',
             classElement.type ?? classElement,
             configuration.node,
         ));

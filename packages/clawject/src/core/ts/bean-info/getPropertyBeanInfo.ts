@@ -37,9 +37,8 @@ export function getPropertyBeanInfo(
     }
 
     if (!ts.isObjectLiteralExpression(secondArg)) {
-        //TODO try to resolve value with typechecker
         compilationContext.report(new IncorrectArgumentError(
-            'Configuration object should be an object literal.',
+            'Configuration object should be an object literal with statically known members and values.',
             secondArg,
             configuration.node,
         ));

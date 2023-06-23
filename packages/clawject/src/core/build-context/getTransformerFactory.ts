@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
-import { processContexts } from './processContexts';
+import { processAtomicMode } from './processAtomicMode';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 
 export const getTransformerFactory = (
@@ -10,6 +10,6 @@ export const getTransformerFactory = (
         compilationContext.clearMessagesByFilePath(sourceFile.fileName);
         ConfigurationRepository.clearByFileName(sourceFile.fileName);
 
-        return processContexts(compilationContext, context, sourceFile);
+        return processAtomicMode(compilationContext, context, sourceFile);
     };
 };

@@ -1,5 +1,5 @@
 import { AbstractStatistics, StatisticsType } from '../AbstractStatistics';
-import { getPositionOfNode } from '../../../core/ts/utils/getPositionOfNode';
+import { getNodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import upath from 'upath';
 import { isNamedClassDeclaration } from '../../../core/ts/predicates/isNamedClassDeclaration';
 import { ILinkPositionDescriptor, ILinkStatistics, LinkType } from './ILinkStatistics';
@@ -12,7 +12,7 @@ export class BeanDeclarationLinkStatistics extends AbstractStatistics implements
         if (descriptor.publicInfo !== null) {
             const linkPosition: ILinkPositionDescriptor = {
                 path: upath.normalize(descriptor.publicInfo.publicNode.getSourceFile().fileName),
-                nodePosition: getPositionOfNode(descriptor.publicInfo.publicNode.name),
+                nodePosition: getNodeDetails(descriptor.publicInfo.publicNode.name),
             };
 
             result.push(new BeanDeclarationLinkStatistics(descriptor, linkPosition));
@@ -25,7 +25,7 @@ export class BeanDeclarationLinkStatistics extends AbstractStatistics implements
         ) {
             const linkPosition: ILinkPositionDescriptor = {
                 path: descriptor.beanImplementationSource.path,
-                nodePosition: getPositionOfNode(descriptor.beanImplementationSource.node.name),
+                nodePosition: getNodeDetails(descriptor.beanImplementationSource.node.name),
             };
 
             result.push(new BeanDeclarationLinkStatistics(descriptor, linkPosition));
@@ -48,7 +48,7 @@ export class BeanDeclarationLinkStatistics extends AbstractStatistics implements
 
         this.toPosition = {
             path: descriptor.contextDescriptor.fileName,
-            nodePosition: getPositionOfNode(descriptor.node)
+            nodePosition: getNodeDetails(descriptor.node)
         };
 
         this.presentableName = `${descriptor.contextDescriptor.name}::${descriptor.classMemberName}`;

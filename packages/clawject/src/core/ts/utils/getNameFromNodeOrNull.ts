@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { isNamedDeclaration } from '../predicates/isNamedDeclaration';
 
-export const getNameFromDeclarationOrNull = (declaration: ts.Declaration): string | null => {
+export const getNameFromNodeOrNull = (declaration: ts.Node): string | null => {
     if (isNamedDeclaration(declaration)) {
         return declaration.name?.getText() ?? null;
     }

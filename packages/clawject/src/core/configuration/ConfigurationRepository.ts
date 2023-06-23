@@ -36,7 +36,6 @@ export class ConfigurationRepository {
         const contextId = beanId.match(/(.*)_\d+$/);
 
         if (contextId === null) {
-            // TODO warn for debug mode
             return null;
         }
 

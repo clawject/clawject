@@ -27,7 +27,6 @@ export class DependencyGraph {
             const relatedConfiguration = relatedConfigurations.get(idsList[0]);
 
             if (!relatedConfiguration) {
-                //TODO warn for debug mode
                 return;
             }
 

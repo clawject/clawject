@@ -42,9 +42,8 @@ export const getPropertyDecoratorBeanInfo = (
         const firstArg = expression.arguments[0];
 
         if (!ts.isObjectLiteralExpression(firstArg)) {
-            //TODO try to resolve value with typechecker
             compilationContext.report(new IncorrectArgumentError(
-                'Configuration object should be an object literal.',
+                'Configuration object should be an object literal with statically known members and values.',
                 firstArg,
                 configuration.node,
             ));
