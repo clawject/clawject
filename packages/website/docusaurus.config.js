@@ -11,15 +11,16 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://clawject.org',
+  url: 'http://clawject.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+  trailingSlash: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  // organizationName: 'clawject', // Usually your GitHub org/user name.
-  // projectName: 'clawject', // Usually your repo name.
+  organizationName: 'clawject', // Usually your GitHub org/user name.
+  projectName: 'clawject', // Usually your repo name.
   deploymentBranch: 'gh-pages', // The branch of your docs repo that you are going to deploy to GitHub pages.
 
   onBrokenLinks: 'throw',
