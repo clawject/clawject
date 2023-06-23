@@ -6,6 +6,7 @@ on:
       - 'packages/website/**' # Trigger deploy on website changes
     branches:
       - main
+  workflow_dispatch: # Trigger deploy manually
 
 defaults:
   run:
