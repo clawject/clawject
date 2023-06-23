@@ -1,9 +1,10 @@
-//Matching by trigrams
+const GRAM_SIZE = 5;
+
 export const nameMatcher = (request: string) => {
-    const requestChunks = [...chunkedString(request, 3)];
+    const requestChunks = [...chunkedString(request, GRAM_SIZE)];
 
     return (searchIn: string): boolean => {
-        const searchChunks = chunkedString(searchIn, 3);
+        const searchChunks = chunkedString(searchIn, GRAM_SIZE);
 
         return requestChunks.some(chunk => searchChunks.has(chunk));
     };

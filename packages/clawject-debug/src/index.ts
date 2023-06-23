@@ -23,6 +23,6 @@ class MyContext extends CatContext<IMyContext> {
 class MyClass {
     constructor(
         myBean: string,
-        myb: number,
+        my: number,
     ) {}
 }
