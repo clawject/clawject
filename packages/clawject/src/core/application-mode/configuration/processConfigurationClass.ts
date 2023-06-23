@@ -6,6 +6,7 @@ import { registerBeanDependencies } from '../../dependency/registerBeanDependenc
 import { registerAutowired } from '../../autowired/registerAutowired';
 import { getCompilationContext } from '../../../transformers/getCompilationContext';
 import { NotSupportedError } from '../../../compilation-context/messages/errors/NotSupportedError';
+import { transformConfigurationClass } from './transformation/transformConfigurationClass';
 
 const ALLOWED_BEAN_KINDS = new Set([
     BeanKind.METHOD,
@@ -35,5 +36,5 @@ export const processConfigurationClass = (node: ts.ClassDeclaration): ts.ClassDe
     registerBeanDependencies(configuration);
     registerAutowired(configuration);
 
-    throw 'TODO';
+    return transformConfigurationClass(configuration);
 };

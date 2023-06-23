@@ -3,6 +3,7 @@ import { DIType } from '../type-system/DIType';
 import { BeanKind } from '../bean/BeanKind';
 import { AutowiredRegister } from '../autowired/AutowiredRegister';
 import { BeanRegister } from '../bean/BeanRegister';
+import { IDProvider } from '../utils/IDProvider';
 
 export class Configuration {
     declare id: string;
@@ -16,6 +17,8 @@ export class Configuration {
 
     autowiredRegister = new AutowiredRegister(this);
     beanRegister = new BeanRegister(this);
+
+    runtimeId: string = IDProvider.next();
 
     registerDIType(diType: DIType): void {
         diType.declarations.map(it => {

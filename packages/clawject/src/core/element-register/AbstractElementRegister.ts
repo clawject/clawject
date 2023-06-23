@@ -7,7 +7,7 @@ export abstract class AbstractElementRegister<T extends { id: string, node: N },
     idToElement = new Map<string, T>();
     nodeToElement = new Map<N, T>();
 
-    abstract register(bean: T): void;
+    abstract register(element: T): void;
 
     deregister(element: T): void {
         this.elements.delete(element);

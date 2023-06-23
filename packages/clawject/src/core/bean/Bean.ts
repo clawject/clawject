@@ -11,7 +11,6 @@ import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { Dependency } from '../dependency/Dependency';
 import { IDProvider } from '../utils/IDProvider';
-import { InternalApplicationFactory } from '../../external/internal/InternalApplicationFactory';
 
 export type BeanNode = ts.MethodDeclaration
     | ClassPropertyWithCallExpressionInitializer

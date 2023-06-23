@@ -6,6 +6,7 @@ import { processConfigurationClass } from './configuration/processConfigurationC
 import { processComponent } from './component/processComponent';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { registerEntrypoint } from './entrypoint/registerEntrypoint';
+import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
     //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
@@ -52,6 +53,10 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
 
         return statement;
     });
+
+    if (shouldAddImports) {
+        updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
+    }
 
 
     return ts.factory.updateSourceFile(

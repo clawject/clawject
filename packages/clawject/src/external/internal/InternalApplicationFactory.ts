@@ -7,55 +7,46 @@ export enum FactoryElementType {
     AUTOWIRED,
 }
 
-interface FactoryElement {
-    id: string;
+export interface FactoryElement {
     type: FactoryElementType;
-}
-
-interface BeanFactoryElement extends FactoryElement {
-    type: FactoryElementType.BEAN;
-}
-
-interface ComponentFactoryElement extends FactoryElement {
-    type: FactoryElementType.COMPONENT;
-    resolvedConstructorDependencies: Set<string>;
-    resolvedAutowired: Set<string>;
-}
-
-interface ConfigurationFactoryElement extends FactoryElement {
-    type: FactoryElementType.CONFIGURATION;
-    resolvedAutowired: Set<string>;
-}
-
-interface AutowiredFactoryElement extends FactoryElement {
-    type: FactoryElementType.AUTOWIRED;
+    id: string;
+    parentId: string | null;
+    classConstructor: ClassConstructor<any> | null;
 }
 
 export class InternalApplicationFactory {
-    static idToBean: Map<string, BeanFactoryElement> = new Map();
-    static idToConfiguration: Map<string, ConfigurationFactoryElement> = new Map();
-    static idToComponent: Map<string, ComponentFactoryElement> = new Map();
-    static idToAutowired: Map<string, AutowiredFactoryElement> = new Map();
-    static store: Map<string, FactoryElement> = new Map();
+    static idToBean: Map<string, FactoryElement> = new Map();
+    static idToConfiguration: Map<string, FactoryElement> = new Map();
+    static idToComponent: Map<string, FactoryElement> = new Map();
+    static idToAutowired: Map<string, FactoryElement> = new Map();
+    static idToType: Map<string, FactoryElementType> = new Map();
 
-    static register(factoryElement: FactoryElement): void {
-        switch (factoryElement.type) {
-        case FactoryElementType.BEAN:
-            this.idToBean.set(factoryElement.id, factoryElement as BeanFactoryElement);
-            break;
-        case FactoryElementType.CONFIGURATION:
-            this.idToConfiguration.set(factoryElement.id, factoryElement as ConfigurationFactoryElement);
-            break;
-        case FactoryElementType.COMPONENT:
-            this.idToComponent.set(factoryElement.id, factoryElement as ComponentFactoryElement);
-            break;
-        case FactoryElementType.AUTOWIRED:
-            this.idToAutowired.set(factoryElement.id, factoryElement as AutowiredFactoryElement);
-            break;
-        }
+    static registerFactoryElements(...factoryElements: FactoryElement[]): void {
+        factoryElements.forEach(factoryElement => {
+            this.idToType.set(factoryElement.id, factoryElement.type);
+
+            switch (factoryElement.type) {
+            case FactoryElementType.BEAN:
+                this.idToBean.set(factoryElement.id, factoryElement);
+                break;
+            case FactoryElementType.CONFIGURATION:
+                this.idToConfiguration.set(factoryElement.id, factoryElement);
+                break;
+            case FactoryElementType.COMPONENT:
+                this.idToComponent.set(factoryElement.id, factoryElement);
+                break;
+            case FactoryElementType.AUTOWIRED:
+                this.idToAutowired.set(factoryElement.id, factoryElement);
+                break;
+            }
+        });
+    }
+
+    static getInstanceFor(id: string): any {
+        throw 'TODO';
     }
 
     static run() {
-        console.log('Application ran');
+        console.log('Application run');
     }
 }

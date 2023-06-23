@@ -4,7 +4,7 @@ export class IDProvider {
     private static counter = new Big(-1);
 
     static next(): string {
-        this.counter.add(1);
+        this.counter = this.counter.add(1);
 
         return this.counter.valueOf();
     }

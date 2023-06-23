@@ -1,6 +1,7 @@
 import ts from 'typescript';
 import { DIType } from '../type-system/DIType';
 import { Bean } from '../bean/Bean';
+import { IDProvider } from '../utils/IDProvider';
 
 export class Dependency {
     declare parameterName: string;
@@ -12,4 +13,6 @@ export class Dependency {
      * For array, map, set
      * */
     qualifiedBeans: Bean[] | null = null;
+
+    runtimeId = IDProvider.next();
 }

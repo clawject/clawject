@@ -7,6 +7,7 @@ import { Decorators, isDecoratorFromLibrary } from '../ts/predicates/isDecorator
 import { DecoratorsCountError } from '../../compilation-context/messages/errors/DecoratorsCountError';
 import { getCompilationContext } from '../../transformers/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
+import ts from 'typescript';
 
 const UNSUPPORTED_TYPES = new Set([
     DITypeFlag.UNSUPPORTED,
@@ -17,12 +18,13 @@ const UNSUPPORTED_TYPES = new Set([
 ]);
 
 export const verifyBeans = (configuration: Configuration): void => {
-    const parentBeans = configuration.beanRegister.elements;
+    const beans = configuration.beanRegister.elements;
 
-    parentBeans.forEach(bean => {
+    beans.forEach(bean => {
         verifyAllowedBeanKinds(bean);
         verifyBeanType(bean);
         verifyDecoratorsCount(bean);
+        verifyPropertyName(bean);
     });
 };
 
@@ -143,4 +145,20 @@ function verifyAllowedBeanKinds(bean: Bean): void {
         ));
         bean.parentConfiguration.beanRegister.deregister(bean);
     }
+}
+
+function verifyPropertyName(bean: Bean): void {
+    const compilationContext = getCompilationContext();
+    const name = bean.node.name;
+
+    if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) {
+        return;
+    }
+
+    compilationContext.report(new NotSupportedError(
+        'Bean property name should be statically known.',
+        bean.node.name,
+        bean.parentConfiguration.node
+    ));
+    bean.parentConfiguration.beanRegister.deregister(bean);
 }

@@ -40,4 +40,15 @@ export class InternalsAccessBuilder {
             factory.createIdentifier(elementKind)
         );
     }
+
+    static internalGetInstanceCallExpression(runtimeId: string): ts.CallExpression {
+        return factory.createCallExpression(
+            factory.createPropertyAccessExpression(
+                InternalsAccessBuilder.internalPropertyAccessExpression(ElementKind.InternalApplicationFactory),
+                factory.createIdentifier('getInstanceFor')
+            ),
+            undefined,
+            [factory.createStringLiteral(runtimeId)],
+        );
+    }
 }
