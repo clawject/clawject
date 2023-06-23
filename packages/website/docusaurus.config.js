@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Clawject',
+  title: 'Clawject - Dependency Injection for TypeScript',
   tagline: 'TypeScript DI made easy',
   favicon: 'img/favicon.ico',
 
