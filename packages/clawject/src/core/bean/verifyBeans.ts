@@ -20,7 +20,6 @@ const UNSUPPORTED_TYPES = new Set([
 ]);
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
     [ts.SyntaxKind.AbstractKeyword, 'abstract'],
-    [ts.SyntaxKind.AsyncKeyword, 'async'],
     [ts.SyntaxKind.StaticKeyword, 'static'],
     [ts.SyntaxKind.DeclareKeyword, 'declare'],
 ]);
