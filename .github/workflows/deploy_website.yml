@@ -29,7 +29,7 @@ jobs:
       - name: Build website
         run: yarn build
       - name: Test
-        run: echo "ls -a"
+        run: echo "$PWD"
 
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
