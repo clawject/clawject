@@ -1,9 +1,9 @@
 // import type { runClawjectApplication } from './runClawjectApplication';
 
 /**
- * This is an interface for internal usage only, it's not used in any other api of this library.
+ * This is an interface for <b>internal</b> usage only, it's not used in any other api of this library.
  *
- * Please don't rely on this interface in your own code.
+ * Please <b>don't</b> rely on this interface in your own code.
  * */
 export interface ___TypeReferenceTable___ {
     array: ReadonlyArray<any> | Array<any> | any[];
