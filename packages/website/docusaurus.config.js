@@ -77,7 +77,7 @@ const config = {
                         type: 'docSidebar',
                         sidebarId: 'tutorialSidebar',
                         position: 'left',
-                        label: 'Tutorial',
+                        label: 'Docs',
                     },
                     {
                         href: 'https://github.com/clawject/clawject',
@@ -89,47 +89,47 @@ const config = {
             footer: {
                 style: 'dark',
                 links: [
-                    {
-                        title: 'Docs',
-                        items: [
-                            {
-                                label: 'Tutorial',
-                                to: '/docs/intro',
-                            },
-                        ],
-                    },
-                    {
-                        title: 'Community',
-                        items: [
-                            {
-                                label: 'Stack Overflow',
-                                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-                            },
-                            {
-                                label: 'Discord',
-                                href: 'https://discordapp.com/invite/docusaurus',
-                            },
-                            {
-                                label: 'Twitter',
-                                href: 'https://twitter.com/docusaurus',
-                            },
-                        ],
-                    },
-                    {
-                        title: 'More',
-                        items: [
-                            {
-                                label: 'Blog',
-                                to: '/blog',
-                            },
-                            {
-                                label: 'GitHub',
-                                href: 'https://github.com/artem1458/clawject',
-                            },
-                        ],
-                    },
+                    // {
+                    //     title: 'Docs',
+                    //     items: [
+                    //         {
+                    //             label: 'Use clawject',
+                    //             to: '/docs/intro',
+                    //         },
+                    //     ],
+                    // },
+                    // {
+                    //     title: 'Community',
+                    //     items: [
+                    //         {
+                    //             label: 'Stack Overflow',
+                    //             href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                    //         },
+                    //         {
+                    //             label: 'Discord',
+                    //             href: 'https://discordapp.com/invite/docusaurus',
+                    //         },
+                    //         {
+                    //             label: 'Twitter',
+                    //             href: 'https://twitter.com/docusaurus',
+                    //         },
+                    //     ],
+                    // },
+                    // {
+                    //     title: 'More',
+                    //     items: [
+                    //         {
+                    //             label: 'Blog',
+                    //             to: '/blog',
+                    //         },
+                    //         {
+                    //             label: 'GitHub',
+                    //             href: 'https://github.com/artem1458/clawject',
+                    //         },
+                    //     ],
+                    // },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+                copyright: `Copyright © ${new Date().getFullYear()} Clawject. Built with Docusaurus.`,
             },
             prism: {
                 theme: lightCodeTheme,
