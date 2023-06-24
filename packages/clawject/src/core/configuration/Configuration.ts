@@ -3,13 +3,12 @@ import { DIType } from '../type-system/DIType';
 import { BeanKind } from '../bean/BeanKind';
 import { AutowiredRegister } from '../autowired/AutowiredRegister';
 import { BeanRegister } from '../bean/BeanRegister';
-import { IDProvider } from '../utils/IDProvider';
+import { BaseElement } from '../BaseElement';
 
-export class Configuration {
+export class Configuration extends BaseElement<ts.ClassDeclaration> {
     declare id: string;
     declare fileName: string;
     declare allowedBeanKinds: Set<BeanKind>;
-    declare node: ts.ClassDeclaration;
 
     name: string | null = null;
     relatedPaths = new Set<string>();
@@ -17,8 +16,6 @@ export class Configuration {
 
     autowiredRegister = new AutowiredRegister(this);
     beanRegister = new BeanRegister(this);
-
-    runtimeId: string = IDProvider.next();
 
     registerDIType(diType: DIType): void {
         diType.declarations.map(it => {

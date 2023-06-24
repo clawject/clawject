@@ -1,16 +1,12 @@
 import ts from 'typescript';
 import { DIType } from '../type-system/DIType';
 import { BeanLifecycle } from '../../external/internal/InternalCatContext';
-import {
-    ClassPropertyWithArrowFunctionInitializer,
-    ClassPropertyWithCallExpressionInitializer,
-    ClassPropertyWithExpressionInitializer
-} from '../ts/types';
+import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../ts/types';
 import { BeanScope } from './BeanScope';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { Dependency } from '../dependency/Dependency';
-import { IDProvider } from '../utils/IDProvider';
+import { BaseElement } from '../BaseElement';
 
 export type BeanNode = ts.MethodDeclaration
     | ClassPropertyWithCallExpressionInitializer
@@ -18,8 +14,10 @@ export type BeanNode = ts.MethodDeclaration
     | ts.PropertyDeclaration
     | ClassPropertyWithExpressionInitializer;
 
-export class Bean<T = BeanNode> {
+export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
     constructor(values: Partial<Bean> = {}) {
+        super();
+
         Object.assign(this, values);
     }
 
@@ -27,7 +25,6 @@ export class Bean<T = BeanNode> {
     declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
     declare classMemberName: string;
     declare diType: DIType;
-    declare node: T;
     declare kind: BeanKind;
 
     classDeclaration: ts.ClassDeclaration | null = null;
@@ -36,7 +33,6 @@ export class Bean<T = BeanNode> {
     lifecycle: BeanLifecycle[] | null = null;
     public = false;
     dependencies = new Set<Dependency>();
-    runtimeId = IDProvider.next();
 
     get fullName(): string {
         if (this.nestedProperty === null) {

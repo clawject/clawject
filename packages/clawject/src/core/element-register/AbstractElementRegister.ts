@@ -1,11 +1,11 @@
 import ts from 'typescript';
 
-export abstract class AbstractElementRegister<T extends { id: string, node: N }, N = ts.Node> {
+export abstract class AbstractElementRegister<T extends { id: string, node: N }, N extends object = ts.Node> {
     counter = 0;
     elements = new Set<T>();
 
     idToElement = new Map<string, T>();
-    nodeToElement = new Map<N, T>();
+    nodeToElement = new WeakMap<N, T>();
 
     abstract register(element: T): void;
 
