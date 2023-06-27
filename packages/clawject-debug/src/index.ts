@@ -21,6 +21,13 @@ class MyClass {
 }
 
 class MyContext extends CatContext<IMyContext> {
+    @Bean
+    myBean2(
+        data?: string
+    ): string {
+        return '123';
+    }
+
     @Bean myBean = 'myBean' as const;
 
     myClass = Bean(MyClass);

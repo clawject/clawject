@@ -4,8 +4,8 @@
     "type": "commonjs",
     "scripts": {
         "run:upgradeClawject": "yarn upgrade clawject",
-        "run:ttsc": "cross-env CLAWJECT_DEBUG_MODE=true ttsc",
-        "run:node": "node dist/packages/clawject-debug/src/index.js"
+        "run:ttsc_debug": "cross-env CLAWJECT_DEBUG_MODE=true ttsc",
+        "run:node_debug": "node dist/packages/clawject-debug/src/index.js"
     },
     "dependencies": {
         "clawject": "link:../../dist/packages/clawject"

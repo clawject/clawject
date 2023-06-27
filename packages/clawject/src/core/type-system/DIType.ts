@@ -10,6 +10,11 @@ import { BaseTypesRepository } from './BaseTypesRepository';
 export class DIType {
     private cachedId: string | null = null;
 
+    //For debug purpose only
+    get name(): string | null {
+        return Object.entries(DITypeFlag).find(it => it[1] === this.typeFlag)?.[0] ?? null;
+    }
+
     get id(): string {
         if (!this.cachedId) {
             this.cachedId = this.generateId();
@@ -78,6 +83,14 @@ export class DIType {
         return this.typeFlag >= DITypeFlag.ANY && this.typeFlag <= DITypeFlag.BIGINT;
     }
 
+    get isVoidOrUndefined(): boolean {
+        return this.typeFlag === DITypeFlag.UNDEFINED || this.typeFlag === DITypeFlag.VOID;
+    }
+
+    get isNull(): boolean {
+        return this.typeFlag === DITypeFlag.NULL;
+    }
+
     get isLiteral(): boolean {
         return this.typeFlag >= DITypeFlag.STRING_LITERAL && this.typeFlag <= DITypeFlag.BIGINT_LITERAL;
     }
@@ -112,6 +125,18 @@ export class DIType {
 
     get isMapStringToAny(): boolean {
         return BaseTypesRepository.getBaseTypes().mapStringToAny.isCompatible(this);
+    }
+
+    get isOptionalUndefined(): boolean {
+        return this.isUnion && this.unionOrIntersectionTypes.some(it => it.isVoidOrUndefined);
+    }
+
+    get isOptionalNull(): boolean {
+        return this.isUnion && this.unionOrIntersectionTypes.some(it => it.isNull);
+    }
+
+    get isOptional(): boolean {
+        return this.isOptionalUndefined || this.isOptionalNull;
     }
 
     isCompatible(to: DIType): boolean {
