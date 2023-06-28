@@ -7,9 +7,13 @@ title: Setup 🛠️
 
 ## Prerequisites
   - Node.js version 16 or above
-  - TypeScript version 4.8 - 4.9
+  - TypeScript version 4.8–4.9
 
 ## Installation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
 
 ```bash
 npm install clawject
@@ -17,73 +21,158 @@ npm install clawject
 yarn add clawject
 ```
 
-<hr />
+<hr/>
 
-:::caution Warning
+### Webpack and ts-loader
+
+:::info Please notice
 
 If you're going to use **ts-loader** - make sure **transpileOnly** mode is disabled.
-Basically, **transpileOnly** disables the ability to perform static type checking, which is required for **Clawject** to work.
+Basically, **transpileOnly** disables the ability to perform static type checking,
+which is required for **Clawject** to work.
+
+Also, if you're using **Babel** - please make sure that it's applied after ts-loader.
 
 [ts-loader#transpileOnly](https://github.com/TypeStrong/ts-loader#transpileonly)
 
 :::
 
-### Webpack and ts-loader
-
-:::caution Warning
-
-Currently, **ts-loader** has an issue that breaks **hot-reloading** for **Clawject**, so if you
-want hot-reloading works correctly - please check [Webpack, ts-loader and ttypescript](#webpack-ts-loader-and-ttypescript).
-
-[GitHub issue](https://github.com/TypeStrong/ts-loader/issues/1615)
-
-:::
-
 To start using Clawject with **webpack and ts-loader**, you need to pass typescript transformer.
 
-```ts title="TypeScript based webpack configuration"
-import ClawjectWebpackPlugin from 'clawject/plugins/webpack';
-import ClawjectTypescriptTransformer from 'clawject/transformers/typescript';
+```mdx-code-block
+<Tabs>
+<TabItem value="ts-webpack" label="TS webpack configuration">
+```
+
+```ts
+import { ClawjectWebpackPlugin } from 'clawject/webpack';
+import { ClawjectTransformer } from 'clawject/transformer';
 
 export default {
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                loader: 'ts-loader',
-                options: {
-                    getCustomTransformers: () => ({
-                        before: [ClawjectTypescriptTransformer()]
-                    })
-                }
-            }
-        ],
-    },
-    plugins: [
-        new ClawjectWebpackPlugin()
-    ]
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      loader: 'ts-loader',
+      options: {
+        getCustomTransformers: (program: any, getProgram: any) => ({
+          before: [ClawjectTransformer(getProgram)]
+        })
+      }
+    }]
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
 };
 ```
 
-```ts title="JavaScript based webpack configuration"
-const ClawjectWebpackPlugin = require('clawject/plugins/webpack').default;
+```mdx-code-block
+</TabItem>
 
-export default {
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                loader: 'ts-loader',
-                options: {
-                    configFile: 'tsconfig.json'
-                }
-            }
-        ],
-    },
-    plugins: [
-        new ClawjectWebpackPlugin()
-    ]
+
+<TabItem value="js-webpack" label="JS webpack configuration">
+```
+
+```ts
+const { ClawjectWebpackPlugin } = require('clawject/webpack');
+const { ClawjectTransformer } = require('clawject/transformer');
+
+module.exports = {
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      loader: 'ts-loader',
+      options: {
+        getCustomTransformers: (program, getProgram) => ({
+          before: [ClawjectTransformer(getProgram)]
+        })
+      }
+    }]
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
 };
 ```
 
-### Webpack, ts-loader and ttypescript
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Webpack and ts-loader with custom compiler (ttypescript)
+
+Instead of passing typescript transformer in webpack configuration -
+you should pass custom compiler, for example - **ttypescript**.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="ts-webpack" label="TS webpack configuration">
+```
+
+```ts
+import { ClawjectWebpackPlugin } from 'clawject/webpack';
+
+export default {
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      loader: 'ts-loader',
+      options: {
+        compiler: 'ttypescript'
+      }
+    }]
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
+};
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="js-webpack" label="JS webpack configuration">
+```
+
+```ts
+const { ClawjectWebpackPlugin } = require('clawject/webpack');
+
+module.exports = {
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      loader: 'ts-loader',
+      options: {
+        compiler: 'ttypescript'
+      }
+    }]
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
+};
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="tsconfig" label="tsconfig.json">
+```
+
+```json
+{
+  "compilerOptions": {
+    "plugins": [
+      {
+        "transform": "clawject/transformer"
+      }
+    ]
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

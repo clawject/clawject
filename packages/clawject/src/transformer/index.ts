@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import ClawjectWebpackPlugin from '../plugins/webpack';
+import { ClawjectWebpackPlugin } from '../webpack';
 import { get } from 'lodash';
 import { getCompilationContext } from './getCompilationContext';
 import { BuildErrorFormatter } from '../compilation-context/BuildErrorFormatter';
@@ -35,7 +35,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
             transformedSourceFile = sourceFile;
         }
 
-        if (!get(ClawjectWebpackPlugin, 'isErrorsHandledByWebpack')) {
+        if (!get(ClawjectWebpackPlugin, 'used')) {
             const message = BuildErrorFormatter.formatErrors(
                 compilationContext.errors,
             );

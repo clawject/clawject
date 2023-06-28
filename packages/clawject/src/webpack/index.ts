@@ -1,9 +1,9 @@
 import { Compilation, Compiler, NormalModule } from 'webpack';
 import { RebuildStatusRepository } from './RebuildStatusRepository';
-import { getCompilationContext } from '../../transformer/getCompilationContext';
-import { BuildErrorFormatter } from '../../compilation-context/BuildErrorFormatter';
-import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
-import { Configuration } from '../../core/configuration/Configuration';
+import { getCompilationContext } from '../transformer/getCompilationContext';
+import { BuildErrorFormatter } from '../compilation-context/BuildErrorFormatter';
+import { ConfigurationRepository } from '../core/configuration/ConfigurationRepository';
+import { Configuration } from '../core/configuration/Configuration';
 
 const reportDIErrorsHook = (compilation: Compilation) => {
     const compilationContext = getCompilationContext();
@@ -18,11 +18,11 @@ const reportDIErrorsHook = (compilation: Compilation) => {
     compilation.errors.push(buildWebpackError(message));
 };
 
-export default class ClawjectWebpackPlugin {
-    private static isErrorsHandledByWebpack = false;
+export class ClawjectWebpackPlugin {
+    private static used = false;
 
     constructor() {
-        ClawjectWebpackPlugin.isErrorsHandledByWebpack = true;
+        ClawjectWebpackPlugin.used = true;
     }
 
     apply(compiler: Compiler) {
