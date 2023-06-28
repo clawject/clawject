@@ -5,6 +5,7 @@ interface IMyPresenter<T> {
     doStuff(data: T): T;
 }
 class MyContext extends CatContext {
+    @Bean tuple: [number, number] = [1, 2];
     @Bean string = 'string';
     @Bean number = 123;
 
@@ -12,7 +13,7 @@ class MyContext extends CatContext {
 
     @PostConstruct
     postConstruct(
-        dep: ClassWithDependencies,
+        dep: [number, number],
     ): string {
         console.log(dep);
         return '123';

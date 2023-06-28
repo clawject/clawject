@@ -116,10 +116,10 @@ module.exports = {
 </Tabs>
 ```
 
-### Webpack and ts-loader with custom compiler (ttypescript)
+### Webpack and ts-loader with custom compiler (ts-patch) TODO
 
 Instead of passing typescript transformer in webpack configuration -
-you should pass custom compiler, for example - **ttypescript**.
+you should pass custom compiler, for example - **ts-patch**.
 
 ```mdx-code-block
 <Tabs>
@@ -135,7 +135,7 @@ export default {
       test: /\.ts$/,
       loader: 'ts-loader',
       options: {
-        compiler: 'ttypescript'
+        compiler: 'ts-patch'
       }
     }]
   },
@@ -192,3 +192,5 @@ module.exports = {
 </TabItem>
 </Tabs>
 ```
+
+### Pure typescript with custom compiler (ttypescript) TODO

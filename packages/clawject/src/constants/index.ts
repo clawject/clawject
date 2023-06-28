@@ -8,7 +8,7 @@ export const CONSTANTS = {
 };
 
 if (process.env['CLAWJECT_DEBUG_MODE'] === 'true') {
-    CONSTANTS.packageRootDir = upath.join(process.cwd(), '../../dist/packages/clawject');
+    CONSTANTS.packageRootDir = upath.join(process.cwd(), 'node_modules/clawject');
     CONSTANTS.packageJsonPath = upath.join(CONSTANTS.packageRootDir, 'package.json');
     CONSTANTS.packageRoot = upath.join(CONSTANTS.packageRootDir, 'index.d.ts');
 }

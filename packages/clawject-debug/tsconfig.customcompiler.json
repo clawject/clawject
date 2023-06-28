@@ -14,7 +14,7 @@
         "declaration": true,
         "sourceMap": false,
         "plugins": [
-            { "transform": "../clawject/src/transformer/index.ts" }
+            { "transform": "clawject/transformer" }
         ]
     },
     "include": ["src", "webpack.config.ts"]

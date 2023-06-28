@@ -19,6 +19,7 @@ module.exports = {
                 test: /\.ts$/,
                 loader: 'ts-loader',
                 options: {
+                    // compiler: 'ts-patch',
                     getCustomTransformers: (program: any, getProgram: any) => ({
                         before: [ClawjectTransformer(getProgram)],
                     })

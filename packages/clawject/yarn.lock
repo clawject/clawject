@@ -221,6 +221,11 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.5.0.tgz#591c1ce3a702c45ee15f47a42ade72c2fd78978a"
   integrity sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==
 
+"@types/ts-expose-internals@npm:ts-expose-internals@4.9.5":
+  version "4.9.5"
+  resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-4.9.5.tgz#c30a77d4c95a423e1c79bbabc95f9b9d00f2fbe3"
+  integrity sha512-+T1UsxhFi+hbVyYwHrOUb9tjyhry1iJoiDwDRjZZTiBREb7oE78kRHSqyFv8gZhwZCFFOGZyI66X2gHUFAt8lA==
+
 "@types/webpack@^5.28.1":
   version "5.28.1"
   resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-5.28.1.tgz#c369baeff31abe54b45f7f29997e1623604198d6"
