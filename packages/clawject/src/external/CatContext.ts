@@ -48,4 +48,12 @@ export abstract class CatContext<T = {}, C = null> {
     protected get config(): C {
         throw ErrorBuilder.usageWithoutConfiguredDI('CatContext.config');
     }
+
+    /**
+     * Needed to type ContainerManager init/get methods.
+     * Accessing this property will always throw error.
+     * */
+    protected get context(): T {
+        throw ErrorBuilder.illegalAccess('CatContext.context');
+    }
 }

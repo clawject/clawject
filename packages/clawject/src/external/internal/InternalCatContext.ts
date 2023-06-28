@@ -27,6 +27,7 @@ export abstract class InternalCatContext {
         'clawject_singletonMap',
         'clawject_config',
         'config',
+        'context',
         'clawject_getBean',
         'clawject_getBeans',
         'clawject_getAllBeans',

@@ -1,4 +1,4 @@
-export { Container, ContextProps, ContextPropsWithConfig } from './external/Container';
+export { ContainerManager, ContextInit, ContextInitConfig } from './external/ContainerManager';
 export { Context } from './external/Context';
 export { CatContext } from './external/CatContext';
 export { Bean } from './external/Bean';

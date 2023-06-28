@@ -17,6 +17,10 @@ export class ErrorBuilder {
         return new Error(`You are trying to use ${cause} without without proper "clawject" configuration or in wrong place, please check the documentation ${GITHUB_REPO_LINK}`);
     }
 
+    static illegalAccess(cause: string): Error {
+        return new Error(`Illegal access to ${cause}, please check the documentation ${GITHUB_REPO_LINK}`);
+    }
+
     static contextKeyToString(contextKey: any): string {
         if (contextKey === undefined) {
             return '"undefined"';

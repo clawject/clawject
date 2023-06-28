@@ -1,71 +1,17 @@
 import { Context } from './Context';
 import { CatContext } from './CatContext';
-import { ContainerImpl } from './ContainerImpl';
+import { ContainerManagerImpl } from './ContainerManagerImpl';
 import { ClassConstructor } from './ClassConstructor';
 
-/**
- * Context initialization configuration object.
- *
- * @example Init context:
- * class MyContext extends CatContext {}
- *
- * const context = Container.initContext({ context: MyContext });
- * const beans = context.getBeans();
- *
- * @example Init context with key:
- * class MyContext extends CatContext {}
- *
- * const myKey = Symbol('my-context');
- * const context = Container.initContext({ context: MyContext, key: myKey });
- * const beans = context.getBeans();
- *
- * @see {@link Container#initContext}
- * @see {@link Context#getBeans}
- * */
-export interface ContextProps<T, C = null> {
-    /**
-     * Class that extends {@link CatContext CatContext}.
-     * */
-    context: ClassConstructor<CatContext<T, C>>;
-
-    /**
-     * Key by which context will be stored in memory.
-     *
-     * Used to get or clear context via {@link Container#getContext} {@link Container#getOrInitContext} {@link Container#clearContext}.
-     * */
+export interface ContextInit {
     key?: any;
 }
 
-/**
- * Context initialization configuration object with additional config property.
- *
- * @example Init context with config:
- * class MyContext extends CatContext {}
- *
- * const myConfig = { foo: 'bar' };
- * const context = Container.initContext({ context: MyContext, config: myConfig });
- * const beans = context.getBeans();
- *
- * @example Init context with key and config:
- * class MyContext extends CatContext {}
- *
- * const myConfig = { foo: 'bar' };
- * const myKey = Symbol('my-context');
- * const context = Container.initContext({ context: MyContext, key: myKey, config: myConfig });
- * const beans = context.getBeans();
- *
- * @see {@link Container#initContext}
- * @see {@link Context#getBeans}
- * */
-export interface ContextPropsWithConfig<T, C> extends ContextProps<T, C> {
-    /**
-     * Config can be any object.
-     *
-     * Will be available in {@link CatContext} inheritor via {@link CatContext#config}.
-     * */
-    config: C extends null ? never : C;
+export interface ContextInitConfig<C = never> {
+    config: C;
 }
 
+// TODO update comments
 /**
  * Container is a main entry point to work with DI.
  *
@@ -73,7 +19,7 @@ export interface ContextPropsWithConfig<T, C> extends ContextProps<T, C> {
  *
  * You can use this object anywhere in your code.
  * */
-export interface Container {
+export interface ContainerManager {
     /**
      * Initializing CatContext and returns {@link Context} object.
      *
@@ -91,8 +37,8 @@ export interface Container {
      * Container.initContext({ context: MyContext });
      * const context = Container.initContext({ context: MyContext });
      */
-    initContext<T>(props: ContextProps<T>): Context<T>;
-    initContext<T, C>(props: ContextPropsWithConfig<T, C>): Context<T>;
+    init<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): Context<T>;
+    init<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): Context<T>;
 
     /**
      * Returning {@link Context Context} object if it was initialized, if not - throws error with context name and key from {@link ContextProps}.
@@ -123,7 +69,7 @@ export interface Container {
      *     console.log(error.message); // <-- Will print "Context 'MyContext' with key 'Symbol(my-context)' is not initialized"
      * }
      */
-    getContext<T>(props: ContextProps<T>): Context<T>;
+    get<T>(context: ClassConstructor<CatContext<T>>, key?: any): Context<T>;
 
     /**
      * Returning already initialized {@link Context Context} object if it was initialized, if not - builds new context object.
@@ -158,8 +104,8 @@ export interface Container {
      *
      * console.log(context1 === context2); // <-- Will print "true", and context2 will not re-assign config until you will not clear context and initialize it again with another config
      */
-    getOrInitContext<T>(props: ContextProps<T>): Context<T>;
-    getOrInitContext<T, C>(props: ContextPropsWithConfig<T, C>): Context<T>;
+    getOrInit<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): Context<T>;
+    getOrInit<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): Context<T>;
 
     /**
      * Clearing initialized context, if initialized context was not found - prints warn to the console.
@@ -188,10 +134,10 @@ export interface Container {
      *
      * Container.clearContext({ context: MyContext, key: myKey }); // <-- Will print "Trying to clear not initialized context, class: MyContext, key: 'Symbol(my-context)'"
      * */
-    clearContext<T>(init: ContextProps<T>): void;
+    clear(context: ClassConstructor<CatContext<any>>, key?: any): void;
 
     /**
-     * Clearing all initialized context.
+     * Clearing all initialized contexts.
      *
      * @example Clearing all contexts:
      * class MyContext extends CatContext {}
@@ -200,7 +146,7 @@ export interface Container {
      *
      * Container.clearAllContexts();
      * */
-    clearAllContexts(): void;
+    clearAll(): void;
 }
 
-export const Container: Container = new ContainerImpl();
+export const ContainerManager: ContainerManager = new ContainerManagerImpl();
