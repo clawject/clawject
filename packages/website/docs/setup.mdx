@@ -13,12 +13,29 @@ title: Setup 🛠️
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+
+```mdx-code-block
+<Tabs>
+<TabItem value="yarn" label="yarn" default>
+```
+
+```bash
+yarn add clawject
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="npm" label="npm">
+```
 
 ```bash
 npm install clawject
-# or
-yarn add clawject
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 <hr/>
@@ -68,7 +85,6 @@ export default {
 
 ```mdx-code-block
 </TabItem>
-
 
 <TabItem value="js-webpack" label="JS webpack configuration">
 ```
