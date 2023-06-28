@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { CONSTANTS } from '../../../constants';
 import { isNamedDeclaration } from '../predicates/isNamedDeclaration';
 import upath from 'upath';
-import { getCompilationContext } from '../../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export interface INodeSource {
     fileName: string;

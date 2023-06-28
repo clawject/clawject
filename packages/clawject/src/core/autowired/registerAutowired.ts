@@ -3,7 +3,7 @@ import { Component } from '../application-mode/component/Component';
 import { isAutowiredClassElement } from '../ts/predicates/isAutowiredClassElement';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { AutowiredElement } from './AutowiredElement';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const registerAutowired = (parent: Configuration | Component) => {
     const compilationContext = getCompilationContext();

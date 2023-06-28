@@ -5,7 +5,7 @@ import { ClassPropertyWithArrowFunctionInitializer } from '../types';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
 import { Configuration } from '../../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
-import { getCompilationContext } from '../../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const isLifecycleArrowFunctionBean = (
     configuration: Configuration,

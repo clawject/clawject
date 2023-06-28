@@ -8,7 +8,7 @@ import { IncorrectArgumentError } from '../../../compilation-context/messages/er
 import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { BeanScope } from '../../bean/BeanScope';
 import { Configuration } from '../../configuration/Configuration';
-import { getCompilationContext } from '../../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const getPropertyDecoratorBeanInfo = (
     configuration: Configuration,

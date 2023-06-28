@@ -8,4 +8,9 @@ export interface Context<T> {
     * Returns all beans in context that is declared in T.
     * */
     getBeans(): T;
+
+    /**
+     * Returns all beans in context. If bean was not instantiated - will instantiate it and return.
+     * */
+    getAllBeans<T>(): Map<string, unknown>;
 }

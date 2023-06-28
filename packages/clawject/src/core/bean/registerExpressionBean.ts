@@ -4,7 +4,7 @@ import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const registerExpressionBean = (
     configuration: Configuration,

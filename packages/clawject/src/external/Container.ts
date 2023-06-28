@@ -9,14 +9,14 @@ import { ClassConstructor } from './ClassConstructor';
  * @example Init context:
  * class MyContext extends CatContext {}
  *
- * const context = container.initContext({ context: MyContext });
+ * const context = Container.initContext({ context: MyContext });
  * const beans = context.getBeans();
  *
  * @example Init context with key:
  * class MyContext extends CatContext {}
  *
  * const myKey = Symbol('my-context');
- * const context = container.initContext({ context: MyContext, key: myKey });
+ * const context = Container.initContext({ context: MyContext, key: myKey });
  * const beans = context.getBeans();
  *
  * @see {@link Container#initContext}
@@ -43,7 +43,7 @@ export interface ContextProps<T, C = null> {
  * class MyContext extends CatContext {}
  *
  * const myConfig = { foo: 'bar' };
- * const context = container.initContext({ context: MyContext, config: myConfig });
+ * const context = Container.initContext({ context: MyContext, config: myConfig });
  * const beans = context.getBeans();
  *
  * @example Init context with key and config:
@@ -51,7 +51,7 @@ export interface ContextProps<T, C = null> {
  *
  * const myConfig = { foo: 'bar' };
  * const myKey = Symbol('my-context');
- * const context = container.initContext({ context: MyContext, key: myKey, config: myConfig });
+ * const context = Container.initContext({ context: MyContext, key: myKey, config: myConfig });
  * const beans = context.getBeans();
  *
  * @see {@link Container#initContext}
@@ -83,13 +83,13 @@ export interface Container {
      * @example Init context:
      * class MyContext extends CatContext {}
      *
-     * const context = container.initContext({ context: MyContext });
+     * const context = Container.initContext({ context: MyContext });
      *
      * @example Init context but not clearing it:
      * class MyContext extends CatContext {}
      *
-     * container.initContext({ context: MyContext });
-     * const context = container.initContext({ context: MyContext });
+     * Container.initContext({ context: MyContext });
+     * const context = Container.initContext({ context: MyContext });
      */
     initContext<T>(props: ContextProps<T>): Context<T>;
     initContext<T, C>(props: ContextPropsWithConfig<T, C>): Context<T>;
@@ -100,25 +100,25 @@ export interface Container {
      * @example Get context:
      * class MyContext extends CatContext {}
      *
-     * container.initContext({ context: MyContext });
-     * const context = container.getContext({ context: MyContext });
+     * Container.initContext({ context: MyContext });
+     * const context = Container.getContext({ context: MyContext });
      *
      * @example Get context by key:
      * class MyContext extends CatContext {}
      *
      * const myKey = Symbol('my-context');
      *
-     * container.initContext({ context: MyContext, key: myKey });
-     * const context = container.getContext({ context: MyContext, key: myKey });
+     * Container.initContext({ context: MyContext, key: myKey });
+     * const context = Container.getContext({ context: MyContext, key: myKey });
      *
      * @example Get context but not initializing it:
      * class MyContext extends CatContext {}
      *
-     * container.initContext({ context: MyContext });
+     * Container.initContext({ context: MyContext });
      *
      * const myKey = Symbol('my-context');
      * try {
-     *     const context = container.getContext({ context: MyContext, key: myKey });
+     *     const context = Container.getContext({ context: MyContext, key: myKey });
      * } catch (error) {
      *     console.log(error.message); // <-- Will print "Context 'MyContext' with key 'Symbol(my-context)' is not initialized"
      * }
@@ -131,8 +131,8 @@ export interface Container {
      * @example Get and init context:
      * class MyContext extends CatContext {}
      *
-     * const context1 = container.getOrInitContext({ context: MyContext });
-     * const context2 = container.getOrInitContext({ context: MyContext });
+     * const context1 = Container.getOrInitContext({ context: MyContext });
+     * const context2 = Container.getOrInitContext({ context: MyContext });
      *
      * console.log(context1 === context2); // <-- Will print "true"
      *
@@ -141,8 +141,8 @@ export interface Container {
      *
      * const myKey = Symbol('my-context');
      *
-     * const context1 = container.getOrInitContext({ context: MyContext, key: myKey });
-     * const context2 = container.getOrInitContext({ context: MyContext, key: myKey });
+     * const context1 = Container.getOrInitContext({ context: MyContext, key: myKey });
+     * const context2 = Container.getOrInitContext({ context: MyContext, key: myKey });
      *
      * console.log(context1 === context2); // <-- Will print "true"
      *
@@ -153,8 +153,8 @@ export interface Container {
      * const config1 = { foo: 'bar' };
      * const config2 = { foo: 'foo' };
      *
-     * const context1 = container.getOrInitContext({ context: MyContext, config: config1 });
-     * const context2 = container.getOrInitContext({ context: MyContext, config: config2 });
+     * const context1 = Container.getOrInitContext({ context: MyContext, config: config1 });
+     * const context2 = Container.getOrInitContext({ context: MyContext, config: config2 });
      *
      * console.log(context1 === context2); // <-- Will print "true", and context2 will not re-assign config until you will not clear context and initialize it again with another config
      */
@@ -167,28 +167,40 @@ export interface Container {
      * @example Clear context:
      * class MyContext extends CatContext {}
      *
-     * container.initContext({ context: MyContext });
+     * Container.initContext({ context: MyContext });
      *
-     * container.clearContext({ context: MyContext });
+     * Container.clearContext({ context: MyContext });
      *
      * @example Clear context by key:
      * class MyContext extends CatContext {}
      *
      * const myKey = Symbol('my-context');
      *
-     * container.initContext({ context: MyContext, key: myKey });
-     * container.clearContext({ context: MyContext, key: myKey });
+     * Container.initContext({ context: MyContext, key: myKey });
+     * Container.clearContext({ context: MyContext, key: myKey });
      *
      * @example Clear context that was not initialized:
      * class MyContext extends CatContext {}
      *
      * const myKey = Symbol('my-context');
      *
-     * container.initContext({ context: MyContext });
+     * Container.initContext({ context: MyContext });
      *
-     * container.clearContext({ context: MyContext, key: myKey }); // <-- Will print "Trying to clear not initialized context, class: MyContext, key: 'Symbol(my-context)'"
+     * Container.clearContext({ context: MyContext, key: myKey }); // <-- Will print "Trying to clear not initialized context, class: MyContext, key: 'Symbol(my-context)'"
      * */
     clearContext<T>(init: ContextProps<T>): void;
+
+    /**
+     * Clearing all initialized context.
+     *
+     * @example Clearing all contexts:
+     * class MyContext extends CatContext {}
+     *
+     * Container.initContext({ context: MyContext });
+     *
+     * Container.clearAllContexts();
+     * */
+    clearAllContexts(): void;
 }
 
-export const container: Container = new ContainerImpl();
+export const Container: Container = new ContainerImpl();

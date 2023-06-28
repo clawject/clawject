@@ -3,5 +3,8 @@ export class ClassWithDependencies {
         public a: string,
         public b: string,
         public c: string,
-    ) {}
+        public d: string,
+    ) {
+
+    }
 }

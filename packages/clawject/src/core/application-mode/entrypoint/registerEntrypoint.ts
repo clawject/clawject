@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { unquoteString } from '../../utils/unquoteString';
 import { CONSTANTS } from '../../../constants';
-import { getCompilationContext } from '../../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { DITypeBuilder } from '../../type-system/DITypeBuilder';
 import { BaseTypesRepository } from '../../type-system/BaseTypesRepository';
 import { EntrypointRepository } from './EntrypointRepository';

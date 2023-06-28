@@ -5,25 +5,14 @@ import { DITypeFlag } from './DITypeFlag';
 import { escape } from 'lodash';
 import { BaseTypesRepository } from './BaseTypesRepository';
 
-//TODO add text node from where this type was extracted
 //TODO check for anonymous types
 export class DIType {
-    private cachedId: string | null = null;
-
     //For debug purpose only
     get name(): string | null {
         return Object.entries(DITypeFlag).find(it => it[1] === this.typeFlag)?.[0] ?? null;
     }
 
-    get id(): string {
-        if (!this.cachedId) {
-            this.cachedId = this.generateId();
-        }
-
-        return this.cachedId;
-    }
-
-    private generateId(): string {
+    private get id(): string {
         /**
          * tf - type flag
          * cvt - constant value type
@@ -83,8 +72,12 @@ export class DIType {
         return this.typeFlag >= DITypeFlag.ANY && this.typeFlag <= DITypeFlag.BIGINT;
     }
 
-    get isVoidOrUndefined(): boolean {
-        return this.typeFlag === DITypeFlag.UNDEFINED || this.typeFlag === DITypeFlag.VOID;
+    get isVoidUndefinedPlainUnionIntersection(): boolean {
+        if (this.typeFlag === DITypeFlag.UNDEFINED || this.typeFlag === DITypeFlag.VOID) {
+            return true;
+        }
+
+        return this.isUnionOrIntersection && this.unionOrIntersectionTypes.every(it => it.isVoidUndefinedPlainUnionIntersection);
     }
 
     get isNull(): boolean {
@@ -111,6 +104,10 @@ export class DIType {
         return this.isUnion || this.isIntersection;
     }
 
+    get isTuple(): boolean {
+        return this.typeFlag === DITypeFlag.TUPLE;
+    }
+
     get isArray(): boolean {
         return BaseTypesRepository.getBaseTypes().array.isCompatible(this);
     }
@@ -128,7 +125,7 @@ export class DIType {
     }
 
     get isOptionalUndefined(): boolean {
-        return this.isUnion && this.unionOrIntersectionTypes.some(it => it.isVoidOrUndefined);
+        return this.isUnion && this.unionOrIntersectionTypes.some(it => it.isVoidUndefinedPlainUnionIntersection);
     }
 
     get isOptionalNull(): boolean {
@@ -144,9 +141,10 @@ export class DIType {
             return true;
         }
 
-        if (this.id === to.id) {
-            return true;
-        }
+        // Test which is faster - generate ids or run comparison
+        // if (this.id === to.id) {
+        //     return true;
+        // }
 
         //If both are primitive types - we can stop here
         if (this.isPrimitive && (to.isPrimitive || to.isLiteral)) {
@@ -191,6 +189,16 @@ export class DIType {
             });
         }
 
+        if (this.isTuple && to.isTuple) {
+            if (this.typeArguments.length !== to.typeArguments.length) {
+                return false;
+            }
+
+            return this.typeArguments.every((it, index) => {
+                return it.isCompatible(to.typeArguments[index]);
+            });
+        }
+
         //Objects
         if (this.isObject) {
             if (this.declarations.length === 0) {
@@ -199,9 +207,11 @@ export class DIType {
             }
 
             //Need to check if all declarations from current time exists in other type
-            if (!this.declarations.every(it => {
+            const isEveryDeclarationInOtherType = this.declarations.every(it => {
                 return to.declarations.some(to => it.equals(to));
-            })) {
+            });
+
+            if (!isEveryDeclarationInOtherType) {
                 return false;
             }
 

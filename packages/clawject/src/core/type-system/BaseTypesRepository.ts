@@ -3,7 +3,7 @@ import { DIType } from './DIType';
 import { CONSTANTS } from '../../constants';
 import { DITypeBuilder } from './DITypeBuilder';
 import { ___TypeReferenceTable___ } from '../../external/___TypeReferenceTable___';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 type BaseTypes = Record<keyof ___TypeReferenceTable___, DIType> & { runClawjectApplication: DIType };
 

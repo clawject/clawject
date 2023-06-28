@@ -6,7 +6,7 @@ import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const registerArrowFunctionBean = (
     configuration: Configuration,

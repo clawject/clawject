@@ -25,4 +25,5 @@ export enum DITypeFlag {
     OBJECT,
     UNION,
     INTERSECTION,
+    TUPLE,
 }

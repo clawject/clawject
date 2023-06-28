@@ -4,7 +4,7 @@ import { MissingBeanDeclarationError } from '../../compilation-context/messages/
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { nameMatcher } from '../utils/nameMatcher';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 

@@ -6,7 +6,7 @@ import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const registerMethodBean = (
     configuration: Configuration,

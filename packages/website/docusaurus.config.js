@@ -42,17 +42,18 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
+                    breadcrumbs: false,
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl:
-                        'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                    // editUrl:
+                    //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
                 },
                 blog: {
                     showReadingTime: true,
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl:
-                        'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                    // editUrl:
+                    //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
@@ -89,15 +90,10 @@ const config = {
             footer: {
                 style: 'dark',
                 links: [
-                    // {
-                    //     title: 'Docs',
-                    //     items: [
-                    //         {
-                    //             label: 'Use clawject',
-                    //             to: '/docs/intro',
-                    //         },
-                    //     ],
-                    // },
+                    {
+                        label: 'Made with ❤️ by artem1458',
+                        href: 'https://github.com/artem1458',
+                    },
                     // {
                     //     title: 'Community',
                     //     items: [
@@ -129,11 +125,26 @@ const config = {
                     //     ],
                     // },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} Clawject. Built with Docusaurus.`,
+                // copyright: `Made with . Built with Docusaurus.`,
             },
             prism: {
                 theme: lightCodeTheme,
                 darkTheme: darkCodeTheme,
+                magicComments: [
+                    {
+                        className: 'theme-code-block-highlighted-line',
+                        line: 'highlight-next-line',
+                        block: {start: 'highlight-start', end: 'highlight-end'},
+                    },
+                    {
+                        className: 'code-block-red-line',
+                        line: 'highlight-next-line-red',
+                    },
+                    {
+                        className: 'code-block-green-line',
+                        line: 'highlight-next-line-green',
+                    },
+                ],
             },
         }),
 };

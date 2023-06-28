@@ -85,6 +85,16 @@ export class ContainerImpl implements Container {
         }
     }
 
+    clearAllContexts() {
+        this.pools.forEach((pool, context) => {
+            pool.forEach((contextHolder) => {
+                contextHolder.instance.clawject_beforeDestruct();
+            });
+
+            this.pools.delete(context);
+        });
+    }
+
     private getPool(context: { new(): CatContext<any> }): Map<any, ContextHolder> {
         let pool = this.pools.get(context);
 

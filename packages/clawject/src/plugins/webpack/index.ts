@@ -1,6 +1,6 @@
 import { Compilation, Compiler, NormalModule } from 'webpack';
 import { RebuildStatusRepository } from './RebuildStatusRepository';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { BuildErrorFormatter } from '../../compilation-context/BuildErrorFormatter';
 import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
 import { Configuration } from '../../core/configuration/Configuration';
@@ -18,8 +18,6 @@ const reportDIErrorsHook = (compilation: Compilation) => {
     compilation.errors.push(buildWebpackError(message));
 };
 
-const PLUGIN_NAME = 'Clawject Webpack Plugin';
-
 export default class ClawjectWebpackPlugin {
     private static isErrorsHandledByWebpack = false;
 
@@ -28,13 +26,13 @@ export default class ClawjectWebpackPlugin {
     }
 
     apply(compiler: Compiler) {
-        compiler.hooks.afterEmit.tap(PLUGIN_NAME, reportDIErrorsHook);
+        compiler.hooks.afterEmit.tap(ClawjectWebpackPlugin.name, reportDIErrorsHook);
 
-        compiler.hooks.done.tap(PLUGIN_NAME, (stats) => {
+        compiler.hooks.done.tap(ClawjectWebpackPlugin.name, (stats) => {
             RebuildStatusRepository.clear();
         });
 
-        compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
+        compiler.hooks.compilation.tap(ClawjectWebpackPlugin.name, (compilation) => {
             const webpack4ChangedFiles = Object.keys((compiler as any).watchFileSystem?.watcher?.mtimes ?? {});
 
             const changedFiles = webpack4ChangedFiles.length > 0
@@ -63,7 +61,7 @@ export default class ClawjectWebpackPlugin {
             }, new Set<string>());
 
             compilation.hooks.finishModules.tapAsync(
-                PLUGIN_NAME,
+                ClawjectWebpackPlugin.name,
                 (modules, callback) => {
                     if (contextsToRebuild.size === 0) {
                         callback();

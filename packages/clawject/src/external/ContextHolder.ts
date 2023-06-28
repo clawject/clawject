@@ -13,4 +13,8 @@ export class ContextHolder implements Context<any> {
     getBeans(): any {
         return this.instance.clawject_getBeans();
     }
+
+    getAllBeans(): any {
+        return this.instance.clawject_getAllBeans();
+    }
 }

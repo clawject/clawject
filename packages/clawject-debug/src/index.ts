@@ -1,34 +1,22 @@
-import { Bean, CatContext } from 'clawject';
+import { Bean, CatContext, PostConstruct, Container } from 'clawject';
+import { ClassWithDependencies } from './ClassWithDependencies';
 
-// @Configuration
-// export class TestContext {
-//     property: string = Autowired();
-//
-//     @Bean a123 = '';
-// }
-
-// runClawjectApplication();
-
-interface IMyContext {
-    myBean: string;
+interface IMyPresenter<T> {
+    doStuff(data: T): T;
 }
+class MyContext extends CatContext {
+    @Bean string = 'string';
+    @Bean number = 123;
 
-class MyClass {
-    constructor(
-        myBean: string,
-    ) {
-    }
-}
+    classWithDeps = Bean(ClassWithDependencies);
 
-class MyContext extends CatContext<IMyContext> {
-    @Bean
-    myBean2(
-        data?: string
+    @PostConstruct
+    postConstruct(
+        dep: ClassWithDependencies,
     ): string {
+        console.log(dep);
         return '123';
     }
-
-    @Bean myBean = 'myBean' as const;
-
-    myClass = Bean(MyClass);
 }
+
+Container.initContext({ context: MyContext });

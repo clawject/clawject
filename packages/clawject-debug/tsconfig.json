@@ -17,5 +17,5 @@
             { "transform": "../clawject/src/transformers/typescript/index.ts" }
         ]
     },
-    "include": ["src"]
+    "include": ["src", "webpack.config.ts"]
 }

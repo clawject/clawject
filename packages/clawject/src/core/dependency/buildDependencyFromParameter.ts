@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { Dependency } from './Dependency';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const buildDependencyFromParameter = (parameter: ts.ParameterDeclaration): Dependency => {
     const parameterType = getCompilationContext().typeChecker.getTypeAtLocation(parameter);

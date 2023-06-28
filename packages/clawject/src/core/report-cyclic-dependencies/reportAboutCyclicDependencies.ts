@@ -1,7 +1,7 @@
 import { DependencyGraph } from '../dependencies/DependencyGraph';
 import { CyclicDependenciesError } from '../../compilation-context/messages/errors/CyclicDependenciesError';
 import { Configuration } from '../configuration/Configuration';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const reportAboutCyclicDependencies = (
     context: Configuration

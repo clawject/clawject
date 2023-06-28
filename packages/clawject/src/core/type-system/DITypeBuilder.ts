@@ -4,7 +4,7 @@ import { get, hasIn } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
 import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 /**
  * notes:
@@ -41,7 +41,7 @@ export class DITypeBuilder {
         const diType = new DIType();
 
         this.setTSFlags(diType, tsType);
-        this.setTypeFlag(diType);
+        this.setTypeFlag(diType, tsType);
         this.trySetConstantValue(diType, tsType);
         this.trySetTypeArguments(diType, tsType, typeChecker);
         this.setUnionOrIntersectionElements(diType, tsType, typeChecker);
@@ -62,7 +62,7 @@ export class DITypeBuilder {
         }
     }
 
-    private static setTypeFlag(diType: DIType): void {
+    private static setTypeFlag(diType: DIType, tsType: ts.Type): void {
         switch (true) {
         case diType.parsedTSTypeFlags.has(TypeFlags.Any):
             diType.typeFlag = DITypeFlag.ANY;
@@ -112,6 +112,16 @@ export class DITypeBuilder {
         case diType.parsedTSTypeFlags.has(TypeFlags.BigIntLiteral):
             diType.typeFlag = DITypeFlag.BIGINT_LITERAL;
             break;
+
+        case diType.parsedTSTypeFlags.has(TypeFlags.Object) && (() => {
+            const isReference = diType.parsedTSObjectFlags.has(ts.ObjectFlags.Reference);
+
+            return isReference && parseFlags(ts.ObjectFlags, (tsType as ts.TypeReference).target.objectFlags)
+                .some(it => it === ts.ObjectFlags.Tuple);
+        })():
+            diType.typeFlag = DITypeFlag.TUPLE;
+            break;
+
         case diType.parsedTSTypeFlags.has(TypeFlags.Object):
             diType.typeFlag = DITypeFlag.OBJECT;
             break;
@@ -143,7 +153,7 @@ export class DITypeBuilder {
     }
 
     private static trySetTypeArguments(diType: DIType, tsType: ts.Type, typeChecker: ts.TypeChecker): void {
-        if (!diType.isObject) {
+        if (!diType.isObject && !diType.isTuple) {
             return;
         }
 

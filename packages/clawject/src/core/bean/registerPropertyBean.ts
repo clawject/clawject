@@ -10,7 +10,7 @@ import { getNodeSourceDescriptor } from '../ts/utils/getNodeSourceDescriptor';
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { DIType } from '../type-system/DIType';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const registerPropertyBean = (
     configuration: Configuration,

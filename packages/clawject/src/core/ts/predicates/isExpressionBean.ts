@@ -4,7 +4,7 @@ import { isClassPropertyBean } from './isClassPropertyBean';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
 import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { Configuration } from '../../configuration/Configuration';
-import { getCompilationContext } from '../../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const isExpressionBean = (
     configuration: Configuration,

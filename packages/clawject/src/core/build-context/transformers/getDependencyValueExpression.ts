@@ -14,6 +14,14 @@ export const getDependencyValueExpression = (dependency: Dependency): ts.Express
         return getBeanAccessExpression(qualifiedBean);
     }
 
+    if (dependency.diType.isVoidUndefinedPlainUnionIntersection) {
+        return factory.createIdentifier('undefined');
+    }
+
+    if (dependency.diType.isNull) {
+        return factory.createNull();
+    }
+
     if (dependency.diType.isArray) {
         const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
             return getBeanAccessExpression(qualifiedBean);

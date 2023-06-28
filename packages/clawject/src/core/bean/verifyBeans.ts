@@ -5,7 +5,7 @@ import { BeanKind } from './BeanKind';
 import { Bean } from './Bean';
 import { Decorators, isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
 import { DecoratorsCountError } from '../../compilation-context/messages/errors/DecoratorsCountError';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import ts from 'typescript';

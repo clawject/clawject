@@ -21,7 +21,7 @@ export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLit
                             factory.createStringLiteral(bean.scope)
                         ),
                     bean.public && factory.createPropertyAssignment(
-                        factory.createIdentifier('isPublic'),
+                        factory.createIdentifier('public'),
                         factory.createTrue(),
                     ),
                 ]),

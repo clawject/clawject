@@ -26,7 +26,7 @@ export class UseCase implements IUseCase {
 
 //Your application.tsx
 export const UIComponent: React.FC = () => {
-  const appContext = container.getContext<IBeans>({name: 'ApplicationContext'});
+  const appContext = Container.getContext<IBeans>({name: 'ApplicationContext'});
   const {useCase} = appContext.getBeans();
 
   return (
@@ -338,7 +338,7 @@ InitContext creates instance of **context** by key (if specified). Also you can 
 initContext.
 
 ```typescript
-container.initContext<TBeans, TConfig>({
+Container.initContext<TBeans, TConfig>({
   key? : any, //Can be any value, you can use it for creating pool of contextMap.
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
   config? : TConfig, //Config that will be transferred to the context
@@ -349,19 +349,19 @@ container.initContext<TBeans, TConfig>({
 
 ```typescript
 //InitContext without config and keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
 
-const applicationContext = container.initContext<IBeans>({name: 'ApplicationContext'});
+const applicationContext = Container.initContext<IBeans>({name: 'ApplicationContext'});
 ```
 
 ```typescript
 //InitContext with config and keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
 import { IConfig } from './IConfig';
 
-const applicationContextBySomeKey = container.initContext<IBeans, IConfig>({
+const applicationContextBySomeKey = Container.initContext<IBeans, IConfig>({
   name: 'ApplicationContext',
   key: 'userId',
   config: {userId: 'userId'},
@@ -374,7 +374,7 @@ getContext returns instance of **context** by key (if specified). Can be used on
 error will be thrown.
 
 ```typescript
-container.getContext<TBeans>({
+Container.getContext<TBeans>({
   key? : any,
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
 });
@@ -384,16 +384,16 @@ container.getContext<TBeans>({
 
 ```typescript
 //GetContext without keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 
-const context = container.getContext<TBeans>({name: 'ApplicationContext'});
+const context = Container.getContext<TBeans>({name: 'ApplicationContext'});
 ```
 
 ```typescript
 //GetContext with keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 
-const context = container.getContext<TBeans>({
+const context = Container.getContext<TBeans>({
   name: 'ApplicationContext',
   key: 'userId',
 });
@@ -405,7 +405,7 @@ GetOrInitContext return instance of **context** by key (if it was previously ini
 created and returned a new instance of context.
 
 ```typescript
-container.getOrInitContext<TBeans, TConfig>({
+Container.getOrInitContext<TBeans, TConfig>({
   key? : any, //Can be any value, you can use it for creating pool of contextMap.
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
   config? : TConfig, //Config that will be transferred to the context
@@ -416,19 +416,19 @@ container.getOrInitContext<TBeans, TConfig>({
 
 ```typescript
 //Accessing or initialization context without config and keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
 
-const applicationContext = container.getOrInitContext<IBeans>({name: 'ApplicationContext'});
+const applicationContext = Container.getOrInitContext<IBeans>({name: 'ApplicationContext'});
 ```
 
 ```typescript
 //Accessing or initialization context with config and keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
 import { IConfig } from './IConfig';
 
-const applicationContextBySomeKey = container.getOrInitContext<IBeans, IConfig>({
+const applicationContextBySomeKey = Container.getOrInitContext<IBeans, IConfig>({
   name: 'ApplicationContext',
   key: 'userId',
   config: {userId: 'userId'},
@@ -440,7 +440,7 @@ const applicationContextBySomeKey = container.getOrInitContext<IBeans, IConfig>(
 clearContext should be used to clear instances of **Beans**. Can be used, for example when un-mounting components.
 
 ```typescript
-container.clearContext({
+Container.clearContext({
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
   key? : any,
 })
@@ -450,16 +450,16 @@ container.clearContext({
 
 ```typescript
 //ClearContext without keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 
-container.clearContext({name: 'ApplicationContext'});
+Container.clearContext({name: 'ApplicationContext'});
 ```
 
 ```typescript
 //ClearContext without keys
-import { container } from 'dependency-injection-cat';
+import { Container } from 'dependency-injection-cat';
 
-container.clearContext({
+Container.clearContext({
   name: 'ApplicationContext',
   key: 'userId',
 });

@@ -1,26 +1,28 @@
 {
-    "name": "@clawject/clawject-debug",
-    "version": "0.0.1",
-    "type": "commonjs",
-    "scripts": {
-        "run:upgradeClawject": "yarn upgrade clawject",
-        "run:ttsc_debug": "cross-env CLAWJECT_DEBUG_MODE=true ttsc",
-        "run:node_debug": "node dist/packages/clawject-debug/src/index.js"
-    },
-    "dependencies": {
-        "clawject": "link:../../dist/packages/clawject"
-    },
-    "devDependencies": {
-        "@types/webpack": "^5.28.1",
-        "clean-webpack-plugin": "^4.0.0",
-        "cross-env": "^7.0.3",
-        "html-webpack-plugin": "^5.5.3",
-        "ts-loader": "^9.4.3",
-        "ts-node": "^10.9.1",
-        "ttypescript": "^1.5.15",
-        "typescript": "^4.9.5",
-        "webpack": "^5.87.0",
-        "webpack-cli": "^5.1.4",
-        "webpack-dev-server": "^4.15.1"
-    }
+  "name": "@clawject/clawject-debug",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "scripts": {
+    "run:upgradeClawject": "yarn upgrade clawject",
+    "run:ttsc_debug": "cross-env CLAWJECT_DEBUG_MODE=true ttsc",
+    "run:node_debug": "node dist/packages/clawject-debug/src/index.js",
+    "run:webpack_hot": "webpack serve --config webpack.config.ts --mode development",
+    "run:webpack_prod": "webpack --config webpack.config.ts --mode production"
+  },
+  "dependencies": {
+    "clawject": "../../dist/packages/clawject"
+  },
+  "devDependencies": {
+    "@types/webpack": "^5.28.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "cross-env": "^7.0.3",
+    "html-webpack-plugin": "^5.5.3",
+    "ts-loader": "^9.4.3",
+    "ts-node": "^10.9.1",
+    "ttypescript": "^1.5.15",
+    "typescript": "^4.9.5",
+    "webpack": "^5.87.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
 }

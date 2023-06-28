@@ -6,7 +6,7 @@ export class ErrorBuilder {
     }
 
     static classNotInheritorOfCatContext(): Error {
-        return new Error('Class that is passed to the container is not an inheritor of CatContext');
+        return new Error('Class that is passed to the Container is not an inheritor of CatContext');
     }
 
     static noContextByKey(contextName: string | null, contextKey: any): Error {

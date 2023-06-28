@@ -8,7 +8,7 @@ import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 
 export const registerLifecycleBean = (
     configuration: Configuration,

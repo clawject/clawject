@@ -2,7 +2,7 @@ import { Configuration } from '../configuration/Configuration';
 import { DependencyGraph } from './DependencyGraph';
 import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
-import { getCompilationContext } from '../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { MissingBeanDeclarationError } from '../../compilation-context/messages/errors/MissingBeanDeclarationError';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 
@@ -14,6 +14,10 @@ export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration
         allBeansWithoutCurrent.delete(bean);
 
         bean.dependencies.forEach(dependency => {
+            if (dependency.diType.isVoidUndefinedPlainUnionIntersection || dependency.diType.isNull) {
+                return;
+            }
+
             if (dependency.diType.isArray || dependency.diType.isSet || dependency.diType.isMapStringToAny) {
                 buildForCollectionOrArray(bean, allBeansWithoutCurrent, dependency);
             } else {

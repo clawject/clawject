@@ -5,7 +5,7 @@ import { MissingInitializerError } from '../../../compilation-context/messages/e
 import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { Configuration } from '../../configuration/Configuration';
 import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
-import { getCompilationContext } from '../../../transformers/getCompilationContext';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const isEmbeddedBean = (
     configuration: Configuration,

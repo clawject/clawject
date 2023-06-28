@@ -2,7 +2,7 @@ import { ErrorBuilder } from '../ErrorBuilder';
 
 export interface IBeanConfig {
     scope: 'prototype' | 'singleton';
-    isPublic: boolean;
+    public: boolean;
 }
 
 type BeanName = string;
@@ -29,6 +29,7 @@ export abstract class InternalCatContext {
         'config',
         'clawject_getBean',
         'clawject_getBeans',
+        'clawject_getAllBeans',
         'clawject_getPrivateBean',
 
         'clawject_createSet',
@@ -56,7 +57,7 @@ export abstract class InternalCatContext {
 
         return {
             scope: 'singleton',
-            isPublic: false,
+            public: false,
             ...beanConfiguration,
         };
     }
@@ -92,7 +93,7 @@ export abstract class InternalCatContext {
     clawject_getBean<T>(beanName: BeanName): T {
         const beanConfiguration = InternalCatContext.getBeanConfig(this, beanName);
 
-        if (!beanConfiguration.isPublic) {
+        if (!beanConfiguration.public) {
             const contextName = InternalCatContext.getContextName(this);
 
             console.warn(`Bean ${beanName} is not defined in Context's interface.\nThis Bean will not be checked for type matching with Context's interface at compile-time.\nContext: ${contextName}`);
@@ -117,17 +118,28 @@ export abstract class InternalCatContext {
         return savedInstance;
     }
 
-    clawject_getBeans(): any {
+    clawject_getBeans(): Record<string, unknown> {
         const beansConfig = InternalCatContext.getBeansConfig(this);
 
         return Object.keys(beansConfig)
             .reduce((acc, curr) => {
-                if (beansConfig[curr].isPublic) {
+                if (beansConfig[curr].public) {
                     acc[curr] = this.clawject_getBean(curr);
                 }
 
                 return acc;
             }, {});
+    }
+
+    clawject_getAllBeans(): Map<string, unknown> {
+        const beansConfig = InternalCatContext.getBeansConfig(this);
+
+        return Object.keys(beansConfig)
+            .reduce((acc, curr) => {
+                acc[curr] = this.clawject_getBean(curr);
+
+                return acc;
+            }, new Map());
     }
 
     protected clawject_createSet<V>(values: V[]): Set<V> {
