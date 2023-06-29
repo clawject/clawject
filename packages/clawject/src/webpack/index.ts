@@ -19,10 +19,8 @@ const reportDIErrorsHook = (compilation: Compilation) => {
 };
 
 export class ClawjectWebpackPlugin {
-    private static used = false;
-
     constructor() {
-        ClawjectWebpackPlugin.used = true;
+        getCompilationContext().isErrorsHandled = true;
     }
 
     apply(compiler: Compiler) {

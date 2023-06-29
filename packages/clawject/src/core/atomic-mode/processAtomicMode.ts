@@ -14,6 +14,8 @@ import { ConfigurationRepository } from '../configuration/ConfigurationRepositor
 import { buildDependencyGraphAndFillQualifiedBeans } from '../dependencies/buildDependencyGraphAndFillQualifiedBeans';
 import { BeanKind } from '../bean/BeanKind';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
+import { processCatContext } from './processCatContext';
+import { processImplicitComponents } from './processImplicitComponents';
 
 const ALLOWED_BEAN_KINDS = new Set([
     BeanKind.METHOD,
@@ -35,41 +37,18 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
     let shouldAddImports = false;
 
     const visitor = (node: ts.Node): ts.Node => {
+        if (!ts.isClassDeclaration(node)) {
+            return ts.visitEachChild(node, visitor, tsContext);
+        }
+
         //Registering contexts
-        if (!isExtendsClassFromLibrary(node, 'CatContext')) {
-            return ts.visitEachChild(node, visitor, tsContext);
+        if (isExtendsClassFromLibrary(node, 'CatContext')) {
+            shouldAddImports = true;
+
+            return processCatContext(node, visitor, compilationContext, tsContext);
         }
 
-        shouldAddImports = true;
-
-        const context = ConfigurationRepository.register(node, ALLOWED_BEAN_KINDS);
-
-        const restrictedClassMembersByName = node.members
-            .filter(it => InternalCatContext.reservedNames.has(it.name?.getText() ?? ''));
-
-        if (restrictedClassMembersByName.length !== 0) {
-            restrictedClassMembersByName.forEach(it => {
-                compilationContext.report(new IncorrectNameError(
-                    `"${it.name?.getText()}" name is reserved for the di-container.`,
-                    it,
-                    context.node,
-                ));
-            });
-            return ts.visitEachChild(node, visitor, tsContext);
-        }
-
-        //Processing beans
-        registerBeans(context);
-        checkIsAllBeansRegisteredInContextAndFillBeanRequierness(context);
-        registerBeanDependencies(context);
-        buildDependencyGraphAndFillQualifiedBeans(context);
-        reportAboutCyclicDependencies(context);
-
-        const enrichedWithAdditionalProperties = enrichWithAdditionalProperties(node, context);
-        const replacedExtendingFromCatContext = replaceExtendingFromCatContext(enrichedWithAdditionalProperties);
-        const withProcessedMembers = processMembers(replacedExtendingFromCatContext, context);
-
-        return withProcessedMembers;
+        return processImplicitComponents(() => (shouldAddImports = true), node, visitor, compilationContext, tsContext);
     };
 
     const transformedFile = ts.visitNode(sourceFile, visitor);

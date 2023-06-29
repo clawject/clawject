@@ -1,4 +1,4 @@
-import { Component } from '../application-mode/component/Component';
+import { Component } from '../component/Component';
 import { DIType } from '../type-system/DIType';
 import { Configuration } from '../configuration/Configuration';
 import { BaseElement } from '../BaseElement';

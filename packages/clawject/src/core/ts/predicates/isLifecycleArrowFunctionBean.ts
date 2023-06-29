@@ -3,12 +3,10 @@ import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
 import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { ClassPropertyWithArrowFunctionInitializer } from '../types';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
-import { Configuration } from '../../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const isLifecycleArrowFunctionBean = (
-    configuration: Configuration,
     node: ts.Node
 ): node is ClassPropertyWithArrowFunctionInitializer => {
     const compilationContext = getCompilationContext();
@@ -29,7 +27,7 @@ export const isLifecycleArrowFunctionBean = (
         compilationContext.report(new MissingInitializerError(
             null,
             node,
-            configuration.node,
+            null,
         ));
 
         return false;

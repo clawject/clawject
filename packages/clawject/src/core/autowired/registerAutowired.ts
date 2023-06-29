@@ -1,5 +1,5 @@
 import { Configuration } from '../configuration/Configuration';
-import { Component } from '../application-mode/component/Component';
+import { Component } from '../component/Component';
 import { isAutowiredClassElement } from '../ts/predicates/isAutowiredClassElement';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { AutowiredElement } from './AutowiredElement';

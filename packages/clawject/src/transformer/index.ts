@@ -1,14 +1,13 @@
 import ts from 'typescript';
-import { ClawjectWebpackPlugin } from '../webpack';
-import { get } from 'lodash';
 import { getCompilationContext } from './getCompilationContext';
 import { BuildErrorFormatter } from '../compilation-context/BuildErrorFormatter';
 import { BaseTypesRepository } from '../core/type-system/BaseTypesRepository';
 import { verifyTSVersion } from './verifyTSVersion';
 import { ConfigurationRepository } from '../core/configuration/ConfigurationRepository';
-import { processAtomicMode } from '../core/build-context/processAtomicMode';
+import { processAtomicMode } from '../core/atomic-mode/processAtomicMode';
 import { ConfigLoader } from '../config/ConfigLoader';
 import { processApplicationMode } from '../core/application-mode/processApplicationMode';
+import { ComponentRepository } from '../core/component/ComponentRepository';
 
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
     verifyTSVersion();
@@ -19,10 +18,11 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
     return context => sourceFile => {
         compilationContext.clearMessagesByFilePath(sourceFile.fileName);
         ConfigurationRepository.clearByFileName(sourceFile.fileName);
+        ComponentRepository.clearByFileName(sourceFile.fileName);
         BaseTypesRepository.init();
 
         const mode = ConfigLoader.get().mode;
-        let transformedSourceFile: ts.SourceFile;
+        let transformedSourceFile = sourceFile;
 
         switch (mode) {
         case 'application':
@@ -31,11 +31,9 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
         case 'atomic':
             transformedSourceFile = processAtomicMode(compilationContext, context, sourceFile);
             break;
-        default:
-            transformedSourceFile = sourceFile;
         }
 
-        if (!get(ClawjectWebpackPlugin, 'used')) {
+        if (!compilationContext.isErrorsHandled) {
             const message = BuildErrorFormatter.formatErrors(
                 compilationContext.errors,
             );

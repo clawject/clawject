@@ -6,7 +6,7 @@ import { IDisposable } from '../types/IDisposable';
 import { IProcessFilesCommand } from '../types/process-files/IProcessFilesCommand';
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 import { StatisticsCollector } from '../statistics/StatisticsCollector';
-import { getTransformerFactory } from '../../core/build-context/getTransformerFactory';
+import { getTransformerFactory } from '../../core/atomic-mode/getTransformerFactory';
 import ts from 'typescript';
 import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
 

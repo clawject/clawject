@@ -1,5 +1,6 @@
 import { InternalCatContext } from './internal/InternalCatContext';
 import { Context } from './Context';
+import { RuntimeElement } from '../core/runtime-element/RuntimeElement';
 
 export class ContextHolder implements Context<any> {
     constructor(
@@ -7,14 +8,14 @@ export class ContextHolder implements Context<any> {
     ) {}
 
     getBean(beanName: string): any {
-        return this.instance.clawject_getBean(beanName);
+        return this.instance[RuntimeElement.GET_BEAN](beanName);
     }
 
     getBeans(): any {
-        return this.instance.clawject_getBeans();
+        return this.instance[RuntimeElement.GET_BEANS]();
     }
 
     getAllBeans(): any {
-        return this.instance.clawject_getAllBeans();
+        return this.instance[RuntimeElement.GET_ALL_BEANS]();
     }
 }

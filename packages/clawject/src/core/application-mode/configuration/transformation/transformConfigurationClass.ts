@@ -4,10 +4,10 @@ import { getStaticInitBlock } from './getStaticInitBlock';
 import { transformAutowiredMember } from './transformAutowiredMember';
 import { Bean, BeanNode } from '../../../bean/Bean';
 import { BeanKind } from '../../../bean/BeanKind';
-import { transformPropertyBean } from '../../../build-context/transformers/transformPropertyBean';
+import { transformPropertyBean } from '../../../atomic-mode/transformers/transformPropertyBean';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../../../ts/types';
-import { transformArrowFunctionBean } from '../../../build-context/transformers/transformArrowFunctionBean';
-import { transformExpressionOrEmbeddedBean } from '../../../build-context/transformers/transformExpressionOrEmbeddedBean';
+import { transformArrowFunctionBean } from '../../../atomic-mode/transformers/transformArrowFunctionBean';
+import { transformExpressionOrEmbeddedBean } from '../../../atomic-mode/transformers/transformExpressionOrEmbeddedBean';
 import { transformConfigurationMethodBean } from './transformConfigurationMethodBean';
 
 export const transformConfigurationClass = (configuration: Configuration): ts.ClassDeclaration => {

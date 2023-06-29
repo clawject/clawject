@@ -31,7 +31,7 @@ export function registerBeans(configuration: Configuration): void {
         if (isEmbeddedBean(configuration, classElement)) {
             registerEmbeddedBean(configuration, classElement);
         }
-        if (isLifecycleMethodBean(classElement) || isLifecycleArrowFunctionBean(configuration, classElement)) {
+        if (isLifecycleMethodBean(classElement) || isLifecycleArrowFunctionBean(classElement)) {
             registerLifecycleBean(configuration, classElement);
         }
     });

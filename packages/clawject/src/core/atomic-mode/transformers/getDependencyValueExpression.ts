@@ -1,6 +1,7 @@
 import { Dependency } from '../../dependency/Dependency';
 import ts, { factory } from 'typescript';
 import { getBeanAccessExpression } from './getBeanAccessExpression';
+import { RuntimeElement } from '../../runtime-element/RuntimeElement';
 
 export const getDependencyValueExpression = (dependency: Dependency): ts.Expression | undefined => {
     const qualifiedBean = dependency.qualifiedBean;
@@ -41,7 +42,7 @@ export const getDependencyValueExpression = (dependency: Dependency): ts.Express
         return factory.createCallExpression(
             factory.createPropertyAccessExpression(
                 factory.createThis(),
-                factory.createIdentifier('clawject_createSet')
+                factory.createIdentifier(RuntimeElement.CREATE_SET)
             ),
             undefined,
             [factory.createArrayLiteralExpression(
@@ -65,7 +66,7 @@ export const getDependencyValueExpression = (dependency: Dependency): ts.Express
         return factory.createCallExpression(
             factory.createPropertyAccessExpression(
                 factory.createThis(),
-                factory.createIdentifier('clawject_createMap')
+                factory.createIdentifier(RuntimeElement.CREATE_MAP)
             ),
             undefined,
             [factory.createArrayLiteralExpression(

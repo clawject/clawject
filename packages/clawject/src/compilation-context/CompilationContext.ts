@@ -3,6 +3,8 @@ import { AbstractCompilationMessage } from './messages/AbstractCompilationMessag
 import { MessageType } from './messages/MessageType';
 
 export class CompilationContext {
+    isErrorsHandled = false;
+
     private _program: ts.Program | null = null;
 
     get program(): ts.Program {

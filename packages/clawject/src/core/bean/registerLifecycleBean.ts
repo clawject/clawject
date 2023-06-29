@@ -2,13 +2,13 @@ import ts from 'typescript';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
-import { BeanLifecycle } from '../../external/internal/InternalCatContext';
 import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../transformer/getCompilationContext';
+import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
 
 export const registerLifecycleBean = (
     configuration: Configuration,
@@ -24,13 +24,13 @@ export const registerLifecycleBean = (
         return;
     }
 
-    const lifecycles = new Set<BeanLifecycle>();
+    const lifecycles = new Set<LifecycleKind>();
     getDecoratorsOnly(classElement).forEach(it => {
         if (isDecoratorFromLibrary(it, 'PostConstruct')) {
-            lifecycles.add('post-construct');
+            lifecycles.add(LifecycleKind.POST_CONSTRUCT);
         }
         if (isDecoratorFromLibrary(it, 'BeforeDestruct')) {
-            lifecycles.add('before-destruct');
+            lifecycles.add(LifecycleKind.BEFORE_DESTRUCT);
         }
     });
 

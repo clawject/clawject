@@ -2,14 +2,15 @@ import ts, { factory } from 'typescript';
 import { getBeanConfigObjectLiteral } from './getBeanConfigObjectLiteral';
 import { Configuration } from '../../configuration/Configuration';
 import { BeanKind } from '../../bean/BeanKind';
-import { BeanLifecycle } from '../../../external/internal/InternalCatContext';
 import { compact } from 'lodash';
 import { ConfigLoader } from '../../../config/ConfigLoader';
+import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
+import { RuntimeElement } from '../../runtime-element/RuntimeElement';
 
 export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, context: Configuration): ts.ClassDeclaration => {
     const contextName = ConfigLoader.get().features.keepContextNames && context.name ?
         factory.createStringLiteral(context.name)
-        : undefined;
+        : factory.createIdentifier('undefined');
     const beanConfigProperty = getBeanConfigObjectLiteral(context);
     const lifecycleConfigProperty = getLifecycleConfigProperty(context);
 
@@ -22,7 +23,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
             undefined,
             [
                 factory.createThis(),
-                factory.createStringLiteral('clawject_static'),
+                factory.createStringLiteral(RuntimeElement.METADATA),
                 factory.createObjectLiteralExpression(
                     [factory.createPropertyAssignment(
                         factory.createIdentifier('get'),
@@ -34,7 +35,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
                             factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
                             factory.createParenthesizedExpression(factory.createObjectLiteralExpression(
                                 compact([
-                                    contextName && factory.createPropertyAssignment(
+                                    factory.createPropertyAssignment(
                                         factory.createIdentifier('contextName'),
                                         contextName
                                     ),
@@ -71,10 +72,10 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
     );
 };
 
-const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExpression | null => {
-    const lifecycleBeanData: Record<BeanLifecycle, string[]> = {
-        'post-construct': [],
-        'before-destruct': [],
+const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExpression => {
+    const lifecycleBeanData: Record<LifecycleKind, string[]> = {
+        [LifecycleKind.POST_CONSTRUCT]: [],
+        [LifecycleKind.BEFORE_DESTRUCT]: [],
     };
 
     context.beanRegister.elements.forEach(bean => {
@@ -85,16 +86,8 @@ const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExp
         }
     });
 
-    if (Object.values(lifecycleBeanData).every(it => it.length === 0)) {
-        return null;
-    }
-
-    const propertyAssignments = compact(
-        Object.entries(lifecycleBeanData).map(([lifecycle, methodNames]) => {
-            if (methodNames.length === 0) {
-                return null;
-            }
-
+    const propertyAssignments = Object.entries(lifecycleBeanData)
+        .map(([lifecycle, methodNames]) => {
             return factory.createPropertyAssignment(
                 factory.createStringLiteral(lifecycle),
                 factory.createArrayLiteralExpression(
@@ -102,8 +95,7 @@ const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExp
                     false
                 )
             );
-        })
-    );
+        });
 
     return factory.createObjectLiteralExpression(
         propertyAssignments,

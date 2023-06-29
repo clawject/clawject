@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import LineColumnFinder from 'line-column';
 import { getNameFromNodeOrNull } from './getNameFromNodeOrNull';
 
 export interface LineColumn {
@@ -18,18 +17,23 @@ export interface NodeDetails {
 }
 
 export const getNodeDetails = (node: ts.Node): NodeDetails => {
-    const lineColumnFinder = LineColumnFinder(node.getSourceFile().text);
-
-    const start: LineColumn = lineColumnFinder.fromIndex(node.getStart()) ?? { col: 0, line: 0 };
-    const end: LineColumn = lineColumnFinder.fromIndex(node.getEnd()) ?? { col: 0, line: 0 };
+    const start = node.getSourceFile().getLineAndCharacterOfPosition(node.getStart());
+    const end = node.getSourceFile().getLineAndCharacterOfPosition(node.getEnd());
 
     return {
         declarationName: getNameFromNodeOrNull(node),
         filePath: node.getSourceFile().fileName,
-        start: start,
-        end: end,
+        start: lineAndCharacterToLineColumn(start),
+        end: lineAndCharacterToLineColumn(end),
         startOffset: node.getStart(),
         endOffset: node.getEnd(),
         text: node.getText(),
     };
 };
+
+function lineAndCharacterToLineColumn(lineAndCharacter: ts.LineAndCharacter): LineColumn {
+    return {
+        line: lineAndCharacter.line + 1,
+        col: lineAndCharacter.character + 1,
+    };
+}

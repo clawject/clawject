@@ -5,6 +5,7 @@ import { InternalCatContext } from './internal/InternalCatContext';
 import { ContainerManager, ContextInit, ContextInitConfig } from './ContainerManager';
 import { ErrorBuilder } from './ErrorBuilder';
 import { ClassConstructor } from './ClassConstructor';
+import { RuntimeElement } from '../core/runtime-element/RuntimeElement';
 
 const DEFAULT_KEY = undefined;
 
@@ -28,7 +29,7 @@ export class ContainerManagerImpl implements ContainerManager {
         const contextHolder = new ContextHolder(instance);
 
         if (init.config !== undefined) {
-            instance.clawject_init(init.config);
+            instance[RuntimeElement.INIT](init.config);
         }
 
         pool.set(init.key, contextHolder);
@@ -36,7 +37,7 @@ export class ContainerManagerImpl implements ContainerManager {
         try {
             return contextHolder;
         } finally {
-            instance.clawject_postConstruct();
+            instance[RuntimeElement.POST_CONSTRUCT]();
         }
     }
 
@@ -48,7 +49,9 @@ export class ContainerManagerImpl implements ContainerManager {
         const contextHolder = pool.get(key);
 
         if (!contextHolder) {
-            throw ErrorBuilder.noContextByKey((context as any)['clawject_static_contextName'], key);
+            const contextName = context[RuntimeElement.METADATA].name;
+
+            throw ErrorBuilder.noContextByKey(contextName, key);
         }
 
         return contextHolder as any;
@@ -88,14 +91,14 @@ export class ContainerManagerImpl implements ContainerManager {
                 this.pools.delete(context);
             }
         } finally {
-            contextHolder.instance.clawject_beforeDestruct();
+            contextHolder.instance[RuntimeElement.BEFORE_DESTRUCT]();
         }
     }
 
     clearAll() {
         this.pools.forEach((pool, context) => {
             pool.forEach((contextHolder) => {
-                contextHolder.instance.clawject_beforeDestruct();
+                contextHolder.instance[RuntimeElement.BEFORE_DESTRUCT]();
             });
 
             this.pools.delete(context);

@@ -3,7 +3,7 @@ import { CompilationContext } from '../../compilation-context/CompilationContext
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
 import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
 import { processConfigurationClass } from './configuration/processConfigurationClass';
-import { processComponent } from './component/processComponent';
+import { processComponent } from '../component/processComponent';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { registerEntrypoint } from './entrypoint/registerEntrypoint';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';

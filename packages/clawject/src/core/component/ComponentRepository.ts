@@ -1,19 +1,20 @@
 import ts from 'typescript';
 import { Component } from './Component';
-import { unquoteString } from '../../utils/unquoteString';
+import { unquoteString } from '../utils/unquoteString';
 
 export class ComponentRepository {
     static fileNameToLastComponentCounter = new Map<string, number>();
     static fileNameToComponents = new Map<string, Component[]>();
     static componentIdToComponent = new Map<string, Component>();
 
-    static register(classDeclaration: ts.ClassDeclaration): Component {
+    static register(classDeclaration: ts.ClassDeclaration, explicit: boolean): Component {
         const sourceFile = classDeclaration.getSourceFile();
 
         const component = new Component();
 
         component.id = this.buildId(classDeclaration);
         component.fileName = classDeclaration.getSourceFile().fileName;
+        component.explicitDeclaration = explicit;
         component.node = classDeclaration;
 
         if (classDeclaration.name !== undefined) {

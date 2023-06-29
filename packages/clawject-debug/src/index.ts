@@ -1,11 +1,27 @@
-import { Bean, CatContext, PostConstruct, ContainerManager } from 'clawject';
+import { Bean, CatContext, PostConstruct, ContainerManager, BeforeDestruct } from 'clawject';
 import { ClassWithDependencies } from './ClassWithDependencies';
 
 interface IMyPresenter<T> {
     doStuff(data: T): T;
 }
 
-class MyContext extends CatContext<{ data: string }> {
+class MyClass {
+    @PostConstruct
+    postConstruct(): void {
+
+    }
+    @BeforeDestruct
+    beforeDestruct(): void {
+
+    }
+    @PostConstruct
+    @BeforeDestruct
+    postConstructAndBeforeDestruct(): void {
+
+    }
+}
+
+class MyContext extends CatContext {
     @Bean tuple: [number, number] = [1, 2];
     @Bean string = 'string';
     @Bean number = 123;
@@ -17,7 +33,6 @@ class MyContext extends CatContext<{ data: string }> {
         dep: [number, number],
     ): string {
         console.log(dep);
-        this.context.data;
         return '123';
     }
 }

@@ -1,5 +1,5 @@
 import { AutowiredElement } from './AutowiredElement';
-import { Component } from '../application-mode/component/Component';
+import { Component } from '../component/Component';
 import { Configuration } from '../configuration/Configuration';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
 

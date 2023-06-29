@@ -1,56 +1,41 @@
 import { ErrorBuilder } from '../ErrorBuilder';
-
-export interface IBeanConfig {
-    scope: 'prototype' | 'singleton';
-    public: boolean;
-}
+import { LifecycleKind } from '../../core/component-lifecycle/LifecycleKind';
+import { RuntimeElement } from '../../core/runtime-element/RuntimeElement';
+import { RuntimeLifecycleConfiguration } from '../../core/component-lifecycle/RuntimeLifecycleConfiguration';
+import { InternalBeanConfig, RuntimeBeanConfiguration } from '../../core/bean/RuntimeBeanConfiguration';
 
 type BeanName = string;
 
-export type BeanLifecycle = 'post-construct' | 'before-destruct';
-
-export interface ClawjectStatic {
+export interface ClawjectContextMetadata extends RuntimeLifecycleConfiguration, RuntimeBeanConfiguration {
     contextName: string;
-    beanConfiguration: Record<BeanName, Partial<IBeanConfig>>;
-    lifecycleConfiguration: Partial<Record<BeanLifecycle, BeanName[]>>;
 }
 
 export abstract class InternalCatContext {
-    [beanName: string]: any;
+    [element: BeanName | RuntimeElement]: any;
 
-    static reservedNames = new Set([
-        'clawject_static',
-
-        'clawject_postConstruct',
-        'clawject_beforeDestruct',
-        'clawject_init',
-        'clawject_singletonMap',
-        'clawject_config',
-        'config',
-        'context',
-        'clawject_getBean',
-        'clawject_getBeans',
-        'clawject_getAllBeans',
-        'clawject_getPrivateBean',
-
-        'clawject_createSet',
-        'clawject_createMap',
-    ]);
-
-    private static getStaticContextProperties(context: InternalCatContext): Partial<ClawjectStatic> {
-        return (context.constructor)['clawject_static'];
+    //Implementation of CatContext interface
+    private [RuntimeElement.CONFIG]: any = null;
+    protected get [RuntimeElement.CAT_CONTEXT_CONFIG](): any {
+        return this[RuntimeElement.CONFIG];
+    }
+    protected get [RuntimeElement.CAT_CONTEXT_CONTEXT](): any {
+        throw ErrorBuilder.illegalAccess('CatContext.context');
     }
 
-    private static getContextName(context: InternalCatContext): string {
-        return this.getStaticContextProperties(context)?.contextName || '<anonymous>';
+    static getStaticMetadata(context: InternalCatContext): ClawjectContextMetadata {
+        return (context.constructor)[RuntimeElement.METADATA];
     }
 
-    private static getLifecycleMethods(context: InternalCatContext, lifecycle: BeanLifecycle): BeanName[] | undefined {
-        return this.getStaticContextProperties(context)?.lifecycleConfiguration?.[lifecycle];
+    static getContextName(context: InternalCatContext): string {
+        return this.getStaticMetadata(context).contextName || '<anonymous>';
     }
 
-    private static getBeanConfig(context: InternalCatContext, beanName: BeanName): IBeanConfig {
-        const beanConfiguration = this.getStaticContextProperties(context)?.beanConfiguration?.[beanName];
+    static getLifecycleMethods(context: InternalCatContext, lifecycle: LifecycleKind): BeanName[] | undefined {
+        return this.getStaticMetadata(context).lifecycleConfiguration[lifecycle];
+    }
+
+    static getBeanConfig(context: InternalCatContext, beanName: BeanName): InternalBeanConfig {
+        const beanConfiguration = this.getStaticMetadata(context).beanConfiguration[beanName];
 
         if (!beanConfiguration) {
             throw ErrorBuilder.beanNotFoundInContext(this.getContextName(context), beanName);
@@ -63,35 +48,29 @@ export abstract class InternalCatContext {
         };
     }
 
-    static getBeansConfig(context: InternalCatContext): Record<BeanName, Partial<IBeanConfig>> {
-        return this.getStaticContextProperties(context)?.beanConfiguration ?? {};
+    static getBeansConfig(context: InternalCatContext): Record<BeanName, Partial<InternalBeanConfig>> {
+        return this.getStaticMetadata(context).beanConfiguration;
     }
 
-    clawject_init(contextConfig: any): void {
-        this.clawject_config = contextConfig;
+    [RuntimeElement.INIT](contextConfig: any): void {
+        this[RuntimeElement.CONFIG] = contextConfig;
     }
 
-    clawject_postConstruct(): void {
-        InternalCatContext.getLifecycleMethods(this, 'post-construct')?.forEach(methodName => {
+    [RuntimeElement.POST_CONSTRUCT](): void {
+        InternalCatContext.getLifecycleMethods(this, LifecycleKind.POST_CONSTRUCT)?.forEach(methodName => {
             this[methodName]();
         });
     }
 
-    clawject_beforeDestruct(): void {
-        InternalCatContext.getLifecycleMethods(this, 'before-destruct')?.forEach(methodName => {
+    [RuntimeElement.BEFORE_DESTRUCT](): void {
+        InternalCatContext.getLifecycleMethods(this, LifecycleKind.BEFORE_DESTRUCT)?.forEach(methodName => {
             this[methodName]();
         });
     }
 
-    private clawject_singletonMap = new Map<BeanName, any>();
+    private [RuntimeElement.SINGLETON_MAP] = new Map<BeanName, any>();
 
-    private clawject_config: any = null;
-
-    get config(): any {
-        return this.clawject_config;
-    }
-
-    clawject_getBean<T>(beanName: BeanName): T {
+    [RuntimeElement.GET_BEAN]<T>(beanName: BeanName): T {
         const beanConfiguration = InternalCatContext.getBeanConfig(this, beanName);
 
         if (!beanConfiguration.public) {
@@ -100,54 +79,54 @@ export abstract class InternalCatContext {
             console.warn(`Bean ${beanName} is not defined in Context's interface.\nThis Bean will not be checked for type matching with Context's interface at compile-time.\nContext: ${contextName}`);
         }
 
-        return this.clawject_getPrivateBean(beanName);
+        return this[RuntimeElement.GET_PRIVATE_BEAN](beanName);
     }
 
-    protected clawject_getPrivateBean<T>(beanName: BeanName): T {
+    protected [RuntimeElement.GET_PRIVATE_BEAN]<T>(beanName: BeanName): T {
         const beanConfiguration = InternalCatContext.getBeanConfig(this, beanName);
 
         if (beanConfiguration.scope !== 'singleton') {
             return this[beanName]();
         }
 
-        const savedInstance = this.clawject_singletonMap.get(beanName) ?? this[beanName]();
+        const savedInstance = this[RuntimeElement.SINGLETON_MAP].get(beanName) ?? this[beanName]();
 
-        if (!this.clawject_singletonMap.has(beanName)) {
-            this.clawject_singletonMap.set(beanName, savedInstance);
+        if (!this[RuntimeElement.SINGLETON_MAP].has(beanName)) {
+            this[RuntimeElement.SINGLETON_MAP].set(beanName, savedInstance);
         }
 
         return savedInstance;
     }
 
-    clawject_getBeans(): Record<string, unknown> {
+    [RuntimeElement.GET_BEANS](): Record<string, unknown> {
         const beansConfig = InternalCatContext.getBeansConfig(this);
 
         return Object.keys(beansConfig)
             .reduce((acc, curr) => {
                 if (beansConfig[curr].public) {
-                    acc[curr] = this.clawject_getBean(curr);
+                    acc[curr] = this[RuntimeElement.GET_BEAN](curr);
                 }
 
                 return acc;
             }, {});
     }
 
-    clawject_getAllBeans(): Map<string, unknown> {
+    [RuntimeElement.GET_ALL_BEANS](): Map<string, unknown> {
         const beansConfig = InternalCatContext.getBeansConfig(this);
 
         return Object.keys(beansConfig)
             .reduce((acc, curr) => {
-                acc[curr] = this.clawject_getBean(curr);
+                acc[curr] = this[RuntimeElement.GET_BEAN](curr);
 
                 return acc;
             }, new Map());
     }
 
-    protected clawject_createSet<V>(values: V[]): Set<V> {
+    protected [RuntimeElement.CREATE_SET]<V>(values: V[]): Set<V> {
         return new Set(values);
     }
 
-    protected clawject_createMap<K, V>(values: [K, V][]): Map<K, V> {
+    protected [RuntimeElement.CREATE_MAP]<K, V>(values: [K, V][]): Map<K, V> {
         return new Map(values);
     }
 }
