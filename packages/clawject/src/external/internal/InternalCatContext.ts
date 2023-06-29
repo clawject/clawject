@@ -76,7 +76,6 @@ export abstract class InternalCatContext {
 
             this[RuntimeElement.GET_PRIVATE_BEAN](beanName);
         });
-        this[RuntimeElement.GET_ALL_BEANS]();
         InternalCatContext.getLifecycleMethods(this, LifecycleKind.POST_CONSTRUCT)?.forEach(methodName => {
             this[methodName]();
         });
