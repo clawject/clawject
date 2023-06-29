@@ -57,7 +57,11 @@ export abstract class InternalCatContext {
     }
 
     static getBeansConfig(context: InternalCatContext): Record<BeanName, InternalBeanConfig> {
-        return this.getStaticMetadata(context).beanConfiguration;
+        return Object.keys(this.getStaticMetadata(context).beanConfiguration).reduce((acc, beanName) => {
+            acc[beanName] = this.getBeanConfig(context, beanName);
+
+            return acc;
+        }, {});
     }
 
     [RuntimeElement.INIT](contextConfig: any): void {
@@ -82,7 +86,7 @@ export abstract class InternalCatContext {
         Object.entries(InternalCatContext.getBeansConfig(this)).forEach(([beanName, beanConfig]) => {
             const instance = this[RuntimeElement.SINGLETON_MAP].get(beanName);
 
-            if (beanConfig.lazy || beanConfig.scope !== 'singleton' || !instance) {
+            if (!instance || beanConfig.scope !== 'singleton') {
                 return;
             }
 
