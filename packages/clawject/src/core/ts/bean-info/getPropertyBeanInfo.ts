@@ -1,19 +1,20 @@
 import ts from 'typescript';
 import { getScopeValue } from './getScopeValue';
 import { ClassPropertyWithCallExpressionInitializer } from '../types';
-import { ICompilationBeanInfo } from './ICompilationBeanInfo';
 import { CompilationContext } from '../../../compilation-context/CompilationContext';
 import { IncorrectArgumentsLengthError } from '../../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
 import { IncorrectArgumentError } from '../../../compilation-context/messages/errors/IncorrectArgumentError';
 import { Configuration } from '../../configuration/Configuration';
-import { BeanScope } from '../../bean/BeanScope';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
+import { BeanConfig } from '../../../external/Bean';
+import { ConfigLoader } from '../../../config/ConfigLoader';
+import { getLazyInitValue } from './getLazyInitValue';
 
 export function getPropertyBeanInfo(
     compilationContext: CompilationContext,
     configuration: Configuration,
     propertyDeclaration: ClassPropertyWithCallExpressionInitializer
-): ICompilationBeanInfo {
+): Required<BeanConfig> {
     const beanCall = unwrapExpressionFromRoundBrackets(propertyDeclaration.initializer);
 
     if (beanCall.arguments.length === 0) {
@@ -24,7 +25,8 @@ export function getPropertyBeanInfo(
         ));
 
         return {
-            scope: BeanScope.SINGLETON,
+            scope: 'singleton',
+            lazy: ConfigLoader.get().features.lazyBeans,
         };
     }
 
@@ -32,7 +34,8 @@ export function getPropertyBeanInfo(
 
     if (secondArg === undefined) {
         return {
-            scope: BeanScope.SINGLETON,
+            scope: 'singleton',
+            lazy: ConfigLoader.get().features.lazyBeans,
         };
     }
 
@@ -44,11 +47,13 @@ export function getPropertyBeanInfo(
         ));
 
         return {
-            scope: BeanScope.SINGLETON,
+            scope: 'singleton',
+            lazy: ConfigLoader.get().features.lazyBeans,
         };
     }
 
     return {
         scope: getScopeValue(compilationContext, configuration, secondArg),
+        lazy: getLazyInitValue(compilationContext, configuration, secondArg),
     };
 }

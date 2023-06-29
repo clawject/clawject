@@ -13,7 +13,6 @@ import { IncorrectNameError } from '../../compilation-context/messages/errors/In
 
 //TODO verify decorators compatibility and member names
 export function processImplicitComponents(
-    defineShouldAddImports: () => void,
     node: ts.ClassDeclaration,
     visitor: ts.Visitor,
     compilationContext: CompilationContext,
@@ -30,7 +29,6 @@ export function processImplicitComponents(
             return it;
         }
 
-        defineShouldAddImports();
         component = component ?? ComponentRepository.register(node, false);
 
         if (isReservedRuntimeNameForComponent(it.name?.getText() ?? '')) {

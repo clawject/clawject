@@ -35,6 +35,7 @@ export const registerArrowFunctionBean = (
         node: classElement,
         kind: BeanKind.ARROW_FUNCTION,
         scope: beanInfo.scope,
+        lazy: beanInfo.lazy,
     });
     configuration.beanRegister.register(contextBean);
 };

@@ -1,40 +1,42 @@
-import { Bean, CatContext, PostConstruct, ContainerManager, BeforeDestruct } from 'clawject';
-import { ClassWithDependencies } from './ClassWithDependencies';
-
-interface IMyPresenter<T> {
-    doStuff(data: T): T;
-}
+import { Bean, BeforeDestruct, CatContext, ContainerManager, PostConstruct } from 'clawject';
 
 class MyClass {
     @PostConstruct
     postConstruct(): void {
-
+        console.log('class postConstruct');
     }
+
     @BeforeDestruct
     beforeDestruct(): void {
-
+        console.log('class beforeDestruct');
     }
+
     @PostConstruct
     @BeforeDestruct
     postConstructAndBeforeDestruct(): void {
-
+        console.log('class postConstructAndBeforeDestruct');
     }
 }
 
 class MyContext extends CatContext {
-    @Bean tuple: [number, number] = [1, 2];
-    @Bean string = 'string';
-    @Bean number = 123;
+    @PostConstruct
+    postConstruct() {
+        console.log('context postConstruct');
+    }
 
-    classWithDeps = Bean(ClassWithDependencies);
+    @BeforeDestruct
+    beforeDestruct() {
+        console.log('context beforeDestruct');
+    }
 
     @PostConstruct
-    postConstruct(
-        dep: [number, number],
-    ): string {
-        console.log(dep);
-        return '123';
+    @BeforeDestruct
+    postConstructAndBeforeDestruct(): void {
+        console.log('context postConstructAndBeforeDestruct');
     }
+
+    myClass = Bean(MyClass);
 }
 
-const data = ContainerManager.init(MyContext);
+ContainerManager.init(MyContext);
+ContainerManager.clear(MyContext);

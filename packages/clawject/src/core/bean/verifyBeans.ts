@@ -40,7 +40,7 @@ function verifyBeanType(bean: Bean): void {
     const parentConfiguration = bean.parentConfiguration;
     const compilationContext = getCompilationContext();
 
-    if (bean.kind === BeanKind.LIFECYCLE_METHOD || bean.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION) {
+    if (bean.isLifecycle()) {
         // Lifecycle methods can return anything
         return;
     }

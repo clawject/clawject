@@ -21,6 +21,10 @@ export class ErrorBuilder {
         return new Error(`Illegal access to ${cause}, please check the documentation ${GITHUB_REPO_LINK}`);
     }
 
+    static constructorNotFound(place: string): Error {
+        return new Error(`Constructor of ${place} not found.`);
+    }
+
     static contextKeyToString(contextKey: any): string {
         if (contextKey === undefined) {
             return '"undefined"';

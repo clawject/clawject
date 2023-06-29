@@ -43,6 +43,15 @@
                         true,
                         false
                     ]
+                },
+                "lazyBeans": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "By default - container will instantiate all singleton beans in context during initialization, if this option is disabled - beans will be initialized only when they are requested. You can override default behavior for each bean individually",
+                    "examples": [
+                        true,
+                        false
+                    ]
                 }
             },
             "additionalProperties": false

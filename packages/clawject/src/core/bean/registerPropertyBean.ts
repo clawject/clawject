@@ -76,6 +76,7 @@ export const registerPropertyBean = (
         node: classElement,
         kind: BeanKind.PROPERTY,
         scope: beanInfo.scope,
+        lazy: beanInfo.lazy,
         classDeclaration: classDeclaration,
     });
     configuration.beanRegister.register(contextBean);

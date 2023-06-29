@@ -1,7 +1,6 @@
 import ts, { factory } from 'typescript';
 import { getBeanConfigObjectLiteral } from './getBeanConfigObjectLiteral';
 import { Configuration } from '../../configuration/Configuration';
-import { BeanKind } from '../../bean/BeanKind';
 import { compact } from 'lodash';
 import { ConfigLoader } from '../../../config/ConfigLoader';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
@@ -79,7 +78,7 @@ const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExp
     };
 
     context.beanRegister.elements.forEach(bean => {
-        if (bean.kind === BeanKind.LIFECYCLE_METHOD || bean.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION) {
+        if (bean.isLifecycle()) {
             bean.lifecycle?.forEach(lifecycle => {
                 lifecycleBeanData[lifecycle].push(bean.classMemberName);
             });

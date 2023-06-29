@@ -44,6 +44,7 @@ export const registerMethodBean = (
         node: classElement,
         kind: BeanKind.METHOD,
         scope: beanInfo.scope,
+        lazy: beanInfo.lazy,
     });
     configuration.beanRegister.register(contextBean);
 };

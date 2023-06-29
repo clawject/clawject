@@ -3,6 +3,8 @@ import { LifecycleKind } from '../../core/component-lifecycle/LifecycleKind';
 import { RuntimeElement } from '../../core/runtime-element/RuntimeElement';
 import { RuntimeLifecycleConfiguration } from '../../core/component-lifecycle/RuntimeLifecycleConfiguration';
 import { InternalBeanConfig, RuntimeBeanConfiguration } from '../../core/bean/RuntimeBeanConfiguration';
+import { getConstructor } from './utils';
+import { RuntimeComponentConfiguration } from '../../core/component/RuntimeComponentConfiguration';
 
 type BeanName = string;
 
@@ -23,7 +25,13 @@ export abstract class InternalCatContext {
     }
 
     static getStaticMetadata(context: InternalCatContext): ClawjectContextMetadata {
-        return (context.constructor)[RuntimeElement.METADATA];
+        const constructor = getConstructor(context);
+
+        if (!constructor) {
+            throw ErrorBuilder.constructorNotFound('Inheritor of CatContext');
+        }
+
+        return constructor[RuntimeElement.METADATA];
     }
 
     static getContextName(context: InternalCatContext): string {
@@ -48,7 +56,7 @@ export abstract class InternalCatContext {
         };
     }
 
-    static getBeansConfig(context: InternalCatContext): Record<BeanName, Partial<InternalBeanConfig>> {
+    static getBeansConfig(context: InternalCatContext): Record<BeanName, InternalBeanConfig> {
         return this.getStaticMetadata(context).beanConfiguration;
     }
 
@@ -57,12 +65,30 @@ export abstract class InternalCatContext {
     }
 
     [RuntimeElement.POST_CONSTRUCT](): void {
+        Object.entries(InternalCatContext.getBeansConfig(this)).forEach(([beanName, beanConfig]) => {
+            if (beanConfig.lazy || beanConfig.scope !== 'singleton') {
+                return;
+            }
+
+            this[RuntimeElement.GET_PRIVATE_BEAN](beanName);
+        });
+        this[RuntimeElement.GET_ALL_BEANS]();
         InternalCatContext.getLifecycleMethods(this, LifecycleKind.POST_CONSTRUCT)?.forEach(methodName => {
             this[methodName]();
         });
     }
 
     [RuntimeElement.BEFORE_DESTRUCT](): void {
+        Object.entries(InternalCatContext.getBeansConfig(this)).forEach(([beanName, beanConfig]) => {
+            const instance = this[RuntimeElement.SINGLETON_MAP].get(beanName);
+
+            if (beanConfig.lazy || beanConfig.scope !== 'singleton' || !instance) {
+                return;
+            }
+
+            InternalCatContext.onComponentLifecycle(instance, LifecycleKind.BEFORE_DESTRUCT);
+        });
+
         InternalCatContext.getLifecycleMethods(this, LifecycleKind.BEFORE_DESTRUCT)?.forEach(methodName => {
             this[methodName]();
         });
@@ -86,16 +112,45 @@ export abstract class InternalCatContext {
         const beanConfiguration = InternalCatContext.getBeanConfig(this, beanName);
 
         if (beanConfiguration.scope !== 'singleton') {
-            return this[beanName]();
+            const newInstance = this[beanName]();
+            InternalCatContext.onComponentLifecycle(newInstance, LifecycleKind.POST_CONSTRUCT);
+
+            return newInstance;
         }
 
-        const savedInstance = this[RuntimeElement.SINGLETON_MAP].get(beanName) ?? this[beanName]();
+        let instance = this[RuntimeElement.SINGLETON_MAP].get(beanName);
 
-        if (!this[RuntimeElement.SINGLETON_MAP].has(beanName)) {
-            this[RuntimeElement.SINGLETON_MAP].set(beanName, savedInstance);
+        if (!instance) {
+            instance = this[beanName]();
+            InternalCatContext.onComponentLifecycle(instance, LifecycleKind.POST_CONSTRUCT);
         }
 
-        return savedInstance;
+        this[RuntimeElement.SINGLETON_MAP].set(beanName, instance);
+
+        return instance;
+    }
+
+    private static onComponentLifecycle(instance: any, lifecycleKind: LifecycleKind): void {
+        if (!instance) {
+            return;
+        }
+
+        const instanceConstructor = getConstructor(instance);
+
+        if (!instanceConstructor) {
+            return;
+        }
+
+        const implicitComponentMetadata =
+            instanceConstructor[RuntimeElement.METADATA] as RuntimeComponentConfiguration | undefined;
+
+        if (!implicitComponentMetadata) {
+            return;
+        }
+
+        implicitComponentMetadata.lifecycleConfiguration[lifecycleKind].forEach(methodName => {
+            instance[methodName]();
+        });
     }
 
     [RuntimeElement.GET_BEANS](): Record<string, unknown> {
@@ -116,7 +171,7 @@ export abstract class InternalCatContext {
 
         return Object.keys(beansConfig)
             .reduce((acc, curr) => {
-                acc[curr] = this[RuntimeElement.GET_BEAN](curr);
+                acc.set(curr, this[RuntimeElement.GET_PRIVATE_BEAN](curr));
 
                 return acc;
             }, new Map());

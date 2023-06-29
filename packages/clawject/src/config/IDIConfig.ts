@@ -4,5 +4,6 @@ export interface IDIConfig {
     features: {
         advancedTypeInference: boolean;
         keepContextNames: boolean;
+        lazyBeans: boolean;
     };
 }

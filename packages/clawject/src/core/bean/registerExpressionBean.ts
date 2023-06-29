@@ -22,6 +22,7 @@ export const registerExpressionBean = (
         node: classElement,
         kind: BeanKind.EXPRESSION,
         scope: beanInfo.scope,
+        lazy: beanInfo.lazy,
     });
     configuration.beanRegister.register(contextBean);
 };

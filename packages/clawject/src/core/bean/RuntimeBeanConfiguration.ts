@@ -1,8 +1,9 @@
 export interface RuntimeBeanConfiguration {
-    beanConfiguration: Record<string, Partial<InternalBeanConfig>>
+    beanConfiguration: Record<string, InternalBeanConfig>;
 }
 
 export interface InternalBeanConfig {
-    scope: 'prototype' | 'singleton';
-    public: boolean;
+    scope?: 'prototype' | 'singleton';
+    public?: boolean | undefined;
+    lazy: boolean;
 }

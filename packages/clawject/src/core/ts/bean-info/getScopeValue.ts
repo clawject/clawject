@@ -2,8 +2,8 @@ import ts from 'typescript';
 import { unquoteString } from '../../utils/unquoteString';
 import { CompilationContext } from '../../../compilation-context/CompilationContext';
 import { IncorrectArgumentError } from '../../../compilation-context/messages/errors/IncorrectArgumentError';
-import { BeanScope } from '../../bean/BeanScope';
 import { Configuration } from '../../configuration/Configuration';
+import { BeanScope } from '../../../external/Bean';
 
 export const getScopeValue = (
     compilationContext: CompilationContext,
@@ -13,7 +13,7 @@ export const getScopeValue = (
     const scopeNode = expression.properties.find(it => it.name?.getText() === 'scope');
 
     if (scopeNode === undefined) {
-        return BeanScope.SINGLETON;
+        return 'singleton';
     }
 
     let scopeValue: string | null = null;
@@ -25,13 +25,13 @@ export const getScopeValue = (
                 scopeNode,
                 configuration.node,
             ));
-            return BeanScope.SINGLETON;
+            return 'singleton';
         }
 
         scopeValue = unquoteString(scopeNode.initializer.getText());
     }
 
-    if (scopeValue === BeanScope.SINGLETON || scopeValue === BeanScope.PROTOTYPE) {
+    if (scopeValue === 'singleton' || scopeValue === 'prototype') {
         return scopeValue;
     }
 
@@ -41,5 +41,5 @@ export const getScopeValue = (
         configuration.node,
     ));
 
-    return BeanScope.SINGLETON;
+    return 'singleton';
 };

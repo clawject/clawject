@@ -1,19 +1,20 @@
 import ts from 'typescript';
 import { getScopeValue } from './getScopeValue';
 import { isDecoratorFromLibrary } from '../predicates/isDecoratorFromLibrary';
-import { ICompilationBeanInfo } from './ICompilationBeanInfo';
 import { ClassPropertyWithArrowFunctionInitializer } from '../types';
 import { UnknownError } from '../../../compilation-context/messages/errors/UnknownError';
 import { IncorrectArgumentError } from '../../../compilation-context/messages/errors/IncorrectArgumentError';
 import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
-import { BeanScope } from '../../bean/BeanScope';
 import { Configuration } from '../../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { BeanConfig } from '../../../external/Bean';
+import { ConfigLoader } from '../../../config/ConfigLoader';
+import { getLazyInitValue } from './getLazyInitValue';
 
 export const getPropertyDecoratorBeanInfo = (
     configuration: Configuration,
     node: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer | ts.PropertyDeclaration
-): ICompilationBeanInfo => {
+): Required<BeanConfig> => {
     const compilationContext = getCompilationContext();
     const bean = getDecoratorsOnly(node)
         .find(it => isDecoratorFromLibrary(it, 'Bean')) ?? null;
@@ -26,7 +27,8 @@ export const getPropertyDecoratorBeanInfo = (
         ));
 
         return {
-            scope: BeanScope.SINGLETON,
+            scope: 'singleton',
+            lazy: ConfigLoader.get().features.lazyBeans,
         };
     }
 
@@ -34,7 +36,8 @@ export const getPropertyDecoratorBeanInfo = (
 
     if (ts.isIdentifier(expression)) {
         return {
-            scope: BeanScope.SINGLETON,
+            scope: 'singleton',
+            lazy: ConfigLoader.get().features.lazyBeans,
         };
     }
 
@@ -49,16 +52,19 @@ export const getPropertyDecoratorBeanInfo = (
             ));
 
             return {
-                scope: BeanScope.SINGLETON,
+                scope: 'singleton',
+                lazy: ConfigLoader.get().features.lazyBeans,
             };
         }
 
         return {
             scope: getScopeValue(compilationContext, configuration, firstArg),
+            lazy: getLazyInitValue(compilationContext, configuration, firstArg),
         };
     }
 
     return {
-        scope: BeanScope.SINGLETON,
+        scope: 'singleton',
+        lazy: ConfigLoader.get().features.lazyBeans,
     };
 };

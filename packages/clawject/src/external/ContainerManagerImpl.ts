@@ -19,7 +19,6 @@ export class ContainerManagerImpl implements ContainerManager {
     init<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): Context<T>;
     init<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): Context<T>;
     init(context: ClassConstructor<CatContext<any>>, init: ContextInit & Partial<ContextInitConfig<any>> = DEFAULT_INIT): Context<any> {
-
         if (!(context.prototype instanceof InternalCatContext)) {
             throw ErrorBuilder.classNotInheritorOfCatContext();
         }

@@ -14,6 +14,7 @@ export class ConfigLoader {
         features: {
             advancedTypeInference: true,
             keepContextNames: true,
+            lazyBeans: false,
         }
     };
     private static cachedConfig: IDIConfig | null = null;

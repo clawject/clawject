@@ -1,10 +1,11 @@
 import { ClassConstructor } from './ClassConstructor';
 import { ErrorBuilder } from './ErrorBuilder';
 
-type BeanScope = 'prototype' | 'singleton';
+export type BeanScope = 'prototype' | 'singleton';
 
-interface BeanConfig {
+export interface BeanConfig {
     scope?: BeanScope;
+    lazy?: boolean;
 }
 
 type ConfigurableMethodBean = (beanConfig: BeanConfig) => PropertyDecorator;
