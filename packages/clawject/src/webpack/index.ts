@@ -1,9 +1,9 @@
 import { Compilation, Compiler, NormalModule } from 'webpack';
 import { RebuildStatusRepository } from './RebuildStatusRepository';
 import { getCompilationContext } from '../transformer/getCompilationContext';
-import { BuildErrorFormatter } from '../compilation-context/BuildErrorFormatter';
-import { ConfigurationRepository } from '../core/configuration/ConfigurationRepository';
-import { Configuration } from '../core/configuration/Configuration';
+import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildErrorFormatter';
+import { ConfigurationRepository } from '../compile-time/core/configuration/ConfigurationRepository';
+import { Configuration } from '../compile-time/core/configuration/Configuration';
 
 const reportDIErrorsHook = (compilation: Compilation) => {
     const compilationContext = getCompilationContext();

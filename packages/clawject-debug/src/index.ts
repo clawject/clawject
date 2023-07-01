@@ -1,4 +1,4 @@
-import { Bean, BeforeDestruct, CatContext, ContainerManager, PostConstruct } from 'clawject';
+import {Bean, BeforeDestruct, CatContext, Container, PostConstruct} from 'clawject';
 
 class MyClass {
     @PostConstruct
@@ -10,17 +10,13 @@ class MyClass {
     beforeDestruct(): void {
         console.log('class beforeDestruct');
     }
-
-    @PostConstruct
-    @BeforeDestruct
-    postConstructAndBeforeDestruct(): void {
-        console.log('class postConstructAndBeforeDestruct');
-    }
 }
 
 class MyContext extends CatContext {
     @PostConstruct
-    postConstruct() {
+    postConstruct(
+        myClass1: MyClass,
+    ) {
         console.log('context postConstruct');
     }
 
@@ -29,14 +25,8 @@ class MyContext extends CatContext {
         console.log('context beforeDestruct');
     }
 
-    @PostConstruct
-    @BeforeDestruct
-    postConstructAndBeforeDestruct(): void {
-        console.log('context postConstructAndBeforeDestruct');
-    }
-
     myClass = Bean(MyClass);
 }
 
-ContainerManager.init(MyContext);
-ContainerManager.clear(MyContext);
+Container.init(MyContext);
+Container.clear(MyContext);

@@ -1,13 +1,13 @@
 import ts from 'typescript';
 import { getCompilationContext } from './getCompilationContext';
-import { BuildErrorFormatter } from '../compilation-context/BuildErrorFormatter';
-import { BaseTypesRepository } from '../core/type-system/BaseTypesRepository';
+import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildErrorFormatter';
+import { BaseTypesRepository } from '../compile-time/core/type-system/BaseTypesRepository';
 import { verifyTSVersion } from './verifyTSVersion';
-import { ConfigurationRepository } from '../core/configuration/ConfigurationRepository';
-import { processAtomicMode } from '../core/atomic-mode/processAtomicMode';
-import { ConfigLoader } from '../config/ConfigLoader';
-import { processApplicationMode } from '../core/application-mode/processApplicationMode';
-import { ComponentRepository } from '../core/component/ComponentRepository';
+import { ConfigurationRepository } from '../compile-time/core/configuration/ConfigurationRepository';
+import { processAtomicMode } from '../compile-time/core/atomic-mode/processAtomicMode';
+import { ConfigLoader } from '../compile-time/config/ConfigLoader';
+import { processApplicationMode } from '../compile-time/core/application-mode/processApplicationMode';
+import { ComponentRepository } from '../compile-time/core/component/ComponentRepository';
 
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
     verifyTSVersion();

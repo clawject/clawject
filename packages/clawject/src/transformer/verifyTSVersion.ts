@@ -3,7 +3,7 @@ import semver from 'semver/preload';
 import fs from 'fs';
 import { CONSTANTS } from '../constants';
 import { get } from 'lodash';
-import { ConfigLoader } from '../config/ConfigLoader';
+import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 import chalk from 'chalk';
 
 export const verifyTSVersion = () => {

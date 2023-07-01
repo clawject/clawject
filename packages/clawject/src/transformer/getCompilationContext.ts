@@ -1,4 +1,4 @@
-import { CompilationContext } from '../compilation-context/CompilationContext';
+import { CompilationContext } from '../compile-time/compilation-context/CompilationContext';
 
 let context: CompilationContext | null = null;
 

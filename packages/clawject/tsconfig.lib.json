@@ -7,5 +7,6 @@
     "types": ["node", "ts-expose-internals"],
   },
   "include": ["src/**/*"],
-  "exclude": ["src/service/**/*", "jest.config.ts", "test/**/*.test.ts"]
+  "exclude": [
+    "src/compile-time/service/**/*", "jest.config.ts", "test/**/*.test.ts"]
 }
