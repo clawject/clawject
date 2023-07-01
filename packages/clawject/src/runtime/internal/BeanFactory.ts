@@ -2,7 +2,7 @@ import { CatContext } from '../CatContext';
 import { ErrorBuilder } from '../ErrorBuilder';
 import { ScopeRegister } from '../scope/ScopeRegister';
 import { ObjectFactoryImpl } from '../object-factory/ObjectFactoryImpl';
-import { Callback } from '../Callback';
+import { Callback } from '../types/Callback';
 import { LifecycleKind } from '../../compile-time/core/component-lifecycle/LifecycleKind';
 import { ContextManagerConfig } from './ContextManager';
 import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';

@@ -1,10 +1,15 @@
+export * from './runtime/decorators';
+
 export { Container, ContextInit, ContextInitConfig } from './runtime/Container';
-export { Context } from './runtime/Context';
+
 export { CatContext } from './runtime/CatContext';
-export { Bean } from './runtime/decorators/Bean';
-export { PostConstruct } from './runtime/decorators/PostConstruct';
-export { BeforeDestruct } from './runtime/decorators/BeforeDesctruct';
-export { EmbeddedBean } from './runtime/decorators/EmbeddedBean';
+
+export { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/ObjectFactory';
+
+export { Scope } from './runtime/scope/Scope';
+
+export { Callback } from './runtime/types/Callback';
+
 export { ___TypeReferenceTable___ } from './runtime/___TypeReferenceTable___';
 
 //Application mode only

@@ -1,6 +1,6 @@
 import { Scope } from './Scope';
 import { ObjectFactory, ObjectFactoryResult } from '../object-factory/ObjectFactory';
-import { Callback } from '../Callback';
+import { Callback } from '../types/Callback';
 
 export class SingletonScope implements Scope {
     private instances = new Map<string, ObjectFactoryResult>();

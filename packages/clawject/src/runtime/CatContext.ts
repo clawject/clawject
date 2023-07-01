@@ -52,7 +52,7 @@ export abstract class CatContext<T = {}, C = undefined> {
      * Needed to type ContainerManager init/get methods.
      * Accessing this property will always throw an error.
      * */
-    protected get context(): T {
-        throw ErrorBuilder.illegalAccess('CatContext.context');
+    protected get clawject_context_type(): T {
+        throw ErrorBuilder.illegalAccess('CatContext.clawject_context_type');
     }
 }
