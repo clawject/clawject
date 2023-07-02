@@ -1,8 +1,8 @@
-import { Context } from './Context';
+import { InitializedContext } from './InitializedContext';
 import { CatContext } from './CatContext';
 import { ContextManager } from './internal/ContextManager';
 
-export class ContextDelegate implements Context<any> {
+export class InitializedContextImpl implements InitializedContext<any> {
     constructor(
         public instance: CatContext<any, any>,
         public contextManager: ContextManager

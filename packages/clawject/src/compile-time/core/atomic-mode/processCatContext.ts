@@ -22,7 +22,7 @@ const ALLOWED_BEAN_KINDS = new Set([
     BeanKind.LIFECYCLE_ARROW_FUNCTION,
 ]);
 
-export function processCatContext(node: ts.ClassDeclaration, visitor: ts.Visitor, compilationContext: CompilationContext, tsContext: ts.TransformationContext): ts.Node {
+export function processCatContext(node: ts.ClassDeclaration, compilationContext: CompilationContext): ts.Node {
     const context = ConfigurationRepository.register(node, ALLOWED_BEAN_KINDS);
 
     const restrictedClassMembersByName = node.members
@@ -36,7 +36,7 @@ export function processCatContext(node: ts.ClassDeclaration, visitor: ts.Visitor
                 context.node,
             ));
         });
-        return ts.visitEachChild(node, visitor, tsContext);
+        return node;
     }
 
     //Processing beans

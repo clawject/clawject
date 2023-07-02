@@ -14,7 +14,7 @@ export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLit
                 [
                     factory.createPropertyAssignment(
                         factory.createIdentifier('scope'),
-                        factory.createStringLiteral(bean.scope)
+                        bean.scopeExpression.getAndDispose(),
                     ),
                     factory.createPropertyAssignment(
                         factory.createIdentifier('public'),
@@ -22,7 +22,7 @@ export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLit
                     ),
                     factory.createPropertyAssignment(
                         factory.createIdentifier('lazy'),
-                        createBoolean(bean.lazy),
+                        bean.lazyExpression.getAndDispose(),
                     )
                 ],
                 false

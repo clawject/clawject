@@ -6,8 +6,7 @@ import { Configuration } from '../configuration/Configuration';
 import { Dependency } from '../dependency/Dependency';
 import { BaseElement } from '../BaseElement';
 import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
-import { ConfigLoader } from '../../config/ConfigLoader';
-import { BeanScope } from '../../../runtime/decorators/Bean';
+import { DisposableNodeHolder } from '../DisposableNodeHolder';
 
 export type BeanNode = ts.MethodDeclaration
     | ClassPropertyWithCallExpressionInitializer
@@ -34,8 +33,8 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
     public = false;
     dependencies = new Set<Dependency>();
 
-    scope: BeanScope = 'singleton';
-    lazy = ConfigLoader.get().features.lazyBeans;
+    scopeExpression = new DisposableNodeHolder<ts.Expression>();
+    lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
     isLifecycle(): boolean {
         return this.kind === BeanKind.LIFECYCLE_METHOD || this.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION;

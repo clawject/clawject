@@ -1,0 +1,136 @@
+---
+title: ContainerManager
+id: container-manager
+---
+
+<hr/> 
+
+## Overview
+
+ContainerManager is a main entry point to work with DI.
+You can use ContainerManager to initialize, get or clear contexts.
+
+## Usage
+Let's assume you're defined you context class like this:
+
+```typescript title="MyContext.ts"
+import { CatContext } from 'clawject';
+
+export class MyContext extends CatContext { /* ... */ }
+```
+
+To init container, you need to use ContainerManager object and pass context class to the `init` method.
+
+```typescript title="main.ts"
+import { ContainerManager } from 'clawject'; 
+import { MyContext } from './MyContext';
+
+ContainerManager.init(MyContext);
+```
+
+## Methods overview
+
+### `ContainerManager.init`
+Init method is used to initialize CatContext and retrieve `InitializedContext` object.
+
+If context was already initialized but not cleared - new context will be initialized will replace old one.
+Not clearing context can cause memory leaks.
+
+#### Init context
+
+```typescript
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext { /* ... */ }
+
+const myContext = ContainerManager.init(MyContext);
+```
+
+#### Init context with a specific key
+
+```typescript
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext { /* ... */ }
+
+const myKey = new Symbol('my-context');
+
+const myContext = ContainerManager.init(MyContext, { key: myKey });
+```
+
+#### Init context with an external configuration
+
+```typescript
+import { ContainerManager, CatContext } from 'clawject';
+
+interface IExternalConfiguration { /* ... */ }
+
+class MyContext extends CatContext<{}, IExternalConfiguration> { /* ... */ }
+
+const externalConfiguration: IExternalConfiguration = { /* ... */ }
+
+const myContext = ContainerManager.init(MyContext, { config: externalConfiguration });
+```
+
+### `ContainerManager.get`
+Get method is used to retrieve `InitializedContext` object if context it was initialized.
+
+#### Get initialized context
+
+```typescript
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext { /* ... */ }
+
+ContainerManager.init(MyContext);
+
+const initializedContext = ContainerManager.get(MyContext);
+```
+
+#### Get initialized context by key
+
+```typescript
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext { /* ... */ }
+
+const myKey = new Symbol('my-context');
+
+ContainerManager.init(MyContext, { key: myKey });
+
+const initializedContext = ContainerManager.get(MyContext, { key: myKey });
+```
+
+#### Get context but not initializing it
+
+```typescript
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext { /* ... */ }
+
+const myKey = new Symbol('my-context');
+
+try {
+    ContainerManager.get(MyContext, { key: myKey });
+} catch (error) {
+    console.log(error.message); // <-- Will print "Context 'MyContext' with key 'Symbol(my-context)' is not initialized"
+}
+```
+
+### `ContainerManager.getOrInit`
+This method is a combination of `init` and `get` methods.
+
+If context was not initialized, it will be initialized and `InitializedContext` object will be returned.<br/>If context was initialized, `InitializedContext` object will be returned.
+
+#### Get and init context
+
+```typescript
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext {}
+
+const initializedContext1 = ContainerManager.getOrInit(MyContext);
+const initializedContext2 = ContainerManager.getOrInit(MyContext);
+
+console.log(initializedContext1 === initializedContext2); // <-- Will print "true"
+```

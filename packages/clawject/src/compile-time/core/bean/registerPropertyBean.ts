@@ -1,6 +1,5 @@
 import ts from 'typescript';
 import { ClassPropertyWithCallExpressionInitializer } from '../ts/types';
-import { getPropertyBeanInfo } from '../ts/bean-info/getPropertyBeanInfo';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
@@ -11,13 +10,14 @@ import { DependencyResolvingError } from '../../compilation-context/messages/err
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { DIType } from '../type-system/DIType';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { getBeanLazyExpression } from '../ts/bean-info/getBeanLazyExpression';
+import { getBeanScopeExpression } from '../ts/bean-info/getBeanScopeExpression';
 
 export const registerPropertyBean = (
     configuration: Configuration,
     classElement: ClassPropertyWithCallExpressionInitializer,
 ): void => {
     const compilationContext = getCompilationContext();
-    const beanInfo = getPropertyBeanInfo(compilationContext, configuration, classElement);
 
     const firstArgument = unwrapExpressionFromRoundBrackets(classElement.initializer).arguments[0];
     const nodeSourceDescriptors = getNodeSourceDescriptor(firstArgument);
@@ -75,9 +75,9 @@ export const registerPropertyBean = (
         diType: diType,
         node: classElement,
         kind: BeanKind.PROPERTY,
-        scope: beanInfo.scope,
-        lazy: beanInfo.lazy,
         classDeclaration: classDeclaration,
     });
+    contextBean.lazyExpression.node = getBeanLazyExpression(contextBean);
+    contextBean.scopeExpression.node = getBeanScopeExpression(contextBean);
     configuration.beanRegister.register(contextBean);
 };

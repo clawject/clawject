@@ -41,7 +41,7 @@ export class BeanFactory {
         return result;
     }
 
-    public getAllBeans(): Map<string, any> {
+    getAllBeans(): Map<string, any> {
         const result = new Map<string, any>();
 
         Object.keys(this.beans).forEach(beanName => {

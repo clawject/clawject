@@ -1,4 +1,4 @@
-export interface Context<T> {
+export interface InitializedContext<T> {
     /**
      * Returns bean by name if it's declared in T.
      */

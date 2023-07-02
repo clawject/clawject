@@ -18,14 +18,17 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
             return ts.visitEachChild(node, visitor, tsContext);
         }
 
+        let transformedNode: ts.Node;
+
         //Registering contexts
         if (isExtendsClassFromLibrary(node, 'CatContext')) {
             shouldAddImports = true;
-
-            return processCatContext(node, visitor, compilationContext, tsContext);
+            transformedNode = processCatContext(node, compilationContext);
+        } else {
+            transformedNode = processImplicitComponents(node, compilationContext);
         }
 
-        return processImplicitComponents(node, visitor, compilationContext, tsContext);
+        return ts.visitEachChild(transformedNode, visitor, tsContext);
     };
 
     const transformedFile = ts.visitNode(sourceFile, visitor);

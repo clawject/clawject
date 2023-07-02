@@ -141,17 +141,17 @@ export class DIType {
             return true;
         }
 
-        // Test which is faster - generate ids or run comparison
+        // Test, which is faster - generate ids or run comparison
         // if (this.id === to.id) {
         //     return true;
         // }
 
-        //If both are primitive types - we can stop here
+        //If both are primitive types, we can stop here
         if (this.isPrimitive && (to.isPrimitive || to.isLiteral)) {
             return TypeCompatibilityMatrix.isCompatible(this.typeFlag, to.typeFlag);
         }
 
-        //If this is literal type, and other as well we can stop here
+        //If this is literal type, and other, as well, we can stop here
         if (this.isLiteral && this.typeFlag === to.typeFlag && this.constantValue !== undefined) {
             if (this.typeFlag === DITypeFlag.BIGINT_LITERAL) {
                 const thisValue = this.constantValue as ts.PseudoBigInt;

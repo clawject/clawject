@@ -14,9 +14,7 @@ import { isNameReserved } from '../utils/isNameReserved';
 //TODO verify decorators compatibility and member names
 export function processImplicitComponents(
     node: ts.ClassDeclaration,
-    visitor: ts.Visitor,
     compilationContext: CompilationContext,
-    tsContext: ts.TransformationContext
 ): ts.Node {
     let component: Component | null = null;
 
@@ -50,7 +48,7 @@ export function processImplicitComponents(
     });
 
     if (component === null) {
-        return ts.visitEachChild(node, visitor, tsContext);
+        return node;
     }
 
     return factory.updateClassDeclaration(
@@ -60,8 +58,8 @@ export function processImplicitComponents(
         node.typeParameters,
         node.heritageClauses,
         [
-            getImplicitComponentStaticInitBlock(component),
             ...newMembers,
+            getImplicitComponentStaticInitBlock(component),
         ]
     );
 }

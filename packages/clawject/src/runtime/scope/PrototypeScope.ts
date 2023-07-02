@@ -1,8 +1,8 @@
-import { Scope } from './Scope';
+import { CustomScope } from './CustomScope';
 import { ObjectFactory, ObjectFactoryResult } from '../object-factory/ObjectFactory';
 import { Callback } from '../types/Callback';
 
-export class PrototypeScope implements Scope {
+export class PrototypeScope implements CustomScope {
     get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
         return objectFactory.getObject();
     }

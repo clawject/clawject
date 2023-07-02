@@ -14,7 +14,6 @@ import chalk from 'chalk';
 const UNSUPPORTED_TYPES = new Set([
     DITypeFlag.UNSUPPORTED,
     DITypeFlag.NEVER,
-    DITypeFlag.UNKNOWN,
     DITypeFlag.VOID,
     DITypeFlag.UNDEFINED,
 ]);

@@ -1,17 +1,16 @@
 import ts from 'typescript';
-import { getPropertyDecoratorBeanInfo } from '../ts/bean-info/getPropertyDecoratorBeanInfo';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { getBeanLazyExpression } from '../ts/bean-info/getBeanLazyExpression';
+import { getBeanScopeExpression } from '../ts/bean-info/getBeanScopeExpression';
 
 export const registerExpressionBean = (
     configuration: Configuration,
     classElement: ts.PropertyDeclaration,
 ): void => {
-    const beanInfo = getPropertyDecoratorBeanInfo(configuration, classElement);
-
     const typeChecker = getCompilationContext().typeChecker;
     const type = typeChecker.getTypeAtLocation(classElement);
     const diType = DITypeBuilder.build(type);
@@ -21,8 +20,8 @@ export const registerExpressionBean = (
         diType: diType,
         node: classElement,
         kind: BeanKind.EXPRESSION,
-        scope: beanInfo.scope,
-        lazy: beanInfo.lazy,
     });
+    contextBean.lazyExpression.node = getBeanLazyExpression(contextBean);
+    contextBean.scopeExpression.node = getBeanScopeExpression(contextBean);
     configuration.beanRegister.register(contextBean);
 };

@@ -1,9 +1,14 @@
-import { Scope } from './Scope';
+import { CustomScope } from './CustomScope';
+import { SingletonScope } from './SingletonScope';
+import { PrototypeScope } from './PrototypeScope';
 
 export class ScopeRegister {
-    private static scopes = new Map<string, Scope>();
+    private static scopes = new Map<string, CustomScope>([
+        ['singleton', new SingletonScope()],
+        ['prototype', new PrototypeScope()],
+    ]);
 
-    static registerScope(name: string, scope: Scope): void {
+    static registerScope(name: string, scope: CustomScope): void {
         if (this.scopes.has(name)) {
             throw new Error(`Scope with name ${name} is already registered.`);
         }
@@ -11,7 +16,7 @@ export class ScopeRegister {
         this.scopes.set(name, scope);
     }
 
-    static getScope(name: string): Scope {
+    static getScope(name: string): CustomScope {
         const scope = this.scopes.get(name);
 
         if (!scope) {

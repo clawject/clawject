@@ -1,8 +1,8 @@
-import { Scope } from './Scope';
+import { CustomScope } from './CustomScope';
 import { ObjectFactory, ObjectFactoryResult } from '../object-factory/ObjectFactory';
 import { Callback } from '../types/Callback';
 
-export class SingletonScope implements Scope {
+export class SingletonScope implements CustomScope {
     private instances = new Map<string, ObjectFactoryResult>();
     private destructionCallbacks = new Map<string, Callback>();
 

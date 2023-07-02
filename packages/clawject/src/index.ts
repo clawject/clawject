@@ -1,12 +1,13 @@
 export * from './runtime/decorators';
 
-export { Container, ContextInit, ContextInitConfig } from './runtime/Container';
+export { ContainerManager, ContextInit, ContextInitConfig } from './runtime/ContainerManager';
+export { InitializedContext } from './runtime/InitializedContext';
 
 export { CatContext } from './runtime/CatContext';
 
 export { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/ObjectFactory';
 
-export { Scope } from './runtime/scope/Scope';
+export { CustomScope } from './runtime/scope/CustomScope';
 
 export { Callback } from './runtime/types/Callback';
 

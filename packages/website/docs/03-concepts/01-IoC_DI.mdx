@@ -1,6 +1,9 @@
 ---
-title: Bean
+title: Intro to IoC and DI
+id: ioc-di
 ---
+
+<hr />
 
 # Intro to Inversion of Control and Dependency Injection with Clawject
 
@@ -98,7 +101,7 @@ Bean name is a property name.
 
 For a bean with the default singleton scope, Clawject first checks if a cached instance of the bean already exists,
 and only creates a new one if it doesn't. 
-If we're using the prototype scope, the container returns a new bean instance for each method call.
+If we're using the prototype scope, the container returns a new bean instance for each bean instance request.
 
 Let's see how we can define a bean with the prototype scope:
 

@@ -16,7 +16,7 @@ export interface ContextManagerConfig {
 }
 
 export class ContextManager {
-    declare private metadata: ContextManagerConfig;
+    declare public metadata: ContextManagerConfig;
 
     constructor(metadata: ContextManagerConfig) {
         Object.defineProperty(this, 'metadata', {

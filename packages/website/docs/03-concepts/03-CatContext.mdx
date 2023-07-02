@@ -1,0 +1,30 @@
+---
+title: CatContext
+id: cat-context
+---
+
+## Overview
+
+CatContext is a class that represents the IoC container.
+The container is responsible for instantiating, configuring and assembling objects known as Beans and managing their life cycles.
+
+CatContext it's an abstract class that can be extended to create a custom container.
+
+## Usage
+To define container, you need to create a class that extends CatContext.
+
+```typescript
+import { CatContext } from 'clawject';
+
+export class MyContext extends CatContext {}
+```
+
+To init container, you need to use ContainerManager interface and pass class to the init method.
+
+```typescript
+import { ContainerManager } from 'clawject'; 
+
+ContainerManager.init(MyContext);
+```
+
+## 

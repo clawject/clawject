@@ -8,6 +8,8 @@ export type Decorators =
     'BeforeDestruct' |
     'Configuration' |
     'Component' |
+    'Lazy' |
+    'Scope' |
     'Autowired';
 const LIBRARY_DECORATORS = new Set<Decorators>([
     'Bean',
@@ -16,6 +18,8 @@ const LIBRARY_DECORATORS = new Set<Decorators>([
     'BeforeDestruct',
     'Configuration',
     'Component',
+    'Lazy',
+    'Scope',
     'Autowired',
 ]);
 

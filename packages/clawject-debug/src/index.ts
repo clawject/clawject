@@ -1,4 +1,5 @@
-import {Bean, BeforeDestruct, CatContext, Container, PostConstruct} from 'clawject';
+import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruct } from 'clawject';
+import * as process from 'process';
 
 class MyClass {
     @PostConstruct
@@ -25,8 +26,10 @@ class MyContext extends CatContext {
         console.log('context beforeDestruct');
     }
 
-    myClass = Bean(MyClass);
+    @Scope('singleton')
+        myClass = Bean(MyClass);
 }
 
-Container.init(MyContext);
-Container.clear(MyContext);
+ContainerManager.init(MyContext);
+ContainerManager.clear(MyContext);
+

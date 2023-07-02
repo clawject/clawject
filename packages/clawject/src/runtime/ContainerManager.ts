@@ -1,10 +1,8 @@
-import { Context } from './Context';
+import { InitializedContext } from './InitializedContext';
 import { CatContext } from './CatContext';
-import { ContainerImpl } from './ContainerImpl';
+import { ContainerManagerImpl } from './ContainerManagerImpl';
 import { ClassConstructor } from './ClassConstructor';
-import { Scope } from './scope/Scope';
-import { SingletonScope } from './scope/SingletonScope';
-import { PrototypeScope } from './scope/PrototypeScope';
+import { CustomScope } from './scope/CustomScope';
 
 export interface ContextInit {
     key?: any;
@@ -22,11 +20,11 @@ export interface ContextInitConfig<C = never> {
  *
  * You can use this object anywhere in your code.
  * */
-export interface Container {
+export interface ContainerManager {
     /**
-     * Initializing CatContext and returns {@link Context} object.
+     * Initializing CatContext and returns {@link InitializedContext} object.
      *
-     * If context was already initialized but not cleared - new context will be instantiated and putted in cache instead of old one.
+     * If context was already initialized but not cleared - new context will be instantiated and put in cache instead of old one.
      * Not clearing context can cause memory leaks.
      *
      * @example Init context:
@@ -40,12 +38,11 @@ export interface Container {
      * Container.initContext({ context: MyContext });
      * const context = Container.initContext({ context: MyContext });
      */
-    init<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): Context<T>;
-
-    init<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): Context<T>;
+    init<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
+    init<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
     /**
-     * Returning {@link Context Context} object if it was initialized, if not - throws error with context name and key from {@link ContextProps}.
+     * Returning {@link InitializedContext Context} object if it was initialized, if not - throws error with context name and key from {@link ContextProps}.
      *
      * @example Get context:
      * class MyContext extends CatContext {}
@@ -73,10 +70,10 @@ export interface Container {
      *     console.log(error.message); // <-- Will print "Context 'MyContext' with key 'Symbol(my-context)' is not initialized"
      * }
      */
-    get<T>(context: ClassConstructor<CatContext<T>>, key?: any): Context<T>;
+    get<T>(context: ClassConstructor<CatContext<T>>, key?: any): InitializedContext<T>;
 
     /**
-     * Returning already initialized {@link Context Context} object if it was initialized, if not - builds new context object.
+     * Returning already initialized {@link InitializedContext Context} object if it was initialized, if not - builds new context object.
      *
      * @example Get and init context:
      * class MyContext extends CatContext {}
@@ -108,9 +105,9 @@ export interface Container {
      *
      * console.log(context1 === context2); // <-- Will print "true", and context2 will not re-assign config until you will not clear context and initialize it again with another config
      */
-    getOrInit<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): Context<T>;
+    getOrInit<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
 
-    getOrInit<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): Context<T>;
+    getOrInit<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
     /**
      * Clearing initialized context, if initialized context was not found - prints warn to the console.
@@ -141,10 +138,7 @@ export interface Container {
      * */
     clear(context: ClassConstructor<CatContext<any>>, key?: any): void;
 
-    registerScope(scopeName: string, scope: Scope): void;
+    registerScope(scopeName: string, scope: CustomScope): void;
 }
 
-export const Container: Container = new ContainerImpl();
-
-Container.registerScope('singleton', new SingletonScope());
-Container.registerScope('prototype', new PrototypeScope());
+export const ContainerManager: ContainerManager = new ContainerManagerImpl();

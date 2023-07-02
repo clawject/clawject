@@ -84,8 +84,8 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
         node.typeParameters,
         node.heritageClauses,
         [
-            staticInitBlock,
             ...node.members,
+            staticInitBlock,
         ]
     );
 };

@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { getPropertyDecoratorBeanInfo } from '../ts/bean-info/getPropertyDecoratorBeanInfo';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
@@ -7,6 +6,8 @@ import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { getBeanLazyExpression } from '../ts/bean-info/getBeanLazyExpression';
+import { getBeanScopeExpression } from '../ts/bean-info/getBeanScopeExpression';
 
 export const registerMethodBean = (
     configuration: Configuration,
@@ -22,7 +23,6 @@ export const registerMethodBean = (
         return;
     }
 
-    const beanInfo = getPropertyDecoratorBeanInfo(configuration, classElement);
     const typeChecker = compilationContext.typeChecker;
     const signature = typeChecker.getSignatureFromDeclaration(classElement);
 
@@ -43,8 +43,8 @@ export const registerMethodBean = (
         diType: diType,
         node: classElement,
         kind: BeanKind.METHOD,
-        scope: beanInfo.scope,
-        lazy: beanInfo.lazy,
     });
+    contextBean.lazyExpression.node = getBeanLazyExpression(contextBean);
+    contextBean.scopeExpression.node = getBeanScopeExpression(contextBean);
     configuration.beanRegister.register(contextBean);
 };
