@@ -1,7 +1,7 @@
 import { ErrorBuilder } from '../ErrorBuilder';
-import { BeanScope } from './Bean';
 
-type ScopeTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
-export const Scope = (scope: BeanScope): ScopeTarget => {
+export type ScopeTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
+export type ScopeValue = 'prototype' | 'singleton' | string;
+export const Scope = (scope: ScopeValue): ScopeTarget => {
     throw ErrorBuilder.usageWithoutConfiguredDI('@Scope');
 };
