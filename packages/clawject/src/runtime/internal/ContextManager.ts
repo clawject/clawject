@@ -6,6 +6,7 @@ import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
 import { getStaticRuntimeElementFromInstanceConstructor } from '../utils/getStaticRuntimeElementFromInstanceConstructor';
 import { RuntimeElement } from '../runtime-elements/RuntimeElement';
 import { RuntimeLifecycleMetadata } from '../runtime-elements/RuntimeLifecycleMetadata';
+import { ScopeRegister } from '../scope/ScopeRegister';
 
 export interface ContextManagerConfig {
     id: string;
@@ -80,6 +81,9 @@ export class ContextManager {
     }
 
     public instantiateContext(key: any, config: any): any {
+        Object.values(this.metadata.beans)
+            .forEach(it => ScopeRegister.assureRegistered(it.scope));
+
         const instance = new this.metadata.contextConstructor();
 
         this.contextPool.set(key, instance);

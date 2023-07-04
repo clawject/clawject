@@ -17,12 +17,16 @@ export class ScopeRegister {
     }
 
     static getScope(name: string): CustomScope {
+        this.assureRegistered(name);
+
+        return this.scopes.get(name)!;
+    }
+
+    static assureRegistered(name: string): void | never {
         const scope = this.scopes.get(name);
 
         if (!scope) {
             throw new Error(`Scope with name ${name} is not registered.`);
         }
-
-        return scope;
     }
 }

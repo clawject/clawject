@@ -74,7 +74,13 @@ export class BeanFactory {
             bean = scope.get(scopedBeanName, objectFactory);
         }
 
-        scope.registerDestructionCallback(scopedBeanName, this.getBeanDestructionCallback(bean));
+        const hasLifecycleBeforeDestruct = (getStaticRuntimeElementFromInstanceConstructor(
+            bean, RuntimeElement.COMPONENT_METADATA
+        )?.lifecycle.BEFORE_DESTRUCT.length ?? 0) > 0;
+
+        if (hasLifecycleBeforeDestruct) {
+            scope.registerDestructionCallback(scopedBeanName, this.getBeanDestructionCallback(bean));
+        }
 
         return bean;
     }
