@@ -50,6 +50,10 @@ function buildForBaseType(
             byType,
         ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrentArray);
 
+        if (dependency.diType.isOptional) {
+            return;
+        }
+
         compilationContext.report(new MissingBeanDeclarationError(
             'Can not find suitable Bean candidate for parameter.',
             dependency.node,
@@ -81,6 +85,10 @@ function buildForBaseType(
         byName,
         byType,
     ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrentArray);
+
+    if (dependency.diType.isOptional) {
+        return;
+    }
 
     compilationContext.report(new MissingBeanDeclarationError(
         `Found ${matchedByType.length} candidates for parameter "${dependency.parameterName}". Rename parameter to match Bean name, to specify which Bean should be injected.`,

@@ -7,73 +7,72 @@ export const getDependencyValueExpression = (dependency: Dependency): ts.Express
     const qualifiedBean = dependency.qualifiedBean;
     const qualifiedBeans = dependency.qualifiedBeans;
 
-    if (qualifiedBeans === null) {
-        if (qualifiedBean === null) {
-            return undefined;
+    //If qualifiedBeans are not null - that means that it's a collection
+    if (qualifiedBeans !== null) {
+        if (dependency.diType.isArray) {
+            const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
+                return getBeanAccessExpression(qualifiedBean);
+            });
+
+            return factory.createArrayLiteralExpression(
+                callExpressionsForBeans,
+                false
+            );
         }
 
+        if (dependency.diType.isSet) {
+            const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
+                return getBeanAccessExpression(qualifiedBean);
+            });
+
+            return factory.createCallExpression(
+                factory.createPropertyAccessExpression(
+                    InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
+                    factory.createIdentifier('createSet')
+                ),
+                undefined,
+                [factory.createArrayLiteralExpression(
+                    callExpressionsForBeans,
+                    false
+                )]
+            );
+        }
+
+        if (dependency.diType.isMapStringToAny) {
+            const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
+                return factory.createArrayLiteralExpression(
+                    [
+                        factory.createStringLiteral(qualifiedBean.fullName),
+                        getBeanAccessExpression(qualifiedBean)
+                    ],
+                    false
+                );
+            });
+
+            return factory.createCallExpression(
+                factory.createPropertyAccessExpression(
+                    InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
+                    factory.createIdentifier('createMap')
+                ),
+                undefined,
+                [factory.createArrayLiteralExpression(
+                    callExpressionsForBeans,
+                    false
+                )]
+            );
+        }
+    }
+
+    if (qualifiedBean !== null) {
         return getBeanAccessExpression(qualifiedBean);
     }
 
-    if (dependency.diType.isVoidUndefinedPlainUnionIntersection) {
+    if (dependency.diType.isOptionalUndefined || dependency.diType.isVoidUndefinedPlainUnionIntersection) {
         return factory.createIdentifier('undefined');
     }
 
-    if (dependency.diType.isNull) {
+    if (dependency.diType.isOptionalNull || dependency.diType.isNull) {
         return factory.createNull();
-    }
-
-    if (dependency.diType.isArray) {
-        const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
-            return getBeanAccessExpression(qualifiedBean);
-        });
-
-        return factory.createArrayLiteralExpression(
-            callExpressionsForBeans,
-            false
-        );
-    }
-
-    if (dependency.diType.isSet) {
-        const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
-            return getBeanAccessExpression(qualifiedBean);
-        });
-
-        return factory.createCallExpression(
-            factory.createPropertyAccessExpression(
-                InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
-                factory.createIdentifier('createSet')
-            ),
-            undefined,
-            [factory.createArrayLiteralExpression(
-                callExpressionsForBeans,
-                false
-            )]
-        );
-    }
-
-    if (dependency.diType.isMapStringToAny) {
-        const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
-            return factory.createArrayLiteralExpression(
-                [
-                    factory.createStringLiteral(qualifiedBean.fullName),
-                    getBeanAccessExpression(qualifiedBean)
-                ],
-                false
-            );
-        });
-
-        return factory.createCallExpression(
-            factory.createPropertyAccessExpression(
-                InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
-                factory.createIdentifier('createMap')
-            ),
-            undefined,
-            [factory.createArrayLiteralExpression(
-                callExpressionsForBeans,
-                false
-            )]
-        );
     }
 
     return undefined;

@@ -25,7 +25,7 @@ class MyContext extends CatContext {
         console.log('context beforeDestruct');
     }
 
-    @Scope('prototype')
+    @Scope('singleton')
     @Lazy(true)
         myClass = Bean(MyClass);
 }
