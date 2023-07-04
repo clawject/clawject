@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { Component } from '../component/Component';
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
 import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
-import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
@@ -10,6 +10,8 @@ import { getNameFromNodeOrNull } from '../ts/utils/getNameFromNodeOrNull';
 import { ComponentLifecycle } from '../component-lifecycle/ComponentLifecycle';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { IncorrectArgumentsLengthError } from '../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
+import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
+import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 //TODO verify decorators
 export function processLifecycleElement(node: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer, component: Component): ts.ClassElement {
@@ -18,14 +20,15 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
 
     const lifecycles = new Set<LifecycleKind>();
 
-    elementDecorators.forEach(it => {
-        if (isDecoratorFromLibrary(it, 'PostConstruct')) {
-            lifecycles.add(LifecycleKind.POST_CONSTRUCT);
-        }
-        if (isDecoratorFromLibrary(it, 'BeforeDestruct')) {
-            lifecycles.add(LifecycleKind.BEFORE_DESTRUCT);
-        }
-    });
+    const postConstructDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.PostConstruct);
+    const beforeDestructDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.BeforeDestruct);
+
+    if (postConstructDecoratorMetadata !== null) {
+        lifecycles.add(LifecycleKind.POST_CONSTRUCT);
+    }
+    if (beforeDestructDecoratorMetadata !== null) {
+        lifecycles.add(LifecycleKind.BEFORE_DESTRUCT);
+    }
 
     if (lifecycles.size === 0) {
         return node;

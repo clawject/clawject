@@ -48,6 +48,8 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
     };
 };
 
+
+//For webpack + ts-loader
 export const ClawjectTransformer = (programGetter: () => ts.Program): ts.TransformerFactory<ts.SourceFile> => {
     const target = {} as ts.Program;
 

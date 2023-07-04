@@ -1,7 +1,7 @@
 import ts, { factory } from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { isLifecycleMethodBean } from '../ts/predicates/isLifecycleMethodBean';
-import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
 import { ComponentRepository } from '../component/ComponentRepository';
 import { Component } from '../component/Component';

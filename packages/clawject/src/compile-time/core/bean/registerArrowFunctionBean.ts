@@ -6,8 +6,8 @@ import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { getBeanLazyExpression } from '../ts/bean-info/getBeanLazyExpression';
-import { getBeanScopeExpression } from '../ts/bean-info/getBeanScopeExpression';
+import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
+import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 
 export const registerArrowFunctionBean = (
     configuration: Configuration,
@@ -35,7 +35,7 @@ export const registerArrowFunctionBean = (
         node: classElement,
         kind: BeanKind.ARROW_FUNCTION,
     });
-    contextBean.lazyExpression.node = getBeanLazyExpression(contextBean);
-    contextBean.scopeExpression.node = getBeanScopeExpression(contextBean);
+    contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
+    contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
     configuration.beanRegister.register(contextBean);
 };

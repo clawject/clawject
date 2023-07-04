@@ -2,13 +2,15 @@ import ts from 'typescript';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
-import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
+import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
+import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 export const registerLifecycleBean = (
     configuration: Configuration,
@@ -25,14 +27,15 @@ export const registerLifecycleBean = (
     }
 
     const lifecycles = new Set<LifecycleKind>();
-    getDecoratorsOnly(classElement).forEach(it => {
-        if (isDecoratorFromLibrary(it, 'PostConstruct')) {
-            lifecycles.add(LifecycleKind.POST_CONSTRUCT);
-        }
-        if (isDecoratorFromLibrary(it, 'BeforeDestruct')) {
-            lifecycles.add(LifecycleKind.BEFORE_DESTRUCT);
-        }
-    });
+    const postConstructMetadata = extractDecoratorMetadata(classElement, DecoratorKind.PostConstruct);
+    const beforeDestructMetadata = extractDecoratorMetadata(classElement, DecoratorKind.BeforeDestruct);
+
+    if (postConstructMetadata !== null) {
+        lifecycles.add(LifecycleKind.POST_CONSTRUCT);
+    }
+    if (beforeDestructMetadata !== null) {
+        lifecycles.add(LifecycleKind.BEFORE_DESTRUCT);
+    }
 
     if (lifecycles.size === 0) {
         return;

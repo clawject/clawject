@@ -1,12 +1,13 @@
 import ts from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
-import { isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { processConfigurationClass } from './configuration/processConfigurationClass';
 import { processComponent } from '../component/processComponent';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { registerEntrypoint } from './entrypoint/registerEntrypoint';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
+import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
     //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
@@ -28,8 +29,8 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
 
         const classDecorators = getDecoratorsOnly(statement);
 
-        const isComponent = classDecorators.some(it => isDecoratorFromLibrary(it, 'Component'));
-        const isConfiguration = classDecorators.some(it => isDecoratorFromLibrary(it, 'Configuration'));
+        const isComponent = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Component));
+        const isConfiguration = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Configuration));
 
         if (isComponent && isConfiguration) {
             compilationContext.report(new NotSupportedError(

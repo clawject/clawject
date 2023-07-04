@@ -18,21 +18,27 @@ export function registerBeans(configuration: Configuration): void {
     configuration.node.members.forEach((classElement) => {
         if (isMethodBean(classElement)) {
             registerMethodBean(configuration, classElement);
+            return;
         }
         if (isClassPropertyBean(classElement)) {
             registerPropertyBean(configuration, classElement);
+            return;
         }
         if (isArrowFunctionBean(configuration, classElement)) {
             registerArrowFunctionBean(configuration, classElement);
+            return;
         }
         if (isExpressionBean(configuration, classElement)) {
             registerExpressionBean(configuration, classElement);
+            return;
         }
         if (isEmbeddedBean(configuration, classElement)) {
             registerEmbeddedBean(configuration, classElement);
+            return;
         }
         if (isLifecycleMethodBean(classElement) || isLifecycleArrowFunctionBean(classElement)) {
             registerLifecycleBean(configuration, classElement);
+            return;
         }
     });
 

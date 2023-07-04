@@ -1,6 +1,6 @@
 import ts, { factory } from 'typescript';
 import { AutowiredElement } from '../../../autowired/AutowiredElement';
-import { isDecoratorFromLibrary } from '../../../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../../../decorator-processor/isDecoratorFromLibrary';
 import { InternalsAccessBuilder } from '../../../internals-access/InternalsAccessBuilder';
 
 export const transformAutowiredMember = (autowired: AutowiredElement, node: ts.ClassElement): ts.ClassElement => {

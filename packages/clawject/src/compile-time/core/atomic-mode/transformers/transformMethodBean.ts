@@ -1,7 +1,7 @@
 import ts, { factory } from 'typescript';
 import { Bean } from '../../bean/Bean';
 import { getDependenciesVariables } from './getDependenciesVariables';
-import { isDecoratorFromLibrary } from '../../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
 export const transformMethodBean = (bean: Bean<ts.MethodDeclaration>): ts.MethodDeclaration => {
     const nodeBody = bean.node.body ?? factory.createBlock([]);

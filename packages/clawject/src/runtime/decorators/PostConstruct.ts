@@ -1,5 +1,7 @@
 import { ErrorBuilder } from '../ErrorBuilder';
+import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
-export const PostConstruct: PropertyDecorator & MethodDecorator = () => {
+type PostConstructTarget = PropertyDecorator & MethodDecorator;
+export const PostConstruct: DecoratorWithoutArguments<PostConstructTarget> = () => {
     throw ErrorBuilder.usageWithoutConfiguredDI('@PostConstruct');
 };

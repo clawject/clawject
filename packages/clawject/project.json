@@ -12,6 +12,7 @@
           "rm -rf dist",
           "rm -rf ../../dist/packages/clawject",
           "tsc --p tsconfig.lib.json",
+          "yarn run copyfiles -u 1 src/**/*.csv dist/packages/clawject/src",
           "yarn run dts-bundle-generator --o dist/packages/clawject/src/index.d.ts --no-check --no-banner ./src/index.ts",
           "yarn run dts-bundle-generator --o dist/packages/clawject/src/runtime/___INTERNAL___.d.ts --no-check --no-banner ./src/runtime/___INTERNAL___.ts",
           "yarn run dts-bundle-generator --o dist/packages/clawject/src/webpack/index.d.ts --no-check --no-banner ./src/webpack/index.ts",

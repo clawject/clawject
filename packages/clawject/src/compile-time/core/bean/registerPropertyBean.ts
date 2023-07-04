@@ -10,8 +10,8 @@ import { DependencyResolvingError } from '../../compilation-context/messages/err
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { DIType } from '../type-system/DIType';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { getBeanLazyExpression } from '../ts/bean-info/getBeanLazyExpression';
-import { getBeanScopeExpression } from '../ts/bean-info/getBeanScopeExpression';
+import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
+import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 
 export const registerPropertyBean = (
     configuration: Configuration,
@@ -77,7 +77,7 @@ export const registerPropertyBean = (
         kind: BeanKind.PROPERTY,
         classDeclaration: classDeclaration,
     });
-    contextBean.lazyExpression.node = getBeanLazyExpression(contextBean);
-    contextBean.scopeExpression.node = getBeanScopeExpression(contextBean);
+    contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
+    contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
     configuration.beanRegister.register(contextBean);
 };

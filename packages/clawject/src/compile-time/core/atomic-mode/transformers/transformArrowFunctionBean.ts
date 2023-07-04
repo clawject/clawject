@@ -3,7 +3,7 @@ import { ClassPropertyWithArrowFunctionInitializer } from '../../ts/types';
 import { Bean } from '../../bean/Bean';
 import { unwrapExpressionFromRoundBrackets } from '../../ts/utils/unwrapExpressionFromRoundBrackets';
 import { getDependenciesVariables } from './getDependenciesVariables';
-import { isDecoratorFromLibrary } from '../../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
 export const transformArrowFunctionBean = (bean: Bean<ClassPropertyWithArrowFunctionInitializer>): ts.PropertyDeclaration => {
     const newArrowFunction = getTransformedArrowFunction(bean);

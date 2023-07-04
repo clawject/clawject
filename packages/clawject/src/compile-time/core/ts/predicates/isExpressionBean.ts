@@ -1,9 +1,8 @@
 import ts, { PropertyDeclaration } from 'typescript';
-import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
-import { isClassPropertyBean } from './isClassPropertyBean';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
-import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { Configuration } from '../../configuration/Configuration';
+import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
+import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 
 export const isExpressionBean = (
@@ -11,16 +10,13 @@ export const isExpressionBean = (
     node: ts.Node
 ): node is PropertyDeclaration => {
     const compilationContext = getCompilationContext();
-
-    if (isClassPropertyBean(node)) {
-        return false;
-    }
-
     if (!ts.isPropertyDeclaration(node)) {
         return false;
     }
 
-    if (!getDecoratorsOnly(node).some(it => isDecoratorFromLibrary(it, 'Bean'))) {
+    const decoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Bean);
+
+    if (decoratorMetadata === null) {
         return false;
     }
 

@@ -1,0 +1,4 @@
+,Autowired,Bean,BeforeDestruct,Component,Configuration,EmbeddedBean,Lazy,PostConstruct,Scope
+Class,no,no,no,yes,yes,no,yes,no,yes
+ClassProperty,yes,yes,no,no,no,yes,yes,no,yes
+ClassFunction,no,yes,yes,no,no,no,yes,yes,yes

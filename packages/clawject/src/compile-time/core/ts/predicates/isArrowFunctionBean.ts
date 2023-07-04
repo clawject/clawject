@@ -1,11 +1,11 @@
 import ts from 'typescript';
 import { ClassPropertyWithArrowFunctionInitializer } from '../types';
-import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
-import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { Configuration } from '../../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { getCompilationContext } from '../../../../transformer/getCompilationContext';
+import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
+import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 
 export const isArrowFunctionBean = (
     configuration: Configuration,
@@ -17,7 +17,9 @@ export const isArrowFunctionBean = (
         return false;
     }
 
-    if (!getDecoratorsOnly(node).some(it => isDecoratorFromLibrary(it, 'Bean'))) {
+    const decoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Bean);
+
+    if (decoratorMetadata === null) {
         return false;
     }
 

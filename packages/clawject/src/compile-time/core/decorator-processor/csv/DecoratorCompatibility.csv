@@ -1,0 +1,10 @@
+,Autowired,Bean,BeforeDestruct,Component,Configuration,EmbeddedBean,Lazy,PostConstruct,Scope
+Autowired,yes,no,no,no,no,no,yes,no,no
+Bean,no,yes,no,no,no,no,yes,no,yes
+BeforeDestruct,no,no,yes,no,no,no,no,yes,no
+Component,no,no,no,yes,no,no,yes,no,yes
+Configuration,no,no,no,no,yes,no,yes,no,yes
+EmbeddedBean,no,no,no,no,no,yes,no,no,no
+Lazy,yes,yes,no,yes,yes,no,yes,no,yes
+PostConstruct,no,no,yes,no,no,no,no,yes,no
+Scope,no,yes,no,yes,yes,no,yes,no,yes

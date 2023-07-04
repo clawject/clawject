@@ -1,6 +1,7 @@
 import { ErrorBuilder } from '../ErrorBuilder';
+import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
-type LazyWithValue = (this: void, value?: boolean) => PropertyDecorator & MethodDecorator;
-export const Lazy: PropertyDecorator & MethodDecorator & LazyWithValue = () => {
+type LazyTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
+export const Lazy: DecoratorWithoutArguments<LazyTarget> & ((value?: boolean) => LazyTarget) = () => {
     throw ErrorBuilder.usageWithoutConfiguredDI('@Lazy');
 };

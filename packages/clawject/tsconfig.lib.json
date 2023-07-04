@@ -4,7 +4,7 @@
     "outDir": "dist",
     "declaration": false,
     "sourceMap": false,
-    "types": ["node", "ts-expose-internals"],
+    "types": ["node", "ts-expose-internals"]
   },
   "include": ["src/**/*"],
   "exclude": [

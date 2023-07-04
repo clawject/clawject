@@ -1,10 +1,10 @@
 import ts from 'typescript';
-import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
-import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
 import { ClassPropertyWithArrowFunctionInitializer } from '../types';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { getCompilationContext } from '../../../../transformer/getCompilationContext';
+import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
+import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 
 export const isLifecycleArrowFunctionBean = (
     node: ts.Node
@@ -14,10 +14,7 @@ export const isLifecycleArrowFunctionBean = (
         return false;
     }
 
-    const decorators = getDecoratorsOnly(node);
-    const hasLifecycleDecorator = decorators.some(it => {
-        return isDecoratorFromLibrary(it, 'PostConstruct') || isDecoratorFromLibrary(it, 'BeforeDestruct');
-    });
+    const hasLifecycleDecorator = extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.BeforeDestruct) !== null;
 
     if (!hasLifecycleDecorator) {
         return false;

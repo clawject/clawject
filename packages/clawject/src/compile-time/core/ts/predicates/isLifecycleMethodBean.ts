@@ -1,9 +1,8 @@
 import ts from 'typescript';
-import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
-import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
+import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
+import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 
 export const isLifecycleMethodBean = (node: ts.Node): node is ts.MethodDeclaration =>
-    ts.isMethodDeclaration(node) &&
-    getDecoratorsOnly(node).some(it => {
-        return isDecoratorFromLibrary(it, 'PostConstruct') || isDecoratorFromLibrary(it, 'BeforeDestruct');
-    });
+    ts.isMethodDeclaration(node) && (
+        extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.BeforeDestruct) !== null
+    );

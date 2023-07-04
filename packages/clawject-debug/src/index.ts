@@ -1,5 +1,4 @@
-import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruct } from 'clawject';
-import * as process from 'process';
+import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruct, Lazy } from 'clawject';
 
 class MyClass {
     @PostConstruct
@@ -26,7 +25,8 @@ class MyContext extends CatContext {
         console.log('context beforeDestruct');
     }
 
-    @Scope('singleton')
+    @Scope('prototype')
+    @Lazy(true)
         myClass = Bean(MyClass);
 }
 

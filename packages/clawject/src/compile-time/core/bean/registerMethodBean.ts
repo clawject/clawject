@@ -6,8 +6,8 @@ import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { getBeanLazyExpression } from '../ts/bean-info/getBeanLazyExpression';
-import { getBeanScopeExpression } from '../ts/bean-info/getBeanScopeExpression';
+import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
+import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 
 export const registerMethodBean = (
     configuration: Configuration,
@@ -44,7 +44,7 @@ export const registerMethodBean = (
         node: classElement,
         kind: BeanKind.METHOD,
     });
-    contextBean.lazyExpression.node = getBeanLazyExpression(contextBean);
-    contextBean.scopeExpression.node = getBeanScopeExpression(contextBean);
+    contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
+    contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
     configuration.beanRegister.register(contextBean);
 };

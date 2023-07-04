@@ -3,13 +3,14 @@ import { DITypeFlag } from '../type-system/DITypeFlag';
 import { Configuration } from '../configuration/Configuration';
 import { BeanKind } from './BeanKind';
 import { Bean } from './Bean';
-import { Decorators, isDecoratorFromLibrary } from '../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { DecoratorsCountError } from '../../compilation-context/messages/errors/DecoratorsCountError';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import ts from 'typescript';
 import chalk from 'chalk';
+import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 const UNSUPPORTED_TYPES = new Set([
     DITypeFlag.UNSUPPORTED,
@@ -101,29 +102,29 @@ function verifyDecoratorsCount(bean: Bean): void {
     case BeanKind.PROPERTY:
     case BeanKind.ARROW_FUNCTION:
     case BeanKind.EXPRESSION:
-        verifyDecoratorsCountOnBean(bean, 'Bean', 1);
-        verifyDecoratorsCountOnBean(bean, 'EmbeddedBean', 0);
-        verifyDecoratorsCountOnBean(bean, 'PostConstruct', 0);
-        verifyDecoratorsCountOnBean(bean, 'BeforeDestruct', 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.Bean, 1);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.EmbeddedBean, 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.PostConstruct, 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.BeforeDestruct, 0);
         break;
 
     case BeanKind.EMBEDDED:
-        verifyDecoratorsCountOnBean(bean, 'EmbeddedBean', 1);
-        verifyDecoratorsCountOnBean(bean, 'Bean', 0);
-        verifyDecoratorsCountOnBean(bean, 'PostConstruct', 0);
-        verifyDecoratorsCountOnBean(bean, 'BeforeDestruct', 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.EmbeddedBean, 1);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.Bean, 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.PostConstruct, 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.BeforeDestruct, 0);
         break;
     case BeanKind.LIFECYCLE_METHOD:
     case BeanKind.LIFECYCLE_ARROW_FUNCTION:
-        verifyDecoratorsCountOnBean(bean, 'PostConstruct', 1);
-        verifyDecoratorsCountOnBean(bean, 'BeforeDestruct', 1);
-        verifyDecoratorsCountOnBean(bean, 'EmbeddedBean', 0);
-        verifyDecoratorsCountOnBean(bean, 'Bean', 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.PostConstruct, 1);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.BeforeDestruct, 1);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.EmbeddedBean, 0);
+        verifyDecoratorsCountOnBean(bean, DecoratorKind.Bean, 0);
         break;
     }
 }
 
-function verifyDecoratorsCountOnBean(bean: Bean, decorator: Decorators, expectedCount: number): void {
+function verifyDecoratorsCountOnBean(bean: Bean, decorator: DecoratorKind, expectedCount: number): void {
     const compilationContext = getCompilationContext();
     const decorators = bean.node.modifiers?.filter(it => isDecoratorFromLibrary(it, decorator));
 

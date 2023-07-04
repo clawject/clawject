@@ -4,7 +4,7 @@ import { ClassPropertyWithCallExpressionInitializer } from '../../ts/types';
 import { Bean } from '../../bean/Bean';
 import { unwrapExpressionFromRoundBrackets } from '../../ts/utils/unwrapExpressionFromRoundBrackets';
 import { getDependencyValueExpression } from './getDependencyValueExpression';
-import { isDecoratorFromLibrary } from '../../ts/predicates/isDecoratorFromLibrary';
+import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
 export const transformPropertyBean = (bean: Bean<ClassPropertyWithCallExpressionInitializer>): ts.MethodDeclaration => {
     return factory.createMethodDeclaration(

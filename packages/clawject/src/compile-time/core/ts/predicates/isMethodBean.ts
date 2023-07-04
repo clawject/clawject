@@ -1,6 +1,7 @@
 import ts from 'typescript';
-import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
-import { getDecoratorsOnly } from '../utils/getDecoratorsOnly';
+import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
+import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
 
-export const isMethodBean = (node: ts.Node): node is ts.MethodDeclaration =>
-    ts.isMethodDeclaration(node) && Boolean(getDecoratorsOnly(node).some(it => isDecoratorFromLibrary(it, 'Bean')));
+export const isMethodBean = (node: ts.Node): node is ts.MethodDeclaration => {
+    return ts.isMethodDeclaration(node) && extractDecoratorMetadata(node, DecoratorKind.Bean) !== null;
+};
