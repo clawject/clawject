@@ -4,7 +4,7 @@
   "type": "commonjs",
   "scripts": {
     "run:upgradeClawject": "yarn upgrade clawject",
-    "run:ttsc_debug": "cross-env CLAWJECT_DEBUG_MODE=true ttsc",
+    "run:ttsc_debug": "cross-env CLAWJECT_DEBUG_MODE=true ttsc -w",
     "run:node_debug": "node dist/packages/clawject-debug/src/index.js",
     "run:webpack_hot": "webpack serve --config webpack.config.ts --mode development",
     "run:webpack_prod": "webpack --config webpack.config.ts --mode production"

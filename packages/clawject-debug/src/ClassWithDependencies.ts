@@ -4,7 +4,6 @@ export class ClassWithDependencies {
         public b: string,
         public c: string,
         public d: string,
-    ) {
-
-    }
+        public e: string,
+    ) {}
 }

@@ -1,48 +1,13 @@
 import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruct, Lazy, Embedded } from 'clawject';
+import { IMyContext } from './IMyContext';
+import { ClassWithDependencies } from './ClassWithDependencies';
 
-class MyClass {
-    @PostConstruct
-    postConstruct(): void {
-        console.log('class postConstruct');
-    }
+class MyContext extends CatContext<IMyContext> {
+    @Bean a = 'string1';
+    @Bean b = 1;
 
-    @BeforeDestruct
-    beforeDestruct(): void {
-        console.log('class beforeDestruct');
-    }
+    classWithDependencies = Bean(ClassWithDependencies);
 }
 
-interface MyEmbedded {
-    foo: string;
-    bar: number;
-}
-
-class A<T> {
-    declare data: T;
-}
-
-type MyType = Array<string>
-
-class MyContext extends CatContext {
-    @Bean str1 = 'str1';
-    @Bean str2 = 'str2';
-
-    @PostConstruct
-    postConstruct(
-        any: MyType,
-    ) {
-        console.log('context postConstruct');
-    }
-
-    @BeforeDestruct
-    beforeDestruct() {
-        console.log('context beforeDestruct');
-    }
-
-    @Scope('singleton')
-    @Lazy(true)
-        myClass = Bean(MyClass);
-}
-
-ContainerManager.clear(MyContext);
+console.log(ContainerManager.init(MyContext).getBeans());
 

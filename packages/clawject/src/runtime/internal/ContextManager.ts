@@ -96,6 +96,8 @@ export class ContextManager {
         ));
 
         this.postConstruct(instance);
+
+        return instance;
     }
 
     public getInstanceOrInstantiate(key: any, config: any): CatContext {
