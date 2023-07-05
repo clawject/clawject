@@ -1,16 +1,12 @@
 import { IncorrectTypeError } from '../../compilation-context/messages/errors/IncorrectTypeError';
 import { DITypeFlag } from '../type-system/DITypeFlag';
 import { Configuration } from '../configuration/Configuration';
-import { BeanKind } from './BeanKind';
 import { Bean } from './Bean';
-import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
-import { DecoratorsCountError } from '../../compilation-context/messages/errors/DecoratorsCountError';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import ts from 'typescript';
 import chalk from 'chalk';
-import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 const UNSUPPORTED_TYPES = new Set([
     DITypeFlag.UNSUPPORTED,
@@ -28,11 +24,15 @@ export const verifyBeans = (configuration: Configuration): void => {
     const beans = configuration.beanRegister.elements;
 
     beans.forEach(bean => {
-        verifyAllowedBeanKinds(bean);
         verifyBeanType(bean);
-        verifyDecoratorsCount(bean);
         verifyName(bean);
         verifyModifiers(bean);
+
+        bean.nestedBeans.forEach(nestedBean => {
+            verifyBeanType(nestedBean);
+            verifyName(nestedBean);
+            verifyModifiers(nestedBean);
+        });
     });
 };
 
@@ -55,36 +55,6 @@ function verifyBeanType(bean: Bean): void {
         return;
     }
 
-    if (bean.diType.isArray) {
-        compilationContext.report(new IncorrectTypeError(
-            'Array type is not supported as a Bean type.',
-            bean.node,
-            parentConfiguration.node,
-        ));
-        parentConfiguration.beanRegister.deregister(bean);
-        return;
-    }
-
-    if (bean.diType.isMapStringToAny) {
-        compilationContext.report(new IncorrectTypeError(
-            'Map<string, any> type is not supported as a Bean type.',
-            bean.node,
-            parentConfiguration.node,
-        ));
-        parentConfiguration.beanRegister.deregister(bean);
-        return;
-    }
-
-    if (bean.diType.isSet) {
-        compilationContext.report(new IncorrectTypeError(
-            'Set type is not supported as a Bean type.',
-            bean.node,
-            parentConfiguration.node,
-        ));
-        parentConfiguration.beanRegister.deregister(bean);
-        return;
-    }
-
     if (UNSUPPORTED_TYPES.has(bean.diType.typeFlag)) {
         compilationContext.report(new IncorrectTypeError(
             'Unsupported type for Bean.',
@@ -96,64 +66,6 @@ function verifyBeanType(bean: Bean): void {
     }
 }
 
-function verifyDecoratorsCount(bean: Bean): void {
-    switch (bean.kind) {
-    case BeanKind.METHOD:
-    case BeanKind.PROPERTY:
-    case BeanKind.ARROW_FUNCTION:
-    case BeanKind.EXPRESSION:
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.Bean, 1);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.EmbeddedBean, 0);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.PostConstruct, 0);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.BeforeDestruct, 0);
-        break;
-
-    case BeanKind.EMBEDDED:
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.EmbeddedBean, 1);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.Bean, 0);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.PostConstruct, 0);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.BeforeDestruct, 0);
-        break;
-    case BeanKind.LIFECYCLE_METHOD:
-    case BeanKind.LIFECYCLE_ARROW_FUNCTION:
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.PostConstruct, 1);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.BeforeDestruct, 1);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.EmbeddedBean, 0);
-        verifyDecoratorsCountOnBean(bean, DecoratorKind.Bean, 0);
-        break;
-    }
-}
-
-function verifyDecoratorsCountOnBean(bean: Bean, decorator: DecoratorKind, expectedCount: number): void {
-    const compilationContext = getCompilationContext();
-    const decorators = bean.node.modifiers?.filter(it => isDecoratorFromLibrary(it, decorator));
-
-    if (!decorators) {
-        return;
-    }
-
-    if (decorators.length > expectedCount) {
-        compilationContext.report(new DecoratorsCountError(
-            `${decorator} was used ${decorators.length} times, but expected ${expectedCount}.`,
-            decorators?.[0] ?? bean.node,
-            bean.parentConfiguration.node,
-        ));
-        bean.parentConfiguration.beanRegister.deregister(bean);
-    }
-}
-
-function verifyAllowedBeanKinds(bean: Bean): void {
-    const compilationContext = getCompilationContext();
-
-    if (!bean.parentConfiguration.allowedBeanKinds.has(bean.kind)) {
-        compilationContext.report(new NotSupportedError(
-            'Bean',
-            bean.node,
-            bean.parentConfiguration.node
-        ));
-        bean.parentConfiguration.beanRegister.deregister(bean);
-    }
-}
 
 function verifyName(bean: Bean): void {
     const compilationContext = getCompilationContext();

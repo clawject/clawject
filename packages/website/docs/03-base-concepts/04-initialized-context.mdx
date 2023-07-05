@@ -1,0 +1,74 @@
+---
+title: InitializedContext
+id: initialized-context
+---
+
+<hr/> 
+
+## Overview
+
+InitializedContext is an object that is returned from `ContainerManager.init/getOrInit/get` methods.
+You can use to access public beans in context, or to retrieve Map of all beans in context.
+
+## Methods overview
+
+### `InitializedContext.getBean`
+Returns external bean that is defined in `ExternalBeans` interface by name.
+
+```typescript
+import { CatContext, ContainerManager, Bean } from 'clawject';
+
+interface MyExternalBeans {
+    foo: string;
+}
+
+class MyContext extends CatContext<MyExternalBeans> { 
+    @Bean foo = 'fooValue';
+}
+
+const myContext = ContainerManager.init(MyContext);
+
+console.log(myContext.getBean('foo')) // <-- Will print "fooValue"
+```
+
+### `InitializedContext.getBeans`
+
+Returns `ExternalBeans`.
+
+```typescript
+import { CatContext, ContainerManager, Bean } from 'clawject';
+
+interface MyExternalBeans {
+    foo: string;
+}
+
+class MyContext extends CatContext<MyExternalBeans> { 
+    @Bean foo = 'fooValue';
+}
+
+const myContext = ContainerManager.init(MyContext);
+
+console.log(myContext.getBeans()) // <-- Will print "{ foo: 'fooValue' }"
+```
+
+### `InitializedContext.getAllBeans`
+
+Returns `Map<string, unknown>` where `string` is bean name, and `unknown` is bean value.
+
+```typescript
+import { CatContext, ContainerManager, Bean } from 'clawject';
+
+interface MyExternalBeans {
+    foo: string;
+}
+
+class MyContext extends CatContext<MyExternalBeans> { 
+    @Bean foo = 'fooValue';
+}
+
+const myContext = ContainerManager.init(MyContext);
+
+myContext.getAllBeans().forEach((value, name) => {
+    console.log(name, value) // <-- Will print "foo fooValue"
+});
+```

@@ -4,7 +4,7 @@ export enum DecoratorKind {
     BeforeDestruct = 'BeforeDestruct',
     Component = 'Component',
     Configuration = 'Configuration',
-    EmbeddedBean = 'EmbeddedBean',
+    Embedded = 'Embedded',
     Lazy = 'Lazy',
     PostConstruct = 'PostConstruct',
     Scope = 'Scope',

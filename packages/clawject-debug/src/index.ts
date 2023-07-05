@@ -1,4 +1,4 @@
-import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruct, Lazy } from 'clawject';
+import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruct, Lazy, Embedded } from 'clawject';
 
 class MyClass {
     @PostConstruct
@@ -12,10 +12,24 @@ class MyClass {
     }
 }
 
+interface MyEmbedded {
+    foo: string;
+    bar: number;
+}
+
+class A<T> {
+    declare data: T;
+}
+
+type MyType = Array<string>
+
 class MyContext extends CatContext {
+    @Bean str1 = 'str1';
+    @Bean str2 = 'str2';
+
     @PostConstruct
     postConstruct(
-        myClass1: MyClass,
+        any: MyType,
     ) {
         console.log('context postConstruct');
     }
@@ -30,6 +44,5 @@ class MyContext extends CatContext {
         myClass = Bean(MyClass);
 }
 
-ContainerManager.init(MyContext);
 ContainerManager.clear(MyContext);
 

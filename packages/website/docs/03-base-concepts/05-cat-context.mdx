@@ -1,0 +1,78 @@
+---
+title: CatContext
+id: cat-context
+---
+
+## Overview
+
+CatContext is a class that represents the IoC container.
+The container is responsible for instantiating, configuring and assembling objects known as Beans and managing their life cycles.
+
+CatContext it's an abstract class that can be extended to create a custom container.
+
+## Usage
+To define container, you need to create a class that extends CatContext.
+
+```typescript
+import { CatContext } from 'clawject';
+
+export class MyContext extends CatContext {}
+```
+
+To init container, you need to use ContainerManager interface and pass class to the init method.
+
+```typescript
+import { ContainerManager } from 'clawject'; 
+
+ContainerManager.init(MyContext);
+```
+
+## Defining external Beans
+
+If you need to receive some Beans outside of context -
+you can do it by specifying the first generic argument in `CatContext`.
+
+```typescript
+import { Bean, CatContext, ContainerManager } from 'clawject'; 
+
+interface MyExternalBeans {
+  foo: string;
+}
+
+class MyContext extends CatContext<MyExternalBeans> {
+    @Bean foo = 'fooValue'
+ }
+
+const foo = ContainerManager.init(MyContext).getBeans().foo;
+
+console.log(foo); // <-- Will print "fooValue"
+```
+
+CatContext will validate is all external beans with applicable types are provided,
+and if not - compile-time error will be reported.
+
+ExternalBeans type should always be object-like and with statically known members.
+
+## Passing external configuration
+
+If you need to pass some additional information externally -
+you can do it by specifying the second generic argument in `CatContext`.
+
+Config is available via protected getter `config`.
+
+```typescript
+import { CatContext, ContainerManager, PostConstruct } from 'clawject'; 
+
+interface MyConfig {
+  foo: string;
+}
+
+class MyContext extends CatContext<{}, MyConfig> {
+    @PostConstruct
+    postConstruct() {
+        console.log(this.config.foo); // <-- Will print "fooValue"
+    }
+ }
+
+ContainerManager.init(MyContext, { config: { foo: 'fooValue' } });
+```

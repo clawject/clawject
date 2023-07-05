@@ -120,19 +120,22 @@ class Foo {
 class ApplicationContext extends CatContext {
   foo = Bean(Foo)
   bar = Bean(Bar)
-  baz = Bean(Baz, { scope: 'prototype' })
+
+  @Scope('prototype')
+  baz = Bean(Baz)
 }
 ```
 
 ## Lazy Initialized Beans
 By default, the container creates and configures all singleton beans during initialization.
-To avoid this, we can use the ***lazy*** attribute with value **true** on the bean configuration level: 
+To avoid this, we can use the ***lazy*** decorator with on the bean configuration level: 
 
 **foo** bean will only be initialized when it's first requested, and not at startup.
 
 ```ts
 class ApplicationContext extends CatContext {
-  foo = Bean(Foo, { lazy: true })
+  @Lazy
+  foo = Bean(Foo)
 }
 ```
 

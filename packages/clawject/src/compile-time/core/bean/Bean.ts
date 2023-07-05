@@ -32,6 +32,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
     lifecycle: LifecycleKind[] | null = null;
     public = false;
     dependencies = new Set<Dependency>();
+    nestedBeans = new Set<Bean>();
 
     scopeExpression = new DisposableNodeHolder<ts.Expression>();
     lazyExpression = new DisposableNodeHolder<ts.Expression>();

@@ -19,7 +19,12 @@ export const registerPropertyBean = (
 ): void => {
     const compilationContext = getCompilationContext();
 
-    const firstArgument = unwrapExpressionFromRoundBrackets(classElement.initializer).arguments[0];
+    let firstArgument = unwrapExpressionFromRoundBrackets(classElement.initializer).arguments[0];
+
+    if (ts.isExpressionWithTypeArguments(firstArgument)) {
+        firstArgument = unwrapExpressionFromRoundBrackets(firstArgument.expression);
+    }
+
     const nodeSourceDescriptors = getNodeSourceDescriptor(firstArgument);
 
     if (nodeSourceDescriptors === null) {

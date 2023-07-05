@@ -1,0 +1,130 @@
+---
+title: Declare Bean
+id: declare-bean
+---
+
+<hr />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## How to declare a Bean?
+
+There are a few ways to declare a Bean, let's explore all of them one by one.
+
+### Using `@Bean` decorator
+You can decorate property or method with `@Bean` decorator to declare a Bean.
+
+When you're decorating property that holds **arrow function** or **method** -
+it's your responsibility to provide return value for bean,
+if it's class - it should be instantiated, if it's some dynamic value — it should be provided.
+
+You can provide bean dependencies via function arguments by specifying an argument type.
+
+```typescript title="Declaring method and arrow function beans"
+class Foo {}
+
+class MyContext extends CatContext {
+    @Bean foo(): Foo {
+        return new Foo();
+    }
+    
+    @Bean fooClassName = (foo: Foo): string => foo.constructor.name;
+}
+```
+
+When your bean doesn't have any dependencies -
+you can just assign value to property decorated with `@Bean` decorator.
+
+```typescript title="Declaring bean without dependencies"
+class Foo {}
+
+class MyContext extends CatContext {
+    @Bean foo = new Foo();
+}
+```
+
+### Using `Bean` function
+It can be quite annoying to declare each dependency in method or arrow function for your class,
+especially when your class has a lot of dependencies because,
+if you're adding or removing a dependency, you need to change it in container level as well.
+To solve this inconvenience Clawject has `Bean` function that accepts class constructor,
+and automatically instantiate it with all needed dependencies.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="bean-function" label="Declaring bean with Bean function">
+```
+
+```ts
+class Bar {}
+class Baz {}
+
+class Foo {
+    constructor(
+        private dependency0: string,
+        private dependency1: number,
+        private dependency2: Bar,
+        private dependency3: Baz,
+    ) {}
+}
+
+class MyContext extends CatContext {
+    foo = Bean(Foo);
+
+    @Bean stringBean = 'dependency0';
+    @Bean numberBean = 1;
+    barBean = Bean(Bar);
+    bazBean = Bean(Baz);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="no-bean-function" label="Declaring bean with @Bean decorator and method">
+```
+
+```ts
+class Bar {}
+class Baz {}
+
+class Foo {
+    constructor(
+        private dependency0: string,
+        private dependency1: number,
+        private dependency2: Bar,
+        private dependency3: Baz,
+    ) {}
+}
+
+class MyContext extends CatContext {
+    @Bean foo(
+        dependency0: string,
+        dependency1: number,
+        dependency2: Bar,
+        dependency3: Baz,
+    ) {
+        return new Foo(
+            dependency0,
+            dependency1,
+            dependency2,
+            dependency3,
+        );
+    }
+
+    @Bean stringBean = 'dependency0';
+    @Bean numberBean = 1;
+    @Bean barBean(){
+        return new Bar(); 
+    } 
+    @Bean bazBean(){ 
+        return new Baz(); 
+    } 
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

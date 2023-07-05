@@ -1,0 +1,287 @@
+---
+title: Clawject type system
+id: clawject-type-system
+---
+
+<hr />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Clawject type system following a typescript type system as much as possible,
+but there is one major difference -
+TypeScript using
+[duck typing](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#structural-type-system),
+and Clawject using [nominal typing](https://en.wikipedia.org/wiki/Nominal_type_system).
+
+As an example - we have 2 classes `Cat` and `Dog`, both of them have the same properties and methods,
+if we will use `Cat` instead of `Dog` or vice versa -
+TypeScript will not complain about it.
+
+```typescript
+class Cat {
+    name = 'cat';
+    voice(): void {
+        console.log('meow');
+    }
+}
+
+class Dog {
+    name = 'dog';
+    voice(): void {
+        console.log('woof');
+    }
+}
+
+function meow(animal: Cat): void {
+    animal.voice();
+}
+
+const dog = new Dog();
+meow(dog); // <- TypeScript will not complain about it
+```
+
+Clawject will complain about it, and will report compile error about missing Bean declaration for `Cat`:
+
+```typescript
+class Cat {
+    name = 'cat';
+    voice(): void {
+        console.log('meow');
+    }
+}
+
+class Dog {
+    name = 'dog';
+    voice(): void {
+        console.log('woof');
+    }
+}
+
+class MyContext extends CatContext {
+    @PostConstruct
+    meow(animal: Cat): void {
+        animal.voice();
+    }
+
+    dog = Bean(Dog);
+}
+```
+
+## Primitive types
+Clawject supports all base types from TypeScript:
+ - `any | unknown`
+ - `void | undefined`
+ - `null`
+ - `string`
+ - `number`
+ - `boolean`
+ - `enum`
+ - `biging`
+
+Also - Clawject supports literal types, literal types are compatible with base types:
+ - string literal: `'string_literal'`
+ - number literal: `123`
+ - boolean literal: `true` or `false`
+ - enum literal: `MyEnum.FIRST`
+ - bigint literal: `42n`
+
+Let's look at the example:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="explicit-type" label="Explicit type declaration">
+```
+
+```ts
+class MyContext extends CatContext {
+    @Bean stringLiteral: 'string_literal' = 'string_literal';
+    @Bean numberLiteral: 42 = 42;
+    @Bean booleanLiteral: true = true;
+    @Bean enumLiteral: MyEnum.FIRST = MyEnum.FIRST;
+    @Bean bigintLiteral: 42n = 42n;
+    
+    @PostConstruct
+    postConstruct(
+        string: string, // <- stringLiteral bean will be injected here
+        number: number, // <- numberLiteral bean will be injected here
+        boolean: boolean, // <- booleanLiteral bean will be injected here
+        Enum: MyEnum, // <- enumLiteral bean will be injected here
+        bigint: bigint, // <- bigintLiteral bean will be injected here
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="compact-type" label="Compact type declaration">
+```
+
+```ts
+class MyContext extends CatContext {
+    @Bean stringLiteral = 'string_literal' as const;
+    @Bean numberLiteral = 42 as const;
+    @Bean booleanLiteral = true as const;
+    @Bean enumLiteral = MyEnum.FIRST as const;
+    @Bean bigintLiteral = 42n as const;
+    
+    @PostConstruct
+    postConstruct(
+        string: string, // <- stringLiteral bean will be injected here
+        number: number, // <- numberLiteral bean will be injected here
+        boolean: boolean, // <- booleanLiteral bean will be injected here
+        Enum: MyEnum, // <- enumLiteral bean will be injected here
+        bigint: bigint, // <- bigintLiteral bean will be injected here
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Object types
+Because Clawject is using nominal typing — it's relying on at type declaration name and place,
+so it's not possible to use anonymous types, but it's possible to use named types like `class`, `interface` or `type`:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="type-references" label="Using type references">
+```
+
+```ts
+class Foo {}
+interface Bar {}
+type Baz = {};
+
+class MyContext extends CatContext {
+    @Bean foo: Foo = new Foo();
+    @Bean bar: Bar = {};
+    @Bean baz: Baz = {};
+    
+    @PostConstruct
+    postConstruct(
+      dep0: Foo, // <- foo bean will be injected here  
+      dep1: Bar, // <- bar bean will be injected here  
+      dep2: Baz, // <- baz bean will be injected here  
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="type-literals" label="Using object-like literals">
+```
+
+```ts
+class MyContext extends CatContext {
+    @Bean foo: { bar: string } = { bar: 'barValue' };
+    
+    @PostConstruct
+    postConstruct(
+      // compilation error will be reported here, because structurally these types are identical,
+      // but they have different declarations
+      foo: { bar: string }, 
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Generic types
+Clawject has first-class support for generic types:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="string-generic" label="String generic">
+```
+
+```ts
+interface WithGeneric<T> {
+    value: T;
+}
+
+class MyContext extends CatContext {
+    @Bean withStringGeneric: WithGeneric<string> = { value: 'foo' };
+
+    @PostConstruct
+    postConstruct(
+        value: WithGeneric<string>,
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="string-literal-generic" label="String literal generic">
+```
+
+```ts
+interface WithGeneric<T> {
+    value: T;
+}
+
+class MyContext extends CatContext {
+    @Bean withStringGeneric: WithGeneric<'string_literal'> = { value: 'string_literal' };
+
+    @PostConstruct
+    postConstruct(
+        value: WithGeneric<'string_literal'>,
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="string-literal-generic-string" label="String literal generic with base string">
+```
+
+```ts
+interface WithGeneric<T> {
+    value: T;
+}
+
+class MyContext extends CatContext {
+    @Bean withStringGeneric: WithGeneric<'string_literal'> = { value: 'string_literal' };
+
+    @PostConstruct
+    postConstruct(
+        value: WithGeneric<string>,
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="string-literal-generic-any" label="String literal generic with any">
+```
+
+```ts
+interface WithGeneric<T> {
+    value: T;
+}
+
+class MyContext extends CatContext {
+    @Bean withStringGeneric: WithGeneric<'string_literal'> = { value: 'string_literal' };
+
+    @PostConstruct
+    postConstruct(
+        // "withStringGeneric" will be injected, because 'string_literal' is compatible with any
+        value: WithGeneric<any>,
+    ) {}
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

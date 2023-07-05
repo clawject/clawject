@@ -1,7 +1,6 @@
-export { Bean } from './Bean';
-export { BeforeDestruct } from './BeforeDesctruct';
-export { EmbeddedBean } from './EmbeddedBean';
-export { PostConstruct } from './PostConstruct';
-export { Lazy } from './Lazy';
-export { Scope } from './Scope';
-export { ScopeValue } from './Scope';
+export { Bean, BeanTarget } from './Bean';
+export { BeforeDestruct, BeforeDestructTarget } from './BeforeDesctruct';
+export { PostConstruct, PostConstructTarget } from './PostConstruct';
+export { Lazy, LazyTarget } from './Lazy';
+export { Scope, ScopeValue, ScopeTarget } from './Scope';
+export { Embedded, EmbeddedTarget } from './Embedded';

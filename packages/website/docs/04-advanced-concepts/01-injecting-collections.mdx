@@ -1,0 +1,245 @@
+---
+title: Inject Arrays and Collections
+---
+
+<hr />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Sometimes you need to inject an array or collection of beans into another bean,
+for example, when you need to inject listeners into a publisher, or caches into a cache manager.
+
+All arrays and collections that are injected are non-singletons, so mutating one of them will not affect other beans.
+
+Clawject has some reserved types for arrays and collections:
+  - array: `ReadonlyArray<any> | Array<any> | any[]`
+  - set: `ReadonlySet<any> | Set<any>`
+  - map: `ReadonlyMap<string, any> | Map<string, any>`
+
+
+Let's look at how we can inject arrays and collections with Clawject:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="array-literal" label="Array literal">
+```
+
+```ts
+class Cache<T> {
+    clear(): void { /* ... */ }
+}
+
+class CacheManager {
+    constructor(
+        private caches: Cache<any>[],
+    ) {}
+
+    clearAll(): void {
+        this.caches.forEach(cache => cache.clear());
+    }
+}
+
+class MyContext extends CatContext {
+    stringCache = Bean(Cache<string>)
+    numberCache = Bean(Cache<number>)
+    booleanCache = Bean(Cache<boolean>)
+
+    cacheManager = Bean(CacheManager)
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="array" label="Array">
+```
+
+```ts
+class Cache<T> {
+    clear(): void { /* ... */ }
+}
+
+class CacheManager {
+    constructor(
+        private caches: Array<Cache<any>>,
+    ) {}
+
+    clearAll(): void {
+        this.caches.forEach(cache => cache.clear());
+    }
+}
+
+class MyContext extends CatContext {
+    stringCache = Bean(Cache<string>)
+    numberCache = Bean(Cache<number>)
+    booleanCache = Bean(Cache<boolean>)
+
+    cacheManager = Bean(CacheManager)
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="readonly-array" label="ReadonlyArray">
+```
+
+```ts
+class Cache<T> {
+    clear(): void { /* ... */ }
+}
+
+class CacheManager {
+    constructor(
+        private caches: ReadonlyArray<Cache<any>>,
+    ) {}
+
+    clearAll(): void {
+        this.caches.forEach(cache => cache.clear());
+    }
+}
+
+class MyContext extends CatContext {
+    stringCache = Bean(Cache<string>)
+    numberCache = Bean(Cache<number>)
+    booleanCache = Bean(Cache<boolean>)
+
+    cacheManager = Bean(CacheManager)
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="set" label="Set">
+```
+
+```ts
+class Cache<T> {
+    clear(): void { /* ... */ }
+}
+
+class CacheManager {
+    constructor(
+        private caches: Set<Cache<any>>,
+    ) {}
+
+    clearAll(): void {
+        this.caches.forEach(cache => cache.clear());
+    }
+}
+
+class MyContext extends CatContext {
+    stringCache = Bean(Cache<string>)
+    numberCache = Bean(Cache<number>)
+    booleanCache = Bean(Cache<boolean>)
+
+    cacheManager = Bean(CacheManager)
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="readonly-set" label="ReadonlySet">
+```
+
+```ts
+class Cache<T> {
+    clear(): void { /* ... */ }
+}
+
+class CacheManager {
+    constructor(
+        private caches: ReadonlySet<Cache<any>>,
+    ) {}
+
+    clearAll(): void {
+        this.caches.forEach(cache => cache.clear());
+    }
+}
+
+class MyContext extends CatContext {
+    stringCache = Bean(Cache<string>)
+    numberCache = Bean(Cache<number>)
+    booleanCache = Bean(Cache<boolean>)
+
+    cacheManager = Bean(CacheManager)
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="map" label="Map">
+```
+
+```ts
+class Cache<T> {
+    clear(): void { /* ... */ }
+}
+
+class CacheManager {
+    constructor(
+        private caches: Map<string, Cache<any>>,
+    ) {}
+
+    clearAll(): void {
+        this.caches.forEach((cache, beanName) => {
+            console.log(`Clearing cache ${beanName}`);
+            cache.clear();
+        });
+    }
+}
+
+class MyContext extends CatContext {
+    stringCache = Bean(Cache<string>)
+    numberCache = Bean(Cache<number>)
+    booleanCache = Bean(Cache<boolean>)
+
+    cacheManager = Bean(CacheManager)
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="readonly-map" label="ReadonlyMap">
+```
+
+```ts
+class Cache<T> {
+    clear(): void { /* ... */ }
+}
+
+class CacheManager {
+    constructor(
+        private caches: ReadonlyMap<string, Cache<any>>,
+    ) {}
+
+    clearAll(): void {
+        this.caches.forEach((cache, beanName) => {
+            console.log(`Clearing cache ${beanName}`);
+            cache.clear();
+        });
+    }
+}
+
+class MyContext extends CatContext {
+    stringCache = Bean(Cache<string>)
+    numberCache = Bean(Cache<number>)
+    booleanCache = Bean(Cache<boolean>)
+
+    cacheManager = Bean(CacheManager)
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Defining Bean with Array or Collection type
+If you want to define Bean with type Array or Collection - you can safely do that.
+To access such beans — you should match the type of collection and bean name.
