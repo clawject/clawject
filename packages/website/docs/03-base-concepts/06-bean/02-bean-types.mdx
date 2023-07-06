@@ -5,8 +5,10 @@ id: bean-type
 
 <hr />
 
+```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+```
 
 ## Overview
 
@@ -26,10 +28,10 @@ Let's take a look at invalid bean types:
 
 ```ts
 class MyContext extends CatContext {
-    @Bean foo: undefined = undefined;
-    @Bean bar: void = undefined;
-    @Bean baz: null = null;
-    @Bean quux: never = throw new Error('never');
+  @Bean foo: undefined = undefined;
+  @Bean bar: void = undefined;
+  @Bean baz: null = null;
+  @Bean quux(): never { throw new Error('never'); } 
 }
 ```
 
@@ -41,7 +43,7 @@ class MyContext extends CatContext {
 
 ```ts
 class MyContext extends CatContext {
-    @Bean foo: string | number = 'string';
+  @Bean foo: string | number = 'string';
 }
 ```
 
@@ -63,7 +65,7 @@ The next two examples are equivalent:
 
 ```ts
 class MyContext extends CatContext {
-    @Bean foo = 'fooValue'; // <- type of Bean will be "string"
+  @Bean foo = 'fooValue'; // <- type of Bean will be "string"
 }
 ```
 
@@ -75,7 +77,7 @@ class MyContext extends CatContext {
 
 ```ts
 class MyContext extends CatContext {
-    @Bean foo: string = 'fooValue'; // <- type of Bean will be "string"
+  @Bean foo: string = 'fooValue'; // <- type of Bean will be "string"
 }
 ```
 
@@ -103,7 +105,7 @@ interface IFoo {}
 class Foo extends AbstractFoo implements IFoo {}
 
 class MyContext extends CatContext {
-    foo = Bean(Foo);
+  foo = Bean(Foo);
 }
 ```
 
@@ -120,9 +122,9 @@ interface IFoo {}
 class Foo extends AbstractFoo implements IFoo {}
 
 class MyContext extends CatContext {
-    @Bean foo(): Foo & IFoo & AbstractFoo {
-        return new Foo();
-    }
+  @Bean foo(): Foo & IFoo & AbstractFoo {
+    return new Foo();
+  }
 }
 ```
 

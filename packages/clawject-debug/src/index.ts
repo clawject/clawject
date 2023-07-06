@@ -12,7 +12,7 @@ interface IEmbedded {
 }
 
 class MyContext extends CatContext<IMyContext> {
-    @Bean @Embedded embedded(): IEmbedded {
+    @Bean @Embedded @Scope('singleton') embedded(): IEmbedded {
         return ({ str: 'str' });
     }
 
@@ -23,4 +23,3 @@ class MyContext extends CatContext<IMyContext> {
 }
 
 console.log(ContainerManager.init(MyContext).getBeans());
-

@@ -5,8 +5,10 @@ id: clawject-type-system
 
 <hr />
 
+```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+```
 
 Clawject type system following a typescript type system as much as possible,
 but there is one major difference -
@@ -18,23 +20,23 @@ As an example - we have 2 classes `Cat` and `Dog`, both of them have the same pr
 if we will use `Cat` instead of `Dog` or vice versa -
 TypeScript will not complain about it.
 
-```typescript
+```ts
 class Cat {
-    name = 'cat';
-    voice(): void {
-        console.log('meow');
-    }
+  name = 'cat';
+  voice(): void {
+    console.log('meow');
+  }
 }
 
 class Dog {
-    name = 'dog';
-    voice(): void {
-        console.log('woof');
-    }
+  name = 'dog';
+  voice(): void {
+    console.log('woof');
+  }
 }
 
 function meow(animal: Cat): void {
-    animal.voice();
+  animal.voice();
 }
 
 const dog = new Dog();
@@ -43,28 +45,28 @@ meow(dog); // <- TypeScript will not complain about it
 
 Clawject will complain about it, and will report compile error about missing Bean declaration for `Cat`:
 
-```typescript
+```ts
 class Cat {
-    name = 'cat';
-    voice(): void {
-        console.log('meow');
-    }
+  name = 'cat';
+  voice(): void {
+    console.log('meow');
+  }
 }
 
 class Dog {
-    name = 'dog';
-    voice(): void {
-        console.log('woof');
-    }
+  name = 'dog';
+  voice(): void {
+    console.log('woof');
+  }
 }
 
 class MyContext extends CatContext {
-    @PostConstruct
-    meow(animal: Cat): void {
-        animal.voice();
-    }
+  @PostConstruct
+  meow(animal: Cat): void {
+    animal.voice();
+  }
 
-    dog = Bean(Dog);
+  dog = Bean(Dog);
 }
 ```
 
@@ -95,20 +97,20 @@ Let's look at the example:
 
 ```ts
 class MyContext extends CatContext {
-    @Bean stringLiteral: 'string_literal' = 'string_literal';
-    @Bean numberLiteral: 42 = 42;
-    @Bean booleanLiteral: true = true;
-    @Bean enumLiteral: MyEnum.FIRST = MyEnum.FIRST;
-    @Bean bigintLiteral: 42n = 42n;
-    
-    @PostConstruct
-    postConstruct(
-        string: string, // <- stringLiteral bean will be injected here
-        number: number, // <- numberLiteral bean will be injected here
-        boolean: boolean, // <- booleanLiteral bean will be injected here
-        Enum: MyEnum, // <- enumLiteral bean will be injected here
-        bigint: bigint, // <- bigintLiteral bean will be injected here
-    ) {}
+  @Bean stringLiteral: 'string_literal' = 'string_literal';
+  @Bean numberLiteral: 42 = 42;
+  @Bean booleanLiteral: true = true;
+  @Bean enumLiteral: MyEnum.FIRST = MyEnum.FIRST;
+  @Bean bigintLiteral: 42n = 42n;
+
+  @PostConstruct
+  postConstruct(
+    string: string, // <- stringLiteral bean will be injected here
+    number: number, // <- numberLiteral bean will be injected here
+    boolean: boolean, // <- booleanLiteral bean will be injected here
+    Enum: MyEnum, // <- enumLiteral bean will be injected here
+    bigint: bigint, // <- bigintLiteral bean will be injected here
+  ) {}
 }
 ```
 
@@ -120,20 +122,20 @@ class MyContext extends CatContext {
 
 ```ts
 class MyContext extends CatContext {
-    @Bean stringLiteral = 'string_literal' as const;
-    @Bean numberLiteral = 42 as const;
-    @Bean booleanLiteral = true as const;
-    @Bean enumLiteral = MyEnum.FIRST as const;
-    @Bean bigintLiteral = 42n as const;
-    
-    @PostConstruct
-    postConstruct(
-        string: string, // <- stringLiteral bean will be injected here
-        number: number, // <- numberLiteral bean will be injected here
-        boolean: boolean, // <- booleanLiteral bean will be injected here
-        Enum: MyEnum, // <- enumLiteral bean will be injected here
-        bigint: bigint, // <- bigintLiteral bean will be injected here
-    ) {}
+  @Bean stringLiteral = 'string_literal' as const;
+  @Bean numberLiteral = 42 as const;
+  @Bean booleanLiteral = true as const;
+  @Bean enumLiteral = MyEnum.FIRST as const;
+  @Bean bigintLiteral = 42n as const;
+
+  @PostConstruct
+  postConstruct(
+    string: string, // <- stringLiteral bean will be injected here
+    number: number, // <- numberLiteral bean will be injected here
+    boolean: boolean, // <- booleanLiteral bean will be injected here
+    Enum: MyEnum, // <- enumLiteral bean will be injected here
+    bigint: bigint, // <- bigintLiteral bean will be injected here
+  ) {}
 }
 ```
 
@@ -157,16 +159,16 @@ interface Bar {}
 type Baz = {};
 
 class MyContext extends CatContext {
-    @Bean foo: Foo = new Foo();
-    @Bean bar: Bar = {};
-    @Bean baz: Baz = {};
-    
-    @PostConstruct
-    postConstruct(
-      dep0: Foo, // <- foo bean will be injected here  
-      dep1: Bar, // <- bar bean will be injected here  
-      dep2: Baz, // <- baz bean will be injected here  
-    ) {}
+  @Bean foo: Foo = new Foo();
+  @Bean bar: Bar = {};
+  @Bean baz: Baz = {};
+
+  @PostConstruct
+  postConstruct(
+    dep0: Foo, // <- foo bean will be injected here  
+    dep1: Bar, // <- bar bean will be injected here  
+    dep2: Baz, // <- baz bean will be injected here  
+  ) {}
 }
 ```
 
@@ -178,14 +180,14 @@ class MyContext extends CatContext {
 
 ```ts
 class MyContext extends CatContext {
-    @Bean foo: { bar: string } = { bar: 'barValue' };
-    
-    @PostConstruct
-    postConstruct(
-      // compilation error will be reported here, because structurally these types are identical,
-      // but they have different declarations
-      foo: { bar: string }, 
-    ) {}
+  @Bean foo: { bar: string } = {bar: 'barValue'};
+
+  @PostConstruct
+  postConstruct(
+    // compilation error will be reported here, because structurally these types are identical,
+    // but they have different declarations
+    foo: { bar: string },
+  ) {}
 }
 ```
 
@@ -204,16 +206,16 @@ Clawject has first-class support for generic types:
 
 ```ts
 interface WithGeneric<T> {
-    value: T;
+  value: T;
 }
 
 class MyContext extends CatContext {
-    @Bean withStringGeneric: WithGeneric<string> = { value: 'foo' };
+  @Bean withStringGeneric: WithGeneric<string> = {value: 'foo'};
 
-    @PostConstruct
-    postConstruct(
-        value: WithGeneric<string>,
-    ) {}
+  @PostConstruct
+  postConstruct(
+    value: WithGeneric<string>,
+  ) {}
 }
 ```
 
@@ -225,16 +227,16 @@ class MyContext extends CatContext {
 
 ```ts
 interface WithGeneric<T> {
-    value: T;
+  value: T;
 }
 
 class MyContext extends CatContext {
-    @Bean withStringGeneric: WithGeneric<'string_literal'> = { value: 'string_literal' };
+  @Bean withStringGeneric: WithGeneric<'string_literal'> = {value: 'string_literal'};
 
-    @PostConstruct
-    postConstruct(
-        value: WithGeneric<'string_literal'>,
-    ) {}
+  @PostConstruct
+  postConstruct(
+    value: WithGeneric<'string_literal'>,
+  ) {}
 }
 ```
 
@@ -246,16 +248,16 @@ class MyContext extends CatContext {
 
 ```ts
 interface WithGeneric<T> {
-    value: T;
+  value: T;
 }
 
 class MyContext extends CatContext {
-    @Bean withStringGeneric: WithGeneric<'string_literal'> = { value: 'string_literal' };
+  @Bean withStringGeneric: WithGeneric<'string_literal'> = {value: 'string_literal'};
 
-    @PostConstruct
-    postConstruct(
-        value: WithGeneric<string>,
-    ) {}
+  @PostConstruct
+  postConstruct(
+    value: WithGeneric<string>,
+  ) {}
 }
 ```
 
@@ -267,17 +269,17 @@ class MyContext extends CatContext {
 
 ```ts
 interface WithGeneric<T> {
-    value: T;
+  value: T;
 }
 
 class MyContext extends CatContext {
-    @Bean withStringGeneric: WithGeneric<'string_literal'> = { value: 'string_literal' };
+  @Bean withStringGeneric: WithGeneric<'string_literal'> = {value: 'string_literal'};
 
-    @PostConstruct
-    postConstruct(
-        // "withStringGeneric" will be injected, because 'string_literal' is compatible with any
-        value: WithGeneric<any>,
-    ) {}
+  @PostConstruct
+  postConstruct(
+    // "withStringGeneric" will be injected, because 'string_literal' is compatible with any
+    value: WithGeneric<any>,
+  ) {}
 }
 ```
 

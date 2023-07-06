@@ -1,8 +1,8 @@
 import ts, { factory } from 'typescript';
-import { Bean } from '../../bean/Bean';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
+import { DependencyQualifiedBean } from '../../dependency/Dependency';
 
-export const getBeanAccessExpression = (bean: Bean): ts.Expression => {
+export const getBeanAccessExpression = (qualifiedBean: DependencyQualifiedBean): ts.Expression => {
     let beanAccessExpression: ts.Expression = factory.createCallExpression(
         factory.createPropertyAccessExpression(
             InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
@@ -10,15 +10,15 @@ export const getBeanAccessExpression = (bean: Bean): ts.Expression => {
         ),
         undefined,
         [
-            factory.createStringLiteral(bean.classMemberName),
+            factory.createStringLiteral(qualifiedBean.bean.classMemberName),
             factory.createThis()
         ]
     );
 
-    if (bean.nestedProperty !== null) {
+    if (qualifiedBean.embeddedName !== null) {
         beanAccessExpression = factory.createElementAccessExpression(
             beanAccessExpression,
-            factory.createStringLiteral(bean.nestedProperty),
+            factory.createStringLiteral(qualifiedBean.embeddedName),
         );
     }
 

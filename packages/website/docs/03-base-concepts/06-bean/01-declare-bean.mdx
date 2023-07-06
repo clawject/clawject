@@ -5,8 +5,10 @@ id: declare-bean
 
 <hr />
 
+```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+```
 
 ## How to declare a Bean?
 
@@ -21,26 +23,26 @@ if it's class - it should be instantiated, if it's some dynamic value — it sho
 
 You can provide bean dependencies via function arguments by specifying an argument type.
 
-```typescript title="Declaring method and arrow function beans"
+```ts title="Declaring method and arrow function beans"
 class Foo {}
 
 class MyContext extends CatContext {
-    @Bean foo(): Foo {
-        return new Foo();
-    }
-    
-    @Bean fooClassName = (foo: Foo): string => foo.constructor.name;
+  @Bean foo(): Foo {
+    return new Foo();
+  }
+
+  @Bean fooClassName = (foo: Foo): string => foo.constructor.name;
 }
 ```
 
 When your bean doesn't have any dependencies -
 you can just assign value to property decorated with `@Bean` decorator.
 
-```typescript title="Declaring bean without dependencies"
+```ts title="Declaring bean without dependencies"
 class Foo {}
 
 class MyContext extends CatContext {
-    @Bean foo = new Foo();
+  @Bean foo = new Foo();
 }
 ```
 
@@ -61,21 +63,21 @@ class Bar {}
 class Baz {}
 
 class Foo {
-    constructor(
-        private dependency0: string,
-        private dependency1: number,
-        private dependency2: Bar,
-        private dependency3: Baz,
-    ) {}
+  constructor(
+    private dependency0: string,
+    private dependency1: number,
+    private dependency2: Bar,
+    private dependency3: Baz,
+  ) {}
 }
 
 class MyContext extends CatContext {
-    foo = Bean(Foo);
+  foo = Bean(Foo);
 
-    @Bean stringBean = 'dependency0';
-    @Bean numberBean = 1;
-    barBean = Bean(Bar);
-    bazBean = Bean(Baz);
+  @Bean stringBean = 'dependency0';
+  @Bean numberBean = 1;
+  barBean = Bean(Bar);
+  bazBean = Bean(Baz);
 }
 ```
 
@@ -90,37 +92,39 @@ class Bar {}
 class Baz {}
 
 class Foo {
-    constructor(
-        private dependency0: string,
-        private dependency1: number,
-        private dependency2: Bar,
-        private dependency3: Baz,
-    ) {}
+  constructor(
+    private dependency0: string,
+    private dependency1: number,
+    private dependency2: Bar,
+    private dependency3: Baz,
+  ) {}
 }
 
 class MyContext extends CatContext {
-    @Bean foo(
-        dependency0: string,
-        dependency1: number,
-        dependency2: Bar,
-        dependency3: Baz,
-    ) {
-        return new Foo(
-            dependency0,
-            dependency1,
-            dependency2,
-            dependency3,
-        );
-    }
+  @Bean foo(
+    dependency0: string,
+    dependency1: number,
+    dependency2: Bar,
+    dependency3: Baz,
+  ) {
+    return new Foo(
+      dependency0,
+      dependency1,
+      dependency2,
+      dependency3,
+    );
+  }
 
-    @Bean stringBean = 'dependency0';
-    @Bean numberBean = 1;
-    @Bean barBean(){
-        return new Bar(); 
-    } 
-    @Bean bazBean(){ 
-        return new Baz(); 
-    } 
+  @Bean stringBean = 'dependency0';
+  @Bean numberBean = 1;
+
+  @Bean barBean() {
+    return new Bar();
+  }
+
+  @Bean bazBean() {
+    return new Baz();
+  }
 }
 ```
 

@@ -15,7 +15,7 @@ Almost anything can be a Bean, but there are some restrictions:
   - Should not have the following modifiers: `abstract`, `static` or `declare`
   - Bean should have a statically known name
 
-```typescript title="Example of invalid declaration"
+```ts title="Example of invalid declaration"
 class MyContext extends CatContext {
   @Bean myBean1: void | undefined | null | never
   @Bean abstract myBean2: string;

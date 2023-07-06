@@ -13,7 +13,7 @@ You can use ContainerManager to initialize, get or clear contexts.
 ## Usage
 Let's assume you're defined you context class like this:
 
-```typescript title="MyContext.ts"
+```ts title="MyContext.ts"
 import { CatContext } from 'clawject';
 
 export class MyContext extends CatContext { /* ... */ }
@@ -21,7 +21,7 @@ export class MyContext extends CatContext { /* ... */ }
 
 To init container, you need to use ContainerManager object and pass context class to the `init` method.
 
-```typescript title="main.ts"
+```ts title="main.ts"
 import { ContainerManager } from 'clawject'; 
 import { MyContext } from './MyContext';
 
@@ -38,7 +38,7 @@ Not clearing context can cause memory leaks.
 
 #### Init context
 
-```typescript
+```ts
 import { ContainerManager, CatContext } from 'clawject';
 
 class MyContext extends CatContext { /* ... */ }
@@ -48,7 +48,7 @@ const myContext = ContainerManager.init(MyContext);
 
 #### Init context with a specific key
 
-```typescript
+```ts
 import { ContainerManager, CatContext } from 'clawject';
 
 class MyContext extends CatContext { /* ... */ }
@@ -60,7 +60,7 @@ const myContext = ContainerManager.init(MyContext, { key: myKey });
 
 #### Init context with an external configuration
 
-```typescript
+```ts
 import { ContainerManager, CatContext } from 'clawject';
 
 interface IExternalConfiguration { /* ... */ }
@@ -77,7 +77,7 @@ Get method is used to retrieve `InitializedContext` object if context it was ini
 
 #### Get initialized context
 
-```typescript
+```ts
 import { ContainerManager, CatContext } from 'clawject';
 
 class MyContext extends CatContext { /* ... */ }
@@ -89,7 +89,7 @@ const initializedContext = ContainerManager.get(MyContext);
 
 #### Get initialized context by key
 
-```typescript
+```ts
 import { ContainerManager, CatContext } from 'clawject';
 
 class MyContext extends CatContext { /* ... */ }
@@ -103,7 +103,7 @@ const initializedContext = ContainerManager.get(MyContext, { key: myKey });
 
 #### Get context but not initializing it
 
-```typescript
+```ts
 import { ContainerManager, CatContext } from 'clawject';
 
 class MyContext extends CatContext { /* ... */ }
@@ -124,7 +124,7 @@ If context was not initialized, it will be initialized and `InitializedContext` 
 
 #### Get and init context
 
-```typescript
+```ts
 import { ContainerManager, CatContext } from 'clawject';
 
 class MyContext extends CatContext {}

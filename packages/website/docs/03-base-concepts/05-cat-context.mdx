@@ -13,7 +13,7 @@ CatContext it's an abstract class that can be extended to create a custom contai
 ## Usage
 To define container, you need to create a class that extends CatContext.
 
-```typescript
+```ts
 import { CatContext } from 'clawject';
 
 export class MyContext extends CatContext {}
@@ -21,7 +21,7 @@ export class MyContext extends CatContext {}
 
 To init container, you need to use ContainerManager interface and pass class to the init method.
 
-```typescript
+```ts
 import { ContainerManager } from 'clawject'; 
 
 ContainerManager.init(MyContext);
@@ -32,16 +32,16 @@ ContainerManager.init(MyContext);
 If you need to receive some Beans outside of context -
 you can do it by specifying the first generic argument in `CatContext`.
 
-```typescript
-import { Bean, CatContext, ContainerManager } from 'clawject'; 
+```ts
+import { Bean, CatContext, ContainerManager } from 'clawject';
 
 interface MyExternalBeans {
   foo: string;
 }
 
 class MyContext extends CatContext<MyExternalBeans> {
-    @Bean foo = 'fooValue'
- }
+  @Bean foo = 'fooValue'
+}
 
 const foo = ContainerManager.init(MyContext).getBeans().foo;
 
@@ -60,19 +60,19 @@ you can do it by specifying the second generic argument in `CatContext`.
 
 Config is available via protected getter `config`.
 
-```typescript
-import { CatContext, ContainerManager, PostConstruct } from 'clawject'; 
+```ts
+import { CatContext, ContainerManager, PostConstruct } from 'clawject';
 
 interface MyConfig {
   foo: string;
 }
 
 class MyContext extends CatContext<{}, MyConfig> {
-    @PostConstruct
-    postConstruct() {
-        console.log(this.config.foo); // <-- Will print "fooValue"
-    }
- }
+  @PostConstruct
+  postConstruct() {
+    console.log(this.config.foo); // <-- Will print "fooValue"
+  }
+}
 
-ContainerManager.init(MyContext, { config: { foo: 'fooValue' } });
+ContainerManager.init(MyContext, {config: {foo: 'fooValue'}});
 ```

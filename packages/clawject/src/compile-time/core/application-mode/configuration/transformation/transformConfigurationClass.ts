@@ -35,7 +35,6 @@ export const transformConfigurationClass = (configuration: Configuration): ts.Cl
                 return transformArrowFunctionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer>);
 
             case BeanKind.EXPRESSION:
-            case BeanKind.EMBEDDED:
                 return transformExpressionBean(bean as Bean<ClassPropertyWithExpressionInitializer>);
             }
         }

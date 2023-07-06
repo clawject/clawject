@@ -1,0 +1,168 @@
+---
+title: Bean Scopes
+id: bean-scopes
+---
+
+<hr/>
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+## Overview
+
+The Scope of Bean is a way to define when Bean will be created and how it is managed by container.
+
+Clawject provides `@Scope` decorator to define a scope and has 2 built-in scopes: `singleton` and `prototype`.
+
+## Singleton scope *(default)*
+
+When we define a bean with the singleton scope, the container creates a single instance of that bean,
+all requests for that bean will return the same object, which is cached.
+Any modifications to the object will be reflected in all references to the bean.
+This scope is the default value if no other scope is specified.
+
+Let's use the singleton scope in the following example:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="implicit-scope" label="Declare a Bean with default singleton scope">
+```
+
+```ts
+class Foo {
+  name = 'foo';
+}
+
+class Bar {
+  constructor(public foo: Foo) {}
+
+  setName(): void {
+    this.foo.name = 'bar';
+  }
+}
+
+class Baz {
+  constructor(public foo: Foo) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+
+  bar = Bean(Bar);
+  baz = Bean(Baz);
+
+  @PostConstruct
+  postConstruct(
+    bar: Bar,
+    baz: Baz,
+  ) {
+    bar.setName();
+
+    console.log(bar.foo === baz.foo); // <- prints "true"
+
+    console.log(bar.foo.property); // <- prints "bar"
+    console.log(baz.foo.property); // <- prints "bar"
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="explicit-scope" label="Declare Scope of Bean using decorator">
+```
+
+```ts
+class Foo {
+  name = 'foo';
+}
+
+class Bar {
+  constructor(public foo: Foo) {}
+
+  setName(): void {
+    this.foo.name = 'bar';
+  }
+}
+
+class Baz {
+  constructor(public foo: Foo) {}
+}
+
+class MyContext extends CatContext {
+  @Scope("singleton")
+  foo = Bean(Foo);
+
+  bar = Bean(Bar);
+  baz = Bean(Baz);
+
+  @PostConstruct
+  postConstruct(
+    bar: Bar,
+    baz: Baz,
+  ) {
+    bar.setName();
+
+    console.log(bar.foo === baz.foo); // <- prints "true"
+
+    console.log(bar.foo.property); // <- prints "bar"
+    console.log(baz.foo.property); // <- prints "bar"
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Prototype scope
+
+A Bean with the prototype scope will return a different instance every time it is requested from the container.
+
+Let's use the prototype scope in the following example:
+
+```ts
+class Foo {
+  name = 'foo';
+}
+
+class Bar {
+  constructor(public foo: Foo) {}
+
+  setName(): void {
+    this.foo.name = 'bar';
+  }
+}
+
+class Baz {
+  constructor(public foo: Foo) {}
+}
+
+class MyContext extends CatContext {
+  @Scope("prototype")
+  foo = Bean(Foo);
+
+  bar = Bean(Bar);
+  baz = Bean(Baz);
+
+  @PostConstruct
+  postConstruct(
+    bar: Bar,
+    baz: Baz,
+  ) {
+    bar.setName();
+
+    console.log(bar.foo === baz.foo); // <- prints "false"
+
+    console.log(bar.foo.property); // <- prints "bar"
+    console.log(baz.foo.property); // <- prints "foo"
+  }
+}
+```
+
+As you can see - Scopes is a very simple concept, but it is very important to understand it.
+
+If you want to define your own scope, for example `HTTPRequestScope` - you can check out the [Custom Scopes](../04-advanced-concepts/02-custom-scopes.mdx) section.

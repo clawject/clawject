@@ -62,7 +62,7 @@ npm install dependency-injection-cat
 
 #### Webpack + Babel
 
-```typescript
+```ts
 //webpack.config.js
 const DiCatWebpackPlugin = require('dependency-injection-cat/plugins/webpack').default;
 const DiCatBabelTransformer = require('dependency-injection-cat/transformers/babel');
@@ -75,7 +75,7 @@ module.exports = {
         test: /\.(t|j)sx?$/,
         loader: 'babel-loader',
         options: {
-          //Should be false, because babel caching files 
+          //Should be false, because babel caching files
           //and don't call di-cat babel transformer, if your not *.di.* files was changed
           cacheDirectory: false,
           plugins: [
@@ -109,7 +109,7 @@ module.exports = {
 
 #### Webpack + TS-Loader
 
-```typescript
+```ts
 //webpack.config.js
 const DiCatWebpackPlugin = require('dependency-injection-cat/plugins/webpack').default;
 const diCatTransformer = require('dependency-injection-cat/transformers/typescript').default;
@@ -152,7 +152,7 @@ module.exports = {
 
 #### Webpack + TS-Loader + ttypescript
 
-```typescript
+```ts
 //webpack.config.js
 const DiCatWebpackPlugin = require('dependency-injection-cat/plugins/webpack').default;
 
@@ -214,11 +214,11 @@ module.exports = {
 
 ## Configuration options
 
-```typescript
+```ts
 {
   diConfigPattern: string | undefined; // Glob pattern, default value. Default: '**/*.di.ts'
   ignorePatterns: Array<string> | undefined; // Array of Glob patterns, default value. Default: ['**/node_modules/**']
-  disableLogoPrint: boolean | undefined; // Disable exposing dependency-injections-cat logo into console 
+  disableLogoPrint: boolean | undefined; // Disable exposing dependency-injections-cat logo into console
 }
 ```
 
@@ -237,7 +237,7 @@ Currently, correct hot reload supported only with DI-Cat Webpack plugin, and for
 
 CatContext it's a place, where you should define your **Beans**
 
-```typescript
+```ts
 class CatContext<TBeans, TConfig = null> {}
 ```
 
@@ -259,11 +259,11 @@ TBeans is an interface, of Beans that will be given out of context. Should be th
 
 - **Bean** name should not be **getBean** or **getBeans**, it's reserved names for di-container
 
-  ```typescript
+  ```ts
   export interface IBeans {
       useCase: IUseCase;
       //Another beans...
-  } 
+  }
   ```
 
 ### TConfig
@@ -271,7 +271,7 @@ TBeans is an interface, of Beans that will be given out of context. Should be th
 If you need to pass additional parameters to your classes, for example ID, or something else, you should specify a type
 for TConfig (default is null)
 
-```typescript
+```ts
 export interface IConfig {
   id: string;
 }
@@ -297,7 +297,7 @@ should use GlobalCatContext.
 
 #### Syntax and usage
 
-```typescript
+```ts
 //GlobalApplicationContext.di.ts
 class GlobalApplicationContext extends GlobalCatContext {
 
@@ -337,7 +337,7 @@ TBeans is an interface, of Beans that will be given out of context. Should be th
 InitContext creates instance of **context** by key (if specified). Also you can pass config to your context using
 initContext.
 
-```typescript
+```ts
 Container.initContext<TBeans, TConfig>({
   key? : any, //Can be any value, you can use it for creating pool of contextMap.
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
@@ -347,7 +347,7 @@ Container.initContext<TBeans, TConfig>({
 
 #### initContext usage
 
-```typescript
+```ts
 //InitContext without config and keys
 import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
@@ -355,7 +355,7 @@ import { IBeans } from './IBeans';
 const applicationContext = Container.initContext<IBeans>({name: 'ApplicationContext'});
 ```
 
-```typescript
+```ts
 //InitContext with config and keys
 import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
@@ -373,7 +373,7 @@ const applicationContextBySomeKey = Container.initContext<IBeans, IConfig>({
 getContext returns instance of **context** by key (if specified). Can be used only after initialization of context, or
 error will be thrown.
 
-```typescript
+```ts
 Container.getContext<TBeans>({
   key? : any,
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
@@ -382,14 +382,14 @@ Container.getContext<TBeans>({
 
 #### getContext usage
 
-```typescript
+```ts
 //GetContext without keys
 import { Container } from 'dependency-injection-cat';
 
 const context = Container.getContext<TBeans>({name: 'ApplicationContext'});
 ```
 
-```typescript
+```ts
 //GetContext with keys
 import { Container } from 'dependency-injection-cat';
 
@@ -404,7 +404,7 @@ const context = Container.getContext<TBeans>({
 GetOrInitContext return instance of **context** by key (if it was previously initialized), if wasn't - will be
 created and returned a new instance of context.
 
-```typescript
+```ts
 Container.getOrInitContext<TBeans, TConfig>({
   key? : any, //Can be any value, you can use it for creating pool of contextMap.
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
@@ -414,7 +414,7 @@ Container.getOrInitContext<TBeans, TConfig>({
 
 #### getOrInitContext usage
 
-```typescript
+```ts
 //Accessing or initialization context without config and keys
 import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
@@ -422,7 +422,7 @@ import { IBeans } from './IBeans';
 const applicationContext = Container.getOrInitContext<IBeans>({name: 'ApplicationContext'});
 ```
 
-```typescript
+```ts
 //Accessing or initialization context with config and keys
 import { Container } from 'dependency-injection-cat';
 import { IBeans } from './IBeans';
@@ -439,7 +439,7 @@ const applicationContextBySomeKey = Container.getOrInitContext<IBeans, IConfig>(
 
 clearContext should be used to clear instances of **Beans**. Can be used, for example when un-mounting components.
 
-```typescript
+```ts
 Container.clearContext({
   name: string, //It's the name of the class in which you specified the Beans. Should be a string literal.
   key? : any,
@@ -448,14 +448,14 @@ Container.clearContext({
 
 #### clearContext usage
 
-```typescript
+```ts
 //ClearContext without keys
 import { Container } from 'dependency-injection-cat';
 
 Container.clearContext({name: 'ApplicationContext'});
 ```
 
-```typescript
+```ts
 //ClearContext without keys
 import { Container } from 'dependency-injection-cat';
 
@@ -472,7 +472,7 @@ Beans can have dependencies, and they also should be defined as a beans or passe
 
 ### Bean configuration
 
-```typescript
+```ts
 interface IBeanConfiguration {
   scope?: 'prototype' | 'singleton';
   /* Should be a string literal. Default value is 'singleton'. When singleton, will be created only 1 instance of the Bean, when 'prototype', for each getting of Bean will be created a new instance */
@@ -496,7 +496,7 @@ Property Beans resolving class dependencies automatically from the constructor o
 
 #### Syntax
 
-```typescript
+```ts
 class ApplicationContext extends CatContext<IBeans> {
   //First argument passed in Bean should be a class, di-container will try to resolve class dependencies
   useCase = Bean(UseCaseClass);
@@ -520,7 +520,7 @@ class ApplicationContext extends CatContext<IBeans> {
 
 #### Usage
 
-```typescript
+```ts
 //UseCaseDependency
 export class UseCaseDependency implements IUseCaseDependency {
   //...businessLogic
@@ -559,7 +559,7 @@ Method Beans are more flexible, for example it allows you to pass configuration 
 
 #### Syntax and Usage
 
-```typescript
+```ts
 class ApplicationContext extends CatContext<IBeans> {
   //Bean don't have any dependencies
   @Bean
@@ -595,7 +595,7 @@ Arrow Function Beans allows you to write more compact code, they work same as "M
 
 #### Syntax and Usage
 
-```typescript
+```ts
 class ApplicationContext extends CatContext<IBeans> {
   //Bean don't have any dependencies
   @Bean useCase = (): IUseCase => new UseCase();
@@ -630,7 +630,7 @@ Expression Beans can not have any dependencies, but can be a dependency
 
 #### Syntax and Usage
 
-```typescript
+```ts
 class ApplicationContext extends CatContext<IBeans> {
   @Bean useCase: IUseCase = new UseCase();
   @Bean importedInstanceOfUseCase: IUseCase = importedInstanceOfUseCase;
@@ -653,7 +653,7 @@ You can add arguments to annotated method, beans will be injected instead of arg
 You can have several Lifecycle methods, they will be called in order of declaring
 
 #### Syntax
-```typescript
+```ts
 import { Bean, PostConstruct, BeforeDestruct, CatContext } from 'dependency-injection-cat';
 
 class ApplicationContext extends CatContext<IBeans> {
@@ -683,7 +683,7 @@ Also, you can use qualifier, when injecting **Beans** from **GlobalCatContext**
 
 #### Syntax
 
-```typescript
+```ts
 //Implicit declaration of the qualifier
 class ApplicationContext extends CatContext<IBeans> {
   httpRequester: IRequester = Bean(HttpRequester);
@@ -698,7 +698,7 @@ class ApplicationContext extends CatContext<IBeans> {
 }
 ```
 
-```typescript
+```ts
 //When Bean placed in current context
 class ApplicationContext extends CatContext<IBeans> {
   httpRequester: IRequester = Bean(HttpRequester);
@@ -713,7 +713,7 @@ class ApplicationContext extends CatContext<IBeans> {
 }
 ```
 
-```typescript
+```ts
 //When Bean placed in Global context
 
 //GlobalApplicationContext.di.ts

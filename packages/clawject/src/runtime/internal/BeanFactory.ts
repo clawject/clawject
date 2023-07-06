@@ -65,18 +65,18 @@ export class BeanFactory {
 
         let bean;
 
-        if (scope.proxyBeans ?? true) {
+        if (beanConfig.scope === 'singleton' || beanConfig.scope === 'prototype') {
+            bean = scope.get(scopedBeanName, objectFactory);
+        } else {
             bean = this.getOrBuildBeanProxy(
                 name,
                 () => scope.get(scopedBeanName, objectFactory),
             );
-        } else {
-            bean = scope.get(scopedBeanName, objectFactory);
         }
 
         const hasLifecycleBeforeDestruct = (getStaticRuntimeElementFromInstanceConstructor(
             bean, RuntimeElement.COMPONENT_METADATA
-        )?.lifecycle.BEFORE_DESTRUCT.length ?? 0) > 0;
+        )?.lifecycle.BEFORE_DESTRUCT.length || 0) > 0;
 
         if (hasLifecycleBeforeDestruct) {
             scope.registerDestructionCallback(scopedBeanName, this.getBeanDestructionCallback(bean));
@@ -89,8 +89,14 @@ export class BeanFactory {
         const beanConfig = this.getBeanConfig(name);
         const scope = ScopeRegister.getScope(beanConfig.scope);
 
-        scope.remove(this.buildScopedBeanName(name));
         this.proxyRegister.delete(name);
+
+        const removedInstance = scope.remove(this.buildScopedBeanName(name));
+
+        if (removedInstance !== null) {
+            const destructionCallback = this.getBeanDestructionCallback(removedInstance);
+            destructionCallback();
+        }
     }
 
     private getBeanDestructionCallback(instance: any): Callback {

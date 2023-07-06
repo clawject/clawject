@@ -7,19 +7,11 @@ export class PrototypeScope implements CustomScope {
         return objectFactory.getObject();
     }
 
-    getConversationId(): string | null {
-        return null;
-    }
-
     registerDestructionCallback(name: string, callback: Callback): void {
         console.warn('Destruction callbacks are not supported in "prototype" scope, beanName: ' + name);
     }
 
     remove(name: string): ObjectFactoryResult | null {
         return null;
-    }
-
-    get proxyBeans(): boolean {
-        return false;
     }
 }

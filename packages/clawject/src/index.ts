@@ -9,8 +9,6 @@ export { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/Obj
 
 export { CustomScope } from './runtime/scope/CustomScope';
 
-export { Callback } from './runtime/types/Callback';
-
 export { ___TypeReferenceTable___ } from './runtime/___TypeReferenceTable___';
 
 //Application mode only

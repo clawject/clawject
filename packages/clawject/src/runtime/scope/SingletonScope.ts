@@ -20,18 +20,9 @@ export class SingletonScope implements CustomScope {
     remove(name: string): ObjectFactoryResult | null {
         const instance = this.instances.get(name) ?? null;
 
-        this.destructionCallbacks.get(name)?.();
         this.instances.delete(name);
         this.destructionCallbacks.delete(name);
 
         return instance;
-    }
-
-    getConversationId(): string | null {
-        return null;
-    }
-
-    get proxyBeans(): boolean {
-        return false;
     }
 }

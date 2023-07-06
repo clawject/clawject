@@ -19,4 +19,12 @@ export class DependencyQualifiedBean {
         public bean: Bean,
         public embeddedName: string | null = null,
     ) {}
+
+    get fullName(): string {
+        if (this.embeddedName === null) {
+            return this.bean.classMemberName;
+        }
+
+        return this.bean.fullName + '.' + this.embeddedName;
+    }
 }

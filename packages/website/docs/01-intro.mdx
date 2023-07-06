@@ -15,18 +15,21 @@ use <b>TypeScript type system</b> to define what you need ✨
 import { Bean, CatContext, ContainerManager } from 'clawject';
 
 interface IBar {}
+
 class Bar implements IBar { /* ... */ }
+
 class Foo {
-    constructor(
-        // highlight-next-line-green
-        private bar: IBar // <-- Clawject will automatically inject implementation of IBar interface
-    ) {}
-    /* ... */
- }
+  constructor(
+    // highlight-next-line-green
+    private bar: IBar // <-- Clawject will automatically inject implementation of IBar interface
+  ) {}
+
+  /* ... */
+}
 
 class MyContext extends CatContext {
-    foo = Bean(Foo);
-    bar = Bean(Bar);
+  foo = Bean(Foo);
+  bar = Bean(Bar);
 }
 
 ContainerManager.init(MyContext);
