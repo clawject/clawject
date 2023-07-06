@@ -3,7 +3,7 @@ import { ClassPropertyWithExpressionInitializer } from '../../ts/types';
 import { Bean } from '../../bean/Bean';
 import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
-export const transformExpressionOrEmbeddedBean = (bean: Bean<ClassPropertyWithExpressionInitializer>): ts.PropertyDeclaration => {
+export const transformExpressionBean = (bean: Bean<ClassPropertyWithExpressionInitializer>): ts.PropertyDeclaration => {
     const newExpression = factory.createArrowFunction(
         undefined,
         undefined,

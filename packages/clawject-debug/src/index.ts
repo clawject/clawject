@@ -2,11 +2,24 @@ import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruc
 import { IMyContext } from './IMyContext';
 import { ClassWithDependencies } from './ClassWithDependencies';
 
-class MyContext extends CatContext<IMyContext> {
-    @Bean a = 'string1';
-    @Bean b = 1;
+class A {
+    constructor(str: string) {
+    }
+}
 
-    classWithDependencies = Bean(ClassWithDependencies);
+interface IEmbedded {
+    str: string;
+}
+
+class MyContext extends CatContext<IMyContext> {
+    @Bean @Embedded embedded(): IEmbedded {
+        return ({ str: 'str' });
+    }
+
+    @Bean string1 = 'string1';
+    @Bean string2 = 'string2';
+
+    a = Bean(A);
 }
 
 console.log(ContainerManager.init(MyContext).getBeans());

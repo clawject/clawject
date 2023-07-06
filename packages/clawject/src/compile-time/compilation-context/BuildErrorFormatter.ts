@@ -56,12 +56,12 @@ export class BuildErrorFormatter {
         const baseMessage = `${chalk.red('Error')} ${chalk.gray(error.code + ':')} ${error.description}${errorDetails} ${filePathWithPosition}`;
 
         if (error instanceof MissingBeanDeclarationError) {
-            const candidatesByName = this.formatCandidates(error.candidatesByName);
             const candidatesByType = this.formatCandidates(error.candidatesByType);
-            const messageCandidatesByName = candidatesByName ? `${chalk.red('  Possibly suitable candidates by name:')}\n${candidatesByName}` : '';
+            const candidatesByName = this.formatCandidates(error.candidatesByName);
             const messageCandidatesByType = candidatesByType ? `${chalk.red('  Possibly suitable candidates by type:')}\n${candidatesByType}` : '';
+            const messageCandidatesByName = candidatesByName ? `${chalk.red('  Possibly suitable candidates by name:')}\n${candidatesByName}` : '';
 
-            return [baseMessage, messageCandidatesByName, messageCandidatesByType].filter(it => it).join('\n');
+            return [baseMessage, messageCandidatesByType, messageCandidatesByName].filter(it => it).join('\n');
         }
 
         return baseMessage;

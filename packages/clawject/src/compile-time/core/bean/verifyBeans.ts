@@ -27,12 +27,6 @@ export const verifyBeans = (configuration: Configuration): void => {
         verifyBeanType(bean);
         verifyName(bean);
         verifyModifiers(bean);
-
-        bean.nestedBeans.forEach(nestedBean => {
-            verifyBeanType(nestedBean);
-            verifyName(nestedBean);
-            verifyModifiers(nestedBean);
-        });
     });
 };
 

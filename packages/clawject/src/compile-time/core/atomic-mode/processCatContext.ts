@@ -17,7 +17,6 @@ const ALLOWED_BEAN_KINDS = new Set([
     BeanKind.PROPERTY,
     BeanKind.ARROW_FUNCTION,
     BeanKind.EXPRESSION,
-    BeanKind.EMBEDDED,
     BeanKind.LIFECYCLE_METHOD,
     BeanKind.LIFECYCLE_ARROW_FUNCTION,
 ]);

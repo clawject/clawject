@@ -7,9 +7,16 @@ export class Dependency extends BaseElement<ts.ParameterDeclaration> {
     declare parameterName: string;
     declare diType: DIType;
 
-    qualifiedBean: Bean | null = null;
+    qualifiedBean: DependencyQualifiedBean | null = null;
     /**
      * For array, map, set
      * */
-    qualifiedBeans: Bean[] | null = null;
+    qualifiedBeans: DependencyQualifiedBean[] | null = null;
+}
+
+export class DependencyQualifiedBean {
+    constructor(
+        public bean: Bean,
+        public embeddedName: string | null = null,
+    ) {}
 }

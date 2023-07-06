@@ -13,7 +13,7 @@ for example, when you need to inject listeners into a publisher, or caches into 
 All arrays and collections that are injected are non-singletons, so mutating one of them will not affect other beans.
 
 Clawject has some reserved types for arrays and collections:
-  - array: `ReadonlyArray<any> | Array<any> | any[]`
+  - array: `ReadonlyArray<any> | Array<any> | readonly any[] | any[]`
   - set: `ReadonlySet<any> | Set<any>`
   - map: `ReadonlyMap<string, any> | Map<string, any>`
 

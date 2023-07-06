@@ -6,14 +6,38 @@ export const getPossibleBeanCandidates = (
     propertyName: string,
     propertyType: DIType,
     contextBeans: Bean[]
-): [byName: Bean[], byType: Bean[]] => {
+): [byName: PossibleBeanCandidate[], byType: PossibleBeanCandidate[]] => {
     const propertyNameMatcher = nameMatcher(propertyName.toLowerCase());
-    const candidatesByName = contextBeans.filter(it => {
-        return propertyNameMatcher(it.classMemberName.toLowerCase() + it.nestedProperty?.toLowerCase() ?? '');
-    });
-    const candidatesByType = contextBeans.filter(it => {
-        return propertyType.isCompatible(it.diType);
+
+    const candidatesByName: PossibleBeanCandidate[] = [];
+    const candidatesByType: PossibleBeanCandidate[] = [];
+
+    contextBeans.forEach(it => {
+        if (propertyNameMatcher(it.classMemberName.toLowerCase())) {
+            candidatesByName.push(new PossibleBeanCandidate(it));
+        }
+
+        if (propertyType.isCompatible(it.diType)) {
+            candidatesByType.push(new PossibleBeanCandidate(it));
+        }
+
+        it.embeddedElements.forEach((embeddedElement, embeddedName) => {
+            if (propertyNameMatcher(`${it.classMemberName.toLowerCase()}${embeddedName.toLowerCase()}`)) {
+                candidatesByName.push(new PossibleBeanCandidate(it, embeddedName));
+            }
+
+            if (propertyType.isCompatible(embeddedElement)) {
+                candidatesByType.push(new PossibleBeanCandidate(it, embeddedName));
+            }
+        });
     });
 
     return [candidatesByName, candidatesByType];
 };
+
+export class PossibleBeanCandidate {
+    constructor(
+        public bean: Bean,
+        public embeddedName: string | null = null,
+    ) {}
+}

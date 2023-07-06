@@ -1,18 +1,17 @@
 import { Configuration } from '../configuration/Configuration';
 import { DependencyGraph } from './DependencyGraph';
-import { Dependency } from '../dependency/Dependency';
+import { Dependency, DependencyQualifiedBean } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { MissingBeanDeclarationError } from '../../compilation-context/messages/errors/MissingBeanDeclarationError';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
-import { BeanKind } from '../bean/BeanKind';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
     const contextBeans = context.beanRegister.elements;
 
     contextBeans.forEach(bean => {
-        const allBeansWithoutCurrent = new Set(contextBeans);
-        allBeansWithoutCurrent.delete(bean);
+        const allBeansWithoutCurrent = Array.from(contextBeans)
+            .filter(it => it !== bean);
 
         bean.dependencies.forEach(dependency => {
             if (dependency.diType.isVoidUndefinedPlainUnionIntersection || dependency.diType.isNull) {
@@ -30,126 +29,127 @@ export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration
 
 function buildForBaseType(
     bean: Bean,
-    allBeansWithoutCurrent: Set<Bean>,
+    allBeansWithoutCurrent: Bean[],
     dependency: Dependency,
     context: Configuration,
 ): void {
-    const compilationContext = getCompilationContext();
-    const allBeansWithNested = Array.from(allBeansWithoutCurrent)
-        .map(it => [...Array.from(it.nestedBeans), it]).flat();
-    const matchedByType = allBeansWithNested
+    const matchedByType = allBeansWithoutCurrent
         .filter(it => dependency.diType.isCompatible(it.diType));
 
     if (matchedByType.length === 1) {
-        dependency.qualifiedBean = matchedByType[0];
+        dependency.qualifiedBean = new DependencyQualifiedBean(matchedByType[0]);
         DependencyGraph.addNodeWithEdges(bean, matchedByType);
         return;
     }
 
-    if (matchedByType.length === 0) {
-        const [
-            byName,
-            byType,
-        ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithNested);
-
-        if (dependency.diType.isOptional) {
-            return;
-        }
-
-        compilationContext.report(new MissingBeanDeclarationError(
-            'Can not find suitable Bean candidate for parameter.',
-            dependency.node,
-            context.node,
-            byName,
-            byType,
-        ));
+    if (matchedByType.length > 1) {
+        reportPossibleCandidates(dependency, allBeansWithoutCurrent, context);
         return;
     }
 
-    //If > 1 trying to find in non-nested beans
-    const matchedByTypeNotNested = matchedByType.filter(it => it.kind !== BeanKind.EMBEDDED);
+    const matchedByTypeAndName = matchedByType
+        .filter(it => dependency.parameterName === it.classMemberName);
 
-    if (matchedByTypeNotNested.length === 1) {
-        dependency.qualifiedBean = matchedByTypeNotNested[0];
-        DependencyGraph.addNodeWithEdges(bean, matchedByTypeNotNested);
-        return;
-    }
-
-    const matchedByNameNotNested = matchedByType
-        .filter(it => it.kind !== BeanKind.EMBEDDED && dependency.parameterName === it.classMemberName);
-
-    if (matchedByNameNotNested.length === 1) {
-        dependency.qualifiedBean = matchedByNameNotNested[0];
+    if (matchedByTypeAndName.length === 1) {
+        dependency.qualifiedBean = new DependencyQualifiedBean(matchedByTypeAndName[0]);
         DependencyGraph.addNodeWithEdges(bean, matchedByType);
         return;
     }
 
-    //If could not find in non-nested beans, trying to find in nested beans, name skipping
-    const matchedByTypeNested = matchedByType.filter(it => it.kind === BeanKind.EMBEDDED);
-
-    if (matchedByTypeNested.length === 1) {
-        dependency.qualifiedBean = matchedByTypeNested[0];
-        DependencyGraph.addNodeWithEdges(bean, matchedByTypeNested);
+    if (matchedByTypeAndName.length > 1) {
+        reportPossibleCandidates(dependency, allBeansWithoutCurrent, context);
         return;
     }
-    const matchedByNameNested = matchedByTypeNested
-        .filter(it => dependency.parameterName === it.nestedProperty);
 
-    if (matchedByNameNested.length === 1) {
-        dependency.qualifiedBean = matchedByNameNested[0];
-        DependencyGraph.addNodeWithEdges(bean, matchedByNameNested);
+    const matchedByNestedType: DependencyQualifiedBean[] = [];
+
+    allBeansWithoutCurrent.forEach(beanCandidate => {
+        beanCandidate.embeddedElements.forEach((embeddedElement, embeddedName) => {
+            if (dependency.diType.isCompatible(embeddedElement)) {
+                matchedByNestedType.push(new DependencyQualifiedBean(beanCandidate, embeddedName));
+            }
+        });
+    });
+
+    if (matchedByNestedType.length === 1) {
+        dependency.qualifiedBean = matchedByNestedType[0];
+        DependencyGraph.addNodeWithEdges(bean, [matchedByNestedType[0].bean]);
+        return;
+    }
+
+    if (matchedByNestedType.length > 1) {
+        reportPossibleCandidates(dependency, allBeansWithoutCurrent, context);
         return;
     }
 
     //If no bean candidates and bean is optional just do nothing
-    if (matchedByType.length === 0 && dependency.diType.isOptional) {
+    if (dependency.diType.isOptional) {
         return;
     }
 
-    const [
-        byName,
-        byType,
-    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithNested);
-
-    compilationContext.report(new MissingBeanDeclarationError(
-        `Found ${matchedByType.length} candidates for parameter "${dependency.parameterName}". Rename parameter to match Bean name, to specify which Bean should be injected.`,
-        dependency.node,
-        context.node,
-        byName,
-        byType,
-    ));
-    return;
+    reportPossibleCandidates(dependency, allBeansWithoutCurrent, context);
 }
 
 function buildForCollectionOrArray(
     bean: Bean,
-    allBeansWithoutCurrent: Set<Bean>,
+    allBeansWithoutCurrent: Bean[],
     dependency: Dependency,
 ): void {
-    const allBeansWithNested = Array.from(allBeansWithoutCurrent)
-        .map(it => [...Array.from(it.nestedBeans), it]).flat();
-
-    const otherCollectionsMatchedByNameAndType = allBeansWithNested.filter(it =>
+    const otherCollectionsMatchedByNameAndType = allBeansWithoutCurrent.filter(it =>
         it.classMemberName === dependency.parameterName && dependency.diType.isCompatible(it.diType),
     );
 
     //If matched my name and type - just taking specific bean that returns collection
     if (otherCollectionsMatchedByNameAndType.length === 1) {
-        dependency.qualifiedBean = otherCollectionsMatchedByNameAndType[0];
+        dependency.qualifiedBean = new DependencyQualifiedBean(otherCollectionsMatchedByNameAndType[0]);
         DependencyGraph.addNodeWithEdges(bean, otherCollectionsMatchedByNameAndType);
         return;
     }
 
-    let matched: Bean[];
+    const matched: DependencyQualifiedBean[] = [];
 
     if (dependency.diType.isMapStringToAny) {
-        matched = Array.from(allBeansWithNested)
-            .filter(it => dependency.diType.typeArguments[1].isCompatible(it.diType));
+        allBeansWithoutCurrent.forEach(beanCandidate => {
+            if (dependency.diType.typeArguments[1].isCompatible(beanCandidate.diType)) {
+                matched.push(new DependencyQualifiedBean(beanCandidate));
+            }
+
+            beanCandidate.embeddedElements.forEach((embeddedElement, embeddedName) => {
+                if (dependency.diType.typeArguments[1].isCompatible(beanCandidate.diType)) {
+                    matched.push(new DependencyQualifiedBean(beanCandidate, embeddedName));
+                }
+            });
+        });
     } else {
-        matched = Array.from(allBeansWithNested)
-            .filter(it => dependency.diType.typeArguments[0].isCompatible(it.diType));
+        allBeansWithoutCurrent.forEach(beanCandidate => {
+            if (dependency.diType.typeArguments[0].isCompatible(beanCandidate.diType)) {
+                matched.push(new DependencyQualifiedBean(beanCandidate));
+            }
+
+            beanCandidate.embeddedElements.forEach((embeddedElement, embeddedName) => {
+                if (dependency.diType.typeArguments[0].isCompatible(beanCandidate.diType)) {
+                    matched.push(new DependencyQualifiedBean(beanCandidate, embeddedName));
+                }
+            });
+        });
     }
 
     dependency.qualifiedBeans = matched;
-    DependencyGraph.addNodeWithEdges(bean, matched);
+    DependencyGraph.addNodeWithEdges(bean, matched.map(it => it.bean));
+}
+
+function reportPossibleCandidates(dependency: Dependency, allBeansWithoutCurrent: Bean[], configuration: Configuration): void {
+    const compilationContext = getCompilationContext();
+    const [
+        byName,
+        byType,
+    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrent);
+
+    compilationContext.report(new MissingBeanDeclarationError(
+        `Found ${byName.length + byType.length} candidates for parameter "${dependency.parameterName}". Rename parameter to match Bean name, to specify which Bean should be injected.`,
+        dependency.node,
+        configuration.node,
+        byName,
+        byType,
+    ));
 }

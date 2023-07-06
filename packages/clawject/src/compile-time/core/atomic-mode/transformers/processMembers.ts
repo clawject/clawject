@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { transformPropertyBean } from './transformPropertyBean';
 import { transformMethodBean } from './transformMethodBean';
 import { transformArrowFunctionBean } from './transformArrowFunctionBean';
-import { transformExpressionOrEmbeddedBean } from './transformExpressionOrEmbeddedBean';
+import { transformExpressionBean } from './transformExpressionBean';
 import { Configuration } from '../../configuration/Configuration';
 import { BeanKind } from '../../bean/BeanKind';
 import { BeanNode, Bean } from '../../bean/Bean';
@@ -33,8 +33,7 @@ export const processMembers = (node: ts.ClassDeclaration, configuration: Configu
             return transformArrowFunctionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer>);
 
         case BeanKind.EXPRESSION:
-        case BeanKind.EMBEDDED:
-            return transformExpressionOrEmbeddedBean(bean as Bean<ClassPropertyWithExpressionInitializer>);
+            return transformExpressionBean(bean as Bean<ClassPropertyWithExpressionInitializer>);
         }
 
         return node;

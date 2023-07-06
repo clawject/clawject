@@ -7,7 +7,7 @@ import { BeanKind } from '../../../bean/BeanKind';
 import { transformPropertyBean } from '../../../atomic-mode/transformers/transformPropertyBean';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../../../ts/types';
 import { transformArrowFunctionBean } from '../../../atomic-mode/transformers/transformArrowFunctionBean';
-import { transformExpressionOrEmbeddedBean } from '../../../atomic-mode/transformers/transformExpressionOrEmbeddedBean';
+import { transformExpressionBean } from '../../../atomic-mode/transformers/transformExpressionBean';
 import { transformConfigurationMethodBean } from './transformConfigurationMethodBean';
 
 export const transformConfigurationClass = (configuration: Configuration): ts.ClassDeclaration => {
@@ -36,7 +36,7 @@ export const transformConfigurationClass = (configuration: Configuration): ts.Cl
 
             case BeanKind.EXPRESSION:
             case BeanKind.EMBEDDED:
-                return transformExpressionOrEmbeddedBean(bean as Bean<ClassPropertyWithExpressionInitializer>);
+                return transformExpressionBean(bean as Bean<ClassPropertyWithExpressionInitializer>);
             }
         }
 

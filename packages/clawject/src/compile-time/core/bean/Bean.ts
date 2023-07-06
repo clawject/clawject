@@ -28,11 +28,12 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
     declare kind: BeanKind;
 
     classDeclaration: ts.ClassDeclaration | null = null;
-    nestedProperty: string | null = null;
     lifecycle: LifecycleKind[] | null = null;
     public = false;
     dependencies = new Set<Dependency>();
-    nestedBeans = new Set<Bean>();
+
+    //Only when bean is annotated with @Embedded
+    embeddedElements = new Map<string, DIType>();
 
     scopeExpression = new DisposableNodeHolder<ts.Expression>();
     lazyExpression = new DisposableNodeHolder<ts.Expression>();
@@ -42,10 +43,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
     }
 
     get fullName(): string {
-        if (this.nestedProperty === null) {
-            return this.classMemberName;
-        }
-
-        return `${this.classMemberName}.${this.nestedProperty}`;
+        //TODO check if this is correct
+        return `${this.classMemberName}`;
     }
 }

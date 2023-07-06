@@ -1,12 +1,15 @@
 import { IncorrectTypeDefinitionError } from '../../compilation-context/messages/errors/IncorrectTypeDefinitionError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
-import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
+import ts from 'typescript';
+import { isPropertyWithArrowFunction } from '../ts/predicates/isPropertyWithArrowFunction';
+import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
+import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 
 export const fillEmbeddedBeans = (
     configuration: Configuration,
@@ -20,8 +23,22 @@ export const fillEmbeddedBeans = (
 
         const compilationContext = getCompilationContext();
         const typeChecker = compilationContext.typeChecker;
-        const type = typeChecker.getTypeAtLocation(rootBean.node);
-        const typeSymbol = type.getSymbol();
+        const rootBeanNode = rootBean.node;
+        let type: ts.Type | undefined = undefined;
+
+        if (ts.isMethodDeclaration(rootBeanNode)) {
+            const signature = typeChecker.getSignatureFromDeclaration(rootBeanNode);
+            signature && (type = typeChecker.getReturnTypeOfSignature(signature));
+        } else if (isPropertyWithArrowFunction(rootBeanNode)) {
+            const signature = typeChecker.getSignatureFromDeclaration(
+                unwrapExpressionFromRoundBrackets((rootBean as Bean<ClassPropertyWithArrowFunctionInitializer>).node.initializer)
+            );
+            signature && (type = typeChecker.getReturnTypeOfSignature(signature));
+        } else {
+            type = typeChecker.getTypeAtLocation(rootBeanNode);
+        }
+
+        const typeSymbol = type?.getSymbol();
 
         if (!typeSymbol) {
             compilationContext.report(new TypeQualifyError(
@@ -58,14 +75,7 @@ export const fillEmbeddedBeans = (
             const type = typeChecker.getTypeOfSymbolAtLocation(property, declaration);
             const diType = DITypeBuilder.build(type);
 
-            const nestedBean = new Bean({
-                classMemberName: rootBean.node.name.getText(),
-                nestedProperty: property.name,
-                diType: diType,
-                node: rootBean.node,
-                kind: BeanKind.EMBEDDED,
-            });
-            rootBean.nestedBeans.add(nestedBean);
+            rootBean.embeddedElements.set(property.name, diType);
         });
     });
 };

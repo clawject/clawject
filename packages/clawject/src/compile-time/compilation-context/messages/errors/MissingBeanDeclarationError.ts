@@ -2,8 +2,8 @@ import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { MessageCode } from '../MessageCode';
 import { MessageType } from '../MessageType';
 import ts from 'typescript';
-import { Bean } from '../../../core/bean/Bean';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
+import { PossibleBeanCandidate } from '../../../core/utils/getPossibleBeanCandidates';
 
 export class MissingBeanDeclarationError extends AbstractCompilationMessage {
     public code = MessageCode.CLAWJECT5;
@@ -16,16 +16,28 @@ export class MissingBeanDeclarationError extends AbstractCompilationMessage {
         details: string | null,
         node: ts.Node,
         configurationNode: ts.ClassDeclaration | null,
-        candidatesByName: Bean[],
-        candidatesByType: Bean[],
+        candidatesByName: PossibleBeanCandidate[],
+        candidatesByType: PossibleBeanCandidate[],
     ) {
         super(details, node, configurationNode);
 
         candidatesByName.forEach(candidate => {
-            this.candidatesByName.push(getNodeDetails(candidate.node));
+            this.candidatesByName.push(this.getNodeDetails(candidate));
         });
         candidatesByType.forEach(candidate => {
-            this.candidatesByType.push(getNodeDetails(candidate.node));
+            this.candidatesByType.push(this.getNodeDetails(candidate));
         });
+    }
+
+    private getNodeDetails(candidate: PossibleBeanCandidate): NodeDetails {
+        const nodeDetails = getNodeDetails(candidate.bean.node);
+
+        if (candidate.embeddedName === null) {
+            nodeDetails.declarationName = candidate.bean.classMemberName;
+        } else {
+            nodeDetails.declarationName = candidate.bean.classMemberName + '.' + candidate.embeddedName;
+        }
+
+        return nodeDetails;
     }
 }

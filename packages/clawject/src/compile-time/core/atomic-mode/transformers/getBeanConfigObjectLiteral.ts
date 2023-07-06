@@ -1,10 +1,11 @@
 import ts, { factory } from 'typescript';
 import { Configuration } from '../../configuration/Configuration';
 import { createBoolean } from '../../ts/utils/createBoolean';
+import { BeanKind } from '../../bean/BeanKind';
 
 export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLiteralExpression {
     const beansToDefine = Array.from(context.beanRegister.elements).filter(it =>
-        it.nestedProperty === null && !it.isLifecycle()
+        it.kind !== BeanKind.EMBEDDED && !it.isLifecycle()
     );
 
     const objectLiteralMembers: ts.PropertyAssignment[] = beansToDefine.map(bean => (

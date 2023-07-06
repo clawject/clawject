@@ -16,9 +16,9 @@ export const getBeanAccessExpression = (bean: Bean): ts.Expression => {
     );
 
     if (bean.nestedProperty !== null) {
-        beanAccessExpression = factory.createPropertyAccessExpression(
+        beanAccessExpression = factory.createElementAccessExpression(
             beanAccessExpression,
-            factory.createIdentifier(bean.nestedProperty),
+            factory.createStringLiteral(bean.nestedProperty),
         );
     }
 
