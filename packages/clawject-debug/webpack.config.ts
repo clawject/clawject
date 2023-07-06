@@ -1,5 +1,6 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { ClawjectTransformer } from 'clawject/transformer';
+import { ClawjectWebpackPlugin } from 'clawject/webpack';
 import HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -29,5 +30,6 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin(),
         new CleanWebpackPlugin(),
+        new ClawjectWebpackPlugin(),
     ]
 };

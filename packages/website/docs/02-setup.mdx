@@ -61,6 +61,7 @@ To start using Clawject with **webpack and ts-loader**, you need to pass typescr
 ```
 
 ```ts
+import { ClawjectWebpackPlugin } from 'clawject/webpack';
 import { ClawjectTransformer } from 'clawject/transformer';
 
 export default {
@@ -74,7 +75,10 @@ export default {
         })
       }
     }]
-  }
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
 };
 ```
 
@@ -85,6 +89,7 @@ export default {
 ```
 
 ```ts
+const { ClawjectWebpackPlugin } = require('clawject/webpack');
 const { ClawjectTransformer } = require('clawject/transformer');
 
 module.exports = {
@@ -98,7 +103,10 @@ module.exports = {
         })
       }
     }]
-  }
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
 };
 ```
 
@@ -118,6 +126,8 @@ you should pass custom compiler, for example - **ts-patch**.
 ```
 
 ```ts
+import { ClawjectWebpackPlugin } from 'clawject/webpack';
+
 export default {
   module: {
     rules: [{
@@ -127,7 +137,10 @@ export default {
         compiler: 'ts-patch'
       }
     }]
-  }
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
 };
 ```
 
@@ -138,6 +151,8 @@ export default {
 ```
 
 ```ts
+const { ClawjectWebpackPlugin } = require('clawject/webpack');
+
 module.exports = {
   module: {
     rules: [{
@@ -147,7 +162,10 @@ module.exports = {
         compiler: 'ttypescript'
       }
     }]
-  }
+  },
+  plugins: [
+    new ClawjectWebpackPlugin()
+  ]
 };
 ```
 
