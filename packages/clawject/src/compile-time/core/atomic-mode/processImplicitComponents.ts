@@ -11,7 +11,6 @@ import { getImplicitComponentStaticInitBlock } from './transformers/getImplicitC
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
 import { isNameReserved } from '../utils/isNameReserved';
 
-//TODO verify decorators compatibility and member names
 export function processImplicitComponents(
     node: ts.ClassDeclaration,
     compilationContext: CompilationContext,

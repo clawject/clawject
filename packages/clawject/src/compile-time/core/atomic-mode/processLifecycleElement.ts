@@ -1,6 +1,5 @@
 import ts, { factory } from 'typescript';
 import { Component } from '../component/Component';
-import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
 import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
 import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
@@ -13,10 +12,8 @@ import { IncorrectArgumentsLengthError } from '../../compilation-context/message
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
-//TODO verify decorators
 export function processLifecycleElement(node: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer, component: Component): ts.ClassElement {
     const compilationContext = getCompilationContext();
-    const elementDecorators = getDecoratorsOnly(node);
 
     const lifecycles = new Set<LifecycleKind>();
 
