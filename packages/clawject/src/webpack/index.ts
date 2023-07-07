@@ -18,7 +18,7 @@ const reportDIErrorsHook = (compilation: Compilation) => {
 export class ClawjectWebpackPlugin {
     apply(compiler: Compiler) {
         compiler.hooks.afterEnvironment.tap(ClawjectWebpackPlugin.name, () => {
-            getCompilationContext().isErrorsHandled = true;
+            getCompilationContext().areErrorsHandled = true;
         });
         compiler.hooks.afterEmit.tap(ClawjectWebpackPlugin.name, reportDIErrorsHook);
     }

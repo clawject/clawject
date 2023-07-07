@@ -33,7 +33,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
             break;
         }
 
-        if (!compilationContext.isErrorsHandled) {
+        if (!compilationContext.areErrorsHandled) {
             const message = BuildErrorFormatter.formatErrors(
                 compilationContext.errors,
             );
