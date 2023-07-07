@@ -4,9 +4,11 @@ import { ErrorBuilder } from '../ErrorBuilder';
 import { BeanFactory } from './BeanFactory';
 import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
 import { getStaticRuntimeElementFromInstanceConstructor } from '../utils/getStaticRuntimeElementFromInstanceConstructor';
-import { RuntimeElement } from '../runtime-elements/RuntimeElement';
+import { StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
 import { RuntimeLifecycleMetadata } from '../runtime-elements/RuntimeLifecycleMetadata';
 import { ScopeRegister } from '../scope/ScopeRegister';
+import { getInstanceRuntimeElementFromInstance } from '../utils/getInstanceRuntimeElementFromInstance';
+import { InstanceRuntimeElement } from '../runtime-elements/InstanceRuntimeElement';
 
 export interface ContextManagerConfig {
     id: string;
@@ -44,7 +46,7 @@ export class ContextManager {
     public static extractManagerFromInstance(instance: CatContext<any, any>): ContextManager {
         const contextManager = getStaticRuntimeElementFromInstanceConstructor(
             instance,
-            RuntimeElement.CONTEXT_MANAGER
+            StaticRuntimeElement.CONTEXT_MANAGER
         );
 
         if (!contextManager) {
@@ -92,7 +94,7 @@ export class ContextManager {
             this.metadata.id,
             this.metadata.contextName,
             instance,
-            this.metadata.beans
+            this.metadata.beans,
         ));
 
         this.postConstruct(instance);
@@ -124,7 +126,7 @@ export class ContextManager {
 
         this.contextPool.delete(key);
         this.configPool.delete(instance);
-        this.beforeDestruct(instance);
+        this.preDestroy(instance);
     }
 
     private postConstruct(instance: CatContext): void {
@@ -134,17 +136,28 @@ export class ContextManager {
             }
         });
         this.metadata.lifecycle.POST_CONSTRUCT?.forEach((methodName) => {
-            instance[methodName]();
+            this.getElementFactory(instance, methodName)();
         });
     }
 
-    private beforeDestruct(instance: CatContext): void {
+    private preDestroy(instance: CatContext): void {
         Object.keys(this.metadata.beans).forEach(beanName => {
             this.beanFactories.get(instance)?.destroyBean(beanName);
         });
 
-        this.metadata.lifecycle.BEFORE_DESTRUCT?.forEach((methodName) => {
-            instance[methodName]();
+        this.metadata.lifecycle.PRE_DESTROY?.forEach((methodName) => {
+            this.getElementFactory(instance, methodName)();
         });
+    }
+
+    private getElementFactory(instance: CatContext, name: string): () => any {
+        const elementFactory =
+            getInstanceRuntimeElementFromInstance(instance, InstanceRuntimeElement.CONTEXT_ELEMENT_FACTORIES)?.[name];
+
+        if (!elementFactory) {
+            throw ErrorBuilder.noElementFactoryFound(this.metadata.contextName, name);
+        }
+
+        return elementFactory;
     }
 }

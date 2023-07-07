@@ -1,16 +1,11 @@
 import ts, { factory } from 'typescript';
 import { transformPropertyBean } from './transformPropertyBean';
 import { transformMethodBean } from './transformMethodBean';
-import { transformArrowFunctionBean } from './transformArrowFunctionBean';
-import { transformExpressionBean } from './transformExpressionBean';
+import { transformArrowFunctionOrExpressionBean } from './transformArrowFunctionOrExpressionBean';
 import { Configuration } from '../../configuration/Configuration';
 import { BeanKind } from '../../bean/BeanKind';
-import { BeanNode, Bean } from '../../bean/Bean';
-import {
-    ClassPropertyWithArrowFunctionInitializer,
-    ClassPropertyWithCallExpressionInitializer,
-    ClassPropertyWithExpressionInitializer
-} from '../../ts/types';
+import { Bean, BeanNode } from '../../bean/Bean';
+import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../../ts/types';
 
 export const processMembers = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassDeclaration => {
     const newMembers = node.members.map(node => {
@@ -30,10 +25,8 @@ export const processMembers = (node: ts.ClassDeclaration, configuration: Configu
 
         case BeanKind.ARROW_FUNCTION:
         case BeanKind.LIFECYCLE_ARROW_FUNCTION:
-            return transformArrowFunctionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer>);
-
         case BeanKind.EXPRESSION:
-            return transformExpressionBean(bean as Bean<ClassPropertyWithExpressionInitializer>);
+            return transformArrowFunctionOrExpressionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer | ClassPropertyWithExpressionInitializer>);
         }
 
         return node;

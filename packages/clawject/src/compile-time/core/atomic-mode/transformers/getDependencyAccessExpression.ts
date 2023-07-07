@@ -1,9 +1,8 @@
-import { Dependency } from '../../dependency/Dependency';
+import { Dependency, DependencyQualifiedBean } from '../../dependency/Dependency';
 import ts, { factory } from 'typescript';
-import { getBeanAccessExpression } from './getBeanAccessExpression';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 
-export const getDependencyValueExpression = (dependency: Dependency): ts.Expression | undefined => {
+export const getDependencyAccessExpression = (dependency: Dependency): ts.Expression | undefined => {
     const qualifiedBean = dependency.qualifiedBean;
     const qualifiedBeans = dependency.qualifiedBeans;
 
@@ -77,3 +76,26 @@ export const getDependencyValueExpression = (dependency: Dependency): ts.Express
 
     return undefined;
 };
+
+function getBeanAccessExpression(qualifiedBean: DependencyQualifiedBean): ts.Expression {
+    let beanAccessExpression: ts.Expression = factory.createCallExpression(
+        factory.createPropertyAccessExpression(
+            InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
+            factory.createIdentifier('getPrivateBeanFromFactory')
+        ),
+        undefined,
+        [
+            factory.createStringLiteral(qualifiedBean.bean.classMemberName),
+            factory.createThis()
+        ]
+    );
+
+    if (qualifiedBean.embeddedName !== null) {
+        beanAccessExpression = factory.createElementAccessExpression(
+            beanAccessExpression,
+            factory.createStringLiteral(qualifiedBean.embeddedName),
+        );
+    }
+
+    return beanAccessExpression;
+}

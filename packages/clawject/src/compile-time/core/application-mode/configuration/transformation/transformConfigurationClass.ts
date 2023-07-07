@@ -6,7 +6,7 @@ import { Bean, BeanNode } from '../../../bean/Bean';
 import { BeanKind } from '../../../bean/BeanKind';
 import { transformPropertyBean } from '../../../atomic-mode/transformers/transformPropertyBean';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../../../ts/types';
-import { transformArrowFunctionBean } from '../../../atomic-mode/transformers/transformArrowFunctionBean';
+import { transformArrowFunctionOrExpressionBean } from '../../../atomic-mode/transformers/transformArrowFunctionOrExpressionBean';
 import { transformExpressionBean } from '../../../atomic-mode/transformers/transformExpressionBean';
 import { transformConfigurationMethodBean } from './transformConfigurationMethodBean';
 
@@ -32,10 +32,8 @@ export const transformConfigurationClass = (configuration: Configuration): ts.Cl
 
             case BeanKind.ARROW_FUNCTION:
             case BeanKind.LIFECYCLE_ARROW_FUNCTION:
-                return transformArrowFunctionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer>);
-
             case BeanKind.EXPRESSION:
-                return transformExpressionBean(bean as Bean<ClassPropertyWithExpressionInitializer>);
+                return transformArrowFunctionOrExpressionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer | ClassPropertyWithExpressionInitializer>);
             }
         }
 

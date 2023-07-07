@@ -1,0 +1,100 @@
+---
+title: PostConstruct and PreDestroy
+id: postconstruct-predestroy
+---
+
+<hr/>
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+## Overview
+
+Clawject allows us to attach custom actions to bean or context creation and destruction,
+and it is done using the `@PostConstruct` and `@PreDestroy` decorators.
+
+`@PostConstruct` and `@PreDestroy` can be used in inheritors of `CatContext` and in Beans.
+You can decorate `method` or `property with arrow function`, also decoration target should not be `static`.
+
+`@PostConstruct` and `@PreDestroy` can be used together at the same method — so the method will be called twice.
+
+Note that `@PostConstruct` and `@PreDestroy` works a little different in Context and in Beans,
+when using in Context - you can pass arguments to the method,
+these arguments will be treated as a dependencies, and container will inject appropriate Beans to the method, in other hand,
+when using in Bean - you can't pass arguments to the method, 
+container will not inject anything to the method and will report compilation error.
+
+## @PostConstruct
+
+Clawject calls the methods annotated with @PostConstruct only once, just after the initialization of bean or context.
+
+### @PostConstruct in Context
+
+Let's use the `@PostConstruct` decorator in the Context:
+
+```ts
+class MyContext extends CatContext {
+  @Bean foo = 'string';
+  
+  @PostConstruct
+  postConstruct(stringBean: string) { // <- "foo" bean will be injected here
+    console.log(`MyContext has been created, "stringBean" value is ${stringBean}`);
+  }
+}
+```
+
+### @PostConstruct in Bean
+
+Let's use the `@PostConstruct` decorator in the Bean:
+
+```ts
+class Foo {
+  @PostConstruct
+  postConstruct() {
+    console.log('Foo bean has been created');
+  }
+}
+```
+
+Now when we register this class as a Bean in context -
+the `postConstruct` method will be called when `Foo` instance is created.
+
+## @PreDestroy
+
+A method decorated with @PreDestroy runs only once, just before Clawject removes bean from the context.
+
+The purpose of this method should be to release resources or perform other cleanup tasks,
+such as closing a database connection, before the bean gets destroyed.
+
+### @PreDestroy in Context
+
+Let's use the `@PreDestroy` decorator in the Context:
+
+```ts
+class MyContext extends CatContext {
+  @Bean foo = 'string';
+  
+  @PreDestroy
+  preDestroy(stringBean: string) { // <- "foo" bean will be injected here
+    console.log(`MyContext is going to be destroyed, "stringBean" value is ${stringBean}`);
+  }
+}
+```
+
+### @PreDestroy in Bean
+
+Let's use the `@PreDestroy` decorator in the Bean:
+
+```ts
+class Foo {
+  @PreDestroy
+  preDestroy() {
+    console.log('Foo bean is going to be destroyed');
+  }
+}
+```
+
+Now when we register this class as a Bean in context -
+the `preDestroy` method will be called when `Foo` bean is going to be destroyed.

@@ -1,4 +1,4 @@
 export enum LifecycleKind {
     POST_CONSTRUCT = 'POST_CONSTRUCT',
-    BEFORE_DESTRUCT = 'BEFORE_DESTRUCT',
+    PRE_DESTROY = 'PRE_DESTROY',
 }

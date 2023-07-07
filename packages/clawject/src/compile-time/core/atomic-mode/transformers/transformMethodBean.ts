@@ -1,19 +1,8 @@
 import ts, { factory } from 'typescript';
 import { Bean } from '../../bean/Bean';
-import { getDependenciesVariables } from './getDependenciesVariables';
 import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
 export const transformMethodBean = (bean: Bean<ts.MethodDeclaration>): ts.MethodDeclaration => {
-    const nodeBody = bean.node.body ?? factory.createBlock([]);
-    const beansVariables = getDependenciesVariables(bean);
-    const newBody = factory.updateBlock(
-        nodeBody,
-        [
-            ...beansVariables,
-            ...nodeBody.statements,
-        ]
-    );
-
     return factory.updateMethodDeclaration(
         bean.node,
         bean.node.modifiers?.filter(modifier => !isDecoratorFromLibrary(modifier, undefined)),
@@ -21,8 +10,8 @@ export const transformMethodBean = (bean: Bean<ts.MethodDeclaration>): ts.Method
         bean.node.name,
         undefined,
         undefined,
-        [],
+        bean.node.parameters,
         bean.node.type,
-        newBody,
+        bean.node.body,
     );
 };

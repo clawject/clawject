@@ -6,8 +6,10 @@ import { Callback } from '../types/Callback';
 import { LifecycleKind } from '../../compile-time/core/component-lifecycle/LifecycleKind';
 import { ContextManagerConfig } from './ContextManager';
 import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
-import { RuntimeElement } from '../runtime-elements/RuntimeElement';
+import { StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
 import { getStaticRuntimeElementFromInstanceConstructor } from '../utils/getStaticRuntimeElementFromInstanceConstructor';
+import { getInstanceRuntimeElementFromInstance } from '../utils/getInstanceRuntimeElementFromInstance';
+import { InstanceRuntimeElement } from '../runtime-elements/InstanceRuntimeElement';
 
 export class BeanFactory {
     constructor(
@@ -55,7 +57,9 @@ export class BeanFactory {
         const beanConfig = this.getBeanConfig(name);
         const scope = ScopeRegister.getScope(beanConfig.scope);
         const objectFactory = new ObjectFactoryImpl(() => {
-            const instantiatedBean = this.instance[name]();
+            const elementFactory = this.getElementFactory(name);
+            const instantiatedBean = elementFactory();
+
             this.onComponentLifecycle(instantiatedBean, LifecycleKind.POST_CONSTRUCT);
 
             return instantiatedBean;
@@ -74,11 +78,11 @@ export class BeanFactory {
             );
         }
 
-        const hasLifecycleBeforeDestruct = (getStaticRuntimeElementFromInstanceConstructor(
-            bean, RuntimeElement.COMPONENT_METADATA
-        )?.lifecycle.BEFORE_DESTRUCT.length || 0) > 0;
+        const hasLifecyclePreDestroy = (getStaticRuntimeElementFromInstanceConstructor(
+            bean, StaticRuntimeElement.COMPONENT_METADATA
+        )?.lifecycle.PRE_DESTROY.length || 0) > 0;
 
-        if (hasLifecycleBeforeDestruct) {
+        if (hasLifecyclePreDestroy) {
             scope.registerDestructionCallback(scopedBeanName, this.getBeanDestructionCallback(bean));
         }
 
@@ -100,7 +104,7 @@ export class BeanFactory {
     }
 
     private getBeanDestructionCallback(instance: any): Callback {
-        return (): void => this.onComponentLifecycle(instance, LifecycleKind.BEFORE_DESTRUCT);
+        return (): void => this.onComponentLifecycle(instance, LifecycleKind.PRE_DESTROY);
     }
 
     private onComponentLifecycle(instance: any, lifecycleKind: LifecycleKind): void {
@@ -110,7 +114,7 @@ export class BeanFactory {
 
         const implicitComponentMetadata = getStaticRuntimeElementFromInstanceConstructor(
             instance,
-            RuntimeElement.COMPONENT_METADATA
+            StaticRuntimeElement.COMPONENT_METADATA
         );
 
         if (!implicitComponentMetadata) {
@@ -130,6 +134,17 @@ export class BeanFactory {
         }
 
         return beanConfig;
+    }
+
+    private getElementFactory(name: string): () => any {
+        const elementFactory =
+            getInstanceRuntimeElementFromInstance(this.instance, InstanceRuntimeElement.CONTEXT_ELEMENT_FACTORIES)?.[name];
+
+        if (!elementFactory) {
+            throw ErrorBuilder.noElementFactoryFound(this.configurationName, name);
+        }
+
+        return elementFactory;
     }
 
     private buildScopedBeanName(name: string): string {

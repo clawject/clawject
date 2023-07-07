@@ -3,8 +3,9 @@ import { getBeanConfigObjectLiteral } from './getBeanConfigObjectLiteral';
 import { Configuration } from '../../configuration/Configuration';
 import { ConfigLoader } from '../../../config/ConfigLoader';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
-import { RuntimeElement } from '../../../../runtime/runtime-elements/RuntimeElement';
+import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
+import { getElementFactoriesInstanceProperty } from './getElementFactoriesInstanceProperty';
 
 export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, context: Configuration): ts.ClassDeclaration => {
     const contextName = ConfigLoader.get().features.keepContextNames && context.name ?
@@ -22,7 +23,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
             undefined,
             [
                 factory.createThis(),
-                factory.createStringLiteral(RuntimeElement.CONTEXT_MANAGER),
+                factory.createStringLiteral(StaticRuntimeElement.CONTEXT_MANAGER),
                 factory.createObjectLiteralExpression(
                     [
                         factory.createPropertyAssignment(
@@ -76,6 +77,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
         ))],
         true
     ));
+    const elementFactoriesInstanceProperty = getElementFactoriesInstanceProperty(context);
 
     return factory.updateClassDeclaration(
         node,
@@ -86,6 +88,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
         [
             ...node.members,
             staticInitBlock,
+            elementFactoriesInstanceProperty,
         ]
     );
 };
@@ -93,7 +96,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
 const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExpression => {
     const lifecycleBeanData: Record<LifecycleKind, string[]> = {
         [LifecycleKind.POST_CONSTRUCT]: [],
-        [LifecycleKind.BEFORE_DESTRUCT]: [],
+        [LifecycleKind.PRE_DESTROY]: [],
     };
 
     context.beanRegister.elements.forEach(bean => {
@@ -110,13 +113,13 @@ const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExp
                 factory.createStringLiteral(lifecycle),
                 factory.createArrayLiteralExpression(
                     methodNames.map(it => factory.createStringLiteral(it)),
-                    false
+                    true
                 )
             );
         });
 
     return factory.createObjectLiteralExpression(
         propertyAssignments,
-        false,
+        true,
     );
 };

@@ -6,7 +6,7 @@ import { ErrorBuilder } from './ErrorBuilder';
 import { ClassConstructor } from './ClassConstructor';
 import { CustomScope } from './scope/CustomScope';
 import { ScopeRegister } from './scope/ScopeRegister';
-import { RuntimeElement } from './runtime-elements/RuntimeElement';
+import { StaticRuntimeElement } from './runtime-elements/StaticRuntimeElement';
 import { ContextManager } from './internal/ContextManager';
 
 const DEFAULT_KEY = undefined;
@@ -75,7 +75,7 @@ export class ContainerManagerImpl implements ContainerManager {
             throw ErrorBuilder.classNotInheritorOfCatContext();
         }
 
-        const contextManager = context[RuntimeElement.CONTEXT_MANAGER] as ContextManager | undefined;
+        const contextManager = context[StaticRuntimeElement.CONTEXT_MANAGER] as ContextManager | undefined;
 
         if (!contextManager) {
             throw ErrorBuilder.usageWithoutConfiguredDI();

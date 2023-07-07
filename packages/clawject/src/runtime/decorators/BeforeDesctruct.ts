@@ -1,7 +1,7 @@
 import { ErrorBuilder } from '../ErrorBuilder';
 import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
-export type BeforeDestructTarget = PropertyDecorator & MethodDecorator;
-export const BeforeDestruct: DecoratorWithoutArguments<BeforeDestructTarget> = () => {
-    throw ErrorBuilder.usageWithoutConfiguredDI('@BeforeDestruct');
+export type PreDestroyTarget = PropertyDecorator & MethodDecorator;
+export const PreDestroy: DecoratorWithoutArguments<PreDestroyTarget> = () => {
+    throw ErrorBuilder.usageWithoutConfiguredDI('@PreDestroy');
 };

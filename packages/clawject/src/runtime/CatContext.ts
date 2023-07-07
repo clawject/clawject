@@ -1,6 +1,6 @@
 import { ErrorBuilder } from './ErrorBuilder';
 import { getStaticRuntimeElementFromInstanceConstructor } from './utils/getStaticRuntimeElementFromInstanceConstructor';
-import { RuntimeElement } from './runtime-elements/RuntimeElement';
+import { StaticRuntimeElement } from './runtime-elements/StaticRuntimeElement';
 import { ContextManager } from './internal/ContextManager';
 
 /**

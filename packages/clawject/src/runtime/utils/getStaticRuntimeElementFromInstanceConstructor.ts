@@ -1,7 +1,7 @@
 import { getConstructorFromInstance } from './getConstructorFromInstance';
-import { RuntimeElement, RuntimeElementsTypeMap } from '../runtime-elements/RuntimeElement';
+import { StaticRuntimeElement, StaticRuntimeElementsTypeMap } from '../runtime-elements/StaticRuntimeElement';
 
-export const getStaticRuntimeElementFromInstanceConstructor = <T extends RuntimeElement>(instance: any, key: T): RuntimeElementsTypeMap[T] | null => {
+export const getStaticRuntimeElementFromInstanceConstructor = <T extends StaticRuntimeElement>(instance: any, key: T): StaticRuntimeElementsTypeMap[T] | null => {
     const instanceConstructor = getConstructorFromInstance(instance);
 
     if (!instanceConstructor) {

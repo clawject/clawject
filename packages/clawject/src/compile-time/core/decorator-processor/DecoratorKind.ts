@@ -1,7 +1,7 @@
 export enum DecoratorKind {
     Autowired = 'Autowired',
     Bean = 'Bean',
-    BeforeDestruct = 'BeforeDestruct',
+    PreDestroy = 'PreDestroy',
     Component = 'Component',
     Configuration = 'Configuration',
     Embedded = 'Embedded',

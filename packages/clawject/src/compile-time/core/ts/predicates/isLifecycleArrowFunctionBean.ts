@@ -14,7 +14,7 @@ export const isLifecycleArrowFunctionBean = (
         return false;
     }
 
-    const hasLifecycleDecorator = extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.BeforeDestruct) !== null;
+    const hasLifecycleDecorator = extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.PreDestroy) !== null;
 
     if (!hasLifecycleDecorator) {
         return false;

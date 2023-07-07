@@ -18,13 +18,13 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     const lifecycles = new Set<LifecycleKind>();
 
     const postConstructDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.PostConstruct);
-    const beforeDestructDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.BeforeDestruct);
+    const preDestroyDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.PreDestroy);
 
     if (postConstructDecoratorMetadata !== null) {
         lifecycles.add(LifecycleKind.POST_CONSTRUCT);
     }
-    if (beforeDestructDecoratorMetadata !== null) {
-        lifecycles.add(LifecycleKind.BEFORE_DESTRUCT);
+    if (preDestroyDecoratorMetadata !== null) {
+        lifecycles.add(LifecycleKind.PRE_DESTROY);
     }
 
     if (lifecycles.size === 0) {

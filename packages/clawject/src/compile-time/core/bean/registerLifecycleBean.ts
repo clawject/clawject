@@ -28,13 +28,13 @@ export const registerLifecycleBean = (
 
     const lifecycles = new Set<LifecycleKind>();
     const postConstructMetadata = extractDecoratorMetadata(classElement, DecoratorKind.PostConstruct);
-    const beforeDestructMetadata = extractDecoratorMetadata(classElement, DecoratorKind.BeforeDestruct);
+    const preDestroyMetadata = extractDecoratorMetadata(classElement, DecoratorKind.PreDestroy);
 
     if (postConstructMetadata !== null) {
         lifecycles.add(LifecycleKind.POST_CONSTRUCT);
     }
-    if (beforeDestructMetadata !== null) {
-        lifecycles.add(LifecycleKind.BEFORE_DESTRUCT);
+    if (preDestroyMetadata !== null) {
+        lifecycles.add(LifecycleKind.PRE_DESTROY);
     }
 
     if (lifecycles.size === 0) {

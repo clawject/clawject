@@ -1,6 +1,5 @@
-import { Bean, BeforeDestruct, CatContext, ContainerManager, Scope, PostConstruct, Lazy, Embedded } from 'clawject';
+import { Bean, PreDestroy, CatContext, ContainerManager, Scope, PostConstruct, Lazy, Embedded } from 'clawject';
 import { IMyContext } from './IMyContext';
-import { ClassWithDependencies } from './ClassWithDependencies';
 
 class A {
     constructor(str: string) {
@@ -12,14 +11,14 @@ interface IEmbedded {
 }
 
 class MyContext extends CatContext<IMyContext> {
-    @Bean @Embedded @Scope('singleton') embedded(): IEmbedded {
-        return ({ str: 'str' });
-    }
+    @Bean expressionBean = 'str';
 
-    @Bean string1 = 'string1';
-    @Bean string2 = 'string2';
+    @Bean methodBean(str: string, map: Map<string, any>): any {}
+    @Bean arrowFunctionBean = (str: string): any => {};
+    @Bean propertyBean = Bean(A);
 
-    a = Bean(A);
+    @PostConstruct @PreDestroy lifecycleMethod(str: string) {}
+    @PostConstruct @PreDestroy lifecycleArrowFunction = (str: string) => {};
 }
 
-console.log(ContainerManager.init(MyContext).getBeans());
+console.log(Array.from(ContainerManager.init(MyContext).getAllBeans()));

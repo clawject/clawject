@@ -11,16 +11,17 @@ import TabItem from '@theme/TabItem';
 
 Out of the box, Clawject provides two scopes: `singleton` and `prototype`, but sometimes you may need to define your own scopes.
 
-For example, if you are developing an http-server,
+For example, if you are developing an http server application,
 you may want to provide a separate instance of a particular bean or set of beans for each request.
 Clawject provides a mechanism for creating custom scopes for scenarios such as this.
 
 ## Creating a CustomScope Class
 
-In order to create a custom scope, you must implement the `CustomScope` interface.
+In order to create a custom scope, you should implement the `CustomScope` interface.
 
-In the following steps, we will implement http-session scope that 
-is using [AsyncLocalStorage](https://nodejs.org/api/async_context.html#class-asynclocalstorage) to retrieve current `http request id`.
+In the following steps, we will implement `http-request` scope that 
+is using [AsyncLocalStorage](https://nodejs.org/api/async_context.html#class-asynclocalstorage)
+to assign and retrieve `httpRequestId`.
 
 ### Creating the server code
 
@@ -151,20 +152,20 @@ class RequestScope implements CustomScope {
 ```
 
 ### Destroying the Scope
-Finally, let's implement the `dispose` method, that will be called when `http-request` will be finished
+Finally, let's implement the `destroy` method, that will be called when `http-request` will be finished
 and which destroys the scope and all of its objects:
 
 ```ts
 class RequestScope implements CustomScope {
   constructor() {
-    HttpExecutionContext.subscribeOnRequestEnd(this.dispose)
+    HttpExecutionContext.subscribeOnRequestEnd(this.destroy)
   }
   
-  private dispose = (requestId: number): void => {
+  private destroy = (requestId: number): void => {
     this.scopedObjects.delete(requestId);
     this.destructionCallbacks.get(requestId)?.forEach(callback => callback());
   }
-  
+
   /* ... */
 }
 ```
@@ -194,19 +195,34 @@ ContainerManager.registerScope('http-request', new RequestScope());
 Now that we have registered our custom scope,
 we can apply it to any of our beans just as we would with any other
 bean that uses a scope other than singleton (the default scope) — by using the
-@Scope decorator and specifying our custom scope by name.
+`@Scope` decorator and specifying our custom scope by name.
+
+`ScopedBean` class will assign a random value to its `scopedProperty` property
+that will be different for each request but identical in bounds of one request.
+
+#### How it works?
+
+When `ScopedBean` will be requested from the container -
+proxy will be injected instead of the actual bean instance,
+this proxy will ask `RequestScope` to get the bean instance, `RequestScope`
+will return or create bean that is associated with current request id.
+Because proxies are injected - no needs to rebuild the whole dependency tree,
+and other beans that is using `ScopedBean` will have own scope.
 
 ```ts
 export class ScopedBean {
-  doScopedWork(): void { /* ... */ }
+  scopedProperty: number
+
+  constructor() {
+    this.scopedProperty = Math.random();
+  }
 }
 
 export class NonScopedBean {
   constructor(private scopedBean: ScopedBean) {}
 
-  doStuff(): void {
-    this.scopedBean.doScopedWork();
-    /* ... */
+  invoke(): void {
+    console.log(`scopedProperty of ScopedBean: ${this.scopedBean.scopedProperty}`);
   }
 }
 
@@ -225,12 +241,14 @@ import { ContainerManager } from 'clawject';
 import { HttpExecutionContext } from './HttpExecutionContext';
 import { ApplicationContext } from './ApplicationContext';
 
-const applicationContext = ContainerManager.init(ApplicationContext);
+const {
+  nonScopedBean,
+} = ContainerManager.init(ApplicationContext).getBeans();
 
 http.createServer((req, res) => {
   HttpExecutionContext.run(() => {
     setTimeout(() => {
-      applicationContext.getBean('nonScopedBean').doStuff();
+      nonScopedBean.invoke();
       res.end();
       HttpExecutionContext.onRequestEnd();
     }, 100);
@@ -271,7 +289,7 @@ import { HttpExecutionContext } from './HttpExecutionContext';
 
 export class RequestScope implements CustomScope {
   constructor() {
-    HttpExecutionContext.subscribeOnRequestEnd(this.dispose)
+    HttpExecutionContext.subscribeOnRequestEnd(this.destroy)
   }
   
   // requestId to Map of objectName to object 
@@ -310,7 +328,7 @@ export class RequestScope implements CustomScope {
     return scopedObject;
   }
   
-  private dispose = (requestId: number): void => {
+  private destroy = (requestId: number): void => {
     this.scopedObjects.delete(requestId);
     this.destructionCallbacks.get(requestId)?.forEach(callback => callback());
   }
@@ -319,7 +337,11 @@ export class RequestScope implements CustomScope {
 
 ```ts title="ScopedBean.ts"
 export class ScopedBean {
-  doScopedWork(): void { /* ... */ }
+  scopedProperty: number
+
+  constructor() {
+    this.scopedProperty = Math.random();
+  }
 }
 ```
 
@@ -329,9 +351,8 @@ import { ScopedBean } from './ScopedBean';
 export class NonScopedBean {
   constructor(private scopedBean: ScopedBean) {}
 
-  doStuff(): void {
-    this.scopedBean.doScopedWork();
-    /* ... */
+  invoke(): void {
+    console.log(`scopedProperty of ScopedBean: ${this.scopedBean.scopedProperty}`);
   }
 }
 ```

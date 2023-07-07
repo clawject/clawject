@@ -1,7 +1,7 @@
 import ts, { factory } from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
-import { RuntimeElement } from '../../../../runtime/runtime-elements/RuntimeElement';
+import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
     return factory.createClassStaticBlockDeclaration(factory.createBlock(
@@ -13,7 +13,7 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
             undefined,
             [
                 factory.createThis(),
-                factory.createStringLiteral(RuntimeElement.COMPONENT_METADATA),
+                factory.createStringLiteral(StaticRuntimeElement.COMPONENT_METADATA),
                 factory.createObjectLiteralExpression(
                     [factory.createPropertyAssignment(
                         factory.createIdentifier('get'),
@@ -45,7 +45,7 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
 const getLifecycleConfigProperty = (component: Component): ts.ObjectLiteralExpression => {
     const lifecycleToClassElementNames: Record<LifecycleKind, string[]> = {
         [LifecycleKind.POST_CONSTRUCT]: [],
-        [LifecycleKind.BEFORE_DESTRUCT]: [],
+        [LifecycleKind.PRE_DESTROY]: [],
     };
 
     component.componentLifecycleRegister.elements.forEach(componentLifecycle => {
@@ -60,13 +60,13 @@ const getLifecycleConfigProperty = (component: Component): ts.ObjectLiteralExpre
                 factory.createStringLiteral(lifecycle),
                 factory.createArrayLiteralExpression(
                     methodNames.map(it => factory.createStringLiteral(it)),
-                    false
+                    true
                 )
             );
         });
 
     return factory.createObjectLiteralExpression(
         propertyAssignments,
-        false,
+        true,
     );
 };

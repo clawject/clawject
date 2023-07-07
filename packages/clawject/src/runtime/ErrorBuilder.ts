@@ -25,6 +25,10 @@ export class ErrorBuilder {
         return new Error(`Constructor of ${place} not found.`);
     }
 
+    static noElementFactoryFound(contextName: string | null, name: string): Error {
+        return new Error(`No factory found for element "${name}" in context "${this.getContextName(contextName)}"`);
+    }
+
     static contextKeyToString(contextKey: any): string {
         if (contextKey === undefined) {
             return '"undefined"';

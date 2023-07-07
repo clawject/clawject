@@ -1,2 +1,2 @@
-Autowired,Bean,BeforeDestruct,Component,Configuration,Embedded,Lazy,PostConstruct,Scope
+Autowired,Bean,PreDestroy,Component,Configuration,Embedded,Lazy,PostConstruct,Scope
 0,0,0,0,0,0,"0,1",0,1

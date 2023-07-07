@@ -42,7 +42,7 @@ export interface CustomScope {
      *
      * <b>Note: This is an optional operation.</b> This method will only
      * be called for scoped beans with actual destruction configuration
-     * (methods that are decorated with @BeforeDestruct).
+     * (methods that are decorated with @PreDestroy).
      * Implementations should do their best to execute a given callback
      * at the appropriate time.
      * If such a callback is not supported by the
@@ -58,7 +58,7 @@ export interface CustomScope {
      *
      * @param name the name of the object to execute the destruction callback for
      * @param callback the destruction callback to be executed.
-     * @see {@link BeforeDestruct}
+     * @see {@link PreDestroy}
      */
     registerDestructionCallback(name: string, callback: () => void): void;
 }
