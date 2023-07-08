@@ -10,16 +10,16 @@ import { Bean } from '../bean/Bean';
 export const registerBeanDependencies = (configuration: Configuration) => {
     configuration.beanRegister.elements.forEach(bean => {
         switch (bean.kind) {
-        case BeanKind.PROPERTY:
+        case BeanKind.CLASS_CONSTRUCTOR_BEAN:
             registerPropertyBeanDependencies(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
             break;
 
-        case BeanKind.METHOD:
+        case BeanKind.FACTORY_METHOD:
         case BeanKind.LIFECYCLE_METHOD:
             registerMethodBeanDependencies(bean as Bean<ts.MethodDeclaration>);
             break;
 
-        case BeanKind.ARROW_FUNCTION:
+        case BeanKind.FACTORY_ARROW_FUNCTION:
         case BeanKind.LIFECYCLE_ARROW_FUNCTION:
             registerArrowFunctionBeanDependencies(bean as Bean<ClassPropertyWithArrowFunctionInitializer>);
             break;

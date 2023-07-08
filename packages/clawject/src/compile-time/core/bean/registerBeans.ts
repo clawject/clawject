@@ -1,11 +1,11 @@
-import { isMethodBean } from '../ts/predicates/isMethodBean';
-import { registerMethodBean } from './registerMethodBean';
-import { isClassPropertyBean } from '../ts/predicates/isClassPropertyBean';
-import { registerPropertyBean } from './registerPropertyBean';
-import { isArrowFunctionBean } from '../ts/predicates/isArrowFunctionBean';
-import { registerArrowFunctionBean } from './registerArrowFunctionBean';
-import { isExpressionBean } from '../ts/predicates/isExpressionBean';
-import { registerExpressionBean } from './registerExpressionBean';
+import { isBeanFactoryMethod } from '../ts/predicates/isBeanFactoryMethod';
+import { registerBeanFactoryMethod } from './registerBeanFactoryMethod';
+import { isBeanClassConstructor } from '../ts/predicates/isBeanClassConstructor';
+import { registerBeanClassConstructor } from './registerBeanClassConstructor';
+import { isBeanFactoryArrowFunction } from '../ts/predicates/isBeanFactoryArrowFunction';
+import { registerBeanFactoryArrowFunction } from './registerBeanFactoryArrowFunction';
+import { isBeanValueExpression } from '../ts/predicates/isBeanValueExpression';
+import { registerBeanValueExpression } from './registerBeanValueExpression';
 import { verifyBeans } from './verifyBeans';
 import { isLifecycleMethodBean } from '../ts/predicates/isLifecycleMethodBean';
 import { registerLifecycleBean } from './registerLifecycleBean';
@@ -15,20 +15,20 @@ import { fillEmbeddedBeans } from './fillEmbeddedBeans';
 
 export function registerBeans(configuration: Configuration): void {
     configuration.node.members.forEach((classElement) => {
-        if (isMethodBean(classElement)) {
-            registerMethodBean(configuration, classElement);
+        if (isBeanFactoryMethod(classElement)) {
+            registerBeanFactoryMethod(configuration, classElement);
             return;
         }
-        if (isClassPropertyBean(classElement)) {
-            registerPropertyBean(configuration, classElement);
+        if (isBeanClassConstructor(classElement)) {
+            registerBeanClassConstructor(configuration, classElement);
             return;
         }
-        if (isArrowFunctionBean(configuration, classElement)) {
-            registerArrowFunctionBean(configuration, classElement);
+        if (isBeanFactoryArrowFunction(configuration, classElement)) {
+            registerBeanFactoryArrowFunction(configuration, classElement);
             return;
         }
-        if (isExpressionBean(configuration, classElement)) {
-            registerExpressionBean(configuration, classElement);
+        if (isBeanValueExpression(configuration, classElement)) {
+            registerBeanValueExpression(configuration, classElement);
             return;
         }
         if (isLifecycleMethodBean(classElement) || isLifecycleArrowFunctionBean(classElement)) {

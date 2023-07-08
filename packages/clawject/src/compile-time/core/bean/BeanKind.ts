@@ -1,23 +1,23 @@
 export enum BeanKind {
     /**
-     * @Bean methodBean() {}
+     * @Bean factoryMethod() {}
      * */
-    METHOD = 'METHOD',
+    FACTORY_METHOD = 'FACTORY_METHOD',
 
     /**
-     * propertyBean = Bean(ClassConstructor)
+     * classConstructorBean = Bean(ClassConstructor)
      * */
-    PROPERTY = 'PROPERTY',
+    CLASS_CONSTRUCTOR_BEAN = 'CLASS_CONSTRUCTOR_BEAN',
 
     /**
-     * @Bean arrowFunctionBean = (): any => {}
+     * @Bean factoryArrowFunction = (): any => {}
      * */
-    ARROW_FUNCTION = 'ARROW_FUNCTION',
+    FACTORY_ARROW_FUNCTION = 'FACTORY_ARROW_FUNCTION',
 
     /**
-     * @Bean expression = 'someValue'
+     * @Bean valueExpression = 'someValue'
      * */
-    EXPRESSION = 'EXPRESSION',
+    VALUE_EXPRESSION = 'VALUE_EXPRESSION',
 
     /**
      * @PostConstruct @PreDestroy lifecycleMethod(): any {}

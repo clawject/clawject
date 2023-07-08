@@ -16,16 +16,16 @@ export const processMembers = (node: ts.ClassDeclaration, configuration: Configu
         }
 
         switch (bean.kind) {
-        case BeanKind.METHOD:
+        case BeanKind.FACTORY_METHOD:
         case BeanKind.LIFECYCLE_METHOD:
             return transformMethodBean(bean as Bean<ts.MethodDeclaration>);
 
-        case BeanKind.PROPERTY:
+        case BeanKind.CLASS_CONSTRUCTOR_BEAN:
             return transformPropertyBean(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
 
-        case BeanKind.ARROW_FUNCTION:
+        case BeanKind.FACTORY_ARROW_FUNCTION:
         case BeanKind.LIFECYCLE_ARROW_FUNCTION:
-        case BeanKind.EXPRESSION:
+        case BeanKind.VALUE_EXPRESSION:
             return transformArrowFunctionOrExpressionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer | ClassPropertyWithExpressionInitializer>);
         }
 

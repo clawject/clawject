@@ -1,48 +1,39 @@
-import ts from 'typescript';
-import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
+import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
+import { Configuration } from '../configuration/Configuration';
+import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 
-export const registerMethodBean = (
+export const registerBeanFactoryArrowFunction = (
     configuration: Configuration,
-    classElement: ts.MethodDeclaration,
+    classElement: ClassPropertyWithArrowFunctionInitializer,
 ): void => {
     const compilationContext = getCompilationContext();
-    if (classElement.body === undefined) {
-        compilationContext.report(new MissingInitializerError(
-            'Method Bean should have a body.',
-            classElement.name,
-            configuration.node,
-        ));
-        return;
-    }
 
     const typeChecker = compilationContext.typeChecker;
-    const signature = typeChecker.getSignatureFromDeclaration(classElement);
-
+    const signature = typeChecker.getSignatureFromDeclaration(unwrapExpressionFromRoundBrackets(classElement.initializer));
     if (!signature) {
         compilationContext.report(new TypeQualifyError(
-            'Can not resolve method return type.',
-            classElement.name,
+            'Can not resolve function return type.',
+            classElement.initializer,
             configuration.node,
         ));
         return;
     }
 
     const returnType = typeChecker.getReturnTypeOfSignature(signature);
-    const diType = DITypeBuilder.build(returnType);
+    const diType = DITypeBuilder.buildForClassBean(returnType) ?? DITypeBuilder.build(returnType);
 
     const contextBean = new Bean({
         classMemberName: classElement.name.getText(),
         diType: diType,
         node: classElement,
-        kind: BeanKind.METHOD,
+        kind: BeanKind.FACTORY_ARROW_FUNCTION,
     });
     contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
     contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);

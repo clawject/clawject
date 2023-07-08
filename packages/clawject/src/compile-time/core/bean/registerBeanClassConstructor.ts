@@ -7,13 +7,11 @@ import { Configuration } from '../configuration/Configuration';
 import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
 import { getNodeSourceDescriptor } from '../ts/utils/getNodeSourceDescriptor';
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
-import { ConfigLoader } from '../../config/ConfigLoader';
-import { DIType } from '../type-system/DIType';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 
-export const registerPropertyBean = (
+export const registerBeanClassConstructor = (
     configuration: Configuration,
     classElement: ClassPropertyWithCallExpressionInitializer,
 ): void => {
@@ -29,7 +27,7 @@ export const registerPropertyBean = (
 
     if (nodeSourceDescriptors === null) {
         compilationContext.report(new DependencyResolvingError(
-            'Try to use method bean instead.',
+            'Try to use bean factory-method instead.',
             firstArgument,
             configuration.node,
         ));
@@ -40,7 +38,7 @@ export const registerPropertyBean = (
 
     if (classDeclarations.length === 0) {
         compilationContext.report(new DependencyResolvingError(
-            'Can not resolve class declaration, try to use method bean instead.',
+            'Can not resolve class declaration, try to use bean factory-method instead.',
             firstArgument,
             configuration.node,
         ));
@@ -49,7 +47,7 @@ export const registerPropertyBean = (
 
     if (classDeclarations.length > 1) {
         compilationContext.report(new DependencyResolvingError(
-            `Found ${classDeclarations.length} class declarations, try to use method bean instead.`,
+            `Found ${classDeclarations.length} class declarations, try to use bean factory-method instead.`,
             firstArgument,
             configuration.node,
         ));
@@ -59,27 +57,14 @@ export const registerPropertyBean = (
     const typeChecker = compilationContext.typeChecker;
 
     const classDeclaration = classDeclarations[0].originalNode as ts.ClassDeclaration;
-    const baseType = typeChecker.getTypeAtLocation(classElement);
-
-    let diType: DIType;
-
-    if (ConfigLoader.get().features.advancedTypeInference) {
-        const heritageClausesMembers = classDeclaration.heritageClauses?.map(it => it.types).flat() ?? [];
-
-        const implementsClauseTypes = heritageClausesMembers.map(it => typeChecker.getTypeAtLocation(it.expression));
-
-        diType = DITypeBuilder.buildSyntheticIntersection(
-            [baseType, ...implementsClauseTypes],
-        );
-    } else {
-        diType = DITypeBuilder.build(baseType);
-    }
+    const type = typeChecker.getTypeAtLocation(classDeclaration);
+    const diType = DITypeBuilder.buildForClassBean(type) ?? DITypeBuilder.build(type);
 
     const contextBean = new Bean({
         classMemberName: classElement.name.getText(),
         diType: diType,
         node: classElement,
-        kind: BeanKind.PROPERTY,
+        kind: BeanKind.CLASS_CONSTRUCTOR_BEAN,
         classDeclaration: classDeclaration,
     });
     contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);

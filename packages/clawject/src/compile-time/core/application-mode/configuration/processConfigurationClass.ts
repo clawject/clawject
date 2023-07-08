@@ -9,10 +9,10 @@ import { NotSupportedError } from '../../../compilation-context/messages/errors/
 import { transformConfigurationClass } from './transformation/transformConfigurationClass';
 
 const ALLOWED_BEAN_KINDS = new Set([
-    BeanKind.METHOD,
-    BeanKind.PROPERTY,
-    BeanKind.ARROW_FUNCTION,
-    BeanKind.EXPRESSION,
+    BeanKind.FACTORY_METHOD,
+    BeanKind.CLASS_CONSTRUCTOR_BEAN,
+    BeanKind.FACTORY_ARROW_FUNCTION,
+    BeanKind.VALUE_EXPRESSION,
     BeanKind.LIFECYCLE_METHOD,
     BeanKind.LIFECYCLE_ARROW_FUNCTION,
 ]);

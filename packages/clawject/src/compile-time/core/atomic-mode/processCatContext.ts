@@ -6,17 +6,17 @@ import { registerBeans } from '../bean/registerBeans';
 import { checkIsAllBeansRegisteredInContextAndFillBeanRequierness } from '../bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness';
 import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
 import { buildDependencyGraphAndFillQualifiedBeans } from '../dependencies/buildDependencyGraphAndFillQualifiedBeans';
-import { reportAboutCyclicDependencies } from '../report-cyclic-dependencies/reportAboutCyclicDependencies';
+import { reportAboutCircularDependencies } from '../report-cyclic-dependencies/reportAboutCircularDependencies';
 import { enrichWithAdditionalProperties } from './transformers/enrichWithAdditionalProperties';
 import { processMembers } from './transformers/processMembers';
 import { BeanKind } from '../bean/BeanKind';
 import { isNameReserved } from '../utils/isNameReserved';
 
 const ALLOWED_BEAN_KINDS = new Set([
-    BeanKind.METHOD,
-    BeanKind.PROPERTY,
-    BeanKind.ARROW_FUNCTION,
-    BeanKind.EXPRESSION,
+    BeanKind.FACTORY_METHOD,
+    BeanKind.CLASS_CONSTRUCTOR_BEAN,
+    BeanKind.FACTORY_ARROW_FUNCTION,
+    BeanKind.VALUE_EXPRESSION,
     BeanKind.LIFECYCLE_METHOD,
     BeanKind.LIFECYCLE_ARROW_FUNCTION,
 ]);
@@ -43,7 +43,7 @@ export function processCatContext(node: ts.ClassDeclaration, compilationContext:
     checkIsAllBeansRegisteredInContextAndFillBeanRequierness(context);
     registerBeanDependencies(context);
     buildDependencyGraphAndFillQualifiedBeans(context);
-    reportAboutCyclicDependencies(context);
+    reportAboutCircularDependencies(context);
 
     const enrichedWithAdditionalProperties = enrichWithAdditionalProperties(node, context);
     // const replacedExtendingFromCatContext = replaceExtendingFromCatContext(enrichedWithAdditionalProperties);

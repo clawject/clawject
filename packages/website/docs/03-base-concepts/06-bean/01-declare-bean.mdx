@@ -17,9 +17,11 @@ There are a few ways to declare a Bean, let's explore all of them one by one.
 ### Using `@Bean` decorator
 You can decorate property or method with `@Bean` decorator to declare a Bean.
 
-When you're decorating property that holds **arrow function** or **method** -
+When you're decorating **method** or property that holds **arrow function** -
 it's your responsibility to provide return value for bean,
-if it's class - it should be instantiated, if it's some dynamic value — it should be provided.
+if it's class - it should be instantiated, if it's some dynamic value — it should be returned from function provided.
+
+Functions decorated with `@Bean` decorator called **factory-functions**.
 
 You can provide bean dependencies via function arguments by specifying an argument type.
 
@@ -31,7 +33,7 @@ class MyContext extends CatContext {
     return new Foo();
   }
 
-  @Bean fooClassName = (foo: Foo): string => foo.constructor.name;
+  @Bean fooConstructorName = (foo: Foo): string => foo.constructor.name;
 }
 ```
 
@@ -48,8 +50,8 @@ class MyContext extends CatContext {
 
 ### Using `Bean` function
 It can be quite annoying to declare each dependency in method or arrow function for your class,
-especially when your class has a lot of dependencies because,
-if you're adding or removing a dependency, you need to change it in container level as well.
+especially when your class has a lot of dependencies.
+So, if you add/change/remove a dependency - you need to change it in factory-function level as well.
 To solve this inconvenience Clawject has `Bean` function that accepts class constructor,
 and automatically instantiate it with all needed dependencies.
 

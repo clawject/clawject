@@ -15,7 +15,7 @@ export const getElementFactoriesInstanceProperty = (context: Configuration): ts.
             factory.createStringLiteral(bean.classMemberName)
         );
 
-        if (bean.kind !== BeanKind.EXPRESSION) {
+        if (bean.kind !== BeanKind.VALUE_EXPRESSION) {
             elementAccessExpression = factory.createCallExpression(
                 elementAccessExpression,
                 undefined,

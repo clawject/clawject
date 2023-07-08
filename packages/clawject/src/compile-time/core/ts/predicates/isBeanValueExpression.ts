@@ -1,18 +1,15 @@
-import ts from 'typescript';
-import { ClassPropertyWithArrowFunctionInitializer } from '../types';
+import ts, { PropertyDeclaration } from 'typescript';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
 import { Configuration } from '../../configuration/Configuration';
-import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
-import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
+import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 
-export const isArrowFunctionBean = (
+export const isBeanValueExpression = (
     configuration: Configuration,
     node: ts.Node
-): node is ClassPropertyWithArrowFunctionInitializer => {
+): node is PropertyDeclaration => {
     const compilationContext = getCompilationContext();
-
     if (!ts.isPropertyDeclaration(node)) {
         return false;
     }
@@ -33,5 +30,5 @@ export const isArrowFunctionBean = (
         return false;
     }
 
-    return ts.isArrowFunction(unwrapExpressionFromRoundBrackets(node.initializer));
+    return !ts.isArrowFunction(node.initializer);
 };

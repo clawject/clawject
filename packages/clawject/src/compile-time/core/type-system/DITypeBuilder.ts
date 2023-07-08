@@ -5,6 +5,7 @@ import { parseFlags } from '../ts/flags/parseFlags';
 import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { ConfigLoader } from '../../config/ConfigLoader';
 
 /**
  * notes:
@@ -16,6 +17,34 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 export class DITypeBuilder {
     static build(tsType: ts.Type): DIType {
         return this._build(tsType, getCompilationContext().typeChecker);
+    }
+
+    static buildForClassBean(tsType: ts.Type): DIType | null {
+        if (!ConfigLoader.get().features.advancedClassTypeResolution) {
+            return null;
+        }
+
+        const typeChecker = getCompilationContext().typeChecker;
+        const symbol = tsType.aliasSymbol ?? tsType.getSymbol();
+
+        if (symbol === undefined) {
+            return null;
+        }
+
+        const classDeclarations = symbol.getDeclarations()?.filter(ts.isClassDeclaration) ?? [];
+
+        if (classDeclarations.length !== 1) {
+            return null;
+        }
+
+        const classDeclaration = classDeclarations[0];
+        const heritageClausesMembers = classDeclaration.heritageClauses
+            ?.map(it => it.types).flat() ?? [];
+
+        const implementsClauseTypes = heritageClausesMembers
+            .map(it => typeChecker.getTypeAtLocation(it.expression));
+
+        return this.buildSyntheticIntersection([tsType, ...implementsClauseTypes]);
     }
 
     static buildSyntheticIntersection(tsTypes: ts.Type[]): DIType {

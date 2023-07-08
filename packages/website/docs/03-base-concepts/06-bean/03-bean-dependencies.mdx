@@ -1,0 +1,216 @@
+---
+title: Bean Dependencies
+id: bean-dependencies
+---
+
+<hr />
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+## Overview
+
+This section describes what are bean dependencies, how to define them, and how they're resolved.
+
+## What is a bean dependency
+
+Bean dependency is a parameter of a bean that is injected by Clawject.
+Dependency can be declared in class constructor, or in a `factory-method`.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="class-bean-dependency" label="Class-Constructor Bean dependencies">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string,
+    private baz: number,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar = 'barValue';
+  @Bean baz = 42;
+  
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="factory-function-bean-dependencies" label="Factory-Method bean dependencies">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string,
+    private baz: number,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar = 'barValue';
+  @Bean baz = 42;
+  
+  @Bean foo(bar: string, baz: number) {
+    return new Foo(bar, baz)
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## How dependencies are resolved
+
+There are a few steps that are taken to resolve bean dependencies.
+
+Firstly - Clawject try to find all beans that are compatible with a dependency type.
+If none of the compatible bean candidates are found - compilation error will be reported.
+
+If only **one** compatible bean is found - it's used as a dependency.
+
+```ts
+class Foo {
+  constructor(
+    private bar: string // <- "barBean" will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean barBean = 'barValue';
+  
+  foo = Bean(Foo);
+}
+```
+
+If **more than one** compatible bean is found - Clawject try to find a candidate that has the same name as parameter.
+If such bean is found - it's used as a dependency.
+
+```ts
+class Foo {
+  constructor(
+    private bar: string // <- "bar" will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar = 'barValue';
+  @Bean barOther = 'barOtherValue';
+  
+  foo = Bean(Foo);
+}
+```
+
+If **more than one** compatible bean is found, and none of them has the same name 
+as parameter - then compilation error will be reported.
+
+```ts
+class Foo {
+  constructor(
+    private bar: string // <- compilation error
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar1 = 'bar1Value';
+  @Bean bar2 = 'bar2Value';
+  
+  foo = Bean(Foo);
+}
+```
+
+## Optional dependencies
+
+Dependencies can be optional, if there are no suitable bean candidates found - `undefined` or `null` will be injected.
+
+Let's take a look at how we can mark dependency as optional:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="optional-operator" label="Optional operator">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar?: string, // <- optional dependency, `undefined` will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="union-undefined" label="Union with undefined">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string | undefined, // <- optional dependency, `undefined` will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="union-null" label="Union with null">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string | null, // <- optional dependency, `null` will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Circular dependencies
+
+Clawject will detect circular dependencies and report compilation error with involved beans.
+
+```ts
+class Bar {
+  constructor(
+    private foo: Foo,
+  ) {}
+}
+
+class Foo {
+  constructor(
+    private bar: Bar,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo); // <- Circular dependencies detected. foo <—> bar
+  bar = Bean(Bar); // <- Circular dependencies detected. bar <—> foo
+}
+```

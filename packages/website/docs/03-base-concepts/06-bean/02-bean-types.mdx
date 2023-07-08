@@ -53,8 +53,8 @@ class MyContext extends CatContext {
 ```
 
 ## Specifying Bean type
-You can specify the type explicitly for each property, 
-but it is not necessary because Clawject using TypeScript type system to infer types.
+You can specify the type explicitly for each property,
+but it is not necessary to, because Clawject using TypeScript type system to infer types.
 
 The next two examples are equivalent:
 
@@ -86,49 +86,57 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-When you're using `Bean` via **function** call,
-and not via `@Bean` decorator - Clawject will automatically infer a class type including `implements` and `extends` clauses.
-To disable this behaviour check configuration guide.
-TODO: add link to configuration guide
+When your bean type is a class-type -
+Clawject will automatically resolve a class type including `implements` and `extends` clauses types.
 
-The next two examples are equivalent:
+Note that only first level of `extends` and `implements` clauses will be resolved,
+so if your class extends another class, and that class extends another class, -
+only a first class type will be resolved.
 
-```mdx-code-block
-<Tabs>
-<TabItem value="bean-function" label="Using Bean function">
-```
+Let's take a look at the next example:
 
 ```ts
-abstract class AbstractFoo {}
+class AbstractBar {}
+class AbstractFoo extends AbstractBar {}
+
 interface IFoo {}
 
 class Foo extends AbstractFoo implements IFoo {}
 
 class MyContext extends CatContext {
   foo = Bean(Foo);
+  
+  @PostConstruct
+  postConstruct(
+    // highlight-next-line-green
+    foo: Foo, // <- "foo" will be injected
+    // highlight-next-line-green
+    iFoo: IFoo, // <- "foo" will be injected, "Foo" explicitly implements "IFoo"
+    // highlight-next-line-green
+    abstractFoo: AbstractFoo, // <- "foo" will be injected, "Foo" explicitly extends "AbstractFoo"
+    // highlight-next-line-red
+    abstractBar: AbstractBar, // <- compilation error will be reported, no bean of type "AbstractBar" were found
+  ) {}
 }
 ```
 
-```mdx-code-block
-</TabItem>
-
-<TabItem value="explicitly-specify-type" label="Using @Bean decorator">
-```
+If you don't want to resolve `implements` and `extends` types,
+you can specify a type of bean explicitly, or disable this feature globally.
+TODO link to configuration guide
 
 ```ts
-abstract class AbstractFoo {}
 interface IFoo {}
-
-class Foo extends AbstractFoo implements IFoo {}
+class Foo implements IFoo {}
 
 class MyContext extends CatContext {
-  @Bean foo(): Foo & IFoo & AbstractFoo {
-    return new Foo();
-  }
+  foo: IFoo = Bean(Foo);
+  
+  @PostConstruct
+  postConstruct(
+    // highlight-next-line-green
+    iFoo: IFoo, // <- "foo" will be injected by explicit type
+    // highlight-next-line-red
+    foo: Foo, // <- compilation error will be reported, no bean of type "Foo" were found
+  ) {}
 }
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
 ```

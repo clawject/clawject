@@ -12,7 +12,7 @@ export class ConfigLoader {
         mode: 'atomic',
         unsafeTSVersion: false,
         features: {
-            advancedTypeInference: true,
+            advancedClassTypeResolution: true,
             keepContextNames: true,
             lazyBeans: false,
         }

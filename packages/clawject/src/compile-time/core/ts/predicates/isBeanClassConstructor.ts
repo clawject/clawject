@@ -3,7 +3,7 @@ import { ClassPropertyWithCallExpressionInitializer } from '../types';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 
-export const isClassPropertyBean = (node: ts.Node): node is ClassPropertyWithCallExpressionInitializer =>
+export const isBeanClassConstructor = (node: ts.Node): node is ClassPropertyWithCallExpressionInitializer =>
     ts.isPropertyDeclaration(node) && hasBeanCallExpression(node);
 
 function hasBeanCallExpression(node: ts.PropertyDeclaration): boolean {

@@ -70,7 +70,7 @@ function verifyName(bean: Bean): void {
     }
 
     compilationContext.report(new NotSupportedError(
-        'Bean property name should be statically known.',
+        'Bean name should be statically known.',
         bean.node.name,
         bean.parentConfiguration.node
     ));
