@@ -16,6 +16,7 @@ export interface ContextManagerConfig {
     contextConstructor: ClassConstructor<CatContext>;
     lifecycle: RuntimeLifecycleMetadata;
     beans: Record<string, RuntimeBeanMetadata>;
+    lazy: boolean;
 }
 
 export class ContextManager {
@@ -131,7 +132,9 @@ export class ContextManager {
 
     private postConstruct(instance: CatContext): void {
         Object.entries(this.metadata.beans).forEach(([beanName, beanConfig]) => {
-            if (!beanConfig.lazy && beanConfig.scope === 'singleton') {
+            const isBeanLazy = beanConfig.lazy === null ? this.metadata.lazy : beanConfig.lazy;
+
+            if (!isBeanLazy && beanConfig.scope === 'singleton') {
                 this.beanFactories.get(instance)?.getBean(beanName);
             }
         });

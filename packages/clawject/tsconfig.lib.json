@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "declaration": true,
+    "declaration": false,
     "sourceMap": false,
     "types": ["node", "ts-expose-internals"]
   },

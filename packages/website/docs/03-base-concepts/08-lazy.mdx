@@ -1,0 +1,107 @@
+---
+title: Lazy
+id: lazy
+---
+
+<hr/>
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+By default, Clawject creates all singleton beans eagerly at the initialization of the context.
+However, there are cases when we need to create a bean,
+not at the context initialization, but when we request it.
+
+`@Lazy` decorator accepts optional boolean parameter that indicates is target will be lazy or not, default value: `true`.
+
+## Lazy on CatContext class
+
+When we put @Lazy decorator over the class that is inheritor of `CatContext`,
+it indicates that all the beans that are declared in context should be loaded lazily.
+
+Let's have a look here:
+
+```ts
+class Foo {
+  @PostConstruct
+  postConstruct() {
+    console.log('Foo bean has been created');
+  }
+}
+class Bar {
+  @PostConstruct
+  postConstruct() {
+    console.log('Bar bean has been created');
+  }
+}
+
+@Lazy
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+  bar = Bean(Bar);
+}
+
+const context = ContainerManager.init(MyContext);
+
+context.getBean('foo'); // <- logs "Foo bean has been created"
+context.getBean('bar'); // <- logs "Bar bean has been created"
+```
+
+As we see, all beans are created only when we request them for the first time.
+
+## Lazy on Beans
+
+We can also put @Lazy decorator over the bean declaration.
+
+```ts
+class Foo {
+  @PostConstruct
+  postConstruct() {
+    console.log('Foo bean has been created');
+  }
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+}
+
+const context = ContainerManager.init(MyContext);
+
+context.getBean('foo'); // <- logs "Foo bean has been created"
+```
+
+Again, the bean is created only when we request it for the first time.
+
+## Combining @Lazy on CatContext and Bean
+
+We can also combine @Lazy decorator on CatContext and Bean.
+If Bean is decorated with `@Lazy`, it overrides the `@Lazy` on `CatContext` level for this bean,
+if not - value from `CatContext` is used.
+
+```ts
+class Foo {
+  @PostConstruct
+  postConstruct() {
+    console.log('Foo bean has been created');
+  }
+}
+class Bar {
+  @PostConstruct
+  postConstruct() {
+    console.log('Bar bean has been created');
+  }
+}
+
+@Lazy
+class MyContext extends CatContext {
+  
+  @Lazy(false)
+  foo = Bean(Foo);
+
+  bar = Bean(Bar);
+}
+
+ContainerManager.init(MyContext); // <- logs "Foo bean has been created"
+```

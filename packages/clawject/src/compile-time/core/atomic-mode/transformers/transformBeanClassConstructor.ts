@@ -4,7 +4,7 @@ import { Bean } from '../../bean/Bean';
 import { unwrapExpressionFromRoundBrackets } from '../../ts/utils/unwrapExpressionFromRoundBrackets';
 import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
-export const transformPropertyBean = (bean: Bean<ClassPropertyWithCallExpressionInitializer>): ts.PropertyDeclaration => {
+export const transformBeanClassConstructor = (bean: Bean<ClassPropertyWithCallExpressionInitializer>): ts.PropertyDeclaration => {
     const classExpression = unwrapExpressionFromRoundBrackets(bean.node.initializer).arguments[0];
 
     return factory.createPropertyDeclaration(

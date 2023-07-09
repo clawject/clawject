@@ -10,18 +10,29 @@ import ts from 'typescript';
 import { isPropertyWithArrowFunction } from '../ts/predicates/isPropertyWithArrowFunction';
 import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
+import { BeanKind } from './BeanKind';
+import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 
 export const fillEmbeddedBeans = (
     configuration: Configuration,
 ): void => {
     configuration.beanRegister.elements.forEach((rootBean) => {
+        const compilationContext = getCompilationContext();
         const embeddedDecorator = extractDecoratorMetadata(rootBean.node, DecoratorKind.Embedded);
 
         if (embeddedDecorator === null) {
             return;
         }
 
-        const compilationContext = getCompilationContext();
+        if (rootBean.kind === BeanKind.CLASS_CONSTRUCTOR) {
+            compilationContext.report(new NotSupportedError(
+                '@Embedded decorator is not supported for class constructor beans.',
+                rootBean.node,
+                configuration.node,
+            ));
+            return;
+        }
+
         const typeChecker = compilationContext.typeChecker;
         const rootBeanNode = rootBean.node;
         let type: ts.Type | undefined = undefined;
@@ -73,7 +84,7 @@ export const fillEmbeddedBeans = (
         const declarationType = typeChecker.getTypeAtLocation(declaration);
         declarationType.getProperties().forEach(property => {
             const type = typeChecker.getTypeOfSymbolAtLocation(property, declaration);
-            const diType = DITypeBuilder.build(type);
+            const diType = DITypeBuilder.buildForClassBean(type) ?? DITypeBuilder.build(type);
 
             rootBean.embeddedElements.set(property.name, diType);
         });

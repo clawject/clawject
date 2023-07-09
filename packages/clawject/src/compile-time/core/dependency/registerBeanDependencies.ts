@@ -10,7 +10,7 @@ import { Bean } from '../bean/Bean';
 export const registerBeanDependencies = (configuration: Configuration) => {
     configuration.beanRegister.elements.forEach(bean => {
         switch (bean.kind) {
-        case BeanKind.CLASS_CONSTRUCTOR_BEAN:
+        case BeanKind.CLASS_CONSTRUCTOR:
             registerPropertyBeanDependencies(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
             break;
 

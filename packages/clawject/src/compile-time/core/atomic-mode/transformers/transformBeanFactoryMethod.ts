@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { Bean } from '../../bean/Bean';
 import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
-export const transformMethodBean = (bean: Bean<ts.MethodDeclaration>): ts.MethodDeclaration => {
+export const transformBeanFactoryMethod = (bean: Bean<ts.MethodDeclaration>): ts.MethodDeclaration => {
     return factory.updateMethodDeclaration(
         bean.node,
         bean.node.modifiers?.filter(modifier => !isDecoratorFromLibrary(modifier, undefined)),

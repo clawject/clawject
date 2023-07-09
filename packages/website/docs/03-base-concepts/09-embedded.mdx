@@ -1,0 +1,43 @@
+---
+title: Embedded
+id: embedded
+---
+
+<hr/>
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+Clawject provides @Embedded decorator that allows to register elements from a plain object as a beans.
+Possible use cases:
+  - Embedding initialized contexts into another context
+  - Embedding external objects into a context
+
+Note that @Embedded decorator can't be applied to class-constructor Bean `foo = Bean(Foo)`.
+
+## Embedding an object into a context
+
+All properties of an object that is declared in `IFoo` will be available as a dependency in a context.
+
+```ts
+interface IFoo {
+  fooProperty: string;
+}
+const foo: IFoo = { fooProperty: 'fooValue' };
+
+class MyContext extends Context {
+  @Bean 
+  @Embedded
+  fooBean = foo;
+  
+  @PostConstruct
+  postConstruct(
+    fooObject: IFoo, // <- foo will be injected here
+    fooProperty: string // <- foo.fooProperty will be injected here
+  ) {}
+}
+```
+
+## Embedding

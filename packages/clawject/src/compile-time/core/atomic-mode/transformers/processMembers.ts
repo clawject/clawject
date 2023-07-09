@@ -1,6 +1,6 @@
 import ts, { factory } from 'typescript';
-import { transformPropertyBean } from './transformPropertyBean';
-import { transformMethodBean } from './transformMethodBean';
+import { transformBeanClassConstructor } from './transformBeanClassConstructor';
+import { transformBeanFactoryMethod } from './transformBeanFactoryMethod';
 import { transformArrowFunctionOrExpressionBean } from './transformArrowFunctionOrExpressionBean';
 import { Configuration } from '../../configuration/Configuration';
 import { BeanKind } from '../../bean/BeanKind';
@@ -18,10 +18,10 @@ export const processMembers = (node: ts.ClassDeclaration, configuration: Configu
         switch (bean.kind) {
         case BeanKind.FACTORY_METHOD:
         case BeanKind.LIFECYCLE_METHOD:
-            return transformMethodBean(bean as Bean<ts.MethodDeclaration>);
+            return transformBeanFactoryMethod(bean as Bean<ts.MethodDeclaration>);
 
-        case BeanKind.CLASS_CONSTRUCTOR_BEAN:
-            return transformPropertyBean(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
+        case BeanKind.CLASS_CONSTRUCTOR:
+            return transformBeanClassConstructor(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
 
         case BeanKind.FACTORY_ARROW_FUNCTION:
         case BeanKind.LIFECYCLE_ARROW_FUNCTION:

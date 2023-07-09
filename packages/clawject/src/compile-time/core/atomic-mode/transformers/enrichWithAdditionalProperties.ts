@@ -52,6 +52,10 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
                                         factory.createPropertyAssignment(
                                             factory.createIdentifier('beans'),
                                             beanConfigProperty
+                                        ),
+                                        factory.createPropertyAssignment(
+                                            factory.createIdentifier('lazy'),
+                                            context.lazyExpression.getAndDispose()
                                         )
                                     ],
                                     true

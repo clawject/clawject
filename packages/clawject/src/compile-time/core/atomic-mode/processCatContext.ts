@@ -11,10 +11,11 @@ import { enrichWithAdditionalProperties } from './transformers/enrichWithAdditio
 import { processMembers } from './transformers/processMembers';
 import { BeanKind } from '../bean/BeanKind';
 import { isNameReserved } from '../utils/isNameReserved';
+import { getConfigurationLazyExpressionValue } from './transformers/getConfigurationLazyExpressionValue';
 
 const ALLOWED_BEAN_KINDS = new Set([
     BeanKind.FACTORY_METHOD,
-    BeanKind.CLASS_CONSTRUCTOR_BEAN,
+    BeanKind.CLASS_CONSTRUCTOR,
     BeanKind.FACTORY_ARROW_FUNCTION,
     BeanKind.VALUE_EXPRESSION,
     BeanKind.LIFECYCLE_METHOD,
@@ -23,6 +24,7 @@ const ALLOWED_BEAN_KINDS = new Set([
 
 export function processCatContext(node: ts.ClassDeclaration, compilationContext: CompilationContext): ts.Node {
     const context = ConfigurationRepository.register(node, ALLOWED_BEAN_KINDS);
+    context.lazyExpression.node = getConfigurationLazyExpressionValue(context);
 
     const restrictedClassMembersByName = node.members
         .filter(it => isNameReserved(it.name?.getText() ?? ''));
@@ -46,7 +48,6 @@ export function processCatContext(node: ts.ClassDeclaration, compilationContext:
     reportAboutCircularDependencies(context);
 
     const enrichedWithAdditionalProperties = enrichWithAdditionalProperties(node, context);
-    // const replacedExtendingFromCatContext = replaceExtendingFromCatContext(enrichedWithAdditionalProperties);
     const withProcessedMembers = processMembers(enrichedWithAdditionalProperties, context);
 
     return withProcessedMembers;

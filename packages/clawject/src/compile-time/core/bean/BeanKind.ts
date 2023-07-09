@@ -5,9 +5,9 @@ export enum BeanKind {
     FACTORY_METHOD = 'FACTORY_METHOD',
 
     /**
-     * classConstructorBean = Bean(ClassConstructor)
+     * classConstructor = Bean(ClassConstructor)
      * */
-    CLASS_CONSTRUCTOR_BEAN = 'CLASS_CONSTRUCTOR_BEAN',
+    CLASS_CONSTRUCTOR = 'CLASS_CONSTRUCTOR',
 
     /**
      * @Bean factoryArrowFunction = (): any => {}

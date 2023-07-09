@@ -4,7 +4,7 @@ import { getStaticInitBlock } from './getStaticInitBlock';
 import { transformAutowiredMember } from './transformAutowiredMember';
 import { Bean, BeanNode } from '../../../bean/Bean';
 import { BeanKind } from '../../../bean/BeanKind';
-import { transformPropertyBean } from '../../../atomic-mode/transformers/transformPropertyBean';
+import { transformBeanClassConstructor } from '../../../atomic-mode/transformers/transformBeanClassConstructor';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../../../ts/types';
 import { transformArrowFunctionOrExpressionBean } from '../../../atomic-mode/transformers/transformArrowFunctionOrExpressionBean';
 import { transformExpressionBean } from '../../../atomic-mode/transformers/transformExpressionBean';
@@ -27,8 +27,8 @@ export const transformConfigurationClass = (configuration: Configuration): ts.Cl
             case BeanKind.LIFECYCLE_METHOD:
                 return transformConfigurationMethodBean(bean as Bean<ts.MethodDeclaration>);
 
-            case BeanKind.CLASS_CONSTRUCTOR_BEAN:
-                return transformPropertyBean(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
+            case BeanKind.CLASS_CONSTRUCTOR:
+                return transformBeanClassConstructor(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
 
             case BeanKind.FACTORY_ARROW_FUNCTION:
             case BeanKind.LIFECYCLE_ARROW_FUNCTION:

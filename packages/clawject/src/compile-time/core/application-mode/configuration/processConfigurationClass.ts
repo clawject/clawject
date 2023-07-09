@@ -10,7 +10,7 @@ import { transformConfigurationClass } from './transformation/transformConfigura
 
 const ALLOWED_BEAN_KINDS = new Set([
     BeanKind.FACTORY_METHOD,
-    BeanKind.CLASS_CONSTRUCTOR_BEAN,
+    BeanKind.CLASS_CONSTRUCTOR,
     BeanKind.FACTORY_ARROW_FUNCTION,
     BeanKind.VALUE_EXPRESSION,
     BeanKind.LIFECYCLE_METHOD,

@@ -64,7 +64,7 @@ export const registerBeanClassConstructor = (
         classMemberName: classElement.name.getText(),
         diType: diType,
         node: classElement,
-        kind: BeanKind.CLASS_CONSTRUCTOR_BEAN,
+        kind: BeanKind.CLASS_CONSTRUCTOR,
         classDeclaration: classDeclaration,
     });
     contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);

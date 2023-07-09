@@ -4,6 +4,7 @@ import { BeanKind } from '../bean/BeanKind';
 import { AutowiredRegister } from '../autowired/AutowiredRegister';
 import { BeanRegister } from '../bean/BeanRegister';
 import { BaseElement } from '../BaseElement';
+import { DisposableNodeHolder } from '../DisposableNodeHolder';
 
 export class Configuration extends BaseElement<ts.ClassDeclaration> {
     declare id: string;
@@ -16,6 +17,8 @@ export class Configuration extends BaseElement<ts.ClassDeclaration> {
 
     autowiredRegister = new AutowiredRegister(this);
     beanRegister = new BeanRegister(this);
+
+    lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
     registerDIType(diType: DIType): void {
         diType.declarations.map(it => {

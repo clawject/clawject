@@ -4,6 +4,5 @@ export interface IDIConfig {
     features: {
         advancedClassTypeResolution: boolean;
         keepContextNames: boolean;
-        lazyBeans: boolean;
     };
 }
