@@ -74,6 +74,11 @@ const config = {
             label: 'Docs',
           },
           {
+            position: 'left',
+            label: 'Playground',
+            to: '/playground',
+          },
+          {
             href: 'https://github.com/clawject/clawject',
             label: 'GitHub',
             position: 'right',
