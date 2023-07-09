@@ -5,67 +5,67 @@ import { DependencyGraph } from '../dependencies/DependencyGraph';
 import { BeanKind } from '../bean/BeanKind';
 
 export class ConfigurationRepository {
-    static fileNameToLastConfigurationCounter = new Map<string, number>();
-    static fileNameToConfigurations = new Map<string, Configuration[]>();
-    static configurationIdToConfiguration = new Map<string, Configuration>();
+  static fileNameToLastConfigurationCounter = new Map<string, number>();
+  static fileNameToConfigurations = new Map<string, Configuration[]>();
+  static configurationIdToConfiguration = new Map<string, Configuration>();
 
-    static register(classDeclaration: ts.ClassDeclaration, allowedBeanKinds: Set<BeanKind>): Configuration {
-        const sourceFile = classDeclaration.getSourceFile();
+  static register(classDeclaration: ts.ClassDeclaration, allowedBeanKinds: Set<BeanKind>): Configuration {
+    const sourceFile = classDeclaration.getSourceFile();
 
-        const configuration = new Configuration();
+    const configuration = new Configuration();
 
-        configuration.id = this.buildId(classDeclaration);
-        configuration.fileName = classDeclaration.getSourceFile().fileName;
-        configuration.allowedBeanKinds = allowedBeanKinds;
-        configuration.node = classDeclaration;
+    configuration.id = this.buildId(classDeclaration);
+    configuration.fileName = classDeclaration.getSourceFile().fileName;
+    configuration.allowedBeanKinds = allowedBeanKinds;
+    configuration.node = classDeclaration;
 
-        if (classDeclaration.name !== undefined) {
-            configuration.name = unquoteString(classDeclaration.name.getText());
-        }
-
-        const configurations = this.fileNameToConfigurations.get(sourceFile.fileName) ?? [];
-        this.fileNameToConfigurations.set(sourceFile.fileName, configurations);
-        configurations.push(configuration);
-
-        this.configurationIdToConfiguration.set(configuration.id, configuration);
-
-        return configuration;
+    if (classDeclaration.name !== undefined) {
+      configuration.name = unquoteString(classDeclaration.name.getText());
     }
 
-    static getConfigurationByBeanId(beanId: string): Configuration | null {
-        const contextId = beanId.match(/(.*)_\d+$/);
+    const configurations = this.fileNameToConfigurations.get(sourceFile.fileName) ?? [];
+    this.fileNameToConfigurations.set(sourceFile.fileName, configurations);
+    configurations.push(configuration);
 
-        if (contextId === null) {
-            return null;
-        }
+    this.configurationIdToConfiguration.set(configuration.id, configuration);
 
-        return this.configurationIdToConfiguration.get(contextId[1]) ?? null;
+    return configuration;
+  }
+
+  static getConfigurationByBeanId(beanId: string): Configuration | null {
+    const contextId = beanId.match(/(.*)_\d+$/);
+
+    if (contextId === null) {
+      return null;
     }
 
-    private static buildId(classDeclaration: ts.ClassDeclaration): string {
-        const sourceFile = classDeclaration.getSourceFile();
-        const lastConfigurationCounter = this.fileNameToLastConfigurationCounter.get(sourceFile.fileName);
-        const newCounter = (lastConfigurationCounter ?? 0) + 1;
-        this.fileNameToLastConfigurationCounter.set(sourceFile.fileName, newCounter);
+    return this.configurationIdToConfiguration.get(contextId[1]) ?? null;
+  }
 
-        return `${sourceFile.fileName}_${newCounter}`;
-    }
+  static clear(): void {
+    this.fileNameToConfigurations.clear();
+    this.fileNameToLastConfigurationCounter.clear();
+    this.configurationIdToConfiguration.clear();
+  }
 
-    static clear(): void {
-        this.fileNameToConfigurations.clear();
-        this.fileNameToLastConfigurationCounter.clear();
-        this.configurationIdToConfiguration.clear();
-    }
+  static clearByFileName(fileName: string): void {
+    const configurations = this.fileNameToConfigurations.get(fileName) ?? [];
 
-    static clearByFileName(fileName: string): void {
-        const configurations = this.fileNameToConfigurations.get(fileName) ?? [];
+    this.fileNameToConfigurations.delete(fileName);
+    this.fileNameToLastConfigurationCounter.delete(fileName);
+    configurations.forEach(configuration => {
+      this.configurationIdToConfiguration.delete(configuration.id);
 
-        this.fileNameToConfigurations.delete(fileName);
-        this.fileNameToLastConfigurationCounter.delete(fileName);
-        configurations.forEach(configuration => {
-            this.configurationIdToConfiguration.delete(configuration.id);
+      DependencyGraph.clearByConfiguration(configuration);
+    });
+  }
 
-            DependencyGraph.clearByConfiguration(configuration);
-        });
-    }
+  private static buildId(classDeclaration: ts.ClassDeclaration): string {
+    const sourceFile = classDeclaration.getSourceFile();
+    const lastConfigurationCounter = this.fileNameToLastConfigurationCounter.get(sourceFile.fileName);
+    const newCounter = (lastConfigurationCounter ?? 0) + 1;
+    this.fileNameToLastConfigurationCounter.set(sourceFile.fileName, newCounter);
+
+    return `${sourceFile.fileName}_${newCounter}`;
+  }
 }

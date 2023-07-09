@@ -1,4 +1,4 @@
-import { Bean, PreDestroy, CatContext, ContainerManager, Scope, PostConstruct, Lazy, Embedded } from 'clawject';
+import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct } from 'clawject';
 import { IMyContext } from './IMyContext';
 
 class A {
@@ -8,14 +8,14 @@ class A {
 
 @Lazy(true)
 class MyContext extends CatContext<IMyContext> {
-    @Embedded a = Bean(A);
+  @Embedded a = Bean(A);
 
-    @PostConstruct
-    postConstruct(
-        data: string,
-    ) {
+  @PostConstruct
+  postConstruct(
+      data: string,
+  ) {
 
-    }
+  }
 }
 
 console.log(Array.from(ContainerManager.init(MyContext).getAllBeans()));

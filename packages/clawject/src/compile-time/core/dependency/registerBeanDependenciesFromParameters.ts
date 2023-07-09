@@ -3,12 +3,12 @@ import { Bean } from '../bean/Bean';
 import { buildDependencyFromParameter } from './buildDependencyFromParameter';
 
 export const registerBeanDependenciesFromParameters = (
-    bean: Bean,
-    parameters: ts.NodeArray<ts.ParameterDeclaration>,
+  bean: Bean,
+  parameters: ts.NodeArray<ts.ParameterDeclaration>,
 ): void => {
-    parameters.forEach(parameter => {
-        const dependency = buildDependencyFromParameter(parameter);
+  parameters.forEach(parameter => {
+    const dependency = buildDependencyFromParameter(parameter);
 
-        bean.dependencies.add(dependency);
-    });
+    bean.dependencies.add(dependency);
+  });
 };

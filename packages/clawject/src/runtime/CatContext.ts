@@ -1,6 +1,4 @@
 import { ErrorBuilder } from './ErrorBuilder';
-import { getStaticRuntimeElementFromInstanceConstructor } from './utils/getStaticRuntimeElementFromInstanceConstructor';
-import { StaticRuntimeElement } from './runtime-elements/StaticRuntimeElement';
 import { ContextManager } from './internal/ContextManager';
 
 /**
@@ -41,18 +39,18 @@ import { ContextManager } from './internal/ContextManager';
  * @see {@link PostConstruct}
  */
 export abstract class CatContext<T = {}, C = undefined> {
-    /**
-     * Returns config that was passed in context initialization stage via {@link Container#initContext} or {@link Container#getOrInitContext}.
-     * */
-    protected get config(): C {
-        return ContextManager.getConfigForInstance(this);
-    }
+  /**
+   * Returns config that was passed in context initialization stage via {@link Container#initContext} or {@link Container#getOrInitContext}.
+   * */
+  protected get config(): C {
+    return ContextManager.getConfigForInstance(this);
+  }
 
-    /**
-     * Needed to type ContainerManager init/get methods.
-     * Accessing this property will always throw an error.
-     * */
-    protected get clawject_context_type(): T {
-        throw ErrorBuilder.illegalAccess('CatContext.clawject_context_type');
-    }
+  /**
+   * Needed to type ContainerManager init/get methods.
+   * Accessing this property will always throw an error.
+   * */
+  protected get clawject_context_type(): T {
+    throw ErrorBuilder.illegalAccess('CatContext.clawject_context_type');
+  }
 }

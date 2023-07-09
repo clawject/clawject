@@ -1,10 +1,10 @@
-import { CatContext, Bean } from 'clawject';
+import { Bean, CatContext } from 'clawject';
 
 interface IMyContext {
-    foo: string
+  foo: string;
 }
 
 export class MyContext extends CatContext<IMyContext> {
-    @Bean foo = 'foo'
-    @Bean bar = 'bar'
+  @Bean foo = 'foo';
+  @Bean bar = 'bar';
 }

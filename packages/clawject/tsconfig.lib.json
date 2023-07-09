@@ -4,9 +4,17 @@
     "outDir": "dist",
     "declaration": false,
     "sourceMap": false,
-    "types": ["node", "ts-expose-internals"]
+    "types": [
+      "node",
+      "ts-expose-internals"
+    ]
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
-    "src/compile-time/service/**/*", "jest.config.ts", "test/**/*.test.ts"]
+    "src/compile-time/service/**/*",
+    "jest.config.ts",
+    "test/**/*.test.ts"
+  ]
 }

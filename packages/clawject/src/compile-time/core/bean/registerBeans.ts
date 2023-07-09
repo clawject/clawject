@@ -14,29 +14,29 @@ import { Configuration } from '../configuration/Configuration';
 import { fillEmbeddedBeans } from './fillEmbeddedBeans';
 
 export function registerBeans(configuration: Configuration): void {
-    configuration.node.members.forEach((classElement) => {
-        if (isBeanFactoryMethod(classElement)) {
-            registerBeanFactoryMethod(configuration, classElement);
-            return;
-        }
-        if (isBeanClassConstructor(classElement)) {
-            registerBeanClassConstructor(configuration, classElement);
-            return;
-        }
-        if (isBeanFactoryArrowFunction(configuration, classElement)) {
-            registerBeanFactoryArrowFunction(configuration, classElement);
-            return;
-        }
-        if (isBeanValueExpression(configuration, classElement)) {
-            registerBeanValueExpression(configuration, classElement);
-            return;
-        }
-        if (isLifecycleMethodBean(classElement) || isLifecycleArrowFunctionBean(classElement)) {
-            registerLifecycleBean(configuration, classElement);
-            return;
-        }
-    });
+  configuration.node.members.forEach((classElement) => {
+    if (isBeanFactoryMethod(classElement)) {
+      registerBeanFactoryMethod(configuration, classElement);
+      return;
+    }
+    if (isBeanClassConstructor(classElement)) {
+      registerBeanClassConstructor(configuration, classElement);
+      return;
+    }
+    if (isBeanFactoryArrowFunction(configuration, classElement)) {
+      registerBeanFactoryArrowFunction(configuration, classElement);
+      return;
+    }
+    if (isBeanValueExpression(configuration, classElement)) {
+      registerBeanValueExpression(configuration, classElement);
+      return;
+    }
+    if (isLifecycleMethodBean(classElement) || isLifecycleArrowFunctionBean(classElement)) {
+      registerLifecycleBean(configuration, classElement);
+      return;
+    }
+  });
 
-    fillEmbeddedBeans(configuration);
-    verifyBeans(configuration);
+  fillEmbeddedBeans(configuration);
+  verifyBeans(configuration);
 }

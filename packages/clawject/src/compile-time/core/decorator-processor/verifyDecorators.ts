@@ -9,112 +9,112 @@ import { IncorrectArgumentsLengthError } from '../../compilation-context/message
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 
 export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget): AbstractCompilationMessage[] => {
-    const errors: AbstractCompilationMessage[] = [];
-    const nodeDecorators = getDecoratorsMap(node);
+  const errors: AbstractCompilationMessage[] = [];
+  const nodeDecorators = getDecoratorsMap(node);
 
-    //Checking compatibility between decorators
-    const incompatibleNodeDecorators = Array.from(nodeDecorators.entries())
-        .reduce((acc, [currentDecorator]) => {
-            Array.from(nodeDecorators.entries()).forEach(([otherDecorator, decoratorExpressions]) => {
-                if (decoratorExpressions.length === 0 || otherDecorator === currentDecorator) {
-                    return;
-                }
+  //Checking compatibility between decorators
+  const incompatibleNodeDecorators = Array.from(nodeDecorators.entries())
+    .reduce((acc, [currentDecorator]) => {
+      Array.from(nodeDecorators.entries()).forEach(([otherDecorator, decoratorExpressions]) => {
+        if (decoratorExpressions.length === 0 || otherDecorator === currentDecorator) {
+          return;
+        }
 
-                const values = acc.get(currentDecorator) ?? new Map<DecoratorKind, ts.Decorator>();
-                acc.set(currentDecorator, values);
+        const values = acc.get(currentDecorator) ?? new Map<DecoratorKind, ts.Decorator>();
+        acc.set(currentDecorator, values);
 
-                const isCompatible = DecoratorRules.isCompatibleWith(currentDecorator, otherDecorator);
+        const isCompatible = DecoratorRules.isCompatibleWith(currentDecorator, otherDecorator);
 
-                if (!isCompatible) {
-                    values.set(otherDecorator, decoratorExpressions[0]);
-                }
-            });
-            return acc;
-        }, new Map<DecoratorKind, Map<DecoratorKind, ts.Decorator>>());
+        if (!isCompatible) {
+          values.set(otherDecorator, decoratorExpressions[0]);
+        }
+      });
+      return acc;
+    }, new Map<DecoratorKind, Map<DecoratorKind, ts.Decorator>>());
 
-    incompatibleNodeDecorators.forEach((incompatibleDecorators, decoratorKind) => {
-        incompatibleDecorators.forEach((decoratorExpression, incompatibleDecorator) => {
-            incompatibleNodeDecorators.get(incompatibleDecorator)?.delete(decoratorKind);
+  incompatibleNodeDecorators.forEach((incompatibleDecorators, decoratorKind) => {
+    incompatibleDecorators.forEach((decoratorExpression, incompatibleDecorator) => {
+      incompatibleNodeDecorators.get(incompatibleDecorator)?.delete(decoratorKind);
 
-            if (incompatibleNodeDecorators.get(incompatibleDecorator)?.size === 0) {
-                incompatibleNodeDecorators.delete(incompatibleDecorator);
-            }
-        });
+      if (incompatibleNodeDecorators.get(incompatibleDecorator)?.size === 0) {
+        incompatibleNodeDecorators.delete(incompatibleDecorator);
+      }
     });
+  });
 
-    incompatibleNodeDecorators.forEach((incompatibleDecorators, decoratorKind) => {
-        incompatibleDecorators.forEach((incompatibleDecoratorExpression, incompatibleDecorator) => {
-            errors.push(new NotSupportedError(
-                `@${decoratorKind} is not compatible with @${incompatibleDecorator}.`,
-                incompatibleDecoratorExpression,
-                null,
-            ));
-        });
+  incompatibleNodeDecorators.forEach((incompatibleDecorators, decoratorKind) => {
+    incompatibleDecorators.forEach((incompatibleDecoratorExpression, incompatibleDecorator) => {
+      errors.push(new NotSupportedError(
+        `@${decoratorKind} is not compatible with @${incompatibleDecorator}.`,
+        incompatibleDecoratorExpression,
+        null,
+      ));
     });
+  });
 
-    //Checking decoratorsCount, argumentsCount, target compatibility
-    nodeDecorators.forEach((decorators, decoratorKind) => {
-        if (decorators.length === 0) {
-            return;
-        }
+  //Checking decoratorsCount, argumentsCount, target compatibility
+  nodeDecorators.forEach((decorators, decoratorKind) => {
+    if (decorators.length === 0) {
+      return;
+    }
 
-        if (decorators.length > 1) {
-            errors.push(new DecoratorsCountError(
-                `@${decoratorKind} was used ${decorators.length} times, but expected 1.`,
-                decorators[1],
-                null,
-            ));
-            return;
-        }
-        const decoratorNode = decorators[0];
+    if (decorators.length > 1) {
+      errors.push(new DecoratorsCountError(
+        `@${decoratorKind} was used ${decorators.length} times, but expected 1.`,
+        decorators[1],
+        null,
+      ));
+      return;
+    }
+    const decoratorNode = decorators[0];
 
-        const isTargetCompatible = DecoratorRules.isCompatibleTarget(decoratorKind, decoratorTarget);
+    const isTargetCompatible = DecoratorRules.isCompatibleTarget(decoratorKind, decoratorTarget);
 
-        if (!isTargetCompatible) {
-            errors.push(new NotSupportedError(
-                `@${decoratorKind} is not compatible with target "${decoratorTarget}".`,
-                decoratorNode,
-                null,
-            ));
-            return;
-        }
+    if (!isTargetCompatible) {
+      errors.push(new NotSupportedError(
+        `@${decoratorKind} is not compatible with target "${decoratorTarget}".`,
+        decoratorNode,
+        null,
+      ));
+      return;
+    }
 
-        //Will check arguments count
-        let args: ts.Expression[] = [];
-        if (ts.isCallExpression(decoratorNode.expression)) {
-            args = Array.from(decoratorNode.expression.arguments);
-        }
+    //Will check arguments count
+    let args: ts.Expression[] = [];
+    if (ts.isCallExpression(decoratorNode.expression)) {
+      args = Array.from(decoratorNode.expression.arguments);
+    }
 
-        const argsCount = DecoratorRules.getArgumentsCount(decoratorKind);
+    const argsCount = DecoratorRules.getArgumentsCount(decoratorKind);
 
-        if (typeof argsCount === 'number') {
-            if (args.length !== argsCount) {
-                errors.push(new IncorrectArgumentsLengthError(
-                    `@${decoratorKind} was used with ${args.length} arguments, but expected ${argsCount}.`,
-                    decoratorNode,
-                    null,
-                ));
-            }
-        } else {
-            if (args.length < argsCount.min) {
-                errors.push(new IncorrectArgumentsLengthError(
-                    `@${decoratorKind} was used with ${args.length} arguments, but expected at least ${argsCount.min}.`,
-                    decoratorNode,
-                    null,
-                ));
-                return;
-            }
+    if (typeof argsCount === 'number') {
+      if (args.length !== argsCount) {
+        errors.push(new IncorrectArgumentsLengthError(
+          `@${decoratorKind} was used with ${args.length} arguments, but expected ${argsCount}.`,
+          decoratorNode,
+          null,
+        ));
+      }
+    } else {
+      if (args.length < argsCount.min) {
+        errors.push(new IncorrectArgumentsLengthError(
+          `@${decoratorKind} was used with ${args.length} arguments, but expected at least ${argsCount.min}.`,
+          decoratorNode,
+          null,
+        ));
+        return;
+      }
 
-            if (args.length > argsCount.max) {
-                errors.push(new IncorrectArgumentsLengthError(
-                    `@${decoratorKind} was used with ${args.length} arguments, but expected at most ${argsCount.max}.`,
-                    decoratorNode,
-                    null,
-                ));
-                return;
-            }
-        }
-    });
+      if (args.length > argsCount.max) {
+        errors.push(new IncorrectArgumentsLengthError(
+          `@${decoratorKind} was used with ${args.length} arguments, but expected at most ${argsCount.max}.`,
+          decoratorNode,
+          null,
+        ));
+        return;
+      }
+    }
+  });
 
-    return errors;
+  return errors;
 };

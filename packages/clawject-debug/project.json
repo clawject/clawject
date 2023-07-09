@@ -1,7 +1,7 @@
 {
-    "name": "clawject-debug",
-    "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "packages/clawject-debug/src",
-    "projectType": "library",
-    "tags": []
+  "name": "clawject-debug",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/clawject-debug/src",
+  "projectType": "library",
+  "tags": []
 }

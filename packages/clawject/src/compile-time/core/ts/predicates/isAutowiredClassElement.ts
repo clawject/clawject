@@ -3,9 +3,9 @@ import { extractDecoratorMetadata } from '../../decorator-processor/extractDecor
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 
 export const isAutowiredClassElement = (classElement: ts.ClassElement): classElement is ts.PropertyDeclaration => {
-    if (!ts.isPropertyDeclaration(classElement)) {
-        return false;
-    }
+  if (!ts.isPropertyDeclaration(classElement)) {
+    return false;
+  }
 
-    return extractDecoratorMetadata(classElement, DecoratorKind.Autowired) !== null;
+  return extractDecoratorMetadata(classElement, DecoratorKind.Autowired) !== null;
 };

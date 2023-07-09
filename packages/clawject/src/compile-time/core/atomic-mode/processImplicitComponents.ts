@@ -12,54 +12,54 @@ import { IncorrectNameError } from '../../compilation-context/messages/errors/In
 import { isNameReserved } from '../utils/isNameReserved';
 
 export function processImplicitComponents(
-    node: ts.ClassDeclaration,
-    compilationContext: CompilationContext,
+  node: ts.ClassDeclaration,
+  compilationContext: CompilationContext,
 ): ts.Node {
-    let component: Component | null = null;
+  let component: Component | null = null;
 
-    const newMembers = node.members.map(it => {
-        const elementDecorators = getDecoratorsOnly(it);
-        const hasDecoratorsFromLibrary = elementDecorators
-            .some(it => isDecoratorFromLibrary(it, undefined));
+  const newMembers = node.members.map(it => {
+    const elementDecorators = getDecoratorsOnly(it);
+    const hasDecoratorsFromLibrary = elementDecorators
+      .some(it => isDecoratorFromLibrary(it, undefined));
 
-        if (!hasDecoratorsFromLibrary) {
-            return it;
-        }
-
-        component = component ?? ComponentRepository.register(node, false);
-
-        if (isNameReserved(it.name?.getText() ?? '')) {
-            compilationContext.report(new IncorrectNameError(
-                `"${it.name?.getText() ?? ''}" name is reserved for the di-container.`,
-                it,
-                null,
-            ));
-
-            return it;
-        }
-
-        //Processing lifecycle methods
-        if (isLifecycleMethodBean(it) || isLifecycleArrowFunctionBean(it)) {
-            return processLifecycleElement(it, component);
-        }
-
-        return it;
-    });
-
-    if (component === null) {
-        return node;
+    if (!hasDecoratorsFromLibrary) {
+      return it;
     }
 
-    return factory.updateClassDeclaration(
-        node,
-        node.modifiers,
-        node.name,
-        node.typeParameters,
-        node.heritageClauses,
-        [
-            ...newMembers,
-            getImplicitComponentStaticInitBlock(component),
-        ]
-    );
+    component = component ?? ComponentRepository.register(node, false);
+
+    if (isNameReserved(it.name?.getText() ?? '')) {
+      compilationContext.report(new IncorrectNameError(
+        `"${it.name?.getText() ?? ''}" name is reserved for the di-container.`,
+        it,
+        null,
+      ));
+
+      return it;
+    }
+
+    //Processing lifecycle methods
+    if (isLifecycleMethodBean(it) || isLifecycleArrowFunctionBean(it)) {
+      return processLifecycleElement(it, component);
+    }
+
+    return it;
+  });
+
+  if (component === null) {
+    return node;
+  }
+
+  return factory.updateClassDeclaration(
+    node,
+    node.modifiers,
+    node.name,
+    node.typeParameters,
+    node.heritageClauses,
+    [
+      ...newMembers,
+      getImplicitComponentStaticInitBlock(component),
+    ]
+  );
 }
 

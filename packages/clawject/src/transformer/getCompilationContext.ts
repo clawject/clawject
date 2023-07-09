@@ -3,7 +3,7 @@ import { CompilationContext } from '../compile-time/compilation-context/Compilat
 let context: CompilationContext | null = null;
 
 export function getCompilationContext(): CompilationContext {
-    context = context ?? new CompilationContext();
+  context = context ?? new CompilationContext();
 
-    return context;
+  return context;
 }

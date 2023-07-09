@@ -4,10 +4,10 @@ import { registerAutowired } from '../autowired/registerAutowired';
 import { registerComponentConstructorDependencies } from './registerComponentConstructorDependencies';
 
 export const processComponent = (node: ts.ClassDeclaration): ts.ClassDeclaration => {
-    const component = ComponentRepository.register(node, true);
+  const component = ComponentRepository.register(node, true);
 
-    registerAutowired(component);
-    registerComponentConstructorDependencies(component);
+  registerAutowired(component);
+  registerComponentConstructorDependencies(component);
 
-    throw 'TODO';
+  throw 'TODO';
 };

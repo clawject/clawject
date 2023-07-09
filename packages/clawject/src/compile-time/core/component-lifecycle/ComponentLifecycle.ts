@@ -4,13 +4,13 @@ import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { LifecycleKind } from './LifecycleKind';
 
 export class ComponentLifecycle extends BaseElement<ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer> {
-    constructor(values: Partial<ComponentLifecycle> = {}) {
-        super();
+  declare id: string;
+  declare classMemberName: string;
+  declare lifecycles: Set<LifecycleKind>;
 
-        Object.assign(this, values);
-    }
+  constructor(values: Partial<ComponentLifecycle> = {}) {
+    super();
 
-    declare id: string;
-    declare classMemberName: string;
-    declare lifecycles: Set<LifecycleKind>;
+    Object.assign(this, values);
+  }
 }

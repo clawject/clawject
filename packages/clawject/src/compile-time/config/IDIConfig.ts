@@ -1,8 +1,8 @@
 export interface IDIConfig {
-    mode: 'application' | 'atomic';
-    unsafeTSVersion: boolean;
-    features: {
-        advancedClassTypeResolution: boolean;
-        keepContextNames: boolean;
-    };
+  mode: 'application' | 'atomic';
+  unsafeTSVersion: boolean;
+  features: {
+    advancedClassTypeResolution: boolean;
+    keepContextNames: boolean;
+  };
 }

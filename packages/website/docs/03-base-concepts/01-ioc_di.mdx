@@ -3,7 +3,7 @@ title: Intro to IoC and DI
 id: ioc-di
 ---
 
-<hr />
+<hr/>
 
 # Intro to Inversion of Control and Dependency Injection with Clawject
 
@@ -100,7 +100,7 @@ We're assigning a Bean call result to a class property to define a bean.
 Bean name is a property name.
 
 For a bean with the default singleton scope, Clawject first checks if a cached instance of the bean already exists,
-and only creates a new one if it doesn't. 
+and only creates a new one if it doesn't.
 If we're using the prototype scope, the container returns a new bean instance for each bean instance request.
 
 Let's see how we can define a bean with the prototype scope:
@@ -128,7 +128,7 @@ class ApplicationContext extends CatContext {
 
 ## Lazy Initialized Beans
 By default, the container creates and configures all singleton beans during initialization.
-To avoid this, we can use the ***lazy*** decorator with on the bean configuration level: 
+To avoid this, we can use the ***lazy*** decorator with on the bean configuration level:
 
 **foo** bean will only be initialized when it's first requested, and not at startup.
 

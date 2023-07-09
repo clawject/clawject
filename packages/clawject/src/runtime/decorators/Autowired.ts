@@ -5,5 +5,5 @@ export function Autowired<T>(): T;
  * */
 export function Autowired(target: Object, propertyKey: string | symbol);
 export function Autowired() {
-    throw new Error('TODO');
+  throw new Error('TODO');
 }

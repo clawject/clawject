@@ -19,7 +19,7 @@ Clawject provides a mechanism for creating custom scopes for scenarios such as t
 
 In order to create a custom scope, you should implement the `CustomScope` interface.
 
-In the following steps, we will implement `http-request` scope that 
+In the following steps, we will implement `http-request` scope that
 is using [AsyncLocalStorage](https://nodejs.org/api/async_context.html#class-asynclocalstorage)
 to assign and retrieve `httpRequestId`.
 
@@ -74,7 +74,7 @@ Now let's define our custom scope class:
 
 ```ts
 class RequestScope implements CustomScope {
-  // requestId to Map of objectName to object 
+  // requestId to Map of objectName to object
   private scopedObjects = new Map<number, Map<string, any>>();
   // requestId to Map of objectName to object destruction callback
   private destructionCallbacks = new Map<number, Map<string, () => void>>();
@@ -96,13 +96,13 @@ class RequestScope implements CustomScope {
 
   get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
     const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-    
+
     const scopedObjects = this.scopedObjects.get(currentRequestId) ?? new Map<string, any>();
     this.scopedObjects.set(currentRequestId, scopedObjects);
-    
+
     const scopedObject = scopedObjects.get(name) ?? objectFactory.getObject();
     scopedObjects.set(name, scopedObject);
-    
+
     return scopedObject;
   }
 }
@@ -121,7 +121,7 @@ class RequestScope implements CustomScope {
     const currentRequestId = HttpExecutionContext.getCurrentRequestId();
     const scopedDestructionCallbacks = this.destructionCallbacks.get(currentRequestId) ?? new Map<string, () => void>();
     this.destructionCallbacks.set(currentRequestId, scopedDestructionCallbacks);
-    
+
     scopedDestructionCallbacks.set(name, callback);
   }
 }
@@ -140,12 +140,12 @@ class RequestScope implements CustomScope {
 
   remove(name: string): ObjectFactoryResult | null {
     const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-    
+
     const scopedObject = this.scopedObjects.get(currentRequestId)?.get(name) ?? null;
-    
+
     this.scopedObjects.get(currentRequestId)?.delete(name);
     this.destructionCallbacks.get(currentRequestId)?.delete(name);
-    
+
     return scopedObject;
   }
 }
@@ -160,7 +160,7 @@ class RequestScope implements CustomScope {
   constructor() {
     HttpExecutionContext.subscribeOnRequestEnd(this.destroy)
   }
-  
+
   private destroy = (requestId: number): void => {
     this.scopedObjects.delete(requestId);
     this.destructionCallbacks.get(requestId)?.forEach(callback => callback());
@@ -228,7 +228,7 @@ export class NonScopedBean {
 
 export class ApplicationContext extends CatContext {
   @Scope('http-request') scopedBean = Bean(ScopedBean);
-  
+
   nonScopedBean = Bean(NonScopedBean);
 }
 ```
@@ -291,43 +291,43 @@ export class RequestScope implements CustomScope {
   constructor() {
     HttpExecutionContext.subscribeOnRequestEnd(this.destroy)
   }
-  
-  // requestId to Map of objectName to object 
+
+  // requestId to Map of objectName to object
   private scopedObjects = new Map<number, Map<string, any>>();
   // requestId to Map of objectName to object destruction callback
   private destructionCallbacks = new Map<number, Map<string, () => void>>();
 
   get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
     const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-    
+
     const scopedObjects = this.scopedObjects.get(currentRequestId) ?? new Map<string, any>();
     this.scopedObjects.set(currentRequestId, scopedObjects);
-    
+
     const scopedObject = scopedObjects.get(name) ?? objectFactory.getObject();
     scopedObjects.set(name, scopedObject);
-    
+
     return scopedObject;
   }
-  
+
   registerDestructionCallback(name: string, callback: () => void): void {
     const currentRequestId = HttpExecutionContext.getCurrentRequestId();
     const scopedDestructionCallbacks = this.destructionCallbacks.get(currentRequestId) ?? new Map<string, () => void>();
     this.destructionCallbacks.set(currentRequestId, scopedDestructionCallbacks);
-    
+
     scopedDestructionCallbacks.set(name, callback);
   }
-  
+
   remove(name: string): ObjectFactoryResult | null {
     const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-    
+
     const scopedObject = this.scopedObjects.get(currentRequestId)?.get(name) ?? null;
-    
+
     this.scopedObjects.get(currentRequestId)?.delete(name);
     this.destructionCallbacks.get(currentRequestId)?.delete(name);
-    
+
     return scopedObject;
   }
-  
+
   private destroy = (requestId: number): void => {
     this.scopedObjects.delete(requestId);
     this.destructionCallbacks.get(requestId)?.forEach(callback => callback());
@@ -368,7 +368,7 @@ interface ExternalBeans {
 
 export class ApplicationContext extends CatContext<ExternalBeans> {
   @Scope('http-request') scopedBean = Bean(ScopedBean);
-  
+
   nonScopedBean = Bean(NonScopedBean);
 }
 ```

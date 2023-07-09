@@ -10,63 +10,63 @@ import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuild
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
-    //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
-    if (sourceFile.isDeclarationFile) {
-        return sourceFile;
+  //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
+  if (sourceFile.isDeclarationFile) {
+    return sourceFile;
+  }
+
+  let shouldAddImports = false;
+
+  //TODO create function that will register entrypoint and verify all classes for not allowed and members
+  registerEntrypoint(sourceFile, tsContext);
+
+  //Processing only top level statements
+  //TODO inspect nested statements for not allowed decorators
+  const updatedStatements = sourceFile.statements.map(statement => {
+    if (!ts.isClassDeclaration(statement)) {
+      return statement;
     }
 
-    let shouldAddImports = false;
+    const classDecorators = getDecoratorsOnly(statement);
 
-    //TODO create function that will register entrypoint and verify all classes for not allowed and members
-    registerEntrypoint(sourceFile, tsContext);
+    const isComponent = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Component));
+    const isConfiguration = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Configuration));
 
-    //Processing only top level statements
-    //TODO inspect nested statements for not allowed decorators
-    const updatedStatements = sourceFile.statements.map(statement => {
-        if (!ts.isClassDeclaration(statement)) {
-            return statement;
-        }
-
-        const classDecorators = getDecoratorsOnly(statement);
-
-        const isComponent = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Component));
-        const isConfiguration = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Configuration));
-
-        if (isComponent && isConfiguration) {
-            compilationContext.report(new NotSupportedError(
-                //TODO use stereotype names instead of @Component
-                'Class cannot be both @Component and @Configuration',
-                statement,
-                null,
-            ));
-            return statement;
-        }
-
-        if (isConfiguration) {
-            shouldAddImports = true;
-            return processConfigurationClass(statement);
-        }
-
-        if (isComponent) {
-            shouldAddImports = true;
-            processComponent(statement);
-        }
-
-        return statement;
-    });
-
-    if (shouldAddImports) {
-        updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
+    if (isComponent && isConfiguration) {
+      compilationContext.report(new NotSupportedError(
+        //TODO use stereotype names instead of @Component
+        'Class cannot be both @Component and @Configuration',
+        statement,
+        null,
+      ));
+      return statement;
     }
 
+    if (isConfiguration) {
+      shouldAddImports = true;
+      return processConfigurationClass(statement);
+    }
 
-    return ts.factory.updateSourceFile(
-        sourceFile,
-        updatedStatements,
-        sourceFile.isDeclarationFile,
-        sourceFile.referencedFiles,
-        sourceFile.typeReferenceDirectives,
-        sourceFile.hasNoDefaultLib,
-        sourceFile.libReferenceDirectives,
-    );
+    if (isComponent) {
+      shouldAddImports = true;
+      processComponent(statement);
+    }
+
+    return statement;
+  });
+
+  if (shouldAddImports) {
+    updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
+  }
+
+
+  return ts.factory.updateSourceFile(
+    sourceFile,
+    updatedStatements,
+    sourceFile.isDeclarationFile,
+    sourceFile.referencedFiles,
+    sourceFile.typeReferenceDirectives,
+    sourceFile.hasNoDefaultLib,
+    sourceFile.libReferenceDirectives,
+  );
 };

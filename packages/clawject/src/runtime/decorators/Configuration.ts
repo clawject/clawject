@@ -6,5 +6,5 @@ export function Configuration<T>(target: ClassConstructor<T>, context: any);
  * */
 export function Configuration<T extends Function>(target: T): T | void;
 export function Configuration() {
-    throw new Error('TODO');
+  throw new Error('TODO');
 }

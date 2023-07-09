@@ -7,22 +7,22 @@ import { BaseElement } from '../BaseElement';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 
 export class Configuration extends BaseElement<ts.ClassDeclaration> {
-    declare id: string;
-    declare fileName: string;
-    declare allowedBeanKinds: Set<BeanKind>;
+  declare id: string;
+  declare fileName: string;
+  declare allowedBeanKinds: Set<BeanKind>;
 
-    name: string | null = null;
-    relatedPaths = new Set<string>();
-    diType: DIType | null = null;
+  name: string | null = null;
+  relatedPaths = new Set<string>();
+  diType: DIType | null = null;
 
-    autowiredRegister = new AutowiredRegister(this);
-    beanRegister = new BeanRegister(this);
+  autowiredRegister = new AutowiredRegister(this);
+  beanRegister = new BeanRegister(this);
 
-    lazyExpression = new DisposableNodeHolder<ts.Expression>();
+  lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
-    registerDIType(diType: DIType): void {
-        diType.declarations.map(it => {
-            this.relatedPaths.add(it.fileName);
-        });
-    }
+  registerDIType(diType: DIType): void {
+    diType.declarations.map(it => {
+      this.relatedPaths.add(it.fileName);
+    });
+  }
 }

@@ -6,21 +6,21 @@ import { AutowiredElement } from './AutowiredElement';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const registerAutowired = (parent: Configuration | Component) => {
-    const compilationContext = getCompilationContext();
-    const typeChecker = compilationContext.typeChecker;
+  const compilationContext = getCompilationContext();
+  const typeChecker = compilationContext.typeChecker;
 
-    parent.node.members.forEach(member => {
-        if (isAutowiredClassElement(member)) {
-            const type = typeChecker.getTypeAtLocation(member);
-            const diType = DITypeBuilder.build(type);
+  parent.node.members.forEach(member => {
+    if (isAutowiredClassElement(member)) {
+      const type = typeChecker.getTypeAtLocation(member);
+      const diType = DITypeBuilder.build(type);
 
-            const autowiredElement = new AutowiredElement({
-                node: member,
-                name: member.name.getText(), //TODO handle names
-                diType: diType,
-            });
-            parent.autowiredRegister.register(autowiredElement);
-            return;
-        }
-    });
+      const autowiredElement = new AutowiredElement({
+        node: member,
+        name: member.name.getText(), //TODO handle names
+        diType: diType,
+      });
+      parent.autowiredRegister.register(autowiredElement);
+      return;
+    }
+  });
 };

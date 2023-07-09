@@ -4,7 +4,7 @@ import { Bean } from '../bean/Bean';
 import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
 
 export const registerArrowFunctionBeanDependencies = (bean: Bean<ClassPropertyWithArrowFunctionInitializer>) => {
-    registerBeanDependenciesFromParameters(bean, unwrapExpressionFromRoundBrackets(bean.node.initializer).parameters);
+  registerBeanDependenciesFromParameters(bean, unwrapExpressionFromRoundBrackets(bean.node.initializer).parameters);
 };
 
 

@@ -3,6 +3,6 @@ import { extractDecoratorMetadata } from '../../decorator-processor/extractDecor
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 
 export const isLifecycleMethodBean = (node: ts.Node): node is ts.MethodDeclaration =>
-    ts.isMethodDeclaration(node) && (
-        extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.PreDestroy) !== null
-    );
+  ts.isMethodDeclaration(node) && (
+    extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.PreDestroy) !== null
+  );

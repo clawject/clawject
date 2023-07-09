@@ -3,7 +3,7 @@ title: Bean Types
 id: bean-type
 ---
 
-<hr />
+<hr/>
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
@@ -31,7 +31,7 @@ class MyContext extends CatContext {
   @Bean foo: undefined = undefined;
   @Bean bar: void = undefined;
   @Bean baz: null = null;
-  @Bean quux(): never { throw new Error('never'); } 
+  @Bean quux(): never { throw new Error('never'); }
 }
 ```
 
@@ -105,7 +105,7 @@ class Foo extends AbstractFoo implements IFoo {}
 
 class MyContext extends CatContext {
   foo = Bean(Foo);
-  
+
   @PostConstruct
   postConstruct(
     // highlight-next-line-green
@@ -130,7 +130,7 @@ class Foo implements IFoo {}
 
 class MyContext extends CatContext {
   foo: IFoo = Bean(Foo);
-  
+
   @PostConstruct
   postConstruct(
     // highlight-next-line-green

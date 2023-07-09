@@ -10,32 +10,32 @@ import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 
 export const registerBeanFactoryArrowFunction = (
-    configuration: Configuration,
-    classElement: ClassPropertyWithArrowFunctionInitializer,
+  configuration: Configuration,
+  classElement: ClassPropertyWithArrowFunctionInitializer,
 ): void => {
-    const compilationContext = getCompilationContext();
+  const compilationContext = getCompilationContext();
 
-    const typeChecker = compilationContext.typeChecker;
-    const signature = typeChecker.getSignatureFromDeclaration(unwrapExpressionFromRoundBrackets(classElement.initializer));
-    if (!signature) {
-        compilationContext.report(new TypeQualifyError(
-            'Can not resolve function return type.',
-            classElement.initializer,
-            configuration.node,
-        ));
-        return;
-    }
+  const typeChecker = compilationContext.typeChecker;
+  const signature = typeChecker.getSignatureFromDeclaration(unwrapExpressionFromRoundBrackets(classElement.initializer));
+  if (!signature) {
+    compilationContext.report(new TypeQualifyError(
+      'Can not resolve function return type.',
+      classElement.initializer,
+      configuration.node,
+    ));
+    return;
+  }
 
-    const returnType = typeChecker.getReturnTypeOfSignature(signature);
-    const diType = DITypeBuilder.buildForClassBean(returnType) ?? DITypeBuilder.build(returnType);
+  const returnType = typeChecker.getReturnTypeOfSignature(signature);
+  const diType = DITypeBuilder.buildForClassBean(returnType) ?? DITypeBuilder.build(returnType);
 
-    const contextBean = new Bean({
-        classMemberName: classElement.name.getText(),
-        diType: diType,
-        node: classElement,
-        kind: BeanKind.FACTORY_ARROW_FUNCTION,
-    });
-    contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
-    contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
-    configuration.beanRegister.register(contextBean);
+  const contextBean = new Bean({
+    classMemberName: classElement.name.getText(),
+    diType: diType,
+    node: classElement,
+    kind: BeanKind.FACTORY_ARROW_FUNCTION,
+  });
+  contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
+  contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
+  configuration.beanRegister.register(contextBean);
 };

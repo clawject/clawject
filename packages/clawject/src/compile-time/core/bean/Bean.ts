@@ -9,41 +9,38 @@ import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 
 export type BeanNode = ts.MethodDeclaration
-    | ClassPropertyWithCallExpressionInitializer
-    | ClassPropertyWithArrowFunctionInitializer
-    | ts.PropertyDeclaration
-    | ClassPropertyWithExpressionInitializer;
+  | ClassPropertyWithCallExpressionInitializer
+  | ClassPropertyWithArrowFunctionInitializer
+  | ts.PropertyDeclaration
+  | ClassPropertyWithExpressionInitializer;
 
 export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
-    constructor(values: Partial<Bean> = {}) {
-        super();
+  declare id: string; //Set by Context or Configuration during registration
+  declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
+  declare classMemberName: string;
+  declare diType: DIType;
+  declare kind: BeanKind;
+  classDeclaration: ts.ClassDeclaration | null = null;
+  lifecycle: LifecycleKind[] | null = null;
+  public = false;
+  dependencies = new Set<Dependency>();
+  //Only when bean is annotated with @Embedded
+  embeddedElements = new Map<string, DIType>();
+  scopeExpression = new DisposableNodeHolder<ts.Expression>();
+  lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
-        Object.assign(this, values);
-    }
+  constructor(values: Partial<Bean> = {}) {
+    super();
 
-    declare id: string; //Set by Context or Configuration during registration
-    declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
-    declare classMemberName: string;
-    declare diType: DIType;
-    declare kind: BeanKind;
+    Object.assign(this, values);
+  }
 
-    classDeclaration: ts.ClassDeclaration | null = null;
-    lifecycle: LifecycleKind[] | null = null;
-    public = false;
-    dependencies = new Set<Dependency>();
+  get fullName(): string {
+    //TODO check if this is correct
+    return `${this.classMemberName}`;
+  }
 
-    //Only when bean is annotated with @Embedded
-    embeddedElements = new Map<string, DIType>();
-
-    scopeExpression = new DisposableNodeHolder<ts.Expression>();
-    lazyExpression = new DisposableNodeHolder<ts.Expression>();
-
-    isLifecycle(): boolean {
-        return this.kind === BeanKind.LIFECYCLE_METHOD || this.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION;
-    }
-
-    get fullName(): string {
-        //TODO check if this is correct
-        return `${this.classMemberName}`;
-    }
+  isLifecycle(): boolean {
+    return this.kind === BeanKind.LIFECYCLE_METHOD || this.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION;
+  }
 }

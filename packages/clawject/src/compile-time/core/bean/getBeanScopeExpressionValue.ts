@@ -4,11 +4,11 @@ import { extractDecoratorMetadata } from '../decorator-processor/extractDecorato
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 export const getBeanScopeExpressionValue = (bean: Bean): ts.Expression => {
-    const decoratorMetadata = extractDecoratorMetadata(bean.node, DecoratorKind.Scope);
+  const decoratorMetadata = extractDecoratorMetadata(bean.node, DecoratorKind.Scope);
 
-    if (decoratorMetadata === null) {
-        return ts.factory.createStringLiteral('singleton');
-    }
+  if (decoratorMetadata === null) {
+    return ts.factory.createStringLiteral('singleton');
+  }
 
-    return decoratorMetadata.args[0];
+  return decoratorMetadata.args[0];
 };

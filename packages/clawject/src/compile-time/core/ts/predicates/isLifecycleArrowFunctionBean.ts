@@ -7,28 +7,28 @@ import { extractDecoratorMetadata } from '../../decorator-processor/extractDecor
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 
 export const isLifecycleArrowFunctionBean = (
-    node: ts.Node
+  node: ts.Node
 ): node is ClassPropertyWithArrowFunctionInitializer => {
-    const compilationContext = getCompilationContext();
-    if (!ts.isPropertyDeclaration(node)) {
-        return false;
-    }
+  const compilationContext = getCompilationContext();
+  if (!ts.isPropertyDeclaration(node)) {
+    return false;
+  }
 
-    const hasLifecycleDecorator = extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.PreDestroy) !== null;
+  const hasLifecycleDecorator = extractDecoratorMetadata(node, DecoratorKind.PostConstruct) !== null || extractDecoratorMetadata(node, DecoratorKind.PreDestroy) !== null;
 
-    if (!hasLifecycleDecorator) {
-        return false;
-    }
+  if (!hasLifecycleDecorator) {
+    return false;
+  }
 
-    if (node.initializer === undefined) {
-        compilationContext.report(new MissingInitializerError(
-            null,
-            node,
-            null,
-        ));
+  if (node.initializer === undefined) {
+    compilationContext.report(new MissingInitializerError(
+      null,
+      node,
+      null,
+    ));
 
-        return false;
-    }
+    return false;
+  }
 
-    return ts.isArrowFunction(unwrapExpressionFromRoundBrackets(node.initializer));
+  return ts.isArrowFunction(unwrapExpressionFromRoundBrackets(node.initializer));
 };

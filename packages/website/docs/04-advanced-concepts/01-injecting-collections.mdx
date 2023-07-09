@@ -2,7 +2,7 @@
 title: Inject Arrays and Collections
 ---
 
-<hr />
+<hr/>
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
@@ -251,7 +251,7 @@ class MyContext extends CatContext {
     @Bean myCollection: Set<string> = new Set(['foo', 'bar', 'baz']);
     @Bean string1 = 'quux';
     @Bean string2 = 'quuux';
-    
+
     @PostConstruct
     postConstruct(
         myCollection: Set<string>, // myCollection bean will be injected

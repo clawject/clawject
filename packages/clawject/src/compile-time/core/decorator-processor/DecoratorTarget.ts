@@ -1,5 +1,5 @@
 export enum DecoratorTarget {
-    Class = 'Class',
-    ClassProperty = 'ClassProperty',
-    ClassFunction = 'ClassFunction',
+  Class = 'Class',
+  ClassProperty = 'ClassProperty',
+  ClassFunction = 'ClassFunction',
 }

@@ -8,20 +8,20 @@ import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 
 export const registerBeanValueExpression = (
-    configuration: Configuration,
-    classElement: ts.PropertyDeclaration,
+  configuration: Configuration,
+  classElement: ts.PropertyDeclaration,
 ): void => {
-    const typeChecker = getCompilationContext().typeChecker;
-    const type = typeChecker.getTypeAtLocation(classElement);
-    const diType = DITypeBuilder.buildForClassBean(type) ?? DITypeBuilder.build(type);
+  const typeChecker = getCompilationContext().typeChecker;
+  const type = typeChecker.getTypeAtLocation(classElement);
+  const diType = DITypeBuilder.buildForClassBean(type) ?? DITypeBuilder.build(type);
 
-    const contextBean = new Bean({
-        classMemberName: classElement.name.getText(),
-        diType: diType,
-        node: classElement,
-        kind: BeanKind.VALUE_EXPRESSION,
-    });
-    contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
-    contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
-    configuration.beanRegister.register(contextBean);
+  const contextBean = new Bean({
+    classMemberName: classElement.name.getText(),
+    diType: diType,
+    node: classElement,
+    kind: BeanKind.VALUE_EXPRESSION,
+  });
+  contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
+  contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
+  configuration.beanRegister.register(contextBean);
 };

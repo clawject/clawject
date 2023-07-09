@@ -6,29 +6,29 @@ import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 
 export const isBeanValueExpression = (
-    configuration: Configuration,
-    node: ts.Node
+  configuration: Configuration,
+  node: ts.Node
 ): node is PropertyDeclaration => {
-    const compilationContext = getCompilationContext();
-    if (!ts.isPropertyDeclaration(node)) {
-        return false;
-    }
+  const compilationContext = getCompilationContext();
+  if (!ts.isPropertyDeclaration(node)) {
+    return false;
+  }
 
-    const decoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Bean);
+  const decoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Bean);
 
-    if (decoratorMetadata === null) {
-        return false;
-    }
+  if (decoratorMetadata === null) {
+    return false;
+  }
 
-    if (node.initializer === undefined) {
-        compilationContext.report(new MissingInitializerError(
-            null,
-            node,
-            configuration.node,
-        ));
+  if (node.initializer === undefined) {
+    compilationContext.report(new MissingInitializerError(
+      null,
+      node,
+      configuration.node,
+    ));
 
-        return false;
-    }
+    return false;
+  }
 
-    return !ts.isArrowFunction(node.initializer);
+  return !ts.isArrowFunction(node.initializer);
 };

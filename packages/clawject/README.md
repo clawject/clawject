@@ -1,6 +1,7 @@
 # Dependency Injection Cat
 
-DI Cat is a truly clean DI-container, which allows you not to pollute your business logic with decorators from DI/IOC libraries!
+DI Cat is a truly clean DI-container, which allows you not to pollute your business logic with decorators from DI/IOC
+libraries!
 
 -----
 [![npm](https://img.shields.io/npm/v/dependency-injection-cat?style=flat)](https://www.npmjs.com/package/dependency-injection-cat)
@@ -467,7 +468,8 @@ Container.clearContext({
 
 ## Bean
 
-A Bean is an object that is instantiated, assembled, and managed by IOC container (**Definition from Spring Framework documentation**)
+A Bean is an object that is instantiated, assembled, and managed by IOC container (**Definition from Spring Framework
+documentation**)
 Beans can have dependencies, and they also should be defined as a beans or passed manually.
 
 ### Bean configuration
@@ -641,18 +643,25 @@ class ApplicationContext extends CatContext<IBeans> {
 ```
 
 ## Context Lifecycle
-Context have its own lifecycle, when you're initializing context with `container.initContext` or `container.getOrInitContext`
+
+Context have its own lifecycle, when you're initializing context with `container.initContext`
+or `container.getOrInitContext`
 and when you're clearing context with `container.clearContext`
-If you need to make some subscriptions/unsubscription/side effects - you can use **@PostConstruct** and **@BeforeDestruct** decorators
+If you need to make some subscriptions/unsubscription/side effects - you can use **@PostConstruct** and *
+*@BeforeDestruct** decorators
 One method can be decorated with **@PostConstruct** and **@BeforeDestruct** at the same time
 
 ### PostConstruct, BeforeDestruct
-PostConstruct decorator allows you to call method right after context initialization (after calling `container.initContext`), it can be used to make some subscriptions, etc...
-BeforeDestruct decorator allows you to call method right before context clearing (after calling `container.clearContext`), it can be used to make some unsubscription, etc...
+
+PostConstruct decorator allows you to call method right after context initialization (after
+calling `container.initContext`), it can be used to make some subscriptions, etc...
+BeforeDestruct decorator allows you to call method right before context clearing (after
+calling `container.clearContext`), it can be used to make some unsubscription, etc...
 You can add arguments to annotated method, beans will be injected instead of arguments
 You can have several Lifecycle methods, they will be called in order of declaring
 
 #### Syntax
+
 ```ts
 import { Bean, PostConstruct, BeforeDestruct, CatContext } from 'dependency-injection-cat';
 

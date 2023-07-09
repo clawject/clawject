@@ -1,21 +1,21 @@
 import ts, { CallExpression, PropertyDeclaration } from 'typescript';
 
 export interface NamedClassDeclaration extends ts.ClassDeclaration {
-    name: ts.Identifier;
+  name: ts.Identifier;
 }
 
 export interface ClassPropertyWithCallExpressionInitializer extends PropertyDeclaration {
-    initializer: CallExpression;
+  initializer: CallExpression;
 }
 
 export interface ClassPropertyWithArrowFunctionInitializer extends PropertyDeclaration {
-    initializer: ts.ArrowFunction;
+  initializer: ts.ArrowFunction;
 }
 
 export interface ClassPropertyWithExpressionInitializer extends PropertyDeclaration {
-    initializer: ts.Expression;
+  initializer: ts.Expression;
 }
 
 export interface ClassPropertyWithoutInitializer extends PropertyDeclaration {
-    initializer: undefined;
+  initializer: undefined;
 }

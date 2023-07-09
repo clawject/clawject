@@ -6,5 +6,5 @@ export function Component<T>(target: ClassConstructor<T>, context: any);
  * */
 export function Component<T extends Function>(target: T): T | void;
 export function Component() {
-    throw new Error('TODO');
+  throw new Error('TODO');
 }

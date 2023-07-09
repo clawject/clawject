@@ -9,86 +9,86 @@ import ts from 'typescript';
 import chalk from 'chalk';
 
 const UNSUPPORTED_TYPES = new Set([
-    DITypeFlag.UNSUPPORTED,
-    DITypeFlag.NEVER,
-    DITypeFlag.VOID,
-    DITypeFlag.UNDEFINED,
+  DITypeFlag.UNSUPPORTED,
+  DITypeFlag.NEVER,
+  DITypeFlag.VOID,
+  DITypeFlag.UNDEFINED,
 ]);
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
-    [ts.SyntaxKind.AbstractKeyword, 'abstract'],
-    [ts.SyntaxKind.StaticKeyword, 'static'],
-    [ts.SyntaxKind.DeclareKeyword, 'declare'],
+  [ts.SyntaxKind.AbstractKeyword, 'abstract'],
+  [ts.SyntaxKind.StaticKeyword, 'static'],
+  [ts.SyntaxKind.DeclareKeyword, 'declare'],
 ]);
 
 export const verifyBeans = (configuration: Configuration): void => {
-    const beans = configuration.beanRegister.elements;
+  const beans = configuration.beanRegister.elements;
 
-    beans.forEach(bean => {
-        verifyBeanType(bean);
-        verifyName(bean);
-        verifyModifiers(bean);
-    });
+  beans.forEach(bean => {
+    verifyBeanType(bean);
+    verifyName(bean);
+    verifyModifiers(bean);
+  });
 };
 
 function verifyBeanType(bean: Bean): void {
-    const parentConfiguration = bean.parentConfiguration;
-    const compilationContext = getCompilationContext();
+  const parentConfiguration = bean.parentConfiguration;
+  const compilationContext = getCompilationContext();
 
-    if (bean.isLifecycle()) {
-        // Lifecycle methods can return anything
-        return;
-    }
+  if (bean.isLifecycle()) {
+    // Lifecycle methods can return anything
+    return;
+  }
 
-    if (bean.diType.isUnion) {
-        compilationContext.report(new IncorrectTypeError(
-            'Union type is not supported as a Bean type.',
-            bean.node,
-            parentConfiguration.node,
-        ));
-        parentConfiguration.beanRegister.deregister(bean);
-        return;
-    }
+  if (bean.diType.isUnion) {
+    compilationContext.report(new IncorrectTypeError(
+      'Union type is not supported as a Bean type.',
+      bean.node,
+      parentConfiguration.node,
+    ));
+    parentConfiguration.beanRegister.deregister(bean);
+    return;
+  }
 
-    if (UNSUPPORTED_TYPES.has(bean.diType.typeFlag)) {
-        compilationContext.report(new IncorrectTypeError(
-            'Unsupported type for Bean.',
-            bean.node.type ?? bean.node,
-            parentConfiguration.node,
-        ));
-        parentConfiguration.beanRegister.deregister(bean);
-        return;
-    }
+  if (UNSUPPORTED_TYPES.has(bean.diType.typeFlag)) {
+    compilationContext.report(new IncorrectTypeError(
+      'Unsupported type for Bean.',
+      bean.node.type ?? bean.node,
+      parentConfiguration.node,
+    ));
+    parentConfiguration.beanRegister.deregister(bean);
+    return;
+  }
 }
 
 
 function verifyName(bean: Bean): void {
-    const compilationContext = getCompilationContext();
-    const name = bean.node.name;
+  const compilationContext = getCompilationContext();
+  const name = bean.node.name;
 
-    if (isStaticallyKnownPropertyName(name)) {
-        return;
-    }
+  if (isStaticallyKnownPropertyName(name)) {
+    return;
+  }
 
-    compilationContext.report(new NotSupportedError(
-        'Bean name should be statically known.',
-        bean.node.name,
-        bean.parentConfiguration.node
-    ));
-    bean.parentConfiguration.beanRegister.deregister(bean);
+  compilationContext.report(new NotSupportedError(
+    'Bean name should be statically known.',
+    bean.node.name,
+    bean.parentConfiguration.node
+  ));
+  bean.parentConfiguration.beanRegister.deregister(bean);
 }
 
 function verifyModifiers(bean: Bean): void {
-    const compilationContext = getCompilationContext();
-    const restrictedModifier = bean.node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
+  const compilationContext = getCompilationContext();
+  const restrictedModifier = bean.node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
 
-    if (!restrictedModifier) {
-        return;
-    }
+  if (!restrictedModifier) {
+    return;
+  }
 
-    compilationContext.report(new NotSupportedError(
-        `Bean declaration should not have modifier ${chalk.bold(RESTRICTED_MODIFIERS.get(restrictedModifier.kind))}.`,
-        bean.node.name,
-        bean.parentConfiguration.node
-    ));
-    bean.parentConfiguration.beanRegister.deregister(bean);
+  compilationContext.report(new NotSupportedError(
+    `Bean declaration should not have modifier ${chalk.bold(RESTRICTED_MODIFIERS.get(restrictedModifier.kind))}.`,
+    bean.node.name,
+    bean.parentConfiguration.node
+  ));
+  bean.parentConfiguration.beanRegister.deregister(bean);
 }

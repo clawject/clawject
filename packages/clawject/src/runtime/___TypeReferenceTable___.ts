@@ -6,9 +6,9 @@
  * Please <b>do not</b> use this interface in your own code.
  * */
 export interface ___TypeReferenceTable___ {
-    array: ReadonlyArray<any> | Array<any> | readonly any[] | any[];
-    set: ReadonlySet<any> | Set<any>;
-    map: ReadonlyMap<any, any> | Map<any, any>;
-    mapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
-    // runClawjectApplication: runClawjectApplication;
+  array: ReadonlyArray<any> | Array<any> | readonly any[] | any[];
+  set: ReadonlySet<any> | Set<any>;
+  map: ReadonlyMap<any, any> | Map<any, any>;
+  mapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
+  // runClawjectApplication: runClawjectApplication;
 }

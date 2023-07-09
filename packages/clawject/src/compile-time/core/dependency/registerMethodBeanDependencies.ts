@@ -3,5 +3,5 @@ import { registerBeanDependenciesFromParameters } from './registerBeanDependenci
 import { Bean } from '../bean/Bean';
 
 export const registerMethodBeanDependencies = (bean: Bean<ts.MethodDeclaration>) => {
-    registerBeanDependenciesFromParameters(bean, bean.node.parameters);
+  registerBeanDependenciesFromParameters(bean, bean.node.parameters);
 };

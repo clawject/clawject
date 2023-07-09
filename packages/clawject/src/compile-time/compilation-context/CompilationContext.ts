@@ -3,41 +3,40 @@ import { AbstractCompilationMessage } from './messages/AbstractCompilationMessag
 import { MessageType } from './messages/MessageType';
 
 export class CompilationContext {
-    areErrorsHandled = false;
+  areErrorsHandled = false;
+  messages = new Set<AbstractCompilationMessage>();
 
-    private _program: ts.Program | null = null;
+  private _program: ts.Program | null = null;
 
-    get program(): ts.Program {
-        if (!this._program) {
-            throw new Error('ts.Program is not assigned, most likely you didn\'t add transformer to your tsconfig.json or webpack configuragtion');
-        }
-
-        return this._program;
+  get program(): ts.Program {
+    if (!this._program) {
+      throw new Error('ts.Program is not assigned, most likely you didn\'t add transformer to your tsconfig.json or webpack configuragtion');
     }
 
-    get typeChecker(): ts.TypeChecker {
-        return this.program.getTypeChecker();
-    }
+    return this._program;
+  }
 
-    assignProgram(program: ts.Program): void {
-        this._program = program;
-    }
+  get typeChecker(): ts.TypeChecker {
+    return this.program.getTypeChecker();
+  }
 
-    messages = new Set<AbstractCompilationMessage>();
+  get errors(): AbstractCompilationMessage[] {
+    return Array.from(this.messages.values()).filter(it => it.type === MessageType.ERROR);
+  }
 
-    get errors(): AbstractCompilationMessage[] {
-        return Array.from(this.messages.values()).filter(it => it.type === MessageType.ERROR);
-    }
+  assignProgram(program: ts.Program): void {
+    this._program = program;
+  }
 
-    report(message: AbstractCompilationMessage): void {
-        this.messages.add(message);
-    }
+  report(message: AbstractCompilationMessage): void {
+    this.messages.add(message);
+  }
 
-    clearMessagesByFilePath(path: string): void {
-        this.messages.forEach(it => {
-            if (it.filePath === path) {
-                this.messages.delete(it);
-            }
-        });
-    }
+  clearMessagesByFilePath(path: string): void {
+    this.messages.forEach(it => {
+      if (it.filePath === path) {
+        this.messages.delete(it);
+      }
+    });
+  }
 }

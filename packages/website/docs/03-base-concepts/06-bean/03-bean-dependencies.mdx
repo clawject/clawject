@@ -3,7 +3,7 @@ title: Bean Dependencies
 id: bean-dependencies
 ---
 
-<hr />
+<hr/>
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
@@ -35,7 +35,7 @@ class Foo {
 class MyContext extends CatContext {
   @Bean bar = 'barValue';
   @Bean baz = 42;
-  
+
   foo = Bean(Foo);
 }
 ```
@@ -57,7 +57,7 @@ class Foo {
 class MyContext extends CatContext {
   @Bean bar = 'barValue';
   @Bean baz = 42;
-  
+
   @Bean foo(bar: string, baz: number) {
     return new Foo(bar, baz)
   }
@@ -87,7 +87,7 @@ class Foo {
 
 class MyContext extends CatContext {
   @Bean barBean = 'barValue';
-  
+
   foo = Bean(Foo);
 }
 ```
@@ -105,12 +105,12 @@ class Foo {
 class MyContext extends CatContext {
   @Bean bar = 'barValue';
   @Bean barOther = 'barOtherValue';
-  
+
   foo = Bean(Foo);
 }
 ```
 
-If **more than one** compatible bean is found, and none of them has the same name 
+If **more than one** compatible bean is found, and none of them has the same name
 as parameter - then compilation error will be reported.
 
 ```ts
@@ -123,7 +123,7 @@ class Foo {
 class MyContext extends CatContext {
   @Bean bar1 = 'bar1Value';
   @Bean bar2 = 'bar2Value';
-  
+
   foo = Bean(Foo);
 }
 ```
