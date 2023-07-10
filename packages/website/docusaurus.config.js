@@ -16,6 +16,22 @@ const config = {
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/',
 
+    plugins: [
+        () => ({
+            name: 'shopify-worker-plugin',
+            configureWebpack() {
+                return {
+                    output: {
+                        globalObject: 'self',
+                    },
+                    plugins: [
+                        new (require('@shopify/web-worker/webpack').WebWorkerPlugin)(),
+                    ]
+                }
+            }
+        }),
+    ],
+
     trailingSlash: true,
 
     // GitHub pages deployment config.
