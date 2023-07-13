@@ -23,6 +23,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   classDeclaration: ts.ClassDeclaration | null = null;
   lifecycle: LifecycleKind[] | null = null;
   public = false;
+  primary = false;
   dependencies = new Set<Dependency>();
   //Only when bean is annotated with @Embedded
   embeddedElements = new Map<string, DIType>();

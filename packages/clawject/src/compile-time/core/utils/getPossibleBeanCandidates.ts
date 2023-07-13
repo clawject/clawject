@@ -39,6 +39,5 @@ export class PossibleBeanCandidate {
   constructor(
     public bean: Bean,
     public embeddedName: string | null = null,
-  ) {
-  }
+  ) {}
 }

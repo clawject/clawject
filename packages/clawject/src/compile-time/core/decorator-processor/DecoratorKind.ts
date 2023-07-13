@@ -8,6 +8,7 @@ export enum DecoratorKind {
   Lazy = 'Lazy',
   PostConstruct = 'PostConstruct',
   Scope = 'Scope',
+  Primary = 'Primary',
 }
 
 export const DecoratorKinds = new Set(Object.values(DecoratorKind));

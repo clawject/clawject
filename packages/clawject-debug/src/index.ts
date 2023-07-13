@@ -1,18 +1,15 @@
-import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct } from 'clawject';
+import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct, Primary } from 'clawject';
 import { IMyContext } from './IMyContext';
-
-class A {
-    data: string = '';
-    data2: number = 42;
-}
 
 @Lazy(true)
 class MyContext extends CatContext<IMyContext> {
-  @Embedded a = Bean(A);
+  @Bean test1 = '';
+  @Bean @Primary test2 = '';
+
 
   @PostConstruct
   postConstruct(
-      data: string,
+    data: string,
   ) {
 
   }

@@ -1,7 +1,7 @@
 import { AbstractCompilationMessage } from './messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
 import chalk from 'chalk';
-import { MissingBeanDeclarationError } from './messages/errors/MissingBeanDeclarationError';
+import { BeanCandidateNotFoundError } from './messages/errors/BeanCandidateNotFoundError';
 import upath from 'upath';
 
 export class BuildErrorFormatter {
@@ -55,7 +55,7 @@ export class BuildErrorFormatter {
 
     const baseMessage = `${chalk.red('Error')} ${chalk.gray(error.code + ':')} ${error.description}${errorDetails} ${filePathWithPosition}`;
 
-    if (error instanceof MissingBeanDeclarationError) {
+    if (error instanceof BeanCandidateNotFoundError) {
       const candidatesByType = this.formatCandidates(error.candidatesByType);
       const candidatesByName = this.formatCandidates(error.candidatesByName);
       const messageCandidatesByType = candidatesByType ? `${chalk.red('  Possibly suitable candidates by type:')}\n${candidatesByType}` : '';

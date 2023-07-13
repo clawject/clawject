@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { IncorrectTypeDefinitionError } from '../../compilation-context/messages/errors/IncorrectTypeDefinitionError';
-import { MissingBeanDeclarationError } from '../../compilation-context/messages/errors/MissingBeanDeclarationError';
+import { BeanCandidateNotFoundError } from '../../compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
@@ -59,7 +59,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
         byType,
       ] = getPossibleBeanCandidates(propertyName, propertyDIType, contextBeans);
 
-      compilationContext.report(new MissingBeanDeclarationError(
+      compilationContext.report(new BeanCandidateNotFoundError(
         null,
         property.valueDeclaration ?? typeNode,
         context.node,

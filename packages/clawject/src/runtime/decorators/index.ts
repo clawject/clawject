@@ -4,3 +4,4 @@ export { PostConstruct, PostConstructTarget } from './PostConstruct';
 export { Lazy, LazyTarget } from './Lazy';
 export { Scope, ScopeValue, ScopeTarget } from './Scope';
 export { Embedded, EmbeddedTarget } from './Embedded';
+export { Primary, PrimaryTarget } from './Primary';

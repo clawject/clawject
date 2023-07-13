@@ -5,10 +5,10 @@ import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { PossibleBeanCandidate } from '../../../core/utils/getPossibleBeanCandidates';
 
-export class MissingBeanDeclarationError extends AbstractCompilationMessage {
+export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
   public code = MessageCode.CLAWJECT5;
   public type = MessageType.ERROR;
-  public description = 'Missing Bean declaration.';
+  public description = 'Bean candidate not found.';
   public candidatesByName: NodeDetails[] = [];
   public candidatesByType: NodeDetails[] = [];
 
