@@ -5,6 +5,7 @@ import { AutowiredRegister } from '../autowired/AutowiredRegister';
 import { BeanRegister } from '../bean/BeanRegister';
 import { BaseElement } from '../BaseElement';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
+import { FileGraph } from '../file-graph/FileGraph';
 
 export class Configuration extends BaseElement<ts.ClassDeclaration> {
   declare id: string;
@@ -12,7 +13,6 @@ export class Configuration extends BaseElement<ts.ClassDeclaration> {
   declare allowedBeanKinds: Set<BeanKind>;
 
   name: string | null = null;
-  relatedPaths = new Set<string>();
   diType: DIType | null = null;
 
   autowiredRegister = new AutowiredRegister(this);
@@ -23,7 +23,7 @@ export class Configuration extends BaseElement<ts.ClassDeclaration> {
   registerDIType(diType: DIType): void {
     this.diType = diType;
     diType.declarations.map(it => {
-      this.relatedPaths.add(it.fileName);
+      FileGraph.add(this.fileName, it.fileName);
     });
   }
 }

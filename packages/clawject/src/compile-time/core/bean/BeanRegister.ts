@@ -1,6 +1,7 @@
 import { Configuration } from '../configuration/Configuration';
 import { Bean, BeanNode } from './Bean';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
+import { FileGraph } from '../file-graph/FileGraph';
 
 export class BeanRegister extends AbstractElementRegister<Bean, BeanNode> {
   constructor(
@@ -21,8 +22,8 @@ export class BeanRegister extends AbstractElementRegister<Bean, BeanNode> {
 
     const beanClassDeclarationFileName = bean.classDeclaration?.node.getSourceFile().fileName;
     bean.diType.declarations.map(it => {
-      this.parent.relatedPaths.add(it.fileName);
+      FileGraph.add(this.parent.fileName, it.fileName);
     });
-    beanClassDeclarationFileName && this.parent.relatedPaths.add(beanClassDeclarationFileName);
+    beanClassDeclarationFileName && FileGraph.add(this.parent.fileName, beanClassDeclarationFileName);
   }
 }

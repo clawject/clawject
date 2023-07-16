@@ -14,6 +14,4 @@ export class Component extends BaseElement<ts.ClassDeclaration> {
   autowiredRegister = new AutowiredRegister(this);
   componentLifecycleRegister = new ComponentLifecycleRegister(this);
   constructorDependencies = new Set<Dependency>();
-
-  relatedPaths = new Set<string>();
 }

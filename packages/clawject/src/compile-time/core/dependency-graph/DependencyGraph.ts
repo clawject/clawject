@@ -8,13 +8,6 @@ export class DependencyGraph {
   private static graph = new Graph();
 
   static addNodeWithEdges(node: Bean, edges: Bean[]) {
-    this.graph.setNodes(
-      [
-        node.id,
-        ...edges.map(it => it.id),
-      ]
-    );
-
     edges.forEach(edge => this.graph.setEdge(node.id, edge.id));
   }
 
@@ -53,7 +46,7 @@ export class DependencyGraph {
   }
 
   static clear(): void {
-    this.graph = new Graph({directed: true});
+    this.graph = new Graph();
   }
 
   //returns beanId to Configuration

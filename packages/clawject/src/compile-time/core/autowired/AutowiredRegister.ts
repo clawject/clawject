@@ -2,6 +2,7 @@ import { AutowiredElement } from './AutowiredElement';
 import { Component } from '../component/Component';
 import { Configuration } from '../configuration/Configuration';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
+import { FileGraph } from '../file-graph/FileGraph';
 
 export class AutowiredRegister extends AbstractElementRegister<AutowiredElement> {
   constructor(
@@ -21,7 +22,7 @@ export class AutowiredRegister extends AbstractElementRegister<AutowiredElement>
     this.nodeToElement.set(autowired.node, autowired);
 
     autowired.diType.declarations.map(it => {
-      this.parent.relatedPaths.add(it.fileName);
+      FileGraph.add(this.parent.fileName, it.fileName);
     });
   }
 }

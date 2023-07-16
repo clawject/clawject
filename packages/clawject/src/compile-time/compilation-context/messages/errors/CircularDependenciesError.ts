@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { MessageCode } from '../MessageCode';
 import { MessageType } from '../MessageType';
-import { NodeDetails } from '../../../core/ts/utils/getNodeDetails';
+import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { Bean } from '../../../core/bean/Bean';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { Configuration } from '../../../core/configuration/Configuration';
@@ -27,6 +27,9 @@ export class CircularDependenciesError extends AbstractCompilationMessage {
   ) {
     super(details, place, relatedConfiguration);
 
-    this.cycleMembers = cycleMembers.map(bean => new CycleMember(bean.classMemberName, bean.nodeDetails));
+    this.cycleMembers = cycleMembers.map(bean => new CycleMember(
+      bean.classMemberName,
+      getNodeDetails(bean.node.name)
+    ));
   }
 }

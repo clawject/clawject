@@ -1,6 +1,6 @@
 export class ClassWithDependencies {
   constructor(
     public e: string,
-    public f: string
+    public f: number,
   ) {}
 }

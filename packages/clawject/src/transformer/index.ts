@@ -3,25 +3,22 @@ import { getCompilationContext } from './getCompilationContext';
 import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildErrorFormatter';
 import { BaseTypesRepository } from '../compile-time/core/type-system/BaseTypesRepository';
 import { verifyTSVersion } from './verifyTSVersion';
-import { ConfigurationRepository } from '../compile-time/core/configuration/ConfigurationRepository';
 import { processAtomicMode } from '../compile-time/core/atomic-mode/processAtomicMode';
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 import { processApplicationMode } from '../compile-time/core/application-mode/processApplicationMode';
-import { ComponentRepository } from '../compile-time/core/component/ComponentRepository';
+import { cleanup } from '../compile-time/core/cleaner/cleanup';
 
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const compilationContext = getCompilationContext();
   compilationContext.assignProgram(program);
 
-  if(!compilationContext.languageServiceMode) {
+  if (!compilationContext.languageServiceMode) {
     verifyTSVersion();
   }
 
   return context => sourceFile => {
     if (!compilationContext.languageServiceMode) {
-      compilationContext.clearMessagesByFileName(sourceFile.fileName);
-      ConfigurationRepository.clearByFileName(sourceFile.fileName);
-      ComponentRepository.clearByFileName(sourceFile.fileName);
+      cleanup(sourceFile.fileName);
     }
 
     BaseTypesRepository.init();

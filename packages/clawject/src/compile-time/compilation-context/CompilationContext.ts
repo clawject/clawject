@@ -5,7 +5,7 @@ import { AbstractCompilationMessage } from './messages/AbstractCompilationMessag
 export class CompilationContext {
   areErrorsHandled = false;
   languageServiceMode = false;
-  messages: AbstractCompilationMessage[] = [];
+  private messages: AbstractCompilationMessage[] = [];
   private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
   private _program: ts.Program | null = null;
@@ -38,11 +38,17 @@ export class CompilationContext {
     this.pathToMessages.set(message.place.filePath, messagesByPath);
   }
 
-  getByFileName(fileName: string): AbstractCompilationMessage[] {
+  getMessagesByFileName(fileName: string): AbstractCompilationMessage[] {
     return Array.from(this.messages).filter(it => it.place.filePath === fileName);
   }
 
   clearMessagesByFileName(fileName: string): void {
     this.messages = this.messages.filter(it => it.place.filePath !== fileName);
+    this.pathToMessages.delete(fileName);
+  }
+
+  clear(): void {
+    this.messages = [];
+    this.pathToMessages = new Map<string, AbstractCompilationMessage[]>();
   }
 }

@@ -6,6 +6,18 @@ interface Test {
 }
 
 class MyContext extends CatContext<IMyContext> {
+  @Bean test0(
+    test1: any,
+  ): any {
+    return null;
+  }
+
+  @Bean test1(
+    test0: any,
+  ): any {
+    return null;
+  }
+
   @Bean data = 'data';
   classWithDependencies = Bean(ClassWithDependencies);
 
@@ -15,6 +27,10 @@ class MyContext extends CatContext<IMyContext> {
   ) {
     console.log(123);
   }
+}
+
+class MyTest2 extends CatContext {
+  classWithDependencies = Bean(ClassWithDependencies);
 }
 
 console.log(Array.from(ContainerManager.init(MyContext).getAllBeans()));

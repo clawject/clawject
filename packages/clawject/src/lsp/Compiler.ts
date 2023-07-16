@@ -1,51 +1,51 @@
 import tsServer from 'typescript/lib/tsserverlibrary';
-import { ConfigurationRepository } from '../compile-time/core/configuration/ConfigurationRepository';
-import { getCompilationContext } from '../transformer/getCompilationContext';
-import ClawjectTransformer from '../transformer';
+import { ClawjectTransformer } from '../transformer';
 import { ModificationTrackerHolder } from './modification-tracker/ModificationTrackerHolder';
+import { FileGraph } from '../compile-time/core/file-graph/FileGraph';
+import { cleanup } from '../compile-time/core/cleaner/cleanup';
+import { LanguageServiceLogger } from './LanguageServiceLogger';
 
 export class Compiler {
   static wasCompiled = false;
   static pluginInfo: tsServer.server.PluginCreateInfo | null = null;
 
+  static assignPluginInfo(pluginInfo: tsServer.server.PluginCreateInfo): void {
+    this.pluginInfo = pluginInfo;
+  }
+
   static ensureCompiled(): void {
-    if (!this.pluginInfo) {
+    const pluginInfo = this.pluginInfo;
+    if (!pluginInfo) {
       return;
     }
 
-    const program = this.pluginInfo?.languageService.getProgram();
+    const program = pluginInfo.languageService.getProgram();
 
     if (!program) {
       return;
     }
 
-    const modificationTracker = ModificationTrackerHolder.getForProject(this.pluginInfo.project.getProjectName(), this.pluginInfo);
-    const modifiedFiles = modificationTracker.getModifiedFilesAndSetLatestVersions();
-
-    if (modifiedFiles.size === 0 && this.wasCompiled) {
+    if (!this.wasCompiled) {
+      this.wasCompiled = true;
+      tsServer.transform(Array.from(program.getSourceFiles()), [
+        ClawjectTransformer(() => program),
+      ], program.getCompilerOptions());
       return;
     }
 
-    this.wasCompiled = true;
+    const modificationTracker = ModificationTrackerHolder.getForProject(pluginInfo.project.getProjectName(), pluginInfo);
+    const modifiedFiles = modificationTracker.getModifiedFilesAndSetLatestVersions();
+    const affectedFiles = FileGraph.getRelatedFileNamesWithTarget(Array.from(modifiedFiles));
 
-    modifiedFiles.forEach(modifiedFile => {
-      ConfigurationRepository.fileNameToConfigurations.get(modifiedFile)
-        ?.forEach(configuration => {
-          configuration.relatedPaths.forEach(path => {
-            ConfigurationRepository.clearByFileName(path);
-            getCompilationContext().clearMessagesByFileName(path);
-          });
-        });
+    LanguageServiceLogger.log('Affected files: ' + '\n' + Array.from(affectedFiles).join('\n'));
 
-      ConfigurationRepository.clearByFileName(modifiedFile);
-      getCompilationContext().clearMessagesByFileName(modifiedFile);
-    });
+    affectedFiles.forEach(cleanup);
 
-    const sourceFiles = program.getSourceFiles()
-      .filter(it => modifiedFiles.has(it.fileName));
+    const affectedSourceFiles = program.getSourceFiles()
+      .filter(it => affectedFiles.has(it.fileName));
 
-    tsServer.transform(sourceFiles, [
-      ClawjectTransformer(program),
+    tsServer.transform(affectedSourceFiles, [
+      ClawjectTransformer(() => program),
     ], program.getCompilerOptions());
   }
 }

@@ -18,9 +18,9 @@ export const reportAboutCircularDependencies = (
       cycle.forEach(item => {
         compilationContext.report(new CircularDependenciesError(
           null,
-          item.node,
+          item.node.name,
           context,
-          cycle.filter(it => it !== item),
+          cycle
         ));
       });
     });

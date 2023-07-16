@@ -5,13 +5,18 @@ import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { BeanCandidateNotFoundError } from '../../compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
+import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
+import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
+import { BeanKind } from '../bean/BeanKind';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
+  const compilationContext = getCompilationContext();
   const contextBeans = context.beanRegister.elements;
 
   contextBeans.forEach(bean => {
     const allBeansWithoutCurrent = Array.from(contextBeans)
       .filter(it => it !== bean);
+    const messages: AbstractCompilationMessage[] = [];
 
     bean.dependencies.forEach(dependency => {
       if (dependency.diType.isVoidUndefinedPlainUnionIntersection || dependency.diType.isNull) {
@@ -21,9 +26,18 @@ export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration
       if (dependency.diType.isArray || dependency.diType.isSet || dependency.diType.isMapStringToAny) {
         buildForCollectionOrArray(bean, allBeansWithoutCurrent, dependency);
       } else {
-        buildForBaseType(bean, allBeansWithoutCurrent, dependency, context);
+        buildForBaseType(bean, allBeansWithoutCurrent, dependency, context, messages);
       }
     });
+
+    if (messages.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
+      compilationContext.report(new CanNotRegisterBeanError(
+        null,
+        bean.node,
+        bean.parentConfiguration,
+        messages,
+      ));
+    }
   });
 };
 
@@ -32,6 +46,7 @@ function buildForBaseType(
   allBeansWithoutCurrent: Bean[],
   dependency: Dependency,
   configuration: Configuration,
+  messages: AbstractCompilationMessage[]
 ): void {
   const matchedByType = allBeansWithoutCurrent
     .filter(it => dependency.diType.isCompatible(it.diType));
@@ -80,13 +95,15 @@ function buildForBaseType(
   }
 
   if (matchedByTypeAndPrimary.length > 1) {
-    getCompilationContext().report(new BeanCandidateNotFoundError(
-      `Multiple (${matchedByTypeAndPrimary.length}) Primary bean candidates found for parameter ${dependency.parameterName}. Rename parameter to match Bean name, to specify which Bean should be injected.`,
+    const error = new BeanCandidateNotFoundError(
+      `${matchedByTypeAndPrimary.length} Primary bean candidates found for parameter ${dependency.parameterName}. Rename parameter to match Bean name, to specify which Bean should be injected.`,
       dependency.node,
       configuration,
       [],
       matchedByTypeAndPrimary.map(it => new DependencyQualifiedBean(it)),
-    ));
+    );
+    getCompilationContext().report(error);
+    messages.push(error);
     return;
   }
 
@@ -95,7 +112,7 @@ function buildForBaseType(
     return;
   }
 
-  reportPossibleCandidates(bean, dependency, allBeansWithoutCurrent, configuration);
+  reportPossibleCandidates(bean, dependency, allBeansWithoutCurrent, configuration, messages);
 }
 
 function buildForCollectionOrArray(
@@ -146,18 +163,26 @@ function buildForCollectionOrArray(
   DependencyGraph.addNodeWithEdges(bean, matched.map(it => it.bean));
 }
 
-function reportPossibleCandidates(bean: Bean, dependency: Dependency, allBeansWithoutCurrent: Bean[], configuration: Configuration): void {
+function reportPossibleCandidates(
+  bean: Bean,
+  dependency: Dependency,
+  allBeansWithoutCurrent: Bean[],
+  configuration: Configuration,
+  messages: AbstractCompilationMessage[]
+): void {
   const compilationContext = getCompilationContext();
   const [
     byName,
     byType,
   ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrent);
 
-  compilationContext.report(new BeanCandidateNotFoundError(
+  const error = new BeanCandidateNotFoundError(
     `Found ${byName.length + byType.length} candidates for parameter "${dependency.parameterName}". Rename parameter to match Bean name, to specify which Bean should be injected.`,
     dependency.node,
     configuration,
     byName,
     byType,
-  ));
+  );
+  compilationContext.report(error);
+  messages.push(error);
 }

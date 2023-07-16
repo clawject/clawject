@@ -18,8 +18,7 @@ export class DependencyQualifiedBean {
   constructor(
     public bean: Bean,
     public embeddedName: string | null = null,
-  ) {
-  }
+  ) {}
 
   get fullName(): string {
     if (this.embeddedName === null) {

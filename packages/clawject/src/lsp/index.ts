@@ -1,9 +1,11 @@
 import type tsServer from 'typescript/lib/tsserverlibrary';
 import { getCompilationContext } from '../transformer/getCompilationContext';
-import { ModificationTrackerHolder } from './modification-tracker/ModificationTrackerHolder';
 import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
 import { isClawjectDiagnostics } from './utils';
 import { Compiler } from './Compiler';
+import { LanguageServiceLogger } from './LanguageServiceLogger';
+import { cleanupAll } from '../compile-time/core/cleaner/cleanup';
+import { MessageCode } from '../compile-time/compilation-context/messages/MessageCode';
 
 export function ClawjectLanguageServicePlugin(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   const tsServer = modules.typescript;
@@ -16,7 +18,8 @@ export function ClawjectLanguageServicePlugin(modules: { typescript: typeof impo
       'Clawject language service plugin created'
     );
 
-    Compiler.pluginInfo = info;
+    Compiler.assignPluginInfo(info);
+    LanguageServiceLogger.assignPluginInfo(info);
 
     // Set up decorator object
     const proxy: tsServer.LanguageService = Object.create(null);
@@ -25,6 +28,10 @@ export function ClawjectLanguageServicePlugin(modules: { typescript: typeof impo
       // @ts-expect-error - JS runtime trickery which is tricky to type tersely
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
+
+    proxy.cleanupSemanticCache = () => {
+      cleanupAll();
+    };
 
     proxy.getSemanticDiagnostics = (fileName): tsServer.Diagnostic[] => {
       const program = info.languageService.getProgram();
@@ -38,8 +45,8 @@ export function ClawjectLanguageServicePlugin(modules: { typescript: typeof impo
       Compiler.ensureCompiled();
 
       return [
-        ...prior.filter(it => !isClawjectDiagnostics(it)),
-        ...LanguageServiceReportBuilder.buildSemanticDiagnostics(info, Array.from(compilationContext.messages), fileName),
+        ...prior,
+        ...LanguageServiceReportBuilder.buildSemanticDiagnostics(info, fileName),
       ];
     };
 

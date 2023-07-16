@@ -12,7 +12,6 @@ import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
-import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { WeakNodeHolder } from '../WeakNodeHolder';
 
 export const registerBeanClassConstructor = (

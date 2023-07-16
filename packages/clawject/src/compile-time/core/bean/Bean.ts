@@ -8,6 +8,7 @@ import { BaseElement } from '../BaseElement';
 import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { WeakNodeHolder } from '../WeakNodeHolder';
+import { FileGraph } from '../file-graph/FileGraph';
 
 export type BeanNode = ts.MethodDeclaration
   | ClassPropertyWithCallExpressionInitializer
@@ -40,7 +41,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   registerDependency(dependency: Dependency): void {
     this.dependencies.add(dependency);
     dependency.diType.declarationFileNames.forEach(it => {
-      this.parentConfiguration.relatedPaths.add(it);
+      FileGraph.add(this.parentConfiguration.fileName, it);
     });
   }
 
