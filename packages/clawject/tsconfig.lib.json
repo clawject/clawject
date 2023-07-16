@@ -6,14 +6,12 @@
     "sourceMap": false,
     "types": [
       "node",
-      "ts-expose-internals"
     ]
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
-    "src/compile-time/service/**/*",
     "jest.config.ts",
     "test/**/*.test.ts"
   ]

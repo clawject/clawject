@@ -4,7 +4,7 @@ import { registerBeanDependenciesFromParameters } from './registerBeanDependenci
 import { Bean } from '../bean/Bean';
 
 export const registerPropertyBeanDependencies = (bean: Bean<ClassPropertyWithCallExpressionInitializer>) => {
-  const classConstructor = bean.classDeclaration?.members.find(ts.isConstructorDeclaration) ?? null;
+  const classConstructor = bean.classDeclaration?.node.members.find(ts.isConstructorDeclaration) ?? null;
 
   if (classConstructor === null) {
     return;

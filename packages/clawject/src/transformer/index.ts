@@ -10,15 +10,20 @@ import { processApplicationMode } from '../compile-time/core/application-mode/pr
 import { ComponentRepository } from '../compile-time/core/component/ComponentRepository';
 
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
-  verifyTSVersion();
-
   const compilationContext = getCompilationContext();
   compilationContext.assignProgram(program);
 
+  if(!compilationContext.languageServiceMode) {
+    verifyTSVersion();
+  }
+
   return context => sourceFile => {
-    compilationContext.clearMessagesByFilePath(sourceFile.fileName);
-    ConfigurationRepository.clearByFileName(sourceFile.fileName);
-    ComponentRepository.clearByFileName(sourceFile.fileName);
+    if (!compilationContext.languageServiceMode) {
+      compilationContext.clearMessagesByFileName(sourceFile.fileName);
+      ConfigurationRepository.clearByFileName(sourceFile.fileName);
+      ComponentRepository.clearByFileName(sourceFile.fileName);
+    }
+
     BaseTypesRepository.init();
 
     const mode = ConfigLoader.get().mode;

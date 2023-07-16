@@ -1,10 +1,6 @@
 export class ClassWithDependencies {
-    constructor(
-    public a: string,
-    public b: string,
-    public c: string,
-    public d: string,
+  constructor(
     public e: string,
-    ) {
-    }
+    public f: string
+  ) {}
 }

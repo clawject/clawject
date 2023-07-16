@@ -21,6 +21,7 @@ export class Configuration extends BaseElement<ts.ClassDeclaration> {
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
   registerDIType(diType: DIType): void {
+    this.diType = diType;
     diType.declarations.map(it => {
       this.relatedPaths.add(it.fileName);
     });

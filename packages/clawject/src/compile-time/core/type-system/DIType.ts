@@ -17,6 +17,10 @@ export class DIType {
   unionOrIntersectionTypes: DIType[] = [];
   declarations: DeclarationInfo[] = [];
 
+  get declarationFileNames(): string[] {
+    return this.declarations.map(it => it.fileName);
+  }
+
   //For debug purpose only
   get name(): string | null {
     return Object.entries(DITypeFlag).find(it => it[1] === this.typeFlag)?.[0] ?? null;

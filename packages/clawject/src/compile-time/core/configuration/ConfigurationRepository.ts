@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { Configuration } from './Configuration';
 import { unquoteString } from '../utils/unquoteString';
-import { DependencyGraph } from '../dependencies/DependencyGraph';
+import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { BeanKind } from '../bean/BeanKind';
 
 export class ConfigurationRepository {

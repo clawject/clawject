@@ -1,10 +1,12 @@
 import ts from 'typescript';
-import { AbstractCompilationMessage } from './messages/AbstractCompilationMessage';
 import { MessageType } from './messages/MessageType';
+import { AbstractCompilationMessage } from './messages/AbstractCompilationMessage';
 
 export class CompilationContext {
   areErrorsHandled = false;
-  messages = new Set<AbstractCompilationMessage>();
+  languageServiceMode = false;
+  messages: AbstractCompilationMessage[] = [];
+  private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
   private _program: ts.Program | null = null;
 
@@ -21,22 +23,26 @@ export class CompilationContext {
   }
 
   get errors(): AbstractCompilationMessage[] {
-    return Array.from(this.messages.values()).filter(it => it.type === MessageType.ERROR);
+    return this.messages.filter(it => it.type === MessageType.ERROR);
   }
 
-  assignProgram(program: ts.Program): void {
+  assignProgram(program: ts.Program | null): void {
     this._program = program;
   }
 
   report(message: AbstractCompilationMessage): void {
-    this.messages.add(message);
+    this.messages.push(message);
+
+    const messagesByPath = this.pathToMessages.get(message.place.filePath) ?? [];
+    messagesByPath.push(message);
+    this.pathToMessages.set(message.place.filePath, messagesByPath);
   }
 
-  clearMessagesByFilePath(path: string): void {
-    this.messages.forEach(it => {
-      if (it.filePath === path) {
-        this.messages.delete(it);
-      }
-    });
+  getByFileName(fileName: string): AbstractCompilationMessage[] {
+    return Array.from(this.messages).filter(it => it.place.filePath === fileName);
+  }
+
+  clearMessagesByFileName(fileName: string): void {
+    this.messages = this.messages.filter(it => it.place.filePath !== fileName);
   }
 }

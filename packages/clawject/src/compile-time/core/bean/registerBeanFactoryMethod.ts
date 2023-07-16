@@ -20,7 +20,7 @@ export const registerBeanFactoryMethod = (
     compilationContext.report(new MissingInitializerError(
       'Method Bean should have a body.',
       classElement.name,
-      configuration.node,
+      configuration,
     ));
     return;
   }
@@ -32,7 +32,7 @@ export const registerBeanFactoryMethod = (
     compilationContext.report(new TypeQualifyError(
       'Can not resolve method return type.',
       classElement.name,
-      configuration.node,
+      configuration,
     ));
     return;
   }

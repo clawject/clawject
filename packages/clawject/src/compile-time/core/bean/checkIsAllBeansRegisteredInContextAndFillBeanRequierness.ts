@@ -1,11 +1,11 @@
 import ts from 'typescript';
 import { IncorrectTypeDefinitionError } from '../../compilation-context/messages/errors/IncorrectTypeDefinitionError';
-import { BeanCandidateNotFoundError } from '../../compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
+import { MissingBeansDeclaration } from '../../compilation-context/messages/errors/MissingBeansDeclaration';
+import { TypeMismatchError } from '../../compilation-context/messages/errors/TypeMismatchError';
 
 export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context: Configuration): void => {
   const compilationContext = getCompilationContext();
@@ -23,17 +23,17 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
     return;
   }
 
-  const typeNode = typeArgs[0];
+  const typeArgNode = typeArgs[0];
 
   const typeChecker = compilationContext.typeChecker;
-  const type = typeChecker.getTypeAtLocation(typeNode);
+  const type = typeChecker.getTypeAtLocation(typeArgNode);
   const diType = DITypeBuilder.build(type);
 
   if (!diType.isObject) {
     compilationContext.report(new IncorrectTypeDefinitionError(
       'Should be an object-like type.',
-      typeNode,
-      context.node,
+      typeArgNode,
+      context,
     ));
     return;
   }
@@ -47,37 +47,43 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
       return acc;
     }, new Map<string, Bean>());
 
+  const missingElements: ts.Symbol[] = [];
+  const typeMismatchElements: ts.Symbol[] = [];
+
   typeProperties.forEach((property) => {
     const propertyName = property.getName();
-    const propertyType = typeChecker.getTypeOfSymbolAtLocation(property, typeNode);
+    const propertyType = typeChecker.getTypeOfSymbolAtLocation(property, typeArgNode);
     const propertyDIType = DITypeBuilder.build(propertyType);
     const bean = beans.get(propertyName);
 
     if (!bean) {
-      const [
-        byName,
-        byType,
-      ] = getPossibleBeanCandidates(propertyName, propertyDIType, contextBeans);
-
-      compilationContext.report(new BeanCandidateNotFoundError(
-        null,
-        property.valueDeclaration ?? typeNode,
-        context.node,
-        byName,
-        byType,
-      ));
+      missingElements.push(property);
       return;
     }
 
     if (!propertyDIType.isCompatible(bean.diType)) {
-      compilationContext.report(new IncorrectTypeDefinitionError(
-        'Type of bean is not compatible with type of property declared in context type argument.',
-        bean.node,
-        context.node,
-      ));
+      typeMismatchElements.push(property);
       return;
     }
 
     bean.public = true;
   });
+
+  if (missingElements.length > 0) {
+    compilationContext.report(new MissingBeansDeclaration(
+      'Following beans are required, but not found in context.',
+      typeArgNode,
+      context,
+      missingElements,
+    ));
+  }
+
+  if (typeMismatchElements.length > 0) {
+    compilationContext.report(new TypeMismatchError(
+      'Type of Bean is not compatible with type of property declared in a context type.',
+      typeArgNode,
+      context,
+      typeMismatchElements,
+    ));
+  }
 };

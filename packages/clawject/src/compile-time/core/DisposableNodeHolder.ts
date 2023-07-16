@@ -1,6 +1,10 @@
 import ts from 'typescript';
 
 export class DisposableNodeHolder<N extends ts.Node = ts.Node> {
+  constructor(node?: N) {
+    node && (this.node = node);
+  }
+
   private _hasBeenInitialized = false;
 
   private _node: N | null = null;

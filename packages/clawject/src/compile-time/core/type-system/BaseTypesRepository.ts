@@ -10,6 +10,10 @@ type BaseTypes = Record<keyof ___TypeReferenceTable___, DIType> & { runClawjectA
 export class BaseTypesRepository {
   private static baseTypes: BaseTypes | null = null;
 
+  static clear(): void {
+    this.baseTypes = null;
+  }
+
   static init(): void {
     const compilationContext = getCompilationContext();
 

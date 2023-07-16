@@ -13,6 +13,7 @@ export interface NodeDetails {
   end: LineColumn;
   startOffset: number;
   endOffset: number;
+  length: number;
   text: string;
 }
 
@@ -27,6 +28,7 @@ export const getNodeDetails = (node: ts.Node): NodeDetails => {
     end: lineAndCharacterToLineColumn(end),
     startOffset: node.getStart(),
     endOffset: node.getEnd(),
+    length: node.getEnd() - node.getStart(),
     text: node.getText(),
   };
 };

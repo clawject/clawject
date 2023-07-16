@@ -6,7 +6,6 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import ts from 'typescript';
-import chalk from 'chalk';
 
 const UNSUPPORTED_TYPES = new Set([
   DITypeFlag.UNSUPPORTED,
@@ -43,7 +42,7 @@ function verifyBeanType(bean: Bean): void {
     compilationContext.report(new IncorrectTypeError(
       'Union type is not supported as a Bean type.',
       bean.node,
-      parentConfiguration.node,
+      parentConfiguration,
     ));
     parentConfiguration.beanRegister.deregister(bean);
     return;
@@ -53,7 +52,7 @@ function verifyBeanType(bean: Bean): void {
     compilationContext.report(new IncorrectTypeError(
       'Unsupported type for Bean.',
       bean.node.type ?? bean.node,
-      parentConfiguration.node,
+      parentConfiguration,
     ));
     parentConfiguration.beanRegister.deregister(bean);
     return;
@@ -72,7 +71,7 @@ function verifyName(bean: Bean): void {
   compilationContext.report(new NotSupportedError(
     'Bean name should be statically known.',
     bean.node.name,
-    bean.parentConfiguration.node
+    bean.parentConfiguration
   ));
   bean.parentConfiguration.beanRegister.deregister(bean);
 }
@@ -86,9 +85,9 @@ function verifyModifiers(bean: Bean): void {
   }
 
   compilationContext.report(new NotSupportedError(
-    `Bean declaration should not have modifier ${chalk.bold(RESTRICTED_MODIFIERS.get(restrictedModifier.kind))}.`,
+    `Bean declaration should not have modifier ${RESTRICTED_MODIFIERS.get(restrictedModifier.kind)}.`,
     bean.node.name,
-    bean.parentConfiguration.node
+    bean.parentConfiguration
   ));
   bean.parentConfiguration.beanRegister.deregister(bean);
 }

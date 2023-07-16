@@ -5,7 +5,7 @@ import { IncorrectNameError } from '../../compilation-context/messages/errors/In
 import { registerBeans } from '../bean/registerBeans';
 import { checkIsAllBeansRegisteredInContextAndFillBeanRequierness } from '../bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness';
 import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
-import { buildDependencyGraphAndFillQualifiedBeans } from '../dependencies/buildDependencyGraphAndFillQualifiedBeans';
+import { buildDependencyGraphAndFillQualifiedBeans } from '../dependency-graph/buildDependencyGraphAndFillQualifiedBeans';
 import { reportAboutCircularDependencies } from '../report-cyclic-dependencies/reportAboutCircularDependencies';
 import { enrichWithAdditionalProperties } from './transformers/enrichWithAdditionalProperties';
 import { processMembers } from './transformers/processMembers';
@@ -34,7 +34,7 @@ export function processCatContext(node: ts.ClassDeclaration, compilationContext:
       compilationContext.report(new IncorrectNameError(
         `"${it.name?.getText()}" name is reserved for the di-container.`,
         it,
-        context.node,
+        context,
       ));
     });
     return node;
@@ -46,6 +46,10 @@ export function processCatContext(node: ts.ClassDeclaration, compilationContext:
   registerBeanDependencies(context);
   buildDependencyGraphAndFillQualifiedBeans(context);
   reportAboutCircularDependencies(context);
+
+  if (compilationContext.languageServiceMode) {
+    return node;
+  }
 
   const enrichedWithAdditionalProperties = enrichWithAdditionalProperties(node, context);
   const withProcessedMembers = processMembers(enrichedWithAdditionalProperties, context);

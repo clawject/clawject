@@ -15,6 +15,7 @@
     "sourceMap": false,
     "plugins": [
       {
+        "name": "clawject-language-service-plugin",
         "transform": "../clawject/src/transformer/index.ts"
       }
     ]

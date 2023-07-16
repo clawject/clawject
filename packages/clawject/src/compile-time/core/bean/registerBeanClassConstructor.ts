@@ -12,6 +12,8 @@ import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
+import { DisposableNodeHolder } from '../DisposableNodeHolder';
+import { WeakNodeHolder } from '../WeakNodeHolder';
 
 export const registerBeanClassConstructor = (
   configuration: Configuration,
@@ -31,7 +33,7 @@ export const registerBeanClassConstructor = (
     compilationContext.report(new DependencyResolvingError(
       'Try to use bean factory-method instead.',
       firstArgument,
-      configuration.node,
+      configuration,
     ));
     return;
   }
@@ -42,7 +44,7 @@ export const registerBeanClassConstructor = (
     compilationContext.report(new DependencyResolvingError(
       'Can not resolve class declaration, try to use bean factory-method instead.',
       firstArgument,
-      configuration.node,
+      configuration,
     ));
     return;
   }
@@ -51,7 +53,7 @@ export const registerBeanClassConstructor = (
     compilationContext.report(new DependencyResolvingError(
       `Found ${classDeclarations.length} class declarations, try to use bean factory-method instead.`,
       firstArgument,
-      configuration.node,
+      configuration,
     ));
     return;
   }
@@ -67,7 +69,7 @@ export const registerBeanClassConstructor = (
     diType: diType,
     node: classElement,
     kind: BeanKind.CLASS_CONSTRUCTOR,
-    classDeclaration: classDeclaration,
+    classDeclaration: new WeakNodeHolder<ts.ClassDeclaration>(classDeclaration),
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
   });
   contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);

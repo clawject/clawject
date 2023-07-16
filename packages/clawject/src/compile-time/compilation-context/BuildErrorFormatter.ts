@@ -6,11 +6,11 @@ import upath from 'upath';
 
 export class BuildErrorFormatter {
   static formatErrors(compilationErrors: AbstractCompilationMessage[]): string | null {
-    const contextPathToCompilationErrors = this.groupByContexts(compilationErrors);
+    const configurationPathToCompilationErrors = this.groupByConfiguration(compilationErrors);
 
     const formattedCompilationErrors = new Set<string>();
 
-    contextPathToCompilationErrors.forEach((errors, contextPath) => {
+    configurationPathToCompilationErrors.forEach((errors, contextPath) => {
       const formattedErrors = errors.map(it => this.formatError(it)).join('\n');
 
       if (contextPath === null || errors.length === 0) {
@@ -18,11 +18,11 @@ export class BuildErrorFormatter {
         return;
       }
 
-      const contextDetails = errors[0].contextDetails!;
+      const relatedConfigurationMetadata = errors[0].relatedConfigurationMetadata!;
 
-      const contextPrefix = `${chalk.red('\nErrors occurred in')}: ${contextDetails.name}. ${this.getPathWithPosition(contextPath, contextDetails.nameNodeDetails)}`;
+      const configurationPrefix = `${chalk.red('\nErrors occurred in')}: ${relatedConfigurationMetadata.name}. ${this.getPathWithPosition(contextPath, relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails)}`;
 
-      formattedCompilationErrors.add(contextPrefix + '\n' + formattedErrors);
+      formattedCompilationErrors.add(configurationPrefix + '\n' + formattedErrors);
     });
 
     if (formattedCompilationErrors.size === 0) {
@@ -32,12 +32,12 @@ export class BuildErrorFormatter {
     return Array.from(formattedCompilationErrors.values()).join('\n') + '\n';
   }
 
-  private static groupByContexts(errors: AbstractCompilationMessage[]): Map<string | null, AbstractCompilationMessage[]> {
+  private static groupByConfiguration(errors: AbstractCompilationMessage[]): Map<string | null, AbstractCompilationMessage[]> {
     return errors.reduce((acc, curr) => {
-      const list: AbstractCompilationMessage[] = acc.get(curr.contextDetails?.path ?? null) ?? [];
+      const list: AbstractCompilationMessage[] = acc.get(curr.relatedConfigurationMetadata?.fileName ?? null) ?? [];
 
-      if (!acc.has(curr.contextDetails?.path ?? null)) {
-        acc.set(curr.contextDetails?.path ?? null, list);
+      if (!acc.has(curr.relatedConfigurationMetadata?.fileName ?? null)) {
+        acc.set(curr.relatedConfigurationMetadata?.fileName ?? null, list);
       }
 
       list.push(curr);
@@ -46,8 +46,8 @@ export class BuildErrorFormatter {
     }, new Map<string | null, AbstractCompilationMessage[]>());
   }
 
-  private static formatError(error: AbstractCompilationMessage): string {
-    const filePathWithPosition = this.getPathWithPosition(error.filePath, error.nodeDetails);
+  static formatError(error: AbstractCompilationMessage): string {
+    const filePathWithPosition = this.getPathWithPosition(error.place.filePath, error.place);
 
     const errorDetails = error.details === null
       ? ''

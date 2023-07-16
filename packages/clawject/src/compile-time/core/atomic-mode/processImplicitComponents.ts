@@ -46,7 +46,7 @@ export function processImplicitComponents(
     return it;
   });
 
-  if (component === null) {
+  if (component === null || compilationContext.languageServiceMode) {
     return node;
   }
 

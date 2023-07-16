@@ -63,6 +63,10 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
     updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
   }
 
+  if (compilationContext.languageServiceMode) {
+    return sourceFile;
+  }
+
   return ts.factory.updateSourceFile(
     sourceFile,
     updatedStatements,

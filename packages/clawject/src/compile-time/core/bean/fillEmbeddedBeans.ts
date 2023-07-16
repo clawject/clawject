@@ -28,7 +28,7 @@ export const fillEmbeddedBeans = (
       compilationContext.report(new NotSupportedError(
         '@Embedded decorator is not supported for class constructor beans.',
         rootBean.node,
-        configuration.node,
+        configuration,
       ));
       return;
     }
@@ -55,7 +55,7 @@ export const fillEmbeddedBeans = (
       compilationContext.report(new TypeQualifyError(
         'Could not resolve type, try specify type explicitly.',
         rootBean.node,
-        configuration.node,
+        configuration,
       ));
       return;
     }
@@ -66,16 +66,16 @@ export const fillEmbeddedBeans = (
       compilationContext.report(new TypeQualifyError(
         'Could not resolve type, try specify type explicitly.',
         rootBean.node,
-        configuration.node,
+        configuration,
       ));
       return;
     }
 
     if (declarations.length > 1) {
       compilationContext.report(new IncorrectTypeDefinitionError(
-        'Found more than 1 type declarations of Embedded Bean, type should be defined only once.',
+        `Found ${declarations.length} type declarations of Embedded Bean, type should be defined only once.`,
         rootBean.node.type ?? rootBean.node,
-        configuration.node,
+        configuration,
       ));
       return;
     }

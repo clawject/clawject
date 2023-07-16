@@ -1,4 +1,4 @@
-import { DependencyGraph } from '../dependencies/DependencyGraph';
+import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { CircularDependenciesError } from '../../compilation-context/messages/errors/CircularDependenciesError';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
@@ -16,11 +16,11 @@ export const reportAboutCircularDependencies = (
 
     cycles.forEach(cycle => {
       cycle.forEach(item => {
-        const otherDependencyNames = cycle.filter(it => it !== item).map(it => it.classMemberName);
         compilationContext.report(new CircularDependenciesError(
-          `${item.classMemberName} <—> ${otherDependencyNames.join(' <—> ')}.`,
+          null,
           item.node,
-          context.node,
+          context,
+          cycle.filter(it => it !== item),
         ));
       });
     });

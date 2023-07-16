@@ -7,6 +7,7 @@ import { Dependency } from '../dependency/Dependency';
 import { BaseElement } from '../BaseElement';
 import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
+import { WeakNodeHolder } from '../WeakNodeHolder';
 
 export type BeanNode = ts.MethodDeclaration
   | ClassPropertyWithCallExpressionInitializer
@@ -20,7 +21,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   declare classMemberName: string;
   declare diType: DIType;
   declare kind: BeanKind;
-  classDeclaration: ts.ClassDeclaration | null = null;
+  classDeclaration: WeakNodeHolder<ts.ClassDeclaration> | null = null;
   lifecycle: LifecycleKind[] | null = null;
   public = false;
   primary = false;
@@ -34,6 +35,13 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
     super();
 
     Object.assign(this, values);
+  }
+
+  registerDependency(dependency: Dependency): void {
+    this.dependencies.add(dependency);
+    dependency.diType.declarationFileNames.forEach(it => {
+      this.parentConfiguration.relatedPaths.add(it);
+    });
   }
 
   get fullName(): string {

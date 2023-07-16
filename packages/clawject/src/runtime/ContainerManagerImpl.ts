@@ -18,8 +18,8 @@ const DEFAULT_INIT: ContextInit = {
 export class ContainerManagerImpl implements ContainerManager {
   private instances: Map<ClassConstructor<CatContext<any>>, Map<any, InitializedContext<any>>> = new Map();
 
-  init<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
-  init<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
+  init<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
+  init<T extends {}, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
   init(context: ClassConstructor<CatContext<any>>, init: ContextInit & Partial<ContextInitConfig<any>> = DEFAULT_INIT): InitializedContext<any> {
     const contextManager = this.getContextManagerOrThrow(context);
     const contextInstance = contextManager.instantiateContext(init.key, init.config);
@@ -43,8 +43,8 @@ export class ContainerManagerImpl implements ContainerManager {
     throw ErrorBuilder.noContextByKey(contextManager.metadata.contextName, key);
   }
 
-  getOrInit<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
-  getOrInit<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
+  getOrInit<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
+  getOrInit<T extends {}, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
   getOrInit(context: ClassConstructor<CatContext<any>>, init: ContextInit & Partial<ContextInitConfig<any>> = DEFAULT_INIT): InitializedContext<any> {
     const initializedContext = this.getCachedInitializedContext(context, init.key);
 
@@ -55,7 +55,7 @@ export class ContainerManagerImpl implements ContainerManager {
     return this.init(context, init);
   }
 
-  clear<T>(context: ClassConstructor<CatContext<T>>, key: any = DEFAULT_KEY): void {
+  clear(context: ClassConstructor<CatContext<any>>, key: any = DEFAULT_KEY): void {
     const contextManager = this.getContextManagerOrThrow(context);
 
     contextManager.dispose(key);

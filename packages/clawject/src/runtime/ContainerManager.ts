@@ -38,9 +38,9 @@ export interface ContainerManager {
    * Container.initContext({ context: MyContext });
    * const context = Container.initContext({ context: MyContext });
    */
-  init<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
+  init<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
 
-  init<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
+  init<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
   /**
    * Returning {@link InitializedContext Context} object if it was initialized, if not - throws error with context name and key from {@link ContextProps}.
@@ -71,7 +71,7 @@ export interface ContainerManager {
    *     console.log(error.message); // <-- Will print "Context 'MyContext' with key 'Symbol(my-context)' is not initialized"
    * }
    */
-  get<T>(context: ClassConstructor<CatContext<T>>, key?: any): InitializedContext<T>;
+  get<T extends object>(context: ClassConstructor<CatContext<T>>, key?: any): InitializedContext<T>;
 
   /**
    * Returning already initialized {@link InitializedContext Context} object if it was initialized, if not - builds new context object.
@@ -106,9 +106,9 @@ export interface ContainerManager {
    *
    * console.log(context1 === context2); // <-- Will print "true", and context2 will not re-assign config until you will not clear context and initialize it again with another config
    */
-  getOrInit<T>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
+  getOrInit<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
 
-  getOrInit<T, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
+  getOrInit<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
   /**
    * Clearing initialized context, if initialized context was not found - prints warn to the console.

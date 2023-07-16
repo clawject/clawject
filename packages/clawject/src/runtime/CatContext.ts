@@ -38,7 +38,7 @@ import { ContextManager } from './internal/ContextManager';
  * @see {@link Bean}
  * @see {@link PostConstruct}
  */
-export abstract class CatContext<T = {}, C = undefined> {
+export abstract class CatContext<T extends {} = {}, C = undefined> {
   /**
    * Returns config that was passed in context initialization stage via {@link Container#initContext} or {@link Container#getOrInitContext}.
    * */

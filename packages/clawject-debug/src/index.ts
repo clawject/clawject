@@ -1,17 +1,19 @@
-import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct, Primary } from 'clawject';
+import { Bean, CatContext, ContainerManager, PostConstruct } from 'clawject';
 import { IMyContext } from './IMyContext';
+import { ClassWithDependencies } from './ClassWithDependencies';
 
-@Lazy(true)
+interface Test {
+}
+
 class MyContext extends CatContext<IMyContext> {
-  @Bean test1 = '';
-  @Bean @Primary test2 = '';
-
+  @Bean data = 'data';
+  classWithDependencies = Bean(ClassWithDependencies);
 
   @PostConstruct
   postConstruct(
-    data: string,
+    data: number
   ) {
-
+    console.log(123);
   }
 }
 

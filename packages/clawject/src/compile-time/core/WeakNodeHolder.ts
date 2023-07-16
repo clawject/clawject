@@ -2,6 +2,10 @@ import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from './ts/utils/getNodeDetails';
 
 export class WeakNodeHolder<N extends ts.Node = ts.Node> {
+  constructor(node?: N) {
+    node && (this.node = node);
+  }
+
   private _nodeRef: WeakRef<N> | null = null;
   private _hasBeenSet = false;
 

@@ -10,8 +10,8 @@ export const registerComponentConstructorDependencies = (component: Component) =
 
     component.constructorDependencies.add(dependency);
 
-    dependency.diType.declarations.forEach(declaration => {
-      component.relatedPaths.add(declaration.fileName);
+    dependency.diType.declarationFileNames.forEach(fileName => {
+      component.relatedPaths.add(fileName);
     });
   });
 };

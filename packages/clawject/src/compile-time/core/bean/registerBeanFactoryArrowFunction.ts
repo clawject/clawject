@@ -23,7 +23,7 @@ export const registerBeanFactoryArrowFunction = (
     compilationContext.report(new TypeQualifyError(
       'Can not resolve function return type.',
       classElement.initializer,
-      configuration.node,
+      configuration,
     ));
     return;
   }

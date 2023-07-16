@@ -27,7 +27,7 @@ export const isBeanFactoryArrowFunction = (
     compilationContext.report(new MissingInitializerError(
       null,
       node,
-      configuration.node,
+      configuration,
     ));
 
     return false;

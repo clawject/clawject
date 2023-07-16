@@ -19,7 +19,7 @@ export const registerLifecycleBean = (
     compilationContext.report(new MissingInitializerError(
       'Lifecycle method should have a body.',
       classElement.name,
-      configuration.node,
+      configuration,
     ));
     return;
   }

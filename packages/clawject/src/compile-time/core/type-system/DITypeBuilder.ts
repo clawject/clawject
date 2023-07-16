@@ -1,6 +1,6 @@
 import ts, { TypeFlags } from 'typescript';
 import { DIType } from './DIType';
-import { get, hasIn } from 'lodash';
+import { get } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
 import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
@@ -83,9 +83,9 @@ export class DITypeBuilder {
     diType.tsTypeFlags = tsType.getFlags();
     diType.parsedTSTypeFlags = new Set(parseFlags(ts.TypeFlags, tsType.getFlags()));
 
-    if (hasIn(tsType, 'objectFlags')) {
-      const objectFlags = (tsType as ts.ObjectType).objectFlags;
+    const objectFlags = this.getObjectFlags(tsType);
 
+    if (objectFlags !== null) {
       diType.tsObjectFlags = objectFlags;
       diType.parsedTSObjectFlags = new Set(parseFlags(ts.ObjectFlags, objectFlags));
     }
@@ -142,17 +142,7 @@ export class DITypeBuilder {
       diType.typeFlag = DITypeFlag.BIGINT_LITERAL;
       break;
 
-      // Trying to use ts internals instead
-      // case diType.parsedTSTypeFlags.has(TypeFlags.Object) && (() => {
-      //     const isReference = diType.parsedTSObjectFlags.has(ts.ObjectFlags.Reference);
-      //
-      //     return isReference && parseFlags(ts.ObjectFlags, (tsType as ts.TypeReference).target.objectFlags)
-      //         .some(it => it === ts.ObjectFlags.Tuple);
-      // })():
-      //     diType.typeFlag = DITypeFlag.TUPLE;
-      //     break;
-
-    case typeChecker.isTupleType(tsType):
+    case this.isTupleType(tsType):
       diType.typeFlag = DITypeFlag.TUPLE;
       break;
 
@@ -263,5 +253,18 @@ export class DITypeBuilder {
 
       diType.addDeclaration(declarationInfo);
     });
+  }
+
+  private static getObjectFlags(tsType: ts.Type): ts.ObjectFlags | null {
+    return tsType.flags & ts.TypeFlags.Object ? (tsType as ts.ObjectType).objectFlags : null;
+  }
+
+  private static isTupleType(type: ts.Type): boolean {
+    const objectFlags = this.getObjectFlags(type);
+    if (objectFlags === null) {
+      return false;
+    }
+
+    return !!(objectFlags & ts.ObjectFlags.Reference && (type as ts.TypeReference).objectFlags & ts.ObjectFlags.Tuple);
   }
 }
