@@ -6,17 +6,16 @@ import { mapFilter } from '../compile-time/core/utils/mapFilter';
 import { AbstractCompilationMessage, IRelatedConfigurationMetadata } from '../compile-time/compilation-context/messages/AbstractCompilationMessage';
 import { CanNotRegisterBeanError } from '../compile-time/compilation-context/messages/errors/CanNotRegisterBeanError';
 import { getCompilationContext } from '../transformer/getCompilationContext';
+import { MissingBeansDeclaration } from '../compile-time/compilation-context/messages/errors/MissingBeansDeclaration';
 
-export interface ClawjectDiagnostics extends tsServer.Diagnostic {
-  ___clawjectToken?: any;
-}
-
-export interface ClawjectDiagnosticRelatedInformation extends tsServer.DiagnosticRelatedInformation {
-  ___clawjectToken?: any;
-}
+const MESSAGES_WITHOUT_CONTEXT_DETAILS = [
+  CircularDependenciesError,
+  CanNotRegisterBeanError,
+  MissingBeansDeclaration,
+];
 
 export class LanguageServiceReportBuilder {
-  static buildSemanticDiagnostics(info: tsServer.server.PluginCreateInfo, fileName: string): ClawjectDiagnostics[] {
+  static buildSemanticDiagnostics(info: tsServer.server.PluginCreateInfo, fileName: string): tsServer.Diagnostic[] {
     return mapFilter(
       getCompilationContext().getMessagesByFileName(fileName),
       it => this.getFormattedDiagnostics(info, it, fileName),
@@ -28,7 +27,7 @@ export class LanguageServiceReportBuilder {
     info: tsServer.server.PluginCreateInfo,
     message: AbstractCompilationMessage,
     fileName: string,
-  ): ClawjectDiagnostics | null {
+  ): tsServer.Diagnostic | null {
     const diagnosticCategory = this.getDiagnosticCategory(message);
 
     let messageDetails = message.details ?? '';
@@ -42,7 +41,7 @@ export class LanguageServiceReportBuilder {
           file: info.languageService.getProgram()?.getSourceFile(it.nodeDetails.filePath),
           start: it.nodeDetails.startOffset,
           code: 0,
-          messageText: `Bean: ${it.beanName}`,
+          messageText: `Bean '${it.beanName}' is declared here.`,
           category: DiagnosticCategory.Error,
         });
 
@@ -51,20 +50,32 @@ export class LanguageServiceReportBuilder {
     }
 
     if (message instanceof CanNotRegisterBeanError) {
-      const causes: ClawjectDiagnosticRelatedInformation[] = message.causes.map(it => ({
-        messageText: `${it.description} ${it.details ?? ''}`.trim(),
-        start: it.place.startOffset,
-        length: it.place.length,
+      const causes: tsServer.DiagnosticRelatedInformation[] = message.missingCandidates.map(it => ({
+        messageText: `Can not find Bean candidate for '${it.name}'`,
+        start: it.nodeDetails.startOffset,
+        length: it.nodeDetails.length,
         code: 0,
-        file: info.languageService.getProgram()?.getSourceFile(it.place.filePath),
-        category: this.getDiagnosticCategory(it),
-        ___clawjectToken: undefined,
+        file: info.languageService.getProgram()?.getSourceFile(it.nodeDetails.filePath),
+        category: this.getDiagnosticCategory(message),
       }));
 
       relatedInformation.push(...causes);
     }
 
-    if (message.relatedConfigurationMetadata !== null) {
+    if (message instanceof MissingBeansDeclaration) {
+      const missingElementsRelatedInformation: tsServer.DiagnosticRelatedInformation[] = message.missingElementsLocations.map(it => ({
+        messageText: `'${it.name}' is declared here.`,
+        start: it.nodeDetails.startOffset,
+        length: it.nodeDetails.length,
+        code: 0,
+        file: info.languageService.getProgram()?.getSourceFile(it.nodeDetails.filePath),
+        category: this.getDiagnosticCategory(message),
+      }));
+
+      relatedInformation.push(...missingElementsRelatedInformation);
+    }
+
+    if (message.relatedConfigurationMetadata !== null && MESSAGES_WITHOUT_CONTEXT_DETAILS.every(it => !(message instanceof it))) {
       relatedInformation.push(
         this.buildRelatedDiagnosticsFromRelatedConfigurationMetadata(info, message.relatedConfigurationMetadata)
       );
@@ -79,7 +90,6 @@ export class LanguageServiceReportBuilder {
       category: diagnosticCategory,
       source: message.code,
       relatedInformation: relatedInformation,
-      ___clawjectToken: undefined,
     };
   }
 
@@ -97,7 +107,7 @@ export class LanguageServiceReportBuilder {
   private static buildRelatedDiagnosticsFromRelatedConfigurationMetadata(
     info: tsServer.server.PluginCreateInfo,
     relatedConfigurationMetadata: IRelatedConfigurationMetadata
-  ): ClawjectDiagnosticRelatedInformation {
+  ): tsServer.DiagnosticRelatedInformation {
     const nodeDetails = relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails;
 
     return {
@@ -107,7 +117,6 @@ export class LanguageServiceReportBuilder {
       file: info.languageService.getProgram()?.getSourceFile(relatedConfigurationMetadata.fileName),
       category: DiagnosticCategory.Message,
       code: 0,
-      ___clawjectToken: undefined,
     };
   }
 }

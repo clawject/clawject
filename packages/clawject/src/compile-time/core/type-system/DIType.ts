@@ -136,6 +136,10 @@ export class DIType {
   }
 
   isCompatible(to: DIType): boolean {
+    if (this.typeFlag === DITypeFlag.UNSUPPORTED || to.typeFlag === DITypeFlag.UNSUPPORTED) {
+      return false;
+    }
+
     if (this.isAny || this.isUnknown) {
       return true;
     }

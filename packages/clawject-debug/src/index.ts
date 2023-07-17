@@ -29,10 +29,6 @@ class MyContext extends CatContext<IMyContext> {
   }
 }
 
-class MyTest2 extends CatContext {
-  classWithDependencies = Bean(ClassWithDependencies);
-}
-
 console.log(Array.from(ContainerManager.init(MyContext).getAllBeans()));
 
 // class Bar {

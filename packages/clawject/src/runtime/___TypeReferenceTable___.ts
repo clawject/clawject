@@ -1,5 +1,7 @@
 // import type { runClawjectApplication } from './runClawjectApplication';
 
+import { CatContext } from './CatContext';
+
 /**
  * This is an interface for <b>internal</b> usage only, it's not used in any other api of this library.
  *
@@ -10,5 +12,6 @@ export interface ___TypeReferenceTable___ {
   set: ReadonlySet<any> | Set<any>;
   map: ReadonlyMap<any, any> | Map<any, any>;
   mapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
+  CatContext: CatContext<any, any>;
   // runClawjectApplication: runClawjectApplication;
 }

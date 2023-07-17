@@ -46,6 +46,7 @@ export class BaseTypesRepository {
       set: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set'])),
       map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map'])),
       mapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny'])),
+      CatContext: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['CatContext'])),
       runClawjectApplication: DITypeBuilder.empty(),
       // runClawjectApplication: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication'])),
     };

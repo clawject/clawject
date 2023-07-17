@@ -8,6 +8,7 @@ import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanKind } from '../bean/BeanKind';
+import ts from 'typescript';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
   const compilationContext = getCompilationContext();
@@ -16,7 +17,7 @@ export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration
   contextBeans.forEach(bean => {
     const allBeansWithoutCurrent = Array.from(contextBeans)
       .filter(it => it !== bean);
-    const messages: AbstractCompilationMessage[] = [];
+    const missingDependencies: Dependency[] = [];
 
     bean.dependencies.forEach(dependency => {
       if (dependency.diType.isVoidUndefinedPlainUnionIntersection || dependency.diType.isNull) {
@@ -26,16 +27,16 @@ export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration
       if (dependency.diType.isArray || dependency.diType.isSet || dependency.diType.isMapStringToAny) {
         buildForCollectionOrArray(bean, allBeansWithoutCurrent, dependency);
       } else {
-        buildForBaseType(bean, allBeansWithoutCurrent, dependency, context, messages);
+        buildForBaseType(bean, allBeansWithoutCurrent, dependency, context, missingDependencies);
       }
     });
 
-    if (messages.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
+    if (missingDependencies.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
       compilationContext.report(new CanNotRegisterBeanError(
         null,
         bean.node,
         bean.parentConfiguration,
-        messages,
+        missingDependencies,
       ));
     }
   });
@@ -46,7 +47,7 @@ function buildForBaseType(
   allBeansWithoutCurrent: Bean[],
   dependency: Dependency,
   configuration: Configuration,
-  messages: AbstractCompilationMessage[]
+  missingDependencies: Dependency[]
 ): void {
   const matchedByType = allBeansWithoutCurrent
     .filter(it => dependency.diType.isCompatible(it.diType));
@@ -103,7 +104,7 @@ function buildForBaseType(
       matchedByTypeAndPrimary.map(it => new DependencyQualifiedBean(it)),
     );
     getCompilationContext().report(error);
-    messages.push(error);
+    missingDependencies.push(dependency);
     return;
   }
 
@@ -112,7 +113,7 @@ function buildForBaseType(
     return;
   }
 
-  reportPossibleCandidates(bean, dependency, allBeansWithoutCurrent, configuration, messages);
+  reportPossibleCandidates(bean, dependency, allBeansWithoutCurrent, configuration, missingDependencies);
 }
 
 function buildForCollectionOrArray(
@@ -168,7 +169,7 @@ function reportPossibleCandidates(
   dependency: Dependency,
   allBeansWithoutCurrent: Bean[],
   configuration: Configuration,
-  messages: AbstractCompilationMessage[]
+  missingDependencies: Dependency[]
 ): void {
   const compilationContext = getCompilationContext();
   const [
@@ -176,13 +177,12 @@ function reportPossibleCandidates(
     byType,
   ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrent);
 
-  const error = new BeanCandidateNotFoundError(
+  compilationContext.report(new BeanCandidateNotFoundError(
     `Found ${byName.length + byType.length} candidates for parameter "${dependency.parameterName}". Rename parameter to match Bean name, to specify which Bean should be injected.`,
     dependency.node,
     configuration,
     byName,
     byType,
-  );
-  compilationContext.report(error);
-  messages.push(error);
+  ));
+  missingDependencies.push(dependency);
 }

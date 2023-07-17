@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { isExtendsClassFromLibrary } from '../ts/predicates/isExtendsClassFromLibrary';
+import { isExtendsCatContext } from '../ts/predicates/isExtendsCatContext';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
 import { processCatContext } from './processCatContext';
@@ -45,7 +45,7 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
     }
 
     //Registering contexts
-    if (isExtendsClassFromLibrary(node, 'CatContext')) {
+    if (isExtendsCatContext(node)) {
       shouldAddImports = true;
       transformedNode = processCatContext(node, compilationContext);
     } else {

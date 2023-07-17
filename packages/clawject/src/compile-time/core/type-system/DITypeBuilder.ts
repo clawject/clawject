@@ -1,4 +1,4 @@
-import ts, { TypeFlags } from 'typescript';
+import ts, { TypeFlags, TypeReference } from 'typescript';
 import { DIType } from './DIType';
 import { get } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
@@ -181,7 +181,13 @@ export class DITypeBuilder {
       return;
     }
 
-    const typeArguments = tsType.aliasTypeArguments ?? get(tsType, 'resolvedTypeArguments', []) as ts.Type[];
+    const typeArguments = Array.from(tsType.aliasTypeArguments ?? get(tsType, 'resolvedTypeArguments', []));
+
+    const baseTypeArgumentsLength = (tsType as ts.TypeReference)?.target?.typeArguments?.length ?? 0;
+
+    if (typeArguments.length === baseTypeArgumentsLength + 1 && get(typeArguments[typeArguments.length - 1], 'isThisType', false)) {
+      typeArguments.pop();
+    }
 
     typeArguments.forEach(it => {
       const typeArgument = this._build(it, typeChecker);

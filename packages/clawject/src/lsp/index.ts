@@ -1,11 +1,11 @@
 import type tsServer from 'typescript/lib/tsserverlibrary';
 import { getCompilationContext } from '../transformer/getCompilationContext';
 import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
-import { isClawjectDiagnostics } from './utils';
 import { Compiler } from './Compiler';
 import { LanguageServiceLogger } from './LanguageServiceLogger';
 import { cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { MessageCode } from '../compile-time/compilation-context/messages/MessageCode';
+import { ImplementationLocation } from 'typescript/lib/tsserverlibrary';
 
 export function ClawjectLanguageServicePlugin(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   const tsServer = modules.typescript;
@@ -31,22 +31,18 @@ export function ClawjectLanguageServicePlugin(modules: { typescript: typeof impo
 
     proxy.cleanupSemanticCache = () => {
       cleanupAll();
+      Compiler.wasCompiled = false;
+      Compiler.diagnosticsCache.clear();
     };
 
     proxy.getSemanticDiagnostics = (fileName): tsServer.Diagnostic[] => {
-      const program = info.languageService.getProgram();
-      const sourceFile = program?.getSourceFile(fileName);
       const prior = info.languageService.getSemanticDiagnostics(fileName);
-
-      if (!program || !sourceFile) {
-        return prior;
-      }
 
       Compiler.ensureCompiled();
 
       return [
         ...prior,
-        ...LanguageServiceReportBuilder.buildSemanticDiagnostics(info, fileName),
+        ...Compiler.getSemanticDiagnostics(fileName),
       ];
     };
 

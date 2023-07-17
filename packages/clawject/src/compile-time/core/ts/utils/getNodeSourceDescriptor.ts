@@ -16,34 +16,38 @@ export const getNodeSourceDescriptor = (node: ts.Node): INodeSource[] | null => 
   const typeChecker = compilationContext.typeChecker;
   const symbol = typeChecker.getSymbolAtLocation(node);
 
-  if (symbol === undefined) {
+  if (!symbol) {
     return null;
   }
 
-  const originalSymbol = symbol.valueDeclaration ? symbol : typeChecker.getAliasedSymbol(symbol);
-  const declarations = originalSymbol.getDeclarations() ?? [];
+  try {
+    const originalSymbol = symbol.valueDeclaration ? symbol : typeChecker.getAliasedSymbol(symbol);
+    const declarations = originalSymbol.getDeclarations() ?? [];
 
-  if (declarations.length === 0) {
-    return null;
-  }
-
-  return declarations.map(declaration => {
-    if (!isNamedDeclaration(declaration)) {
-      return {
-        fileName: declaration.getSourceFile().fileName,
-        isLibraryNode: false,
-        originalNode: declaration,
-        originalName: null,
-      };
+    if (declarations.length === 0) {
+      return null;
     }
 
-    const isLibraryNode = upath.resolve(declaration.getSourceFile().fileName, '../') === CONSTANTS.packageRootDir;
+    return declarations.map(declaration => {
+      if (!isNamedDeclaration(declaration)) {
+        return {
+          fileName: declaration.getSourceFile().fileName,
+          isLibraryNode: false,
+          originalNode: declaration,
+          originalName: null,
+        };
+      }
 
-    return {
-      fileName: declaration.getSourceFile().fileName,
-      isLibraryNode: isLibraryNode,
-      originalNode: declaration,
-      originalName: declaration.name?.getText() ?? null,
-    };
-  });
+      const isLibraryNode = upath.resolve(declaration.getSourceFile().fileName, '../') === CONSTANTS.packageRootDir;
+
+      return {
+        fileName: declaration.getSourceFile().fileName,
+        isLibraryNode: isLibraryNode,
+        originalNode: declaration,
+        originalName: declaration.name?.getText() ?? null,
+      };
+    });
+  } catch (error) {
+    return null;
+  }
 };

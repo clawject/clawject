@@ -1,3 +1,4 @@
 export interface IMyContext {
-    aaa: string
+    aaa: string;
+    bbb: string;
 }

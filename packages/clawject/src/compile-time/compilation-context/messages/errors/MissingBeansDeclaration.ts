@@ -6,11 +6,18 @@ import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { compact } from 'lodash';
 
+class MissingElement {
+  constructor(
+    public name: string,
+    public nodeDetails: NodeDetails,
+  ) {}
+}
+
 export class MissingBeansDeclaration extends AbstractCompilationMessage {
   public code = MessageCode.CLAWJECT12;
   public type = MessageType.ERROR;
   public description = 'Missing Bean declaration.';
-  public locations: NodeDetails[];
+  public missingElementsLocations: MissingElement[];
 
   constructor(
     details: string | null,
@@ -20,8 +27,13 @@ export class MissingBeansDeclaration extends AbstractCompilationMessage {
   ) {
     super(details, place, relatedConfiguration);
 
-    this.locations = compact(missingElements.map(it => {
-      return it.declarations?.map(getNodeDetails);
+    this.missingElementsLocations = compact(missingElements.map(symbol => {
+      return symbol.declarations?.map(declaration => {
+        return new MissingElement(
+          symbol.name,
+          getNodeDetails(declaration),
+        );
+      });
     }).flat());
   }
 }
