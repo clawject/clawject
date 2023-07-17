@@ -5,28 +5,43 @@ import { ClassWithDependencies } from './ClassWithDependencies';
 interface Test {
 }
 
+class A<T> {
+
+}
+
+class B implements A<string> {}
+class C extends A<number> {}
+
 class MyContext extends CatContext<IMyContext> {
-  @Bean test0(
-    test1: any,
-  ): any {
-    return null;
-  }
+  b = Bean(B);
 
-  @Bean test1(
-    test0: any,
-  ): any {
-    return null;
-  }
-
-  @Bean data = 'data';
-  classWithDependencies = Bean(ClassWithDependencies);
-
-  @PostConstruct
-  postConstruct(
-    data: number
+  @PostConstruct test3(
+    a: A<string>
   ) {
-    console.log(123);
+
   }
+
+  // @Bean test0(
+  //   test1: any,
+  // ): any {
+  //   return null;
+  // }
+  //
+  // @Bean test1(
+  //   test0: any,
+  // ): any {
+  //   return null;
+  // }
+  //
+  // @Bean data = 'data';
+  // classWithDependencies = Bean(ClassWithDependencies);
+  //
+  // @PostConstruct
+  // postConstruct(
+  //   data: number
+  // ) {
+  //   console.log(123);
+  // }
 }
 
 console.log(Array.from(ContainerManager.init(MyContext).getAllBeans()));

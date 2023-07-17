@@ -41,8 +41,7 @@ export class DITypeBuilder {
     const heritageClausesMembers = classDeclaration.heritageClauses
       ?.map(it => it.types).flat() ?? [];
 
-    const implementsClauseTypes = heritageClausesMembers
-      .map(it => typeChecker.getTypeAtLocation(it.expression));
+    const implementsClauseTypes = heritageClausesMembers.map(typeChecker.getTypeAtLocation);
 
     return this.buildSyntheticIntersection([tsType, ...implementsClauseTypes]);
   }

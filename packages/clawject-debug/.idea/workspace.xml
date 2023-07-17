@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IMyContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/IMyContext.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/MessageCode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/MessageCode.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/CanNotRegisterBeanError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/CanNotRegisterBeanError.ts" afterDir="false" />
@@ -123,7 +125,7 @@
       <workItem from="1689339464982" duration="745000" />
       <workItem from="1689340227494" duration="168000" />
       <workItem from="1689340405155" duration="175000" />
-      <workItem from="1689340624193" duration="48098000" />
+      <workItem from="1689340624193" duration="48295000" />
     </task>
     <servers />
   </component>

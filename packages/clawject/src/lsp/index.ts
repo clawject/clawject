@@ -1,13 +1,12 @@
 import type tsServer from 'typescript/lib/tsserverlibrary';
 import { getCompilationContext } from '../transformer/getCompilationContext';
-import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
 import { Compiler } from './Compiler';
 import { LanguageServiceLogger } from './LanguageServiceLogger';
 import { cleanupAll } from '../compile-time/core/cleaner/cleanup';
-import { MessageCode } from '../compile-time/compilation-context/messages/MessageCode';
-import { ImplementationLocation } from 'typescript/lib/tsserverlibrary';
 
-export function ClawjectLanguageServicePlugin(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
+export function ClawjectLanguageServicePlugin(modules: {
+  typescript: typeof import('typescript/lib/tsserverlibrary')
+}) {
   const tsServer = modules.typescript;
   const compilationContext = getCompilationContext();
   compilationContext.languageServiceMode = true;
@@ -58,5 +57,5 @@ export function ClawjectLanguageServicePlugin(modules: { typescript: typeof impo
     return proxy;
   }
 
-  return { create };
+  return {create};
 }
