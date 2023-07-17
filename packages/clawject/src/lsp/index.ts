@@ -29,10 +29,19 @@ export function ClawjectLanguageServicePlugin(modules: { typescript: typeof impo
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
 
-    proxy.cleanupSemanticCache = () => {
+    const onDispose = () => {
       cleanupAll();
       Compiler.wasCompiled = false;
       Compiler.diagnosticsCache.clear();
+    };
+
+    proxy.cleanupSemanticCache = () => {
+      info.languageService.cleanupSemanticCache();
+      onDispose();
+    };
+    proxy.dispose = () => {
+      info.languageService.dispose();
+      onDispose();
     };
 
     proxy.getSemanticDiagnostics = (fileName): tsServer.Diagnostic[] => {

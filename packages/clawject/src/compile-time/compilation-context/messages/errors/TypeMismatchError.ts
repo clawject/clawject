@@ -7,7 +7,7 @@ import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetai
 import { compact } from 'lodash';
 
 export class TypeMismatchError extends AbstractCompilationMessage {
-  public code = MessageCode.CLAWJECT13;
+  public code = MessageCode.CT13;
   public type = MessageType.ERROR;
   public description = 'Type mismatch.';
   public locations: NodeDetails[];

@@ -7,7 +7,7 @@ import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { Configuration } from '../../../core/configuration/Configuration';
 
 export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
-  public code = MessageCode.CLAWJECT5;
+  public code = MessageCode.CT5;
   public type = MessageType.ERROR;
   public description = 'Bean candidate not found.';
   public candidatesByName: NodeDetails[];

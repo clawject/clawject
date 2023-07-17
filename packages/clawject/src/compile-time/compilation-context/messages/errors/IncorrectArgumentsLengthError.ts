@@ -3,7 +3,7 @@ import { MessageType } from '../MessageType';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class IncorrectArgumentsLengthError extends AbstractCompilationMessage {
-  public code = MessageCode.CLAWJECT9;
+  public code = MessageCode.CT9;
   public type = MessageType.ERROR;
   public description = 'Incorrect arguments length.';
 }

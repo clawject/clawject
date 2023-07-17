@@ -14,7 +14,7 @@ class MissingElement {
 }
 
 export class MissingBeansDeclaration extends AbstractCompilationMessage {
-  public code = MessageCode.CLAWJECT12;
+  public code = MessageCode.CT12;
   public type = MessageType.ERROR;
   public description = 'Missing Bean declaration.';
   public missingElementsLocations: MissingElement[];

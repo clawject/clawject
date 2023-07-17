@@ -14,7 +14,7 @@ class CycleMember {
 }
 
 export class CircularDependenciesError extends AbstractCompilationMessage {
-  public code = MessageCode.CLAWJECT7;
+  public code = MessageCode.CT7;
   public type = MessageType.ERROR;
   public description = 'Circular dependencies detected.';
   public cycleMembers: CycleMember[];

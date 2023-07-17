@@ -42,7 +42,7 @@ export class LanguageServiceReportBuilder {
           start: it.nodeDetails.startOffset,
           code: 0,
           messageText: `Bean '${it.beanName}' is declared here.`,
-          category: DiagnosticCategory.Error,
+          category: this.getDiagnosticCategory(message),
         });
 
         return it.beanName;
