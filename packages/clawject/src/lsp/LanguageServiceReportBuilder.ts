@@ -7,6 +7,7 @@ import { AbstractCompilationMessage, IRelatedConfigurationMetadata } from '../co
 import { CanNotRegisterBeanError } from '../compile-time/compilation-context/messages/errors/CanNotRegisterBeanError';
 import { getCompilationContext } from '../transformer/getCompilationContext';
 import { MissingBeansDeclaration } from '../compile-time/compilation-context/messages/errors/MissingBeansDeclaration';
+import { BeanCandidateNotFoundError } from '../compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError';
 
 const MESSAGES_WITHOUT_CONTEXT_DETAILS = [
   CircularDependenciesError,
@@ -30,6 +31,7 @@ export class LanguageServiceReportBuilder {
   ): tsServer.Diagnostic | null {
     const diagnosticCategory = this.getDiagnosticCategory(message);
 
+    let messageDescription = message.description ?? '';
     let messageDetails = message.details ?? '';
     const nodeDetails: NodeDetails = message.place;
     const relatedInformation: tsServer.DiagnosticRelatedInformation[] = [];
@@ -62,6 +64,30 @@ export class LanguageServiceReportBuilder {
       relatedInformation.push(...causes);
     }
 
+    if (message instanceof BeanCandidateNotFoundError) {
+      messageDescription = '';
+
+      const candidatesByType: tsServer.DiagnosticRelatedInformation[] = message.candidatesByType.map(it => ({
+        messageText: 'matched by type',
+        start: it.startOffset,
+        length: it.length,
+        code: 0,
+        file: info.languageService.getProgram()?.getSourceFile(it.filePath),
+        category: this.getDiagnosticCategory(message),
+      }));
+
+      const candidatesByName: tsServer.DiagnosticRelatedInformation[] = message.candidatesByName.map(it => ({
+        messageText: 'matched by name',
+        start: it.startOffset,
+        length: it.length,
+        code: 0,
+        file: info.languageService.getProgram()?.getSourceFile(it.filePath),
+        category: this.getDiagnosticCategory(message),
+      }));
+
+      relatedInformation.push(...candidatesByType, ...candidatesByName);
+    }
+
     if (message instanceof MissingBeansDeclaration) {
       const missingElementsRelatedInformation: tsServer.DiagnosticRelatedInformation[] = message.missingElementsLocations.map(it => ({
         messageText: `'${it.name}' is declared here.`,
@@ -82,7 +108,7 @@ export class LanguageServiceReportBuilder {
     }
 
     return {
-      messageText: `${message.description} ${messageDetails}`.trim(),
+      messageText: `${messageDescription} ${messageDetails}`.trim(),
       start: nodeDetails.startOffset,
       length: nodeDetails.length,
       code: 0,
@@ -111,7 +137,7 @@ export class LanguageServiceReportBuilder {
     const nodeDetails = relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails;
 
     return {
-      messageText: `Related context: ${relatedConfigurationMetadata.name}`,
+      messageText: `related context: '${relatedConfigurationMetadata.name}'`,
       length: nodeDetails.length,
       start: nodeDetails.startOffset,
       file: info.languageService.getProgram()?.getSourceFile(relatedConfigurationMetadata.fileName),

@@ -5,10 +5,8 @@ import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { BeanCandidateNotFoundError } from '../../compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
-import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanKind } from '../bean/BeanKind';
-import ts from 'typescript';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
   const compilationContext = getCompilationContext();
@@ -97,7 +95,7 @@ function buildForBaseType(
 
   if (matchedByTypeAndPrimary.length > 1) {
     const error = new BeanCandidateNotFoundError(
-      `${matchedByTypeAndPrimary.length} Primary bean candidates found for parameter ${dependency.parameterName}. Rename parameter to match Bean name, to specify which Bean should be injected.`,
+      `Found ${matchedByTypeAndPrimary.length} Primary injection candidates. Rename parameter to match Bean name, to specify which Bean should be injected.`,
       dependency.node,
       configuration,
       [],
@@ -178,7 +176,7 @@ function reportPossibleCandidates(
   ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrent);
 
   compilationContext.report(new BeanCandidateNotFoundError(
-    `Found ${byName.length + byType.length} candidates for parameter "${dependency.parameterName}". Rename parameter to match Bean name, to specify which Bean should be injected.`,
+    `Found ${byName.length + byType.length} injection candidates. Rename parameter to match Bean name, to specify which Bean should be injected.`,
     dependency.node,
     configuration,
     byName,
