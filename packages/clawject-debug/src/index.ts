@@ -1,20 +1,40 @@
 import { Bean, CatContext, ContainerManager, PostConstruct, Primary } from 'clawject';
 import { IMyContext } from './IMyContext';
 
-class B<T> {}
+interface User {}
+interface Admin {}
 
-interface IA<T, V> extends B<number> {}
+class Repository<T> {
+  getData(): T { throw ''; }
+  clear(): void {}
+}
 
-class A<T> extends B<T> implements IA<T, boolean> {}
+class UserService {
+  constructor(
+    repository: Repository<User>
+  ) {}
+}
+
+class AdminService {
+  constructor(
+    repository: Repository<any>
+  ) {}
+}
+
+class GlobalService {
+  constructor(
+    repositories: Repository<any>[]
+  ) {}
+}
 
 class MyContext extends CatContext<IMyContext> {
-  a = Bean(A<boolean>);
+  userRepository = Bean(Repository<User>);
+  adminRepository = Bean(Repository<Admin>);
 
-  @PostConstruct p(
-    test: A<boolean>
-  ) {
+  userService = Bean(UserService);
+  adminService = Bean(AdminService);
 
-  }
+  globalService = Bean(GlobalService);
 
   // @Bean test0(
   //   test1: any,

@@ -95,7 +95,7 @@ function buildForBaseType(
 
   if (matchedByTypeAndPrimary.length > 1) {
     const error = new BeanCandidateNotFoundError(
-      `Found ${matchedByTypeAndPrimary.length} Primary injection candidates. Rename parameter to match Bean name, to specify which Bean should be injected.`,
+      `Found ${matchedByTypeAndPrimary.length} Primary injection candidates.`,
       dependency.node,
       configuration,
       [],
@@ -176,7 +176,7 @@ function reportPossibleCandidates(
   ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrent);
 
   compilationContext.report(new BeanCandidateNotFoundError(
-    `Found ${byName.length + byType.length} injection candidates. Rename parameter to match Bean name, to specify which Bean should be injected.`,
+    `Found ${byName.length + byType.length} injection candidates.`,
     dependency.node,
     configuration,
     byName,
