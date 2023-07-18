@@ -1,45 +1,49 @@
 import { Bean, CatContext, ContainerManager, PostConstruct, Primary } from 'clawject';
 import { IMyContext } from './IMyContext';
-import { ClassWithDependencies } from './ClassWithDependencies';
 
-interface Test {
-}
+interface IA<D, V> {}
+class A<D, V> {}
 
-class A<T> {}
-
-class B<T> extends A<T> {}
+class B<T> extends A<T, number> implements IA<T, boolean> {}
 
 class MyContext extends CatContext<IMyContext> {
-  b = Bean(B<string>);
-
-  @PostConstruct bb(a: A<string>) {
-
-  }
-
-  @Bean test0(
-    test1: any,
-  ): any {
-    return null;
-  }
-
-  @Bean test1(
-    test0: any,
-  ): any {
-    return null;
-  }
-
-  @Bean number = 123;
-  @Bean number2 = 123;
-
-  @Bean data = 'data';
-  classWithDependencies = Bean(ClassWithDependencies);
+  b = Bean(B<number>);
 
   @PostConstruct
-  postConstruct(
-    data: number
+  pc(
+    test: IA<number, boolean>,
   ) {
-    console.log(123);
+
   }
+
+  // @PostConstruct bb(a: A<string>) {
+  //
+  // }
+  //
+  // @Bean test0(
+  //   test1: any,
+  // ): any {
+  //   return null;
+  // }
+  //
+  // @Bean test1(
+  //   test0: any,
+  // ): any {
+  //   return null;
+  // }
+  //
+  // @Bean number = 123;
+  // @Bean number2 = 123;
+  //
+  // @Bean data = 'data';
+  // classWithDependencies = Bean(ClassWithDependencies);
+  //
+  // @PostConstruct
+  // postConstruct(
+  //   data: number
+  // ) {
+  //   console.log(123);
+  // }
 }
 
 console.log(Array.from(ContainerManager.init(MyContext).getAllBeans()));

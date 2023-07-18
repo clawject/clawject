@@ -6,7 +6,6 @@ import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { ConfigLoader } from '../../config/ConfigLoader';
-import { TypeChecker, Type } from 'ts-morph';
 
 /**
  * notes:
@@ -17,7 +16,7 @@ import { TypeChecker, Type } from 'ts-morph';
 
 export class DITypeBuilder {
   static build(tsType: ts.Type): DIType {
-    return this._build(tsType, getCompilationContext().typeChecker);
+    return this._build(tsType, null);
   }
 
   static buildForClassBean(tsType: ts.Type): DIType | null {
@@ -25,14 +24,25 @@ export class DITypeBuilder {
       return null;
     }
 
+    if (!this.isReferenceType(tsType)) {
+      return null;
+    }
     const typeChecker = getCompilationContext().typeChecker;
-    const symbol = tsType.aliasSymbol ?? tsType.getSymbol();
+    const resolvedTypeArguments = Array.from(tsType.resolvedTypeArguments ?? []);
+    const targetTypeTypeArguments = Array.from(tsType.target.typeArguments ?? []);
+    const actualTypeArguments = targetTypeTypeArguments.map((_, index) =>
+      resolvedTypeArguments[index]
+    );
+    const genericSymbolArgumentNameToType = new Map<ts.Symbol, ts.Type>(
+      actualTypeArguments.map((it, index) => [targetTypeTypeArguments[index].symbol, it]),
+    );
 
-    if (symbol === undefined) {
+    const tsTypeSymbol = tsType.aliasSymbol ?? tsType.getSymbol();
+    if (tsTypeSymbol === undefined) {
       return null;
     }
 
-    const classDeclarations = symbol.getDeclarations()?.filter(ts.isClassDeclaration) ?? [];
+    const classDeclarations = tsTypeSymbol.getDeclarations()?.filter(ts.isClassDeclaration) ?? [];
 
     if (classDeclarations.length !== 1) {
       return null;
@@ -43,16 +53,34 @@ export class DITypeBuilder {
       ?.map(it => it.types).flat() ?? [];
 
     const implementsClauseTypes = heritageClausesMembers.map(typeChecker.getTypeAtLocation);
+    // .filter(it => it.symbol !== tsTypeSymbol); //TODO FILTER "THIS" arg
 
-    return this.buildSyntheticIntersection([tsType, ...implementsClauseTypes]);
+    const baseDIType = this._build(tsType, actualTypeArguments);
+    const clauseTypes = implementsClauseTypes.map(it => {
+      if (!this.isReferenceType(it)) {
+        return this._build(it, null);
+      }
+
+      const resolvedTypeArguments = Array.from(typeChecker.getTypeArguments(it)).map(it => {
+        if (genericSymbolArgumentNameToType.has(it.symbol)) {
+          return genericSymbolArgumentNameToType.get(it.symbol)!;
+        }
+
+        return it;
+      });
+
+      return this._build(it, resolvedTypeArguments);
+    });
+
+    return this.buildSyntheticIntersection([baseDIType, ...clauseTypes]);
   }
 
-  static buildSyntheticIntersection(tsTypes: ts.Type[]): DIType {
+  static buildSyntheticIntersection(diTypes: DIType[]): DIType {
     const diType = new DIType();
     diType.tsTypeFlags = ts.TypeFlags.Intersection;
     diType.parsedTSTypeFlags = new Set([ts.TypeFlags.Intersection]);
     diType.typeFlag = DITypeFlag.INTERSECTION;
-    diType.unionOrIntersectionTypes = tsTypes.map(tsType => this._build(tsType, getCompilationContext().typeChecker));
+    diType.unionOrIntersectionTypes = diTypes;
 
     return diType;
   }
@@ -66,14 +94,14 @@ export class DITypeBuilder {
     return diType;
   }
 
-  private static _build(tsType: ts.Type, typeChecker: ts.TypeChecker): DIType {
+  private static _build(tsType: ts.Type, resolvedTypeArguments: ts.Type[] | null): DIType {
     const diType = new DIType();
 
     this.setTSFlags(diType, tsType);
-    this.setTypeFlag(diType, tsType, typeChecker);
+    this.setTypeFlag(diType, tsType);
     this.trySetConstantValue(diType, tsType);
-    this.trySetTypeArguments(diType, tsType, typeChecker);
-    this.setUnionOrIntersectionElements(diType, tsType, typeChecker);
+    this.trySetTypeArguments(diType, tsType, resolvedTypeArguments);
+    this.setUnionOrIntersectionElements(diType, tsType);
     this.trySetDeclarationInfo(diType, tsType);
 
     return diType;
@@ -91,7 +119,7 @@ export class DITypeBuilder {
     }
   }
 
-  private static setTypeFlag(diType: DIType, tsType: ts.Type, typeChecker: ts.TypeChecker): void {
+  private static setTypeFlag(diType: DIType, tsType: ts.Type): void {
     switch (true) {
     case diType.parsedTSTypeFlags.has(TypeFlags.Any):
       diType.typeFlag = DITypeFlag.ANY;
@@ -176,14 +204,15 @@ export class DITypeBuilder {
     }
   }
 
-  private static trySetTypeArguments(diType: DIType, tsType: ts.Type, typeChecker: ts.TypeChecker): void {
+  private static trySetTypeArguments(diType: DIType, tsType: ts.Type, resolvedTypeArguments: ts.Type[] | null): void {
     if (!diType.parsedTSObjectFlags.has(ts.ObjectFlags.Reference)) {
       return;
     }
+    const typeChecker = getCompilationContext().typeChecker;
 
     const typedType = tsType as ts.TypeReference;
 
-    const typeArguments = Array.from(typeChecker.getTypeArguments(typedType));
+    const typeArguments = resolvedTypeArguments ?? Array.from(typeChecker.getTypeArguments(typedType));
     const baseTypeArgumentsLength = typeChecker.getTypeArguments(typedType.target).length;
 
     //All this stuff needed when a class implements or extends something - it's adding last type argument as this type
@@ -198,13 +227,13 @@ export class DITypeBuilder {
     }
 
     typeArguments.forEach(it => {
-      const typeArgument = this._build(it, typeChecker);
+      const typeArgument = this._build(it, null);
 
       diType.typeArguments.push(typeArgument);
     });
   }
 
-  private static setUnionOrIntersectionElements(diType: DIType, tsType: ts.Type, typeChecker: ts.TypeChecker): void {
+  private static setUnionOrIntersectionElements(diType: DIType, tsType: ts.Type): void {
     if (!diType.isUnionOrIntersection) {
       return;
     }
@@ -212,7 +241,7 @@ export class DITypeBuilder {
     const types = (tsType as ts.UnionOrIntersectionType).types ?? [];
 
     types.forEach(it => {
-      const type = this._build(it, typeChecker);
+      const type = this._build(it, null);
 
       diType.unionOrIntersectionTypes.push(type);
     });
@@ -282,5 +311,15 @@ export class DITypeBuilder {
     // }
     //
     // return !!(objectFlags & ts.ObjectFlags.Reference && (type as ts.TypeReference).objectFlags & ts.ObjectFlags.Tuple);
+  }
+
+  private static isReferenceType(type: ts.Type): type is ts.TypeReference {
+    const objectFags = this.getObjectFlags(type);
+
+    if (objectFags === null) {
+      return false;
+    }
+
+    return !!(objectFags & ts.ObjectFlags.Reference);
   }
 }

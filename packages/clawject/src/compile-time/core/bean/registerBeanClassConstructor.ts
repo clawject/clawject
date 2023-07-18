@@ -19,8 +19,19 @@ export const registerBeanClassConstructor = (
   classElement: ClassPropertyWithCallExpressionInitializer,
 ): void => {
   const compilationContext = getCompilationContext();
-
+  const typeChecker = compilationContext.typeChecker;
   let firstArgument = unwrapExpressionFromRoundBrackets(classElement.initializer).arguments[0];
+
+  firstArgument && (firstArgument = unwrapExpressionFromRoundBrackets(firstArgument));
+
+  if (!firstArgument) {
+    compilationContext.report(new DependencyResolvingError(
+      'Missing class constructor argument.',
+      classElement.initializer,
+      configuration,
+    ));
+    return;
+  }
 
   if (ts.isExpressionWithTypeArguments(firstArgument)) {
     firstArgument = unwrapExpressionFromRoundBrackets(firstArgument.expression);
@@ -57,19 +68,21 @@ export const registerBeanClassConstructor = (
     return;
   }
 
-  const typeChecker = compilationContext.typeChecker;
   const classDeclaration = classDeclarations[0].originalNode as ts.ClassDeclaration;
-  let tsType: ts.Type;
+  const callSignatures = typeChecker.getTypeAtLocation(classElement).getCallSignatures();
 
-  const typeArgumentsLength = classElement.initializer.typeArguments?.length ?? 0;
-
-  if (typeArgumentsLength === 1) {
-    tsType = typeChecker.getTypeAtLocation(classElement.initializer.typeArguments![0]);
-  } else {
-    tsType = typeChecker.getTypeAtLocation(classDeclaration);
+  if(callSignatures.length !== 1) {
+    compilationContext.report(new DependencyResolvingError(
+      'Can not resolve Bean signature, try to use method Bean instead.',
+      classElement,
+      configuration,
+    ));
+    return;
   }
 
-  const diType = DITypeBuilder.buildForClassBean(tsType) ?? DITypeBuilder.build(tsType);
+  const signature = callSignatures[0];
+  const returnType = typeChecker.getReturnTypeOfSignature(signature);
+  const diType = DITypeBuilder.buildForClassBean(returnType) ?? DITypeBuilder.build(returnType);
 
   const contextBean = new Bean({
     classMemberName: classElement.name.getText(),
