@@ -1,8 +1,8 @@
 import ts from 'typescript';
 import { CONSTANTS } from '../../../../constants';
 import { isNamedDeclaration } from '../predicates/isNamedDeclaration';
-import upath from 'upath';
 import { getCompilationContext } from '../../../../transformer/getCompilationContext';
+import upath from 'upath';
 
 export interface INodeSource {
   fileName: string;
@@ -38,7 +38,7 @@ export const getNodeSourceDescriptor = (node: ts.Node): INodeSource[] | null => 
         };
       }
 
-      const isLibraryNode = upath.resolve(declaration.getSourceFile().fileName, '../') === CONSTANTS.packageRootDir;
+      const isLibraryNode = upath.normalize(declaration.getSourceFile().fileName).startsWith(CONSTANTS.packageRootDir);
 
       return {
         fileName: declaration.getSourceFile().fileName,

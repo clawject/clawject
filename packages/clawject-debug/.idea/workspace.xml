@@ -5,13 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceCache.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/Compiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/Compiler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/project.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/internals-access/InternalsAccessBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/internals-access/InternalsAccessBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getNodeDetails.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getNodeDetails.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getNodeSourceDescriptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getNodeSourceDescriptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/BaseTypesRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/BaseTypesRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/constants/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/tsconfig.lib.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/tsconfig.lib.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +118,8 @@
       <workItem from="1689340227494" duration="168000" />
       <workItem from="1689340405155" duration="175000" />
       <workItem from="1689340624193" duration="50302000" />
-      <workItem from="1689660381686" duration="16464000" />
+      <workItem from="1689660381686" duration="18202000" />
+      <workItem from="1689706407340" duration="983000" />
     </task>
     <servers />
   </component>

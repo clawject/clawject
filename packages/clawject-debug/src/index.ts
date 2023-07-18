@@ -17,7 +17,7 @@ class UserService {
 
 class AdminService {
   constructor(
-    repository: Repository<any>,
+    repository: Repository<Admin>
   ) {}
 }
 

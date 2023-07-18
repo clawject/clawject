@@ -21,10 +21,10 @@ export class BaseTypesRepository {
       return;
     }
 
-    const libraryDeclarationFile = compilationContext.program.getSourceFile(CONSTANTS.packageRoot);
+    const libraryDeclarationFile = compilationContext.program.getSourceFile(CONSTANTS.typeReferenceTablePath);
 
     if (!libraryDeclarationFile) {
-      throw new Error(`${CONSTANTS.libraryName} library declaration file (index.d.ts) not found`);
+      throw new Error(`${CONSTANTS.libraryName} library declaration file (clawject/runtime/___TypeReferenceTable___.d.ts) not found`);
     }
 
     const typeTableDeclaration = libraryDeclarationFile.statements

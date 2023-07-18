@@ -3,7 +3,6 @@ import upath from 'upath';
 import { CONSTANTS } from '../../../constants';
 
 export enum InternalElementKind {
-  InternalCatContext = 'InternalCatContext',
   InternalApplicationFactory = 'InternalApplicationFactory',
   ContextManager = 'ContextManager',
 }

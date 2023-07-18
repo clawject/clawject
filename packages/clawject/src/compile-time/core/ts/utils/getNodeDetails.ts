@@ -6,22 +6,32 @@ export interface LineColumn {
   col: number;
 }
 
-export interface NodeDetails {
-  declarationName: string | null;
-  filePath: string;
-  start: LineColumn;
-  end: LineColumn;
-  startOffset: number;
-  endOffset: number;
-  length: number;
-  text: string;
+export class NodeDetails {
+  constructor(
+    values: Partial<NodeDetails> = {}
+  ) {
+    Object.assign(this, values);
+  }
+
+  declare declarationName: string | null;
+  declare filePath: string;
+  declare start: LineColumn;
+  declare end: LineColumn;
+  declare startOffset: number;
+  declare endOffset: number;
+  declare length: number;
+  declare text: string;
+
+  positionInRange(position: number): boolean {
+    return position >= this.startOffset && position <= this.endOffset;
+  }
 }
 
 export const getNodeDetails = (node: ts.Node): NodeDetails => {
   const start = node.getSourceFile().getLineAndCharacterOfPosition(node.getStart());
   const end = node.getSourceFile().getLineAndCharacterOfPosition(node.getEnd());
 
-  return {
+  return new NodeDetails({
     declarationName: getNameFromNodeOrNull(node),
     filePath: node.getSourceFile().fileName,
     start: lineAndCharacterToLineColumn(start),
@@ -30,7 +40,7 @@ export const getNodeDetails = (node: ts.Node): NodeDetails => {
     endOffset: node.getEnd(),
     length: node.getEnd() - node.getStart(),
     text: node.getText(),
-  };
+  });
 };
 
 function lineAndCharacterToLineColumn(lineAndCharacter: ts.LineAndCharacter): LineColumn {
