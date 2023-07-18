@@ -3,26 +3,14 @@ import { ClawjectTransformer } from '../transformer';
 import { ModificationTrackerHolder } from './modification-tracker/ModificationTrackerHolder';
 import { FileGraph } from '../compile-time/core/file-graph/FileGraph';
 import { cleanup } from '../compile-time/core/cleaner/cleanup';
-import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
+import { LanguageServiceCache } from './LanguageServiceCache';
 
 export class Compiler {
   static wasCompiled = false;
   static pluginInfo: tsServer.server.PluginCreateInfo | null = null;
-  static diagnosticsCache = new Map<string, tsServer.Diagnostic[]>();
 
   static assignPluginInfo(pluginInfo: tsServer.server.PluginCreateInfo): void {
     this.pluginInfo = pluginInfo;
-  }
-
-  static getSemanticDiagnostics(fileName: string): tsServer.Diagnostic[] {
-    if (!this.pluginInfo) {
-      return [];
-    }
-
-    const diagnostics = this.diagnosticsCache.get(fileName) ?? LanguageServiceReportBuilder.buildSemanticDiagnostics(this.pluginInfo, fileName);
-    this.diagnosticsCache.set(fileName, diagnostics);
-
-    return diagnostics;
   }
 
   static ensureCompiled(): void {
@@ -49,7 +37,7 @@ export class Compiler {
 
     affectedFiles.forEach(it => {
       cleanup(it);
-      this.diagnosticsCache.delete(it);
+      LanguageServiceCache.clearByFileName(it);
     });
 
     const affectedSourceFiles = program.getSourceFiles()

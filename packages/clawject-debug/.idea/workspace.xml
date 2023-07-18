@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceCache.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/Compiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/Compiler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +112,7 @@
       <workItem from="1689340227494" duration="168000" />
       <workItem from="1689340405155" duration="175000" />
       <workItem from="1689340624193" duration="50302000" />
-      <workItem from="1689660381686" duration="14905000" />
+      <workItem from="1689660381686" duration="16464000" />
     </task>
     <servers />
   </component>

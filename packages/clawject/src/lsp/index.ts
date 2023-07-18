@@ -3,6 +3,8 @@ import { getCompilationContext } from '../transformer/getCompilationContext';
 import { Compiler } from './Compiler';
 import { LanguageServiceLogger } from './LanguageServiceLogger';
 import { cleanupAll } from '../compile-time/core/cleaner/cleanup';
+import { LanguageService } from './LanguageService';
+import { LanguageServiceCache } from './LanguageServiceCache';
 
 export function ClawjectLanguageServicePlugin(modules: {
   typescript: typeof import('typescript/lib/tsserverlibrary')
@@ -18,6 +20,7 @@ export function ClawjectLanguageServicePlugin(modules: {
     );
 
     Compiler.assignPluginInfo(info);
+    LanguageService.assignPluginInfo(info);
     LanguageServiceLogger.assignPluginInfo(info);
 
     // Set up decorator object
@@ -31,7 +34,7 @@ export function ClawjectLanguageServicePlugin(modules: {
     const onDispose = () => {
       cleanupAll();
       Compiler.wasCompiled = false;
-      Compiler.diagnosticsCache.clear();
+      LanguageServiceCache.clear();
     };
 
     proxy.cleanupSemanticCache = () => {
@@ -43,16 +46,7 @@ export function ClawjectLanguageServicePlugin(modules: {
       onDispose();
     };
 
-    proxy.getSemanticDiagnostics = (fileName): tsServer.Diagnostic[] => {
-      const prior = info.languageService.getSemanticDiagnostics(fileName);
-
-      Compiler.ensureCompiled();
-
-      return [
-        ...prior,
-        ...Compiler.getSemanticDiagnostics(fileName),
-      ];
-    };
+    proxy.getSemanticDiagnostics = LanguageService.getSemanticDiagnostics;
 
     return proxy;
   }

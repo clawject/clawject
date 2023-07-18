@@ -13,21 +13,25 @@ export const getPossibleBeanCandidates = (
   const candidatesByType: PossibleBeanCandidate[] = [];
 
   contextBeans.forEach(it => {
-    if (propertyNameMatcher(it.classMemberName.toLowerCase())) {
-      candidatesByName.push(new PossibleBeanCandidate(it));
-    }
-
     if (propertyType.isCompatible(it.diType)) {
       candidatesByType.push(new PossibleBeanCandidate(it));
+      return;
+    }
+
+    if (propertyNameMatcher(it.classMemberName.toLowerCase())) {
+      candidatesByName.push(new PossibleBeanCandidate(it));
+      return;
     }
 
     it.embeddedElements.forEach((embeddedElement, embeddedName) => {
-      if (propertyNameMatcher(`${it.classMemberName.toLowerCase()}${embeddedName.toLowerCase()}`)) {
-        candidatesByName.push(new PossibleBeanCandidate(it, embeddedName));
-      }
-
       if (propertyType.isCompatible(embeddedElement)) {
         candidatesByType.push(new PossibleBeanCandidate(it, embeddedName));
+        return;
+      }
+
+      if (propertyNameMatcher(`${it.classMemberName.toLowerCase()}${embeddedName.toLowerCase()}`)) {
+        candidatesByName.push(new PossibleBeanCandidate(it, embeddedName));
+        return;
       }
     });
   });
