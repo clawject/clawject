@@ -1,4 +1,4 @@
-import ts, { TypeFlags, TypeReference } from 'typescript';
+import ts, { TypeFlags } from 'typescript';
 import { DIType } from './DIType';
 import { get } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
@@ -6,6 +6,7 @@ import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { ConfigLoader } from '../../config/ConfigLoader';
+import { TypeChecker, Type } from 'ts-morph';
 
 /**
  * notes:
@@ -176,16 +177,24 @@ export class DITypeBuilder {
   }
 
   private static trySetTypeArguments(diType: DIType, tsType: ts.Type, typeChecker: ts.TypeChecker): void {
-    if (!diType.isObject && !diType.isTuple) {
+    if (!diType.parsedTSObjectFlags.has(ts.ObjectFlags.Reference)) {
       return;
     }
 
-    const typeArguments = Array.from(tsType.aliasTypeArguments ?? get(tsType, 'resolvedTypeArguments', []));
+    const typedType = tsType as ts.TypeReference;
 
-    const baseTypeArgumentsLength = (tsType as ts.TypeReference)?.target?.typeArguments?.length ?? 0;
+    const typeArguments = Array.from(typeChecker.getTypeArguments(typedType));
+    const baseTypeArgumentsLength = typeChecker.getTypeArguments(typedType.target).length;
 
-    if (typeArguments.length === baseTypeArgumentsLength + 1 && get(typeArguments[typeArguments.length - 1], 'isThisType', false)) {
-      typeArguments.pop();
+    //All this stuff needed when a class implements or extends something - it's adding last type argument as this type
+    // class A<T> {}
+    // class B extends A<string, this <-- ts will add it for some purpose, we need to get rid of it> {}
+    if (typeArguments.length === baseTypeArgumentsLength + 1) {
+      const lastTypeArgument = typeArguments[typeArguments.length - 1];
+
+      if (lastTypeArgument.isTypeParameter() && lastTypeArgument.isThisType) {
+        typeArguments.pop();
+      }
     }
 
     typeArguments.forEach(it => {
@@ -265,11 +274,13 @@ export class DITypeBuilder {
   }
 
   private static isTupleType(type: ts.Type): boolean {
-    const objectFlags = this.getObjectFlags(type);
-    if (objectFlags === null) {
-      return false;
-    }
+    return getCompilationContext().typeChecker.isTupleType(type);
 
-    return !!(objectFlags & ts.ObjectFlags.Reference && (type as ts.TypeReference).objectFlags & ts.ObjectFlags.Tuple);
+    // const objectFlags = this.getObjectFlags(type);
+    // if (objectFlags === null) {
+    //   return false;
+    // }
+    //
+    // return !!(objectFlags & ts.ObjectFlags.Reference && (type as ts.TypeReference).objectFlags & ts.ObjectFlags.Tuple);
   }
 }

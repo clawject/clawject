@@ -39,9 +39,7 @@ export class Compiler {
 
     if (!this.wasCompiled) {
       this.wasCompiled = true;
-      tsServer.transform(Array.from(program.getSourceFiles()), [
-        ClawjectTransformer(() => program),
-      ], program.getCompilerOptions());
+      this.runCompilation(Array.from(program.getSourceFiles()), program);
       return;
     }
 
@@ -57,8 +55,12 @@ export class Compiler {
     const affectedSourceFiles = program.getSourceFiles()
       .filter(it => affectedFiles.has(it.fileName));
 
-    tsServer.transform(affectedSourceFiles, [
-      ClawjectTransformer(() => program),
+    this.runCompilation(affectedSourceFiles, program);
+  }
+
+  private static runCompilation(sourceFiles: tsServer.SourceFile[], program: tsServer.Program): void {
+    tsServer.transform(sourceFiles, [
+      ClawjectTransformer(() => program as any) as any, // It's needed because of usage of ts-expose-internals
     ], program.getCompilerOptions());
   }
 }

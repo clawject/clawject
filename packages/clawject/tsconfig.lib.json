@@ -6,6 +6,7 @@
     "sourceMap": false,
     "types": [
       "node",
+      "ts-expose-internals"
     ]
   },
   "include": [

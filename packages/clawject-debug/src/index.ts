@@ -5,7 +5,16 @@ import { ClassWithDependencies } from './ClassWithDependencies';
 interface Test {
 }
 
+class A<T> {}
+
+class B<T> extends A<T> {}
+
 class MyContext extends CatContext<IMyContext> {
+  b = Bean(B<string>);
+
+  @PostConstruct bb(a: A<string>) {
+
+  }
 
   @Bean test0(
     test1: any,

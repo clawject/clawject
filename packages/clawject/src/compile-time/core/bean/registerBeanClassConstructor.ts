@@ -58,10 +58,18 @@ export const registerBeanClassConstructor = (
   }
 
   const typeChecker = compilationContext.typeChecker;
-
   const classDeclaration = classDeclarations[0].originalNode as ts.ClassDeclaration;
-  const type = typeChecker.getTypeAtLocation(classDeclaration);
-  const diType = DITypeBuilder.buildForClassBean(type) ?? DITypeBuilder.build(type);
+  let tsType: ts.Type;
+
+  const typeArgumentsLength = classElement.initializer.typeArguments?.length ?? 0;
+
+  if (typeArgumentsLength === 1) {
+    tsType = typeChecker.getTypeAtLocation(classElement.initializer.typeArguments![0]);
+  } else {
+    tsType = typeChecker.getTypeAtLocation(classDeclaration);
+  }
+
+  const diType = DITypeBuilder.buildForClassBean(tsType) ?? DITypeBuilder.build(tsType);
 
   const contextBean = new Bean({
     classMemberName: classElement.name.getText(),
