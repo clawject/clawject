@@ -1,25 +1,21 @@
 import { Bean, CatContext, ContainerManager, PostConstruct, Primary } from 'clawject';
 import { IMyContext } from './IMyContext';
 
-interface IA<D, V> {}
-class A<D, V> {}
+class B<T> {}
 
-class B<T> extends A<T, number> implements IA<T, boolean> {}
+interface IA<T, V> extends B<number> {}
+
+class A<T> extends B<T> implements IA<T, boolean> {}
 
 class MyContext extends CatContext<IMyContext> {
-  b = Bean(B<number>);
+  a = Bean(A<boolean>);
 
-  @PostConstruct
-  pc(
-    test: IA<number, boolean>,
+  @PostConstruct p(
+    test: A<boolean>
   ) {
 
   }
 
-  // @PostConstruct bb(a: A<string>) {
-  //
-  // }
-  //
   // @Bean test0(
   //   test1: any,
   // ): any {

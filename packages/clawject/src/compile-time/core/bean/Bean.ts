@@ -23,6 +23,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   declare diType: DIType;
   declare kind: BeanKind;
   classDeclaration: WeakNodeHolder<ts.ClassDeclaration> | null = null;
+  genericSymbolLookupTable = new WeakMap<ts.Symbol, DIType>();
   lifecycle: LifecycleKind[] | null = null;
   public = false;
   primary = false;

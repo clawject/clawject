@@ -84,7 +84,7 @@ export const fillEmbeddedBeans = (
     const declarationType = typeChecker.getTypeAtLocation(declaration);
     declarationType.getProperties().forEach(property => {
       const type = typeChecker.getTypeOfSymbolAtLocation(property, declaration);
-      const diType = DITypeBuilder.buildForClassBean(type) ?? DITypeBuilder.build(type);
+      const diType = DITypeBuilder.build(type);
 
       rootBean.embeddedElements.set(property.name, diType);
     });

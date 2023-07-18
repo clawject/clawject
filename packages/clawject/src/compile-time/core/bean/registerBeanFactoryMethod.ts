@@ -38,16 +38,16 @@ export const registerBeanFactoryMethod = (
   }
 
   const returnType = typeChecker.getReturnTypeOfSignature(signature);
-  const diType = DITypeBuilder.buildForClassBean(returnType) ?? DITypeBuilder.build(returnType);
 
-  const contextBean = new Bean({
+  const bean = new Bean({
     classMemberName: classElement.name.getText(),
-    diType: diType,
     node: classElement,
     kind: BeanKind.FACTORY_METHOD,
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
   });
-  contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
-  contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
-  configuration.beanRegister.register(contextBean);
+
+  bean.diType = DITypeBuilder.buildForClassBean(returnType, bean) ?? DITypeBuilder.build(returnType);
+  bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
+  bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
+  configuration.beanRegister.register(bean);
 };

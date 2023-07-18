@@ -15,16 +15,16 @@ export const registerBeanValueExpression = (
 ): void => {
   const typeChecker = getCompilationContext().typeChecker;
   const type = typeChecker.getTypeAtLocation(classElement);
-  const diType = DITypeBuilder.buildForClassBean(type) ?? DITypeBuilder.build(type);
 
-  const contextBean = new Bean({
+  const bean = new Bean({
     classMemberName: classElement.name.getText(),
-    diType: diType,
     node: classElement,
     kind: BeanKind.VALUE_EXPRESSION,
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
   });
-  contextBean.lazyExpression.node = getBeanLazyExpressionValue(contextBean);
-  contextBean.scopeExpression.node = getBeanScopeExpressionValue(contextBean);
-  configuration.beanRegister.register(contextBean);
+
+  bean.diType = DITypeBuilder.buildForClassBean(type, bean) ?? DITypeBuilder.build(type);
+  bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
+  bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
+  configuration.beanRegister.register(bean);
 };
