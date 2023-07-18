@@ -68,7 +68,7 @@ export class LanguageServiceReportBuilder {
       messageDescription = '';
 
       const candidatesByType: tsServer.DiagnosticRelatedInformation[] = message.candidatesByType.map(it => ({
-        messageText: `'${it.declarationName ?? '<anonymous>'}' matched by type`,
+        messageText: `bean '${it.declarationName ?? '<anonymous>'}' matched by type.`,
         start: it.startOffset,
         length: it.length,
         code: 0,
@@ -77,7 +77,7 @@ export class LanguageServiceReportBuilder {
       }));
 
       const candidatesByName: tsServer.DiagnosticRelatedInformation[] = message.candidatesByName.map(it => ({
-        messageText: `'${it.declarationName ?? '<anonymous>'}' matched by name`,
+        messageText: `bean '${it.declarationName ?? '<anonymous>'}' matched by name.`,
         start: it.startOffset,
         length: it.length,
         code: 0,
