@@ -43,7 +43,7 @@ const dog = new Dog();
 meow(dog); // <- TypeScript will not complain about it
 ```
 
-Clawject will complain about it, and will report compile error about missing Bean declaration for `Cat`:
+But clawject will and report compile error about missing Bean declaration for `Cat`:
 
 ```ts
 class Cat {
@@ -62,7 +62,8 @@ class Dog {
 
 class MyContext extends CatContext {
   @PostConstruct
-  meow(animal: Cat): void {
+  // highlight-next-line-red
+  meow(animal: Cat): void { // <- error will be reported here
     animal.voice();
   }
 
@@ -311,6 +312,31 @@ class MyContext extends CatContext {
 }
 ```
 
+Clawject also can resolve complex generic types as a dependencies:
+
+```ts
+class Repository<T> {}
+class Service<T> {
+  constructor(
+    private repository: Repository<T>,
+  ) {}
+}
+
+interface Foo { foo: string }
+interface Bar { bar: string }
+
+class MyContext extends CatContext {
+  fooRepository = Bean(Repository<Foo>);
+  barRepository = Bean(Repository<Bar>);
+  fooService = Bean(Service<Foo>)  // <- "fooRepository" will be injected as a "repository" dependency
+
+  @PostConstruct
+  postConstruct(
+    service: Service<Foo>, // <- "fooService" will be injected
+  ) {}
+}
+```
+
 ## Union types
 
 Clawject supports union types only as a bean dependency types,
@@ -322,10 +348,11 @@ interface IBar { bar: string }
 
 class MyContext extends CatContext {
   @Bean bar: IBar = { bar: 'barValue' }
+  @Bean foo: IFoo = { foo: 'fooValue' }
 
   @PostConstruct
   postConstruct(
-    dep0: IFoo | IBar, // <- "bar" will be injected here, because no bean of type "IFoo" is declared
+    dep0: IFoo | IBar, // <- "bar" will be injected here, because it was registered as a bean before 'foo'
   ) {}
 }
 ```

@@ -2,10 +2,11 @@ import { IDIConfig } from './IDIConfig';
 import { cosmiconfigSync } from 'cosmiconfig';
 import { Validator } from 'jsonschema';
 import schema from './schema.json';
-import upath from 'upath';
-import { ProgramOptionsProvider } from '../program-options/ProgramOptionsProvider';
 import { CONSTANTS } from '../../constants';
 import { merge } from 'lodash';
+import { LanguageServiceLogger } from '../../lsp/LanguageServiceLogger';
+import { getCompilationContext } from '../../transformer/getCompilationContext';
+import { LanguageService } from '../../lsp/LanguageService';
 
 export class ConfigLoader {
   private static defaultConfig: IDIConfig = {
@@ -16,35 +17,27 @@ export class ConfigLoader {
       keepContextNames: true,
     }
   };
-  private static cachedConfig: IDIConfig | null = null;
-  private static fileNamesToFind = [
-    '.clawjectrc',
-    '.clawjectrc.json',
-  ];
+  static cachedConfig: IDIConfig | null = null;
+  static onConfigLoaded: ((configFilename: string) => void) | null = null;
 
   static get(): IDIConfig {
     if (this.cachedConfig !== null) {
       return this.cachedConfig;
     }
 
-    const configFileName = CONSTANTS.libraryName;
-
-    const loader = cosmiconfigSync(configFileName, {
-      searchPlaces: [
-        ...this.fileNamesToFind //TODO use config from ProgramOptionsProvider
-      ],
-    });
+    const loader = cosmiconfigSync(CONSTANTS.libraryName);
 
     const loaderResult = loader.search();
     const config: Partial<IDIConfig | null> = loaderResult?.config ?? null;
 
     if (config === null) {
+      LanguageServiceLogger.log('ConfigLoader.get() config is null');
       this.cachedConfig = this.defaultConfig;
 
       return this.cachedConfig;
     }
 
-
+    loaderResult?.filepath && this.onConfigLoaded?.(loaderResult.filepath);
     this.setConfig(config);
 
     return this.cachedConfig!;
@@ -53,21 +46,15 @@ export class ConfigLoader {
   static setConfig(config: Partial<IDIConfig>): void {
     const validator = new Validator();
 
-    validator.validate(config, schema, {
-      throwError: true,
+    const validatorResult = validator.validate(config, schema, {
+      throwError: !getCompilationContext().languageServiceMode,
+    });
+
+    validatorResult.errors.map(it => {
+      LanguageService.configFileErrors.push(it.toString());
     });
 
     this.cachedConfig = merge(this.defaultConfig, config);
-  }
-
-  static parseAndSetConfig(content: string): void {
-    this.setConfig(JSON.parse(content));
-  }
-
-  static isConfigFile(path: string): boolean {
-    return this.fileNamesToFind
-      .map(fileName => upath.join(ProgramOptionsProvider.options.cwd, fileName))
-      .some(it => it === upath.normalize(path));
   }
 
   static clear(): void {

@@ -8,6 +8,7 @@ import { LanguageServiceCache } from './LanguageServiceCache';
 import { ModificationTracker } from './ModificationTracker';
 import { isTSVersionValid } from './isTSVersionValid';
 import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
+import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 
 export function ClawjectLanguageServicePlugin(modules: {
   typescript: typeof import('typescript/lib/tsserverlibrary')
@@ -18,13 +19,39 @@ export function ClawjectLanguageServicePlugin(modules: {
   compilationContext.areErrorsHandled = true;
 
   function create(info: tsServer.server.PluginCreateInfo) {
-    info.project.projectService.logger.info(
-      'Clawject language service plugin created'
-    );
+    LanguageServiceLogger.assignPluginInfo(info);
+    LanguageServiceLogger.log('Clawject language service plugin created');
+
+    const onDispose = () => {
+      cleanupAll();
+      ConfigLoader.clear();
+      Compiler.wasCompiled = false;
+      LanguageServiceCache.clear();
+      ModificationTracker.clear();
+      LanguageService.configFileErrors = [];
+    };
+
+    let fileWatcher: tsServer.FileWatcher | undefined = undefined;
+
+    const fileWatcherCallback: tsServer.FileWatcherCallback = (fileName, eventKind, modifiedTime) => {
+      if (eventKind === tsServer.FileWatcherEventKind.Deleted) {
+        fileWatcher?.close();
+      }
+
+      onDispose();
+    };
+
+    ConfigLoader.onConfigLoaded = (configFileName: string) => {
+      LanguageServiceLogger.log('Config loaded, fileName: ' + configFileName);
+      fileWatcher?.close();
+
+      fileWatcher = info.serverHost.watchFile(configFileName, fileWatcherCallback);
+      onDispose();
+    };
 
     if (!isTSVersionValid(tsServer.version, info)) {
-      info.project.projectService.logger.info(
-        'Clawject language service plugin disabled due to unsupported TypeScript version'
+      LanguageServiceLogger.log(
+        'language service plugin disabled due to unsupported TypeScript version'
       );
       return info.languageService;
     }
@@ -33,7 +60,6 @@ export function ClawjectLanguageServicePlugin(modules: {
     ModificationTracker.assignPluginInfo(info);
     LanguageServiceReportBuilder.assignPluginInfo(info);
     LanguageService.assignPluginInfo(info);
-    LanguageServiceLogger.assignPluginInfo(info);
 
     // Set up decorator object
     const proxy: tsServer.LanguageService = Object.create(null);
@@ -42,13 +68,6 @@ export function ClawjectLanguageServicePlugin(modules: {
       // @ts-expect-error - JS runtime trickery which is tricky to type tersely
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
-
-    const onDispose = () => {
-      cleanupAll();
-      Compiler.wasCompiled = false;
-      LanguageServiceCache.clear();
-      ModificationTracker.clear();
-    };
 
     proxy.cleanupSemanticCache = () => {
       info.languageService.cleanupSemanticCache();

@@ -20,6 +20,9 @@
     "paths": {
       "@clawject/clawject-language-service": [
         "packages/clawject-language-service/src/index.js"
+      ],
+      "@clawject/clawject-vscode": [
+        "packages/clawject-vscode/src/index.js"
       ]
     }
   },

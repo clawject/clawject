@@ -17,24 +17,29 @@ class UserService {
 
 class AdminService {
   constructor(
-    repository: Repository<Admin>
+    repository: Repository<Admin>,
   ) {}
 }
 
-class GlobalService {
-  constructor(
-    repositories: Repository<any>[]
-  ) {}
-}
+interface A {}
+
+class AImpl implements A {}
 
 class MyContext extends CatContext<IMyContext> {
-  userRepository = Bean(Repository<User>);
-  adminRepository = Bean(Repository<Admin>);
+  // userRepository = Bean(Repository<User>);
+  // adminRepository = Bean(Repository<Admin>);
+  //
+  // userService = Bean(UserService);
+  // adminService = Bean(AdminService);
 
-  userService = Bean(UserService);
-  adminService = Bean(AdminService);
+  a = Bean(AImpl);
 
-  globalService = Bean(GlobalService);
+  @PostConstruct
+  postConstruct(
+    aaa: A,
+  ): void {
+
+  }
 
   // @Bean test0(
   //   test1: any,

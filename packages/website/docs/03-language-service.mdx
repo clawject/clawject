@@ -1,0 +1,69 @@
+---
+title: Language Service ✨
+---
+
+The Clawject Language Service provides code editors (VSCode, WebStorm, etc.) with a way to get errors
+and navigation inside Beans, Contexts, etc.
+
+[Clawject package](https://www.npmjs.com/package/clawject) provide language service,
+but it can't be used directly because TypeScript not allows using language services that are not package itself,
+so `clawject-language-service` package have `clawject` as a peer-dependency and re-exporting its language service,
+so you shouldn't worry about versions compatibility, `clawject-language-service` will always have single version.
+
+## Installation
+
+If you're using VSCode - you can install [Clawject VSCode Extension](https://todo.com) instead of `clawject-language-service` package.
+
+If not - you can install `clawject-language-service` package and configure your editor to use it.
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="yarn" label="yarn" default>
+```
+
+```bash
+yarn add clawject-language-service -D
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="npm" label="npm">
+```
+
+```bash
+npm install clawject-language-service --save-dev
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+After adding `clawject-language-service` to your project, you need to configure your editor to use it.
+
+Let's start with adding plugin entry to your tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "plugins": [
+      { "name": "clawject-language-service" }
+    ]
+  }
+}
+```
+
+Then you need to restart your code-editor or typescript language service,
+and it should start using `clawject-language-service`.
+
+If it's not worked for you - you can try to configure your editor manually to use typescript language service:
+
+- [VSCode](https://TODO.com)
+- [WebStorm](https://www.jetbrains.com/help/webstorm/settings-languages-typescript.html#ws_ts_use_ts_service_checkbox)
+- [IntelliJ IDEA](https://www.jetbrains.com/help/idea/typescript-support.html#ws_ts_use_ts_service_checkbox)

@@ -26,6 +26,6 @@ export class LanguageServiceLogger {
       }
     }
 
-    logger.info(`${this.prefix}${msg}. details: ${stringifiedDetails}`);
+    logger.info(`${this.prefix}${msg}. ${details && `details: ${stringifiedDetails}`}`.trim());
   }
 }

@@ -5,16 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject-language-service/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/.npmignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/project.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/clawject.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject-vscode/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject-vscode/project.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject-vscode/src/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject-vscode/src/lib/clawject-vscode.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject-vscode/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject-vscode/tsconfig.lib.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/docs/03-language-service.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.clawjectrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject-language-service/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/config/ConfigLoader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/config/ConfigLoader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/cleaner/cleanup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/cleaner/cleanup.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/constants/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceLogger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceLogger.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/01-intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/01-intro.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/02-setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/02-setup.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/01-ioc_di.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/01-ioc_di.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/02-type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/02-type-system.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/03-container-manager.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/03-container-manager.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/04-initialized-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/04-initialized-context.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/05-cat-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/05-cat-context.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/06-bean/01-declare-bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/01-declare-bean.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/06-bean/02-bean-types.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/02-bean-types.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/06-bean/03-bean-dependencies.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/06-bean/_category_.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/_category_.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/06-bean/index.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/index.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/07-scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/07-scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/08-lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/08-lazy.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/09-embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-embedded.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/09-lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-lifecycle.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/03-base-concepts/_category_.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/_category_.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-advanced-concepts/01-injecting-collections.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/01-injecting-collections.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-advanced-concepts/02-custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/02-custom-scopes.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-advanced-concepts/_category_.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/_category_.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../tsconfig.base.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../tsconfig.base.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +146,7 @@
       <workItem from="1689340405155" duration="175000" />
       <workItem from="1689340624193" duration="50302000" />
       <workItem from="1689660381686" duration="18202000" />
-      <workItem from="1689706407340" duration="5778000" />
+      <workItem from="1689706407340" duration="10031000" />
     </task>
     <servers />
   </component>

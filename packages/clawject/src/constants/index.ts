@@ -10,6 +10,6 @@ export const CONSTANTS = {
 
 if (process.env['CLAWJECT_DEBUG_MODE'] === 'true') {
   CONSTANTS.packageRootDir = upath.join(process.cwd(), 'node_modules/clawject');
-  CONSTANTS.typeReferenceTablePath = upath.join(process.cwd(), 'node_modules/clawject/runtime/___TypeReferenceTable___.ts');
+  CONSTANTS.typeReferenceTablePath = upath.join(process.cwd(), 'node_modules/clawject/runtime/___TypeReferenceTable___.d.ts');
   CONSTANTS.packageJsonPath = upath.join(CONSTANTS.packageRootDir, 'package.json');
 }

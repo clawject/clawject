@@ -1,14 +1,16 @@
 # clawject-language-service
 
-This is a typescript language service plugin that improves
-the development experience for projects
-that are using [clawject](https://www.npmjs.com/package/clawject) showing errors,
-warnings, suggestions and hints right in your editor (VSCode, WebStorm, etc.)
+The Clawject Language Service provides code editors (VSCode, WebStorm, etc.) with a way to get errors
+and navigation inside Beans, Contexts, etc.
+
+[Clawject package](https://www.npmjs.com/package/clawject) provide language service,
+but it can't be used directly because TypeScript not allows using language services that are not package itself,
+so `clawject-language-service` package have `clawject` as a peer-dependency and re-exporting its language service,
+so you shouldn't worry about versions compatibility, `clawject-language-service` will always have single version.
 
 ## Installation
-First of all - you should have installed [clawject](https://www.npmjs.com/package/clawject),
-a version of clawject doesn't matter because this package is just re-export **language service** from clawject,
-it's needed because language service plugins can't be used with **nested paths**.
+
+Not that if you're using VSCode - you can install [Clawject VSCode Extension](https://todo.com) instead of this package.
 
 After installation of [clawject](https://www.npmjs.com/package/clawject) you should install this package:
 
