@@ -5,7 +5,7 @@ export const CONSTANTS = {
   packageRootDir: upath.resolve(__dirname, '../'),
   typeReferenceTablePath: upath.resolve(__dirname, '../runtime/___TypeReferenceTable___.d.ts'),
   packageJsonPath: upath.resolve(__dirname, '../package.json'),
-  languageServicePluginName: 'clawject-language-service-plugin',
+  languageServicePluginName: 'clawject-language-service',
 };
 
 if (process.env['CLAWJECT_DEBUG_MODE'] === 'true') {

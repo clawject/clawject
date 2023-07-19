@@ -1,5 +1,5 @@
 {
-  "name": "clawject-language-service-plugin",
+  "name": "clawject-language-service",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",

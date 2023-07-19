@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "clawject": "../../dist/packages/clawject",
-    "clawject-language-service-plugin": "../../packages/clawject-language-service-plugin"
+    "clawject-language-service": "../../packages/clawject-language-service"
   },
   "devDependencies": {
     "@types/webpack": "^5.28.1",

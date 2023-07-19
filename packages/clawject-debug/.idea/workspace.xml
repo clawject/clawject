@@ -5,18 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/src/lsp/ModificationTracker.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/lsp/isTSVersionValid.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/Compiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/Compiler.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceReportBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceReportBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/modification-tracker/ModificationTracker.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/modification-tracker/ModificationTrackerHolder.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/02-setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/02-setup.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject-language-service/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject-language-service-plugin/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject-language-service/project.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/constants/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tsconfig.base.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../tsconfig.base.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +117,7 @@
       <workItem from="1689340405155" duration="175000" />
       <workItem from="1689340624193" duration="50302000" />
       <workItem from="1689660381686" duration="18202000" />
-      <workItem from="1689706407340" duration="5091000" />
+      <workItem from="1689706407340" duration="5778000" />
     </task>
     <servers />
   </component>

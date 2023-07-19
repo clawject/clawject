@@ -1,4 +1,4 @@
-# clawject-language-service-plugin
+# clawject-language-service
 
 This is a typescript language service plugin that improves
 the development experience for projects
@@ -7,15 +7,15 @@ warnings, suggestions and hints right in your editor (VSCode, WebStorm, etc.)
 
 ## Installation
 First of all - you should have installed [clawject](https://www.npmjs.com/package/clawject),
-a version of clawject doesn't matter because this package is just re-export **language service plugin** from clawject,
+a version of clawject doesn't matter because this package is just re-export **language service** from clawject,
 it's needed because language service plugins can't be used with **nested paths**.
 
 After installation of [clawject](https://www.npmjs.com/package/clawject) you should install this package:
 
 ```shell
-yarn add -D clawject-language-service-plugin
+yarn add -D clawject-language-service
 #or
-npm install clawject-language-service-plugin --save-dev
+npm install clawject-language-service --save-dev
 ```
 
 Then adding this plugin to your `tsconfig.json` file:
@@ -24,7 +24,7 @@ Then adding this plugin to your `tsconfig.json` file:
 {
   "compilerOptions": {
     "plugins": [
-      { "name": "clawject-language-service-plugin" }
+      { "name": "clawject-language-service" }
     ]
   }
 }

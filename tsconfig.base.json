@@ -18,8 +18,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@clawject/clawject-language-service-plugin": [
-        "packages/clawject-language-service-plugin/src/index.js"
+      "@clawject/clawject-language-service": [
+        "packages/clawject-language-service/src/index.js"
       ]
     }
   },
