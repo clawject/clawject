@@ -19,7 +19,7 @@ export class LanguageService {
 
     Compiler.ensureCompiled();
 
-    const diagnostics = LanguageServiceCache.semanticDiagnosticsCache.get(fileName) ?? LanguageServiceReportBuilder.buildSemanticDiagnostics(this.pluginInfo, fileName);
+    const diagnostics = LanguageServiceCache.semanticDiagnosticsCache.get(fileName) ?? LanguageServiceReportBuilder.buildSemanticDiagnostics(fileName);
     LanguageServiceCache.semanticDiagnosticsCache.set(fileName, diagnostics);
 
     return [

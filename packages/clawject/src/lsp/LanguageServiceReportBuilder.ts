@@ -8,27 +8,46 @@ import { CanNotRegisterBeanError } from '../compile-time/compilation-context/mes
 import { getCompilationContext } from '../transformer/getCompilationContext';
 import { MissingBeansDeclaration } from '../compile-time/compilation-context/messages/errors/MissingBeansDeclaration';
 import { BeanCandidateNotFoundError } from '../compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError';
+import { BeanKind } from '../compile-time/core/bean/BeanKind';
 
 const MESSAGES_WITHOUT_CONTEXT_DETAILS = [
   CircularDependenciesError,
   CanNotRegisterBeanError,
   MissingBeansDeclaration,
+  BeanCandidateNotFoundError,
 ];
 
 export class LanguageServiceReportBuilder {
-  static buildSemanticDiagnostics(info: tsServer.server.PluginCreateInfo, fileName: string): tsServer.Diagnostic[] {
+  private static pluginInfo: tsServer.server.PluginCreateInfo | null = null;
+
+  static assignPluginInfo(pluginInfo: tsServer.server.PluginCreateInfo): void {
+    this.pluginInfo = pluginInfo;
+  }
+
+  static buildSemanticDiagnostics(fileName: string): tsServer.Diagnostic[] {
+    const pluginInfo = this.pluginInfo;
+
+    if (!pluginInfo) {
+      return [];
+    }
+
     return mapFilter(
       getCompilationContext().getMessagesByFileName(fileName),
-      it => this.getFormattedDiagnostics(info, it, fileName),
+      it => this.getFormattedDiagnostics(it, fileName),
       (it): it is tsServer.Diagnostic => it !== null,
     );
   }
 
   private static getFormattedDiagnostics(
-    info: tsServer.server.PluginCreateInfo,
     message: AbstractCompilationMessage,
     fileName: string,
   ): tsServer.Diagnostic | null {
+    const pluginInfo = this.pluginInfo;
+
+    if (!pluginInfo) {
+      return null;
+    }
+
     const diagnosticCategory = this.getDiagnosticCategory(message);
 
     let messageDescription = message.description ?? '';
@@ -40,7 +59,7 @@ export class LanguageServiceReportBuilder {
       messageDetails = message.cycleMembers.map(it => {
         relatedInformation.push({
           length: it.nodeDetails.length,
-          file: info.languageService.getProgram()?.getSourceFile(it.nodeDetails.filePath),
+          file: this.getSourceFile(it.nodeDetails.filePath),
           start: it.nodeDetails.startOffset,
           code: 0,
           messageText: `Bean '${it.beanName}' is declared here.`,
@@ -57,7 +76,7 @@ export class LanguageServiceReportBuilder {
         start: it.nodeDetails.startOffset,
         length: it.nodeDetails.length,
         code: 0,
-        file: info.languageService.getProgram()?.getSourceFile(it.nodeDetails.filePath),
+        file: this.getSourceFile(it.nodeDetails.filePath),
         category: this.getDiagnosticCategory(message),
       }));
 
@@ -72,7 +91,7 @@ export class LanguageServiceReportBuilder {
         start: it.startOffset,
         length: it.length,
         code: 0,
-        file: info.languageService.getProgram()?.getSourceFile(it.filePath),
+        file: this.getSourceFile(it.filePath),
         category: this.getDiagnosticCategory(message),
       }));
 
@@ -81,11 +100,22 @@ export class LanguageServiceReportBuilder {
         start: it.startOffset,
         length: it.length,
         code: 0,
-        file: info.languageService.getProgram()?.getSourceFile(it.filePath),
+        file: this.getSourceFile(it.filePath),
         category: this.getDiagnosticCategory(message),
       }));
 
       relatedInformation.push(...candidatesByType, ...candidatesByName);
+
+      if (message.beanKind === BeanKind.CLASS_CONSTRUCTOR) {
+        relatedInformation.push({
+          messageText: `bean '${message.beanDeclarationNodeDetails.declarationName}' is declared here.`,
+          start: message.beanDeclarationNodeDetails.startOffset,
+          length: message.beanDeclarationNodeDetails.length,
+          code: 0,
+          file: this.getSourceFile(message.beanDeclarationNodeDetails?.filePath),
+          category: this.getDiagnosticCategory(message),
+        });
+      }
     }
 
     if (message instanceof MissingBeansDeclaration) {
@@ -94,7 +124,7 @@ export class LanguageServiceReportBuilder {
         start: it.nodeDetails.startOffset,
         length: it.nodeDetails.length,
         code: 0,
-        file: info.languageService.getProgram()?.getSourceFile(it.nodeDetails.filePath),
+        file: pluginInfo.languageService.getProgram()?.getSourceFile(it.nodeDetails.filePath),
         category: this.getDiagnosticCategory(message),
       }));
 
@@ -103,7 +133,7 @@ export class LanguageServiceReportBuilder {
 
     if (message.relatedConfigurationMetadata !== null && MESSAGES_WITHOUT_CONTEXT_DETAILS.every(it => !(message instanceof it))) {
       relatedInformation.push(
-        this.buildRelatedDiagnosticsFromRelatedConfigurationMetadata(info, message.relatedConfigurationMetadata)
+        this.buildRelatedDiagnosticsFromRelatedConfigurationMetadata(message.relatedConfigurationMetadata)
       );
     }
 
@@ -112,7 +142,7 @@ export class LanguageServiceReportBuilder {
       start: nodeDetails.startOffset,
       length: nodeDetails.length,
       code: 0,
-      file: info.languageService.getProgram()?.getSourceFile(fileName),
+      file: this.getSourceFile(fileName),
       category: diagnosticCategory,
       source: message.code,
       relatedInformation: relatedInformation,
@@ -130,19 +160,26 @@ export class LanguageServiceReportBuilder {
     }
   }
 
-  private static buildRelatedDiagnosticsFromRelatedConfigurationMetadata(
-    info: tsServer.server.PluginCreateInfo,
-    relatedConfigurationMetadata: IRelatedConfigurationMetadata
-  ): tsServer.DiagnosticRelatedInformation {
+  private static buildRelatedDiagnosticsFromRelatedConfigurationMetadata(relatedConfigurationMetadata: IRelatedConfigurationMetadata): tsServer.DiagnosticRelatedInformation {
     const nodeDetails = relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails;
 
     return {
       messageText: `related context: '${relatedConfigurationMetadata.name}'`,
       length: nodeDetails.length,
       start: nodeDetails.startOffset,
-      file: info.languageService.getProgram()?.getSourceFile(relatedConfigurationMetadata.fileName),
+      file: this.getSourceFile(relatedConfigurationMetadata.fileName),
       category: DiagnosticCategory.Message,
       code: 0,
     };
+  }
+
+  private static getSourceFile(fileName: string | undefined | null): tsServer.SourceFile | undefined {
+    const pluginInfo = this.pluginInfo;
+
+    if (!fileName || !pluginInfo) {
+      return undefined;
+    }
+
+    return pluginInfo.languageService.getProgram()?.getSourceFile(fileName);
   }
 }

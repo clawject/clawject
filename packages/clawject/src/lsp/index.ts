@@ -5,6 +5,9 @@ import { LanguageServiceLogger } from './LanguageServiceLogger';
 import { cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { LanguageService } from './LanguageService';
 import { LanguageServiceCache } from './LanguageServiceCache';
+import { ModificationTracker } from './ModificationTracker';
+import { isTSVersionValid } from './isTSVersionValid';
+import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
 
 export function ClawjectLanguageServicePlugin(modules: {
   typescript: typeof import('typescript/lib/tsserverlibrary')
@@ -19,7 +22,16 @@ export function ClawjectLanguageServicePlugin(modules: {
       'Clawject language service plugin created'
     );
 
+    if (!isTSVersionValid(tsServer.version, info)) {
+      info.project.projectService.logger.info(
+        'Clawject language service plugin disabled due to unsupported TypeScript version'
+      );
+      return info.languageService;
+    }
+
     Compiler.assignPluginInfo(info);
+    ModificationTracker.assignPluginInfo(info);
+    LanguageServiceReportBuilder.assignPluginInfo(info);
     LanguageService.assignPluginInfo(info);
     LanguageServiceLogger.assignPluginInfo(info);
 
@@ -35,6 +47,7 @@ export function ClawjectLanguageServicePlugin(modules: {
       cleanupAll();
       Compiler.wasCompiled = false;
       LanguageServiceCache.clear();
+      ModificationTracker.clear();
     };
 
     proxy.cleanupSemanticCache = () => {

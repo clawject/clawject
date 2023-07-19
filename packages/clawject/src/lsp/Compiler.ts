@@ -1,9 +1,9 @@
 import tsServer from 'typescript/lib/tsserverlibrary';
 import { ClawjectTransformer } from '../transformer';
-import { ModificationTrackerHolder } from './modification-tracker/ModificationTrackerHolder';
 import { FileGraph } from '../compile-time/core/file-graph/FileGraph';
 import { cleanup } from '../compile-time/core/cleaner/cleanup';
 import { LanguageServiceCache } from './LanguageServiceCache';
+import { ModificationTracker } from './ModificationTracker';
 
 export class Compiler {
   static wasCompiled = false;
@@ -31,8 +31,9 @@ export class Compiler {
       return;
     }
 
-    const modificationTracker = ModificationTrackerHolder.getForProject(pluginInfo.project.getProjectName(), pluginInfo);
-    const modifiedFiles = modificationTracker.getModifiedFilesAndSetLatestVersions();
+    ModificationTracker.tryInit();
+
+    const modifiedFiles = ModificationTracker.getModifiedFilesAndSetLatestVersions();
     const affectedFiles = FileGraph.getRelatedFileNamesWithTarget(Array.from(modifiedFiles));
 
     affectedFiles.forEach(it => {

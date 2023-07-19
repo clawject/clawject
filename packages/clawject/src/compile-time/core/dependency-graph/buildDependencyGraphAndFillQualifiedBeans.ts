@@ -98,6 +98,7 @@ function buildForBaseType(
       `Found ${matchedByTypeAndPrimary.length} Primary injection candidates.`,
       dependency.node,
       configuration,
+      bean,
       [],
       matchedByTypeAndPrimary.map(it => new DependencyQualifiedBean(it)),
     );
@@ -179,6 +180,7 @@ function reportPossibleCandidates(
     `Found ${byName.length + byType.length} injection candidates.`,
     dependency.node,
     configuration,
+    bean,
     byName,
     byType,
   ));
