@@ -6,7 +6,7 @@ import { cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { LanguageService } from './LanguageService';
 import { LanguageServiceCache } from './LanguageServiceCache';
 import { ModificationTracker } from './ModificationTracker';
-import { isTSVersionValid } from './isTSVersionValid';
+import { isTSVersionValid } from '../ts-version/isTSVersionValid';
 import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 
@@ -54,34 +54,36 @@ export function ClawjectLanguageServicePlugin(modules: {
       onDispose();
     };
 
-    if (!isTSVersionValid(tsServer.version, info)) {
+    if (!isTSVersionValid(tsServer.version)) {
       LanguageServiceLogger.log(
         'language service plugin disabled due to unsupported TypeScript version'
       );
       return info.languageService;
     }
 
-    // Set up decorator object
-    const proxy: tsServer.LanguageService = Object.create(null);
-    for (const k of Object.keys(info.languageService) as Array<keyof tsServer.LanguageService>) {
-      const x = info.languageService[k]!;
-      // @ts-expect-error - JS runtime trickery which is tricky to type tersely
-      proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
-    }
-
-    proxy.cleanupSemanticCache = () => {
-      info.languageService.cleanupSemanticCache();
-      onDispose();
-    };
-    proxy.dispose = () => {
-      info.languageService.dispose();
-      onDispose();
-    };
-
-    proxy.getSemanticDiagnostics = LanguageService.getSemanticDiagnostics;
-
-    return proxy;
+    return decorateLanguageService(info, {
+      cleanupSemanticCache: () => {
+        info.languageService.cleanupSemanticCache();
+        onDispose();
+      },
+      dispose: () => {
+        info.languageService.dispose();
+        onDispose();
+      },
+      getSemanticDiagnostics: LanguageService.getSemanticDiagnostics,
+    });
   }
 
   return {create};
+}
+
+function decorateLanguageService(info: tsServer.server.PluginCreateInfo, object: Partial<tsServer.LanguageService>): tsServer.LanguageService {
+  const proxy: tsServer.LanguageService = Object.create(null);
+  for (const k of Object.keys(info.languageService) as Array<keyof tsServer.LanguageService>) {
+    const x = info.languageService[k]!;
+    // @ts-expect-error - JS runtime trickery which is tricky to type tersely
+    proxy[k] = object[k] || ((...args: Array<{}>) => x.apply(info.languageService, args));
+  }
+
+  return proxy;
 }

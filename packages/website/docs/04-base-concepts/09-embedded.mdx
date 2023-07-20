@@ -17,9 +17,10 @@ Possible use cases:
 
 Note that @Embedded decorator can't be applied to class-constructor Bean `foo = Bean(Foo)`.
 
-## Embedding an object into a context
+## Embedding object into context
 
-All properties of an object that is declared in `IFoo` will be available as a dependency in a context.
+All properties of an object that is declared in `IFoo` will be available as a dependency in a context,
+and the `IFoo` object itself will be available as a bean.
 
 ```ts
 interface IFoo {
@@ -28,10 +29,10 @@ interface IFoo {
 const foo: IFoo = { fooProperty: 'fooValue' };
 
 class MyContext extends Context {
-  @Bean 
+  @Bean
   @Embedded
   fooBean = foo;
-  
+
   @PostConstruct
   postConstruct(
     fooObject: IFoo, // <- foo will be injected here
@@ -40,4 +41,8 @@ class MyContext extends Context {
 }
 ```
 
-## Embedding
+## Embedded priority
+
+Embedded beans have the lowest priority than regular beans so
+
+```ts

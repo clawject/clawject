@@ -7,6 +7,7 @@ import { processAtomicMode } from '../compile-time/core/atomic-mode/processAtomi
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 import { processApplicationMode } from '../compile-time/core/application-mode/processApplicationMode';
 import { cleanup } from '../compile-time/core/cleaner/cleanup';
+import { DecoratorRules } from '../compile-time/core/decorator-processor/DecoratorRules';
 
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const compilationContext = getCompilationContext();
@@ -21,6 +22,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
       cleanup(sourceFile.fileName);
     }
 
+    DecoratorRules.init();
     BaseTypesRepository.init();
 
     const mode = ConfigLoader.get().mode;

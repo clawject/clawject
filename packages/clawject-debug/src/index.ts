@@ -1,4 +1,4 @@
-import { Bean, CatContext, ContainerManager, PostConstruct, Primary } from 'clawject';
+import { Bean, CatContext, ContainerManager, Lazy, PostConstruct, PreDestroy, Primary } from 'clawject';
 import { IMyContext } from './IMyContext';
 
 interface User {}
@@ -9,24 +9,37 @@ class Repository<T> {
   clear(): void {}
 }
 
-class UserService {
+class Service<T> {
   constructor(
-    repository: Repository<User>
+    repository: Repository<T>
   ) {}
 }
 
-class AdminService {
-  constructor(
-    repository: Repository<Admin>,
-  ) {}
+class Cache<T> {
+  clear() {}
 }
+
+interface C<T> {}
+abstract class A<T> {}
+class B<T> extends A<T> implements C<T> {}
 
 class MyContext extends CatContext<IMyContext> {
   userRepository = Bean(Repository<User>);
   adminRepository = Bean(Repository<Admin>);
 
-  userService = Bean(UserService);
-  adminService = Bean(AdminService);
+  userService = Bean(Service<User>);
+  adminService = Bean(Service<Admin>);
+
+  userCache = Bean(Cache<User>);
+  adminCache = Bean(Cache<Admin>);
+
+  b = Bean(B<string>);
+
+  @PreDestroy
+  preDestroy(
+    test: C<string>
+  ) {
+  }
 
   // @Bean test0(
   //   test1: any,
