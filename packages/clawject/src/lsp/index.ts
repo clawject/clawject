@@ -20,6 +20,11 @@ export function ClawjectLanguageServicePlugin(modules: {
 
   function create(info: tsServer.server.PluginCreateInfo) {
     LanguageServiceLogger.assignPluginInfo(info);
+    Compiler.assignPluginInfo(info);
+    ModificationTracker.assignPluginInfo(info);
+    LanguageServiceReportBuilder.assignPluginInfo(info);
+    LanguageService.assignPluginInfo(info);
+
     LanguageServiceLogger.log('Clawject language service plugin created');
 
     const onDispose = () => {
@@ -55,11 +60,6 @@ export function ClawjectLanguageServicePlugin(modules: {
       );
       return info.languageService;
     }
-
-    Compiler.assignPluginInfo(info);
-    ModificationTracker.assignPluginInfo(info);
-    LanguageServiceReportBuilder.assignPluginInfo(info);
-    LanguageService.assignPluginInfo(info);
 
     // Set up decorator object
     const proxy: tsServer.LanguageService = Object.create(null);

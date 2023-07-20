@@ -10,6 +10,7 @@ export class WeakNodeHolder<N extends ts.Node = ts.Node> {
   private _hasBeenSet = false;
 
   private _nodeDetails: NodeDetails | null = null;
+  private _nameNodeDetails: NodeDetails | null = null;
 
   public get nodeDetails(): NodeDetails {
     if (this._nodeDetails === null) {
@@ -17,6 +18,10 @@ export class WeakNodeHolder<N extends ts.Node = ts.Node> {
     }
 
     return this._nodeDetails;
+  }
+
+  public get nameNodeDetails(): NodeDetails | null {
+    return this._nameNodeDetails;
   }
 
   public get node(): N {
@@ -36,6 +41,7 @@ export class WeakNodeHolder<N extends ts.Node = ts.Node> {
   public set node(node: N) {
     this._nodeRef = new WeakRef(node);
     this._nodeDetails = getNodeDetails(node);
+    this._nameNodeDetails = ts.isNamedDeclaration(node) ? getNodeDetails(node.name) : null;
     this._hasBeenSet = true;
   }
 

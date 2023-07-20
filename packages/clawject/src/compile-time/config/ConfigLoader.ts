@@ -31,7 +31,6 @@ export class ConfigLoader {
     const config: Partial<IDIConfig | null> = loaderResult?.config ?? null;
 
     if (config === null) {
-      LanguageServiceLogger.log('ConfigLoader.get() config is null');
       this.cachedConfig = this.defaultConfig;
 
       return this.cachedConfig;

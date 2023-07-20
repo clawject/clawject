@@ -21,25 +21,12 @@ class AdminService {
   ) {}
 }
 
-interface A {}
-
-class AImpl implements A {}
-
 class MyContext extends CatContext<IMyContext> {
-  // userRepository = Bean(Repository<User>);
-  // adminRepository = Bean(Repository<Admin>);
-  //
-  // userService = Bean(UserService);
-  // adminService = Bean(AdminService);
+  userRepository = Bean(Repository<User>);
+  adminRepository = Bean(Repository<Admin>);
 
-  a = Bean(AImpl);
-
-  @PostConstruct
-  postConstruct(
-    aaa: A,
-  ): void {
-
-  }
+  userService = Bean(UserService);
+  adminService = Bean(AdminService);
 
   // @Bean test0(
   //   test1: any,

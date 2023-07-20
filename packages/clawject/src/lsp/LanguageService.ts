@@ -12,7 +12,7 @@ export class LanguageService {
     this.pluginInfo = pluginInfo;
   }
 
-  static getSemanticDiagnostics = (fileName): tsServer.Diagnostic[] => {
+  static getSemanticDiagnostics: tsServer.LanguageService['getSemanticDiagnostics'] = (fileName) => {
     if (!this.pluginInfo) {
       return [];
     }
