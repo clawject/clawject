@@ -2,7 +2,6 @@ import { MessageCode } from '../MessageCode';
 import { MessageType } from '../MessageType';
 import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
-import { PossibleBeanCandidate } from '../../../core/utils/getPossibleBeanCandidates';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { Configuration } from '../../../core/configuration/Configuration';
 import { Bean } from '../../../core/bean/Bean';
@@ -22,8 +21,8 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
     place: ts.Node,
     relatedConfiguration: Configuration | null,
     relatedBean: Bean,
-    candidatesByName: PossibleBeanCandidate[],
-    candidatesByType: PossibleBeanCandidate[],
+    candidatesByName: Bean[],
+    candidatesByType: Bean[],
   ) {
     super(details, place, relatedConfiguration);
 
@@ -33,13 +32,13 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
     this.beanKind = relatedBean.kind;
   }
 
-  private getNodeDetails(candidate: PossibleBeanCandidate): NodeDetails {
-    const nodeDetails = getNodeDetails(candidate.bean.node);
+  private getNodeDetails(bean: Bean): NodeDetails {
+    const nodeDetails = getNodeDetails(bean.node);
 
-    if (candidate.embeddedName === null) {
-      nodeDetails.declarationName = candidate.bean.classMemberName;
+    if (bean.nestedProperty === null) {
+      nodeDetails.declarationName = bean.classMemberName;
     } else {
-      nodeDetails.declarationName = candidate.bean.classMemberName + '.' + candidate.embeddedName;
+      nodeDetails.declarationName = bean.classMemberName + '.' + bean.nestedProperty;
     }
 
     return nodeDetails;

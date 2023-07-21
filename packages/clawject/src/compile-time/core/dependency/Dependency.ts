@@ -7,24 +7,9 @@ export class Dependency extends BaseElement<ts.ParameterDeclaration> {
   declare parameterName: string;
   declare diType: DIType;
 
-  qualifiedBean: DependencyQualifiedBean | null = null;
+  qualifiedBean: Bean | null = null;
   /**
    * For array, map, set
    * */
-  qualifiedBeans: DependencyQualifiedBean[] | null = null;
-}
-
-export class DependencyQualifiedBean {
-  constructor(
-    public bean: Bean,
-    public embeddedName: string | null = null,
-  ) {}
-
-  get fullName(): string {
-    if (this.embeddedName === null) {
-      return this.bean.classMemberName;
-    }
-
-    return this.bean.fullName + '.' + this.embeddedName;
-  }
+  qualifiedBeans: Bean[] | null = null;
 }

@@ -1,45 +1,18 @@
-import { Bean, CatContext, ContainerManager, Lazy, PostConstruct, PreDestroy, Primary } from 'clawject';
+import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct, PreDestroy, Primary } from 'clawject';
 import { IMyContext } from './IMyContext';
 
-interface User {}
-interface Admin {}
-
-class Repository<T> {
-  getData(): T { throw ''; }
-  clear(): void {}
+interface Foo {
+  bar: string;
 }
 
-class Service<T> {
-  constructor(
-    repository: Repository<T>
-  ) {}
-}
-
-class Cache<T> {
-  clear() {}
-}
-
-interface C<T> {}
-abstract class A<T> {}
-class B<T> extends A<T> implements C<T> {}
 
 class MyContext extends CatContext<IMyContext> {
-  userRepository = Bean(Repository<User>);
-  adminRepository = Bean(Repository<Admin>);
+  @Bean foo = 'str';
+  @Bean @Embedded test: Foo = { bar: 'bar' };
 
-  userService = Bean(Service<User>);
-  adminService = Bean(Service<Admin>);
-
-  userCache = Bean(Cache<User>);
-  adminCache = Bean(Cache<Admin>);
-
-  b = Bean(B<string>);
-
-  @PreDestroy
-  preDestroy(
-    test: C<string>
-  ) {
-  }
+  @Bean methodBean(
+    abc: string
+  ): any {}
 
   // @Bean test0(
   //   test1: any,

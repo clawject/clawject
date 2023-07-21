@@ -6,6 +6,7 @@
   "author": "Artem Korniev artemkakornev1@gmail.com",
   "dependencies": {
     "big.js": "^6.2.1",
+    "case": "^1.6.3",
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
     "cosmiconfig": "^7.0.1",

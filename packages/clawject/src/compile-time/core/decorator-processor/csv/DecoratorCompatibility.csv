@@ -4,8 +4,8 @@ Bean,no,yes,no,no,no,yes,yes,no,yes,yes
 PreDestroy,no,no,yes,no,no,no,no,yes,no,no
 Component,no,no,no,yes,no,no,yes,no,yes,yes
 Configuration,no,no,no,no,yes,no,yes,no,yes,no
-Embedded,no,yes,no,no,no,yes,yes,no,yes,no
+Embedded,no,yes,no,no,no,yes,yes,no,yes,yes
 Lazy,yes,yes,no,yes,yes,yes,yes,no,yes,yes
 PostConstruct,no,no,yes,no,no,no,no,yes,no,no
 Scope,no,yes,no,yes,yes,yes,yes,no,yes,yes
-Primary,no,yes,no,yes,no,no,yes,no,yes,yes
+Primary,no,yes,no,yes,no,yes,yes,no,yes,yes

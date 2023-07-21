@@ -1,4 +1,3 @@
-import { IncorrectTypeDefinitionError } from '../../compilation-context/messages/errors/IncorrectTypeDefinitionError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
 import { Configuration } from '../configuration/Configuration';
@@ -12,11 +11,14 @@ import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionF
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { BeanKind } from './BeanKind';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
+import { DIType } from '../type-system/DIType';
 
 export const fillEmbeddedBeans = (
   configuration: Configuration,
 ): void => {
-  configuration.beanRegister.elements.forEach((rootBean) => {
+  const beans = Array.from(configuration.beanRegister.elements);
+
+  beans.forEach((rootBean) => {
     const compilationContext = getCompilationContext();
     const embeddedDecorator = extractDecoratorMetadata(rootBean.node, DecoratorKind.Embedded);
 
@@ -71,22 +73,32 @@ export const fillEmbeddedBeans = (
       return;
     }
 
-    if (declarations.length > 1) {
-      compilationContext.report(new IncorrectTypeDefinitionError(
-        `Found ${declarations.length} type declarations of Embedded Bean, type should be defined only once.`,
-        rootBean.node.type ?? rootBean.node,
-        configuration,
-      ));
-      return;
-    }
+    const declarationsTypes = declarations.reduce((acc, declaration) => {
+      const declarationType = typeChecker.getTypeAtLocation(declaration);
+      declarationType.getProperties().forEach(property => {
+        const propertyTypes = acc.get(property.name) ?? [];
+        !acc.has(property.name) && acc.set(property.name, propertyTypes);
+        const type = typeChecker.getTypeOfSymbolAtLocation(property, declaration);
 
-    const declaration = declarations[0];
-    const declarationType = typeChecker.getTypeAtLocation(declaration);
-    declarationType.getProperties().forEach(property => {
-      const type = typeChecker.getTypeOfSymbolAtLocation(property, declaration);
-      const diType = DITypeBuilder.build(type);
+        propertyTypes.push(DITypeBuilder.build(type));
+      });
 
-      rootBean.embeddedElements.set(property.name, diType);
+      return acc;
+    }, new Map<string, DIType[]>());
+
+    declarationsTypes.forEach((types, name) => {
+      const intersectionType = DITypeBuilder.buildSyntheticIntersection(types);
+
+      const bean = new Bean({
+        classMemberName: rootBean.classMemberName,
+        diType: intersectionType,
+        node: rootBean.node,
+        kind: rootBean.kind,
+        nestedProperty: name,
+        public: false,
+        primary: rootBean.primary,
+      });
+      configuration.beanRegister.register(bean);
     });
   });
 };

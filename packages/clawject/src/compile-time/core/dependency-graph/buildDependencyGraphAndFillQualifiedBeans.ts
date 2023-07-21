@@ -1,6 +1,6 @@
 import { Configuration } from '../configuration/Configuration';
 import { DependencyGraph } from './DependencyGraph';
-import { Dependency, DependencyQualifiedBean } from '../dependency/Dependency';
+import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { BeanCandidateNotFoundError } from '../../compilation-context/messages/errors/BeanCandidateNotFoundError';
@@ -50,36 +50,19 @@ function buildForBaseType(
   const matchedByType = allBeansWithoutCurrent
     .filter(it => dependency.diType.isCompatible(it.diType));
 
-  //If 0 - try to find in embedded elements
-  if (matchedByType.length === 0) {
-    const matchedByNestedType: DependencyQualifiedBean[] = [];
-
-    allBeansWithoutCurrent.forEach(beanCandidate => {
-      beanCandidate.embeddedElements.forEach((embeddedElement, embeddedName) => {
-        if (dependency.diType.isCompatible(embeddedElement)) {
-          matchedByNestedType.push(new DependencyQualifiedBean(beanCandidate, embeddedName));
-        }
-      });
-    });
-
-    if (matchedByNestedType.length === 1) {
-      dependency.qualifiedBean = matchedByNestedType[0];
-      DependencyGraph.addNodeWithEdges(bean, [matchedByNestedType[0].bean]);
-      return;
-    }
-  }
-
   if (matchedByType.length === 1) {
-    dependency.qualifiedBean = new DependencyQualifiedBean(matchedByType[0]);
+    dependency.qualifiedBean = matchedByType[0];
     DependencyGraph.addNodeWithEdges(bean, matchedByType);
     return;
   }
 
   const matchedByTypeAndName = matchedByType
-    .filter(it => dependency.parameterName === it.classMemberName);
+    .filter(it => {
+      return dependency.parameterName === it.fullName;
+    });
 
   if (matchedByTypeAndName.length === 1) {
-    dependency.qualifiedBean = new DependencyQualifiedBean(matchedByTypeAndName[0]);
+    dependency.qualifiedBean = matchedByTypeAndName[0];
     DependencyGraph.addNodeWithEdges(bean, matchedByType);
     return;
   }
@@ -88,7 +71,7 @@ function buildForBaseType(
     .filter(it => it.primary);
 
   if (matchedByTypeAndPrimary.length === 1) {
-    dependency.qualifiedBean = new DependencyQualifiedBean(matchedByTypeAndPrimary[0]);
+    dependency.qualifiedBean = matchedByTypeAndPrimary[0];
     DependencyGraph.addNodeWithEdges(bean, matchedByTypeAndPrimary);
     return;
   }
@@ -100,7 +83,7 @@ function buildForBaseType(
       configuration,
       bean,
       [],
-      matchedByTypeAndPrimary.map(it => new DependencyQualifiedBean(it)),
+      matchedByTypeAndPrimary,
     );
     getCompilationContext().report(error);
     missingDependencies.push(dependency);
@@ -126,41 +109,29 @@ function buildForCollectionOrArray(
 
   //If matched my name and type - just taking specific bean that returns collection
   if (otherCollectionsMatchedByNameAndType.length === 1) {
-    dependency.qualifiedBean = new DependencyQualifiedBean(otherCollectionsMatchedByNameAndType[0]);
+    dependency.qualifiedBean = otherCollectionsMatchedByNameAndType[0];
     DependencyGraph.addNodeWithEdges(bean, otherCollectionsMatchedByNameAndType);
     return;
   }
 
-  const matched: DependencyQualifiedBean[] = [];
+  const matched: Bean[] = [];
 
   if (dependency.diType.isMapStringToAny) {
     allBeansWithoutCurrent.forEach(beanCandidate => {
       if (dependency.diType.typeArguments[1].isCompatible(beanCandidate.diType)) {
-        matched.push(new DependencyQualifiedBean(beanCandidate));
+        matched.push(beanCandidate);
       }
-
-      beanCandidate.embeddedElements.forEach((embeddedElement, embeddedName) => {
-        if (dependency.diType.typeArguments[1].isCompatible(beanCandidate.diType)) {
-          matched.push(new DependencyQualifiedBean(beanCandidate, embeddedName));
-        }
-      });
     });
   } else {
     allBeansWithoutCurrent.forEach(beanCandidate => {
       if (dependency.diType.typeArguments[0].isCompatible(beanCandidate.diType)) {
-        matched.push(new DependencyQualifiedBean(beanCandidate));
+        matched.push(beanCandidate);
       }
-
-      beanCandidate.embeddedElements.forEach((embeddedElement, embeddedName) => {
-        if (dependency.diType.typeArguments[0].isCompatible(beanCandidate.diType)) {
-          matched.push(new DependencyQualifiedBean(beanCandidate, embeddedName));
-        }
-      });
     });
   }
 
   dependency.qualifiedBeans = matched;
-  DependencyGraph.addNodeWithEdges(bean, matched.map(it => it.bean));
+  DependencyGraph.addNodeWithEdges(bean, matched);
 }
 
 function reportPossibleCandidates(

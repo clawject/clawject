@@ -9,6 +9,7 @@ import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { WeakNodeHolder } from '../WeakNodeHolder';
 import { FileGraph } from '../file-graph/FileGraph';
+import * as Case from 'case';
 
 export type BeanNode = ts.MethodDeclaration
   | ClassPropertyWithCallExpressionInitializer
@@ -29,7 +30,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   primary = false;
   dependencies = new Set<Dependency>();
   //Only when bean is annotated with @Embedded
-  embeddedElements = new Map<string, DIType>();
+  nestedProperty: string | null = null;
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
@@ -47,8 +48,11 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   }
 
   get fullName(): string {
-    //TODO check if this is correct
-    return `${this.classMemberName}`;
+    if (this.nestedProperty === null) {
+      return this.classMemberName;
+    }
+
+    return this.classMemberName + Case.capital(this.nestedProperty);
   }
 
   isLifecycle(): boolean {

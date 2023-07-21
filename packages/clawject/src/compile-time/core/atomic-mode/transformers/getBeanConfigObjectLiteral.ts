@@ -4,7 +4,7 @@ import { createBoolean } from '../../ts/utils/createBoolean';
 
 export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLiteralExpression {
   const beansToDefine = Array.from(context.beanRegister.elements).filter(it =>
-    !it.isLifecycle()
+    !it.isLifecycle() && it.nestedProperty === null
   );
 
   const objectLiteralMembers: ts.PropertyAssignment[] = beansToDefine.map(bean => (

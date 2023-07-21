@@ -18,7 +18,10 @@ export class BeanRegister extends AbstractElementRegister<Bean, BeanNode> {
 
     this.elements.add(bean);
     this.idToElement.set(bean.id, bean);
-    this.nodeToElement.set(bean.node, bean);
+
+    if (bean.nestedProperty === null) {
+      this.nodeToElement.set(bean.node, bean);
+    }
 
     const beanClassDeclarationFileName = bean.classDeclaration?.node.getSourceFile().fileName;
     bean.diType.declarations.map(it => {

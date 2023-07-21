@@ -6,42 +6,23 @@ export const getPossibleBeanCandidates = (
   propertyName: string,
   propertyType: DIType,
   contextBeans: Bean[]
-): [byName: PossibleBeanCandidate[], byType: PossibleBeanCandidate[]] => {
+): [byName: Bean[], byType: Bean[]] => {
   const propertyNameMatcher = nameMatcher(propertyName.toLowerCase());
 
-  const candidatesByName: PossibleBeanCandidate[] = [];
-  const candidatesByType: PossibleBeanCandidate[] = [];
+  const candidatesByName: Bean[] = [];
+  const candidatesByType: Bean[] = [];
 
   contextBeans.forEach(it => {
     if (propertyType.isCompatible(it.diType)) {
-      candidatesByType.push(new PossibleBeanCandidate(it));
+      candidatesByType.push(it);
       return;
     }
 
-    if (propertyNameMatcher(it.classMemberName.toLowerCase())) {
-      candidatesByName.push(new PossibleBeanCandidate(it));
+    if (propertyNameMatcher(it.fullName.toLowerCase())) {
+      candidatesByName.push(it);
       return;
     }
-
-    it.embeddedElements.forEach((embeddedElement, embeddedName) => {
-      if (propertyType.isCompatible(embeddedElement)) {
-        candidatesByType.push(new PossibleBeanCandidate(it, embeddedName));
-        return;
-      }
-
-      if (propertyNameMatcher(`${it.classMemberName.toLowerCase()}${embeddedName.toLowerCase()}`)) {
-        candidatesByName.push(new PossibleBeanCandidate(it, embeddedName));
-        return;
-      }
-    });
   });
 
   return [candidatesByName, candidatesByType];
 };
-
-export class PossibleBeanCandidate {
-  constructor(
-    public bean: Bean,
-    public embeddedName: string | null = null,
-  ) {}
-}
