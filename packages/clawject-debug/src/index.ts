@@ -1,18 +1,16 @@
 import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct, PreDestroy, Primary } from 'clawject';
 import { IMyContext } from './IMyContext';
 
-interface Foo {
-  bar: string;
+
+class A {
+  @PostConstruct
+  postConstruct() {
+    console.log('PostConstruct from class');
+  }
 }
 
 class MyContext extends CatContext<IMyContext> {
-  @Bean _1(): 1 {
-    return 1;
-  }
-  @Bean _1(): 1 {
-    return 1;
-  }
-
+  a = Bean(A);
 
   // @Bean test0(
   //   test1: any,

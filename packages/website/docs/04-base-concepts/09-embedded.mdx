@@ -28,7 +28,7 @@ interface IFoo {
 }
 const foo: IFoo = { fooProperty: 'fooValue' };
 
-class MyContext extends Context {
+class MyContext extends CatContext {
   @Bean
   @Embedded
   fooBean = foo;
@@ -36,13 +36,43 @@ class MyContext extends Context {
   @PostConstruct
   postConstruct(
     fooObject: IFoo, // <- foo will be injected here
-    fooProperty: string // <- foo.fooProperty will be injected here
+    fooBeanFooProperty: string // <- foo.fooProperty will be injected here
   ) {}
 }
 ```
 
-## Embedded priority
+## Naming
 
-Embedded beans have the lowest priority than regular beans so
+If you have more than one bean with the same type, and you want to inject bean from Embedded object,
+you should specify the correct name for the dependency.
+
+In the embedded beans name will be defined as a class property name + property
+name from an embedded object with a first letter capitalized.
+
+Let's look at the example:
 
 ```ts
+interface IEmbedded {
+  stringBean: string;
+}
+
+class MyContext extends CatContext {
+  @Bean
+  @Embedded
+  embeddedBean: IEmbedded = { stringBean: 'embeddedStringBean' };
+
+  stringBean = 'stringBeanValue';
+
+  @PostConstruct
+  postConstruct(
+    stringBean: string, // <- stringBean will be injected here
+    embeddedBeanStringBean: string // <- embeddedBean.stringBean will be injected here
+  ) {}
+}
+```
+
+## @Lazy and @Scope on Embedded Beans
+
+You can use `@Lazy` and `@Scope` decorators on embedded beans same as for regular beans,
+but in that case -
+the whole object that is assigned to a bean value will have the specified scope or will be lazy.
