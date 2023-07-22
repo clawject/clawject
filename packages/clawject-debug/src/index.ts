@@ -5,16 +5,12 @@ interface Foo {
   bar: string;
 }
 
-
 class MyContext extends CatContext<IMyContext> {
-  @Bean _1(_2: 2): 1 {
+  @Bean _1(): 1 {
     return 1;
   }
-  @Bean _2(_3: 3): 2 {
-    return 2;
-  }
-  @Bean _3(_1: 1): 3 {
-    return 3;
+  @Bean _1(): 1 {
+    return 1;
   }
 
 

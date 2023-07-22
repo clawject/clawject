@@ -5,6 +5,9 @@ import { BeanCandidateNotFoundError } from './messages/errors/BeanCandidateNotFo
 import upath from 'upath';
 import { CircularDependenciesError } from './messages/errors/CircularDependenciesError';
 import { uniqBy } from 'lodash';
+import { CanNotRegisterBeanError } from './messages/errors/CanNotRegisterBeanError';
+import { MissingBeansDeclaration } from './messages/errors/MissingBeansDeclaration';
+import { DuplicateNameError } from './messages/errors/DuplicateNameError';
 
 export class BuildErrorFormatter {
   static formatErrors(compilationErrors: AbstractCompilationMessage[]): string | null {
@@ -77,6 +80,30 @@ export class BuildErrorFormatter {
       const messageCandidatesByName = candidatesByName ? `${chalk.red('  Possibly suitable candidates by name:')}\n${candidatesByName}` : '';
 
       return [baseMessage, messageCandidatesByType, messageCandidatesByName].filter(it => it).join('\n');
+    }
+
+    if (error instanceof CanNotRegisterBeanError) {
+      const causes = error.missingCandidates.map(it => {
+        return `  Can not find Bean candidate for '${it.name}'. ${this.getPathWithPosition(it.nodeDetails)}`;
+      });
+
+      return [baseMessage, ...causes].join('\n');
+    }
+
+    if (error instanceof MissingBeansDeclaration) {
+      const missingElementsRelatedInformation = error.missingElementsLocations.map(it => {
+        return `  '${it.name}' is declared here. ${this.getPathWithPosition(it.nodeDetails)}`;
+      });
+
+      return [baseMessage, ...missingElementsRelatedInformation].join('\n');
+    }
+
+    if (error instanceof DuplicateNameError) {
+      const missingElementsRelatedInformation = error.duplicateElements.map(it => {
+        return `  '${it.name}' is declared here. ${this.getPathWithPosition(it.location)}`;
+      });
+
+      return [baseMessage, ...missingElementsRelatedInformation].join('\n');
     }
 
     return baseMessage;
