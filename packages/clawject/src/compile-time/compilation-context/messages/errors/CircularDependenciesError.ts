@@ -9,7 +9,8 @@ import { Configuration } from '../../../core/configuration/Configuration';
 class CycleMember {
   constructor(
     public beanName: string,
-    public nodeDetails: NodeDetails
+    public nodeDetails: NodeDetails,
+    public isTarget: boolean
   ) {}
 }
 
@@ -23,13 +24,16 @@ export class CircularDependenciesError extends AbstractCompilationMessage {
     details: string | null,
     place: ts.Node,
     relatedConfiguration: Configuration | null,
+    targetBean: Bean,
     cycleMembers: Bean[],
   ) {
     super(details, place, relatedConfiguration);
 
-    this.cycleMembers = cycleMembers.map(bean => new CycleMember(
-      bean.classMemberName,
-      getNodeDetails(bean.node.name)
-    ));
+    this.cycleMembers = cycleMembers
+      .map(bean => new CycleMember(
+        bean.fullName,
+        getNodeDetails(bean.node.name),
+        bean === targetBean
+      ));
   }
 }

@@ -15,14 +15,27 @@ export const reportAboutCircularDependencies = (
     }
 
     cycles.forEach(cycle => {
-      cycle.forEach(item => {
-        compilationContext.report(new CircularDependenciesError(
-          null,
-          item.node.name,
-          context,
-          cycle
-        ));
-      });
+      const targetBean = cycle[0];
+
+      compilationContext.report(new CircularDependenciesError(
+        null,
+        targetBean.node.name,
+        context,
+        targetBean,
+        cycle
+      ));
     });
+
+    // cycles.forEach(cycle => {
+    //   cycle.forEach(item => {
+    //     compilationContext.report(new CircularDependenciesError(
+    //       null,
+    //       item.node.name,
+    //       context,
+    //       item,
+    //       cycle
+    //     ));
+    //   });
+    // });
   });
 };

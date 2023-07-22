@@ -13,7 +13,7 @@ export enum MessageCode {
   CT11 = 'CT11',
   CT12 = 'CT12',
   CT13 = 'CT13',
-  CT14 = 'CT14', //FREE
+  CT14 = 'CT14',
   CT15 = 'CT15', //FREE
   CT16 = 'CT16', //FREE
 }

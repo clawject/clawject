@@ -82,7 +82,12 @@ function decorateLanguageService(info: tsServer.server.PluginCreateInfo, object:
   for (const k of Object.keys(info.languageService) as Array<keyof tsServer.LanguageService>) {
     const x = info.languageService[k]!;
     // @ts-expect-error - JS runtime trickery which is tricky to type tersely
-    proxy[k] = object[k] || ((...args: Array<{}>) => x.apply(info.languageService, args));
+    proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
+  }
+
+  for (const k of Object.keys(object) as Array<keyof typeof object>) {
+    // @ts-expect-error - JS runtime trickery which is tricky to type tersely
+    proxy[k] = object[k].bind(object);
   }
 
   return proxy;

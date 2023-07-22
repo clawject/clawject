@@ -35,11 +35,7 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
   private getNodeDetails(bean: Bean): NodeDetails {
     const nodeDetails = getNodeDetails(bean.node);
 
-    if (bean.nestedProperty === null) {
-      nodeDetails.declarationName = bean.classMemberName;
-    } else {
-      nodeDetails.declarationName = bean.classMemberName + '.' + bean.nestedProperty;
-    }
+    nodeDetails.declarationName = bean.fullName;
 
     return nodeDetails;
   }

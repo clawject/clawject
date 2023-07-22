@@ -104,7 +104,7 @@ function buildForCollectionOrArray(
   dependency: Dependency,
 ): void {
   const otherCollectionsMatchedByNameAndType = allBeansWithoutCurrent.filter(it =>
-    it.classMemberName === dependency.parameterName && dependency.diType.isCompatible(it.diType),
+    it.fullName === dependency.parameterName && dependency.diType.isCompatible(it.diType),
   );
 
   //If matched my name and type - just taking specific bean that returns collection

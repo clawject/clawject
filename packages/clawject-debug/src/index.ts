@@ -7,12 +7,16 @@ interface Foo {
 
 
 class MyContext extends CatContext<IMyContext> {
-  @Bean foo = 'str';
-  @Bean @Embedded test: Foo = { bar: 'bar' };
+  @Bean _1(_2: 2): 1 {
+    return 1;
+  }
+  @Bean _2(_3: 3): 2 {
+    return 2;
+  }
+  @Bean _3(_1: 1): 3 {
+    return 3;
+  }
 
-  @Bean methodBean(
-    abc: string
-  ): any {}
 
   // @Bean test0(
   //   test1: any,

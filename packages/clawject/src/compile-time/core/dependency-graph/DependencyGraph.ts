@@ -1,11 +1,11 @@
-import { alg, Graph } from 'graphlib';
+import { alg, Edge, Graph } from 'graphlib';
 import { Bean } from '../bean/Bean';
 import { Configuration } from '../configuration/Configuration';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { mapFilter } from '../utils/mapFilter';
 
 export class DependencyGraph {
-  private static graph = new Graph();
+  static graph = new Graph();
 
   static addNodeWithEdges(node: Bean, edges: Bean[]) {
     edges.forEach(edge => this.graph.setEdge(node.id, edge.id));
@@ -13,10 +13,57 @@ export class DependencyGraph {
 
   static getCycle(): Map<Configuration, Bean[][]> {
     const cycledBeanIds = alg.findCycles(this.graph);
+
+    if (cycledBeanIds.length === 0) {
+      return new Map();
+    }
+
+    const flatCycledBeanIds = new Set(cycledBeanIds.flat());
+    const filteredGraph = this.graph.filterNodes(id => flatCycledBeanIds.has(id));
+    const filteredGraphEdges = filteredGraph.edges();
+
+    const cycles= new Map<string, string[]>();
+
+    filteredGraphEdges.forEach(edge => {
+      let currentNode = edge.v;
+      const cycle = cycles.get(edge.v) ?? [edge.v];
+      cycles.set(edge.v, cycle);
+
+      while (true) {
+        const nextEdge = filteredGraphEdges.find((e) => e.v === currentNode);
+        if (nextEdge) {
+          cycle.push(nextEdge.w);
+          currentNode = nextEdge.w;
+          if (currentNode === edge.v) {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+    });
+
+    // filteredGraphEdges.forEach((edge) => {
+    //   const cycle = cycles.get(edge.v) ?? [edge.v];
+    //   cycles.set(edge.v, cycle);
+    //
+    //   let currentNode = edge.w;
+    //
+    //   while (currentNode !== edge.v) {
+    //     cycle.push(currentNode);
+    //     const nextEdge = filteredGraphEdges.find((e) => e.v === currentNode);
+    //     if (nextEdge) {
+    //       currentNode = nextEdge.w;
+    //     } else {
+    //       break;
+    //     }
+    //   }
+    // });
+
     const relatedConfigurations = this.getRelatedConfigurations(cycledBeanIds);
     const resultMap = new Map<Configuration, Bean[][]>();
 
-    cycledBeanIds.forEach(idsList => {
+    cycles.forEach(idsList => {
       //Assuming that all beans are placed in the same context
       const relatedConfiguration = relatedConfigurations.get(idsList[0]);
 

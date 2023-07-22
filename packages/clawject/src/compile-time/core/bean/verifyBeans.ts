@@ -6,6 +6,7 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import ts from 'typescript';
+import { DuplicateNameError } from '../../compilation-context/messages/errors/DuplicateNameError';
 
 const UNSUPPORTED_TYPES = new Set([
   DITypeFlag.UNSUPPORTED,
@@ -22,12 +23,40 @@ const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
 export const verifyBeans = (configuration: Configuration): void => {
   const beans = configuration.beanRegister.elements;
 
+  verifyNameUniqueness(beans);
+
   beans.forEach(bean => {
     verifyBeanType(bean);
     verifyName(bean);
     verifyModifiers(bean);
   });
 };
+
+function verifyNameUniqueness(beans: Set<Bean>): void {
+  const nameToBeans = new Map<string, Bean[]>();
+
+  beans.forEach(bean => {
+    const name = bean.fullName;
+
+    const beans = nameToBeans.get(name) ?? [];
+    beans.push(bean);
+    nameToBeans.set(name, beans);
+  });
+
+  beans.forEach(bean => {
+    const beansByName = nameToBeans.get(bean.fullName) ?? [];
+
+    if (beansByName.length > 1) {
+      const compilationContext = getCompilationContext();
+      compilationContext.report(new DuplicateNameError(
+        null,
+        bean.node.name,
+        bean.parentConfiguration,
+        beansByName.filter(it => it !== bean),
+      ));
+    }
+  });
+}
 
 function verifyBeanType(bean: Bean): void {
   const parentConfiguration = bean.parentConfiguration;
@@ -41,7 +70,7 @@ function verifyBeanType(bean: Bean): void {
   if (bean.diType.isUnion) {
     compilationContext.report(new IncorrectTypeError(
       'Union type is not supported as a Bean type.',
-      bean.node,
+      bean.node.type ?? bean.node,
       parentConfiguration,
     ));
     parentConfiguration.beanRegister.deregister(bean);

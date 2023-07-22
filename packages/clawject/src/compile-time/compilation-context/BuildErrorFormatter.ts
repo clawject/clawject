@@ -3,6 +3,8 @@ import { NodeDetails } from '../core/ts/utils/getNodeDetails';
 import chalk from 'chalk';
 import { BeanCandidateNotFoundError } from './messages/errors/BeanCandidateNotFoundError';
 import upath from 'upath';
+import { CircularDependenciesError } from './messages/errors/CircularDependenciesError';
+import { uniqBy } from 'lodash';
 
 export class BuildErrorFormatter {
   static formatErrors(compilationErrors: AbstractCompilationMessage[]): string | null {
@@ -20,7 +22,7 @@ export class BuildErrorFormatter {
 
       const relatedConfigurationMetadata = errors[0].relatedConfigurationMetadata!;
 
-      const configurationPrefix = `${chalk.red('\nErrors occurred in')}: ${relatedConfigurationMetadata.name}. ${this.getPathWithPosition(contextPath, relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails)}`;
+      const configurationPrefix = `${chalk.red('\nErrors occurred in')}: ${relatedConfigurationMetadata.name}. ${this.getPathWithPosition(relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails)}`;
 
       formattedCompilationErrors.add(configurationPrefix + '\n' + formattedErrors);
     });
@@ -47,13 +49,26 @@ export class BuildErrorFormatter {
   }
 
   static formatError(error: AbstractCompilationMessage): string {
-    const filePathWithPosition = this.getPathWithPosition(error.place.filePath, error.place);
 
     const errorDetails = error.details === null
       ? ''
       : ` ${error.details}`;
 
-    const baseMessage = `${chalk.red('Error')} ${chalk.gray(error.code + ':')} ${error.description}${errorDetails} ${filePathWithPosition}`;
+    const messagePrefix = `${chalk.red('Error')} ${chalk.gray(error.code + ':')}`;
+    const messagePrefixWithDescriptions = `${messagePrefix} ${error.description}`;
+    const filePathWithPosition = this.getPathWithPosition(error.place);
+
+    const baseMessage = `${messagePrefixWithDescriptions}${errorDetails} ${filePathWithPosition}`;
+
+    if (error instanceof CircularDependenciesError) {
+      return [
+        `${messagePrefixWithDescriptions} ${error.cycleMembers.map(it => `'${it.beanName}'`).join(' -> ')}`,
+        uniqBy(error.cycleMembers, it => it.beanName).map(it => {
+          return `  Bean '${it.beanName}' is declared here: ${this.getPathWithPosition(it.nodeDetails)}`;
+        }
+        ).join('\n'),
+      ].join('\n');
+    }
 
     if (error instanceof BeanCandidateNotFoundError) {
       const candidatesByType = this.formatCandidates(error.candidatesByType);
@@ -67,18 +82,15 @@ export class BuildErrorFormatter {
     return baseMessage;
   }
 
-  private static getPathWithPosition(
-    path: string,
-    nodeDetails: NodeDetails,
-  ): string {
-    return `file://${upath.normalize(path)}:${nodeDetails.start.line}:${nodeDetails.start.col}`;
+  private static getPathWithPosition(nodeDetails: NodeDetails): string {
+    return `file://${upath.normalize(nodeDetails.filePath)}:${nodeDetails.start.line}:${nodeDetails.start.col}`;
   }
 
   private static formatCandidates(candidates: NodeDetails[]): string {
     return candidates.map(it => {
       const declarationName = it.declarationName ? `${it.declarationName}: ` : '';
 
-      return `    ${declarationName}${this.getPathWithPosition(it.filePath, it)}`;
+      return `    ${declarationName}${this.getPathWithPosition(it)}`;
     }).join('\n');
   }
 }

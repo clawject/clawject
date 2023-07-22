@@ -9,12 +9,14 @@ import { getCompilationContext } from '../transformer/getCompilationContext';
 import { MissingBeansDeclaration } from '../compile-time/compilation-context/messages/errors/MissingBeansDeclaration';
 import { BeanCandidateNotFoundError } from '../compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { BeanKind } from '../compile-time/core/bean/BeanKind';
+import { DuplicateNameError } from '../compile-time/compilation-context/messages/errors/DuplicateNameError';
 
 const MESSAGES_WITHOUT_CONTEXT_DETAILS = [
   CircularDependenciesError,
   CanNotRegisterBeanError,
   MissingBeansDeclaration,
   BeanCandidateNotFoundError,
+  DuplicateNameError,
 ];
 
 export class LanguageServiceReportBuilder {
@@ -56,7 +58,7 @@ export class LanguageServiceReportBuilder {
     const relatedInformation: tsServer.DiagnosticRelatedInformation[] = [];
 
     if (message instanceof CircularDependenciesError) {
-      messageDetails = message.cycleMembers.map(it => {
+      message.cycleMembers.filter(it => !it.isTarget).forEach(it => {
         relatedInformation.push({
           length: it.nodeDetails.length,
           file: this.getSourceFile(it.nodeDetails.filePath),
@@ -67,7 +69,11 @@ export class LanguageServiceReportBuilder {
         });
 
         return it.beanName;
-      }).join(' -> ');
+      });
+
+      messageDetails = message.cycleMembers
+        .map(it => it.beanName)
+        .join(' -> ');
     }
 
     if (message instanceof CanNotRegisterBeanError) {
@@ -129,6 +135,19 @@ export class LanguageServiceReportBuilder {
       }));
 
       relatedInformation.push(...missingElementsRelatedInformation);
+    }
+
+    if (message instanceof DuplicateNameError) {
+      const duplicateNamesRelatedInformation: tsServer.DiagnosticRelatedInformation[] = message.duplicateElements.map(it => ({
+        messageText: `'${it.name}' is declared here.`,
+        start: it.location.startOffset,
+        length: it.location.length,
+        code: 0,
+        file: pluginInfo.languageService.getProgram()?.getSourceFile(it.location.filePath),
+        category: this.getDiagnosticCategory(message),
+      }));
+
+      relatedInformation.push(...duplicateNamesRelatedInformation);
     }
 
     if (message.relatedConfigurationMetadata !== null && MESSAGES_WITHOUT_CONTEXT_DETAILS.every(it => !(message instanceof it))) {
