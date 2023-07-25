@@ -23,11 +23,11 @@ export function registerBeans(configuration: Configuration): void {
       registerBeanClassConstructor(configuration, classElement);
       return;
     }
-    if (isBeanFactoryArrowFunction(configuration, classElement)) {
+    if (isBeanFactoryArrowFunction(classElement)) {
       registerBeanFactoryArrowFunction(configuration, classElement);
       return;
     }
-    if (isBeanValueExpression(configuration, classElement)) {
+    if (isBeanValueExpression(classElement)) {
       registerBeanValueExpression(configuration, classElement);
       return;
     }

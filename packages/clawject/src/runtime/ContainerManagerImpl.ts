@@ -7,7 +7,7 @@ import { ClassConstructor } from './ClassConstructor';
 import { CustomScope } from './scope/CustomScope';
 import { ScopeRegister } from './scope/ScopeRegister';
 import { StaticRuntimeElement } from './runtime-elements/StaticRuntimeElement';
-import { ContextManager } from './internal/ContextManager';
+import { ContextManager } from './___internal___/ContextManager';
 
 const DEFAULT_KEY = undefined;
 

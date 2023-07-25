@@ -13,6 +13,7 @@ import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { WeakNodeHolder } from '../WeakNodeHolder';
+import { getBeanQualifierValue } from './getBeanQualifierValue';
 
 export const registerBeanClassConstructor = (
   configuration: Configuration,
@@ -93,5 +94,6 @@ export const registerBeanClassConstructor = (
   bean.diType = DITypeBuilder.buildForClassBean(returnType, bean) ?? DITypeBuilder.build(returnType);
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
   bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
+  bean.qualifier = getBeanQualifierValue(bean);
   configuration.beanRegister.register(bean);
 };

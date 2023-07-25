@@ -1,4 +1,4 @@
-import { alg, Edge, Graph } from 'graphlib';
+import { alg, Graph } from 'graphlib';
 import { Bean } from '../bean/Bean';
 import { Configuration } from '../configuration/Configuration';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
@@ -22,7 +22,7 @@ export class DependencyGraph {
     const filteredGraph = this.graph.filterNodes(id => flatCycledBeanIds.has(id));
     const filteredGraphEdges = filteredGraph.edges();
 
-    const cycles= new Map<string, string[]>();
+    const cycles = new Map<string, string[]>();
 
     filteredGraphEdges.forEach(edge => {
       let currentNode = edge.v;
@@ -42,23 +42,6 @@ export class DependencyGraph {
         }
       }
     });
-
-    // filteredGraphEdges.forEach((edge) => {
-    //   const cycle = cycles.get(edge.v) ?? [edge.v];
-    //   cycles.set(edge.v, cycle);
-    //
-    //   let currentNode = edge.w;
-    //
-    //   while (currentNode !== edge.v) {
-    //     cycle.push(currentNode);
-    //     const nextEdge = filteredGraphEdges.find((e) => e.v === currentNode);
-    //     if (nextEdge) {
-    //       currentNode = nextEdge.w;
-    //     } else {
-    //       break;
-    //     }
-    //   }
-    // });
 
     const relatedConfigurations = this.getRelatedConfigurations(cycledBeanIds);
     const resultMap = new Map<Configuration, Bean[][]>();

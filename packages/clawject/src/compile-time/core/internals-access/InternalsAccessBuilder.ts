@@ -13,7 +13,7 @@ export class InternalsAccessBuilder {
   static importDeclarationToInternal(): ts.ImportDeclaration {
     const importSpecifierPath = upath.join(
       CONSTANTS.libraryName,
-      'runtime/___INTERNAL___',
+      'runtime/___internal___',
     );
 
     return factory.createImportDeclaration(

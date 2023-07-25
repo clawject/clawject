@@ -8,7 +8,7 @@ export class PrototypeScope implements CustomScope {
   }
 
   registerDestructionCallback(name: string, callback: Callback): void {
-    console.warn('Destruction callbacks are not supported in "prototype" scope, beanName: ' + name);
+    console.warn(`Destruction callbacks are not supported in 'prototype' scope, beanName: ${name}`);
   }
 
   remove(name: string): ObjectFactoryResult | null {

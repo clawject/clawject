@@ -7,12 +7,15 @@ import { NotSupportedError } from '../../compilation-context/messages/errors/Not
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import ts from 'typescript';
 import { DuplicateNameError } from '../../compilation-context/messages/errors/DuplicateNameError';
+import { BeanKind } from './BeanKind';
+import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 
-const UNSUPPORTED_TYPES = new Set([
-  DITypeFlag.UNSUPPORTED,
-  DITypeFlag.NEVER,
-  DITypeFlag.VOID,
-  DITypeFlag.UNDEFINED,
+const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
+  [DITypeFlag.UNSUPPORTED, 'unsupported'],
+  [DITypeFlag.ANONYMOUS, 'anonymous'],
+  [DITypeFlag.NEVER, 'never'],
+  [DITypeFlag.VOID, 'void'],
+  [DITypeFlag.UNDEFINED, 'undefined'],
 ]);
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.AbstractKeyword, 'abstract'],
@@ -29,6 +32,7 @@ export const verifyBeans = (configuration: Configuration): void => {
     verifyBeanType(bean);
     verifyName(bean);
     verifyModifiers(bean);
+    verifyBeanInitializers(bean);
   });
 };
 
@@ -79,7 +83,7 @@ function verifyBeanType(bean: Bean): void {
 
   if (UNSUPPORTED_TYPES.has(bean.diType.typeFlag)) {
     compilationContext.report(new IncorrectTypeError(
-      'Unsupported type for Bean.',
+      `Type '${UNSUPPORTED_TYPES.get(bean.diType.typeFlag)}' not supported as a Bean type.`,
       bean.node.type ?? bean.node,
       parentConfiguration,
     ));
@@ -119,4 +123,31 @@ function verifyModifiers(bean: Bean): void {
     bean.parentConfiguration
   ));
   bean.parentConfiguration.beanRegister.deregister(bean);
+}
+
+function verifyBeanInitializers(bean: Bean): void {
+  const compilationContext = getCompilationContext();
+
+  if (!ts.isPropertyDeclaration(bean.node)) {
+    return;
+  }
+
+  if (
+    bean.kind === BeanKind.FACTORY_ARROW_FUNCTION
+    || bean.kind === BeanKind.VALUE_EXPRESSION
+    || bean.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION
+  ) {
+    const initializer = bean.node.initializer;
+
+    if (initializer) {
+      return;
+    }
+
+    compilationContext.report(new MissingInitializerError(
+      null,
+      bean.node,
+      bean.parentConfiguration
+    ));
+    bean.parentConfiguration.beanRegister.deregister(bean);
+  }
 }

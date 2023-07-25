@@ -13,7 +13,8 @@ export class DecoratorRules {
 
   private static compatibilityToOtherDecoratorsMatrix = new Map<DecoratorKind, Set<DecoratorKind>>();
 
-  private static declare argumentsCountMatrix: Map<DecoratorKind, ArgsCount | number>;
+  private static argumentsCountMatrix = new Map<DecoratorKind, ArgsCount | number>();
+  private static argumentsStaticallyKnowingnessMatrix = new Map<DecoratorKind, boolean[]>();
 
   static init(): void {
     if (this.wasInitialized) {
@@ -27,13 +28,17 @@ export class DecoratorRules {
       getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorCompatibility.csv')) ?? ''
     );
 
-    this.argumentsCountMatrix = new Map<DecoratorKind, ArgsCount | number>();
+    const fileContent = getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorArguments.csv')) ?? '';
     const values = parse(
-      getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorArguments.csv')) ?? '',
+      fileContent,
       {columns: true}
-    )[0] as Record<string, string>;
+    ) as Record<string, string>[];
+    const [
+      countValues,
+      staticallyKnowingnessValues
+    ] = values;
 
-    Object.entries(values).forEach(([key, value]) => {
+    Object.entries(countValues).forEach(([key, value]) => {
       const split = value.split(',');
 
       if (split.length === 1) {
@@ -43,17 +48,21 @@ export class DecoratorRules {
         this.argumentsCountMatrix.set(key as DecoratorKind, {min, max});
       }
     });
+    Object.entries(staticallyKnowingnessValues).forEach(([key, value]) => {
+      const split = value.split(',').map(it => it === 'yes');
+      this.argumentsStaticallyKnowingnessMatrix.set(key as DecoratorKind, split);
+    });
     this.wasInitialized = true;
   }
 
-  static isCompatibleTarget(decoratorKind: DecoratorKind, target: DecoratorTarget): boolean {
+  static getCompatibleTargets(decoratorKind: DecoratorKind): Set<DecoratorTarget> {
     const matrix = this.targetMatrix.get(decoratorKind);
 
     if (!matrix) {
       throw new Error(`No targets found for decorator ${decoratorKind}.`);
     }
 
-    return matrix.has(target);
+    return matrix;
   }
 
   static isCompatibleWith(decoratorKind: DecoratorKind, otherDecoratorKind: DecoratorKind): boolean {
@@ -71,6 +80,16 @@ export class DecoratorRules {
 
     if (argsCount === undefined) {
       throw new Error(`No arguments count for decorator ${decoratorKind}.`);
+    }
+
+    return argsCount;
+  }
+
+  static getArgumentsStaticallyKnowingness(decoratorKind: DecoratorKind): boolean[] {
+    const argsCount = this.argumentsStaticallyKnowingnessMatrix.get(decoratorKind);
+
+    if (argsCount === undefined) {
+      throw new Error(`No arguments statically knowingness for decorator ${decoratorKind}.`);
     }
 
     return argsCount;

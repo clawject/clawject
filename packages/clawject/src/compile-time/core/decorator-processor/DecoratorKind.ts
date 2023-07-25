@@ -9,6 +9,7 @@ export enum DecoratorKind {
   PostConstruct = 'PostConstruct',
   Scope = 'Scope',
   Primary = 'Primary',
+  Qualifier = 'Qualifier',
 }
 
 export const DecoratorKinds = new Set(Object.values(DecoratorKind));

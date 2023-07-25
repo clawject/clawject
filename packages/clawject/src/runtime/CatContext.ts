@@ -1,5 +1,5 @@
 import { ErrorBuilder } from './ErrorBuilder';
-import { ContextManager } from './internal/ContextManager';
+import { ContextManager } from './___internal___/ContextManager';
 
 /**
  * It's a class you should extend from to declare your own context.

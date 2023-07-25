@@ -1,4 +1,6 @@
-,Autowired,Bean,PreDestroy,Component,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary
-Class,no,no,no,yes,yes,no,yes,no,yes,yes
-ClassProperty,yes,yes,no,no,no,yes,yes,no,yes,yes
-ClassFunction,no,yes,yes,no,no,yes,yes,yes,yes,yes
+,Autowired,Bean,PreDestroy,Component,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier
+Class,no,no,no,yes,yes,no,no,no,no,no,no
+ClassProperty,yes,yes,no,no,no,no,no,no,no,no,no
+ClassFunction,no,yes,yes,no,no,no,no,yes,no,no,no
+CatContextClass,no,no,no,no,no,no,yes,no,no,no,no
+Bean,no,yes,no,no,no,yes,yes,no,yes,yes,yes

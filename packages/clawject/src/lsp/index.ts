@@ -28,6 +28,7 @@ export function ClawjectLanguageServicePlugin(modules: {
     LanguageServiceLogger.log('Clawject language service plugin created');
 
     const onDispose = () => {
+      LanguageServiceLogger.log('Clawject language service plugin disposed');
       cleanupAll();
       ConfigLoader.clear();
       Compiler.wasCompiled = false;
@@ -79,15 +80,13 @@ export function ClawjectLanguageServicePlugin(modules: {
 
 function decorateLanguageService(info: tsServer.server.PluginCreateInfo, object: Partial<tsServer.LanguageService>): tsServer.LanguageService {
   const proxy: tsServer.LanguageService = Object.create(null);
-  for (const k of Object.keys(info.languageService) as Array<keyof tsServer.LanguageService>) {
+  for (const k of Object.keys(info.languageService)) {
     const x = info.languageService[k]!;
-    // @ts-expect-error - JS runtime trickery which is tricky to type tersely
     proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
   }
 
-  for (const k of Object.keys(object) as Array<keyof typeof object>) {
-    // @ts-expect-error - JS runtime trickery which is tricky to type tersely
-    proxy[k] = object[k].bind(object);
+  for (const k of Object.keys(object)) {
+    proxy[k] = object[k];
   }
 
   return proxy;

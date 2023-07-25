@@ -12,133 +12,61 @@ export interface ContextInitConfig<C = never> {
   config: C;
 }
 
-// TODO update comments
 /**
- * Container is a main entry point to work with DI.
+ * `ContainerManager` serves as the main entry point for working with Dependency Injection (DI).
  *
- * You can use Container to initialize, get or clear contexts.
+ * You can utilize `ContainerManager` to initialize, get, or clear contexts.
  *
- * You can use this object anywhere in your code.
- * */
+ * This object can be used anywhere in your code.
+ */
 export interface ContainerManager {
   /**
-   * Initializing CatContext and returns {@link InitializedContext} object.
+   * Initializes `CatContext` and returns an {@link InitializedContext} object.
    *
-   * If context was already initialized but not cleared - new context will be instantiated and put in cache instead of old one.
-   * Not clearing context can cause memory leaks.
+   * If the context was already initialized but not cleared, a new context will be instantiated and cached in place of the old one.
+   * Not clearing the context may lead to memory leaks.
    *
-   * @example Init context:
-   * class MyContext extends CatContext {}
-   *
-   * const context = Container.initContext({ context: MyContext });
-   *
-   * @example Init context but not clearing it:
-   * class MyContext extends CatContext {}
-   *
-   * Container.initContext({ context: MyContext });
-   * const context = Container.initContext({ context: MyContext });
+   * @param context - The context class constructor that should be initialized.
+   * @param init - Optional initialization object.
+   * @returns The initialized context.
    */
-  init<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
-
-  init<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
+  init<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
 
   /**
-   * Returning {@link InitializedContext Context} object if it was initialized, if not - throws error with context name and key from {@link ContextProps}.
+   * Returns an {@link InitializedContext} object if it was initialized,
+   * otherwise throws an error with the context name and key.
    *
-   * @example Get context:
-   * class MyContext extends CatContext {}
-   *
-   * Container.initContext({ context: MyContext });
-   * const context = Container.getContext({ context: MyContext });
-   *
-   * @example Get context by key:
-   * class MyContext extends CatContext {}
-   *
-   * const myKey = Symbol('my-context');
-   *
-   * Container.initContext({ context: MyContext, key: myKey });
-   * const context = Container.getContext({ context: MyContext, key: myKey });
-   *
-   * @example Get context but not initializing it:
-   * class MyContext extends CatContext {}
-   *
-   * Container.initContext({ context: MyContext });
-   *
-   * const myKey = Symbol('my-context');
-   * try {
-   *     const context = Container.getContext({ context: MyContext, key: myKey });
-   * } catch (error) {
-   *     console.log(error.message); // <-- Will print "Context 'MyContext' with key 'Symbol(my-context)' is not initialized"
-   * }
+   * @param context - The context class constructor that should be retrieved.
+   * @param key - Optional key for getting a specific context.
+   * @returns The initialized context.
+   * @throws {Error} If the context was not initialized.
    */
   get<T extends object>(context: ClassConstructor<CatContext<T>>, key?: any): InitializedContext<T>;
 
   /**
-   * Returning already initialized {@link InitializedContext Context} object if it was initialized, if not - builds new context object.
+   * Returns an already initialized {@link InitializedContext} object if it was initialized,
+   * otherwise builds a new context object.
    *
-   * @example Get and init context:
-   * class MyContext extends CatContext {}
-   *
-   * const context1 = Container.getOrInitContext({ context: MyContext });
-   * const context2 = Container.getOrInitContext({ context: MyContext });
-   *
-   * console.log(context1 === context2); // <-- Will print "true"
-   *
-   * @example Get and init context by key:
-   * class MyContext extends CatContext {}
-   *
-   * const myKey = Symbol('my-context');
-   *
-   * const context1 = Container.getOrInitContext({ context: MyContext, key: myKey });
-   * const context2 = Container.getOrInitContext({ context: MyContext, key: myKey });
-   *
-   * console.log(context1 === context2); // <-- Will print "true"
-   *
-   * @example Get and init context with different config objects:
-   * export interface IMyContext {}
-   * class MyContext extends CatContext<IMyContext, { foo: string }> {}
-   *
-   * const config1 = { foo: 'bar' };
-   * const config2 = { foo: 'foo' };
-   *
-   * const context1 = Container.getOrInitContext({ context: MyContext, config: config1 });
-   * const context2 = Container.getOrInitContext({ context: MyContext, config: config2 });
-   *
-   * console.log(context1 === context2); // <-- Will print "true", and context2 will not re-assign config until you will not clear context and initialize it again with another config
+   * @param context - The context class constructor that should be retrieved or initialized.
+   * @param init - Optional initialization object.
+   * @returns The initialized context.
    */
   getOrInit<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
 
-  getOrInit<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
-
   /**
-   * Clearing initialized context, if initialized context was not found - prints warn to the console.
+   * Clears an initialized context. If the initialized context was not found, logs a warning to the console.
    *
-   * @example Clear context:
-   * class MyContext extends CatContext {}
-   *
-   * Container.initContext({ context: MyContext });
-   *
-   * Container.clearContext({ context: MyContext });
-   *
-   * @example Clear context by key:
-   * class MyContext extends CatContext {}
-   *
-   * const myKey = Symbol('my-context');
-   *
-   * Container.initContext({ context: MyContext, key: myKey });
-   * Container.clearContext({ context: MyContext, key: myKey });
-   *
-   * @example Clear context that was not initialized:
-   * class MyContext extends CatContext {}
-   *
-   * const myKey = Symbol('my-context');
-   *
-   * Container.initContext({ context: MyContext });
-   *
-   * Container.clearContext({ context: MyContext, key: myKey }); // <-- Will print "Trying to clear not initialized context, class: MyContext, key: 'Symbol(my-context)'"
-   * */
+   * @param context - The context class constructor that should be cleared.
+   * @param key - Optional key for clearing a specific context.
+   */
   clear(context: ClassConstructor<CatContext<any>>, key?: any): void;
 
+  /**
+   * Registers a custom scope.
+   *
+   * @param scopeName - The name of the scope that should be registered.
+   * @param scope - The custom scope object.
+   */
   registerScope(scopeName: string, scope: CustomScope): void;
 }
 

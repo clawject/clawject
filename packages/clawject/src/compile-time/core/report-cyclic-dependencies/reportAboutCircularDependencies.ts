@@ -25,17 +25,5 @@ export const reportAboutCircularDependencies = (
         cycle
       ));
     });
-
-    // cycles.forEach(cycle => {
-    //   cycle.forEach(item => {
-    //     compilationContext.report(new CircularDependenciesError(
-    //       null,
-    //       item.node.name,
-    //       context,
-    //       item,
-    //       cycle
-    //     ));
-    //   });
-    // });
   });
 };

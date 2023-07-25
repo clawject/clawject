@@ -1,6 +1,5 @@
 import ts, { factory } from 'typescript';
 import { Configuration } from '../../../configuration/Configuration';
-import { getStaticInitBlock } from './getStaticInitBlock';
 import { transformAutowiredMember } from './transformAutowiredMember';
 import { Bean, BeanNode } from '../../../bean/Bean';
 import { BeanKind } from '../../../bean/BeanKind';
@@ -11,7 +10,6 @@ import { transformConfigurationMethodBean } from './transformConfigurationMethod
 
 export const transformConfigurationClass = (configuration: Configuration): ts.ClassDeclaration => {
   const classDeclaration = configuration.node;
-  const staticInitBlock = getStaticInitBlock(configuration);
   const updatedMembers = classDeclaration.members.map(member => {
     const autowired = configuration.autowiredRegister.getByNode(member);
     const bean = configuration.beanRegister.getByNode(member as BeanNode);
@@ -46,7 +44,6 @@ export const transformConfigurationClass = (configuration: Configuration): ts.Cl
     classDeclaration.typeParameters,
     classDeclaration.heritageClauses,
     [
-      staticInitBlock,
       ...updatedMembers,
     ]
   );

@@ -1,4 +1,4 @@
-import { ContextManager } from '../internal/ContextManager';
+import { ContextManager } from '../___internal___/ContextManager';
 import { RuntimeComponentMetadata } from './RuntimeComponentMetadata';
 
 export enum StaticRuntimeElement {

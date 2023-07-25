@@ -5,7 +5,6 @@ import { DITypeFlag } from './DITypeFlag';
 import { escape } from 'lodash';
 import { BaseTypesRepository } from './BaseTypesRepository';
 
-//TODO check for anonymous types
 export class DIType {
   declare tsTypeFlags: ts.TypeFlags;
   declare parsedTSTypeFlags: Set<ts.TypeFlags>;
@@ -168,7 +167,6 @@ export class DIType {
 
     //Unions and intersections
     if (to.isUnion) {
-      //TODO report compilation error
       return false;
     }
 
@@ -205,7 +203,6 @@ export class DIType {
     //Objects
     if (this.isObject) {
       if (this.declarations.length === 0) {
-        //TODO report compilation error
         return false;
       }
 

@@ -7,6 +7,7 @@ import { processImplicitComponents } from './processImplicitComponents';
 import { verifyDecorators } from '../decorator-processor/verifyDecorators';
 import { DecoratorTarget } from '../decorator-processor/DecoratorTarget';
 import { isPropertyWithArrowFunction } from '../ts/predicates/isPropertyWithArrowFunction';
+import { getDecoratorVerificationErrors } from './getDecoratorVerificationErrors';
 
 export const processAtomicMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
@@ -23,24 +24,11 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
 
     let transformedNode: ts.Node;
 
-    let decoratorVerfificationErrors = verifyDecorators(node, DecoratorTarget.Class);
-    node.members.forEach(it => {
-      if (ts.isMethodDeclaration(it) || isPropertyWithArrowFunction(it)) {
-        decoratorVerfificationErrors = [
-          ...decoratorVerfificationErrors,
-          ...verifyDecorators(it, DecoratorTarget.ClassFunction),
-        ];
-      } else if (ts.isPropertyDeclaration(it)) {
-        decoratorVerfificationErrors = [
-          ...decoratorVerfificationErrors,
-          ...verifyDecorators(it, DecoratorTarget.ClassProperty),
-        ];
-      }
-    });
+    const decoratorVerificationErrors = getDecoratorVerificationErrors(node);
 
     //Skipping processing anything because of errors
-    if (decoratorVerfificationErrors.length !== 0) {
-      decoratorVerfificationErrors.forEach(it => compilationContext.report(it));
+    if (decoratorVerificationErrors.length !== 0) {
+      decoratorVerificationErrors.forEach(it => compilationContext.report(it));
       return node;
     }
 

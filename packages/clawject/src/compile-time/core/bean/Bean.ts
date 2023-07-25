@@ -21,6 +21,7 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   declare id: string; //Set by Context or Configuration during registration
   declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
   declare classMemberName: string;
+  qualifier: string | null = null;
   declare diType: DIType;
   declare kind: BeanKind;
   classDeclaration: WeakNodeHolder<ts.ClassDeclaration> | null = null;
@@ -48,11 +49,13 @@ export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
   }
 
   get fullName(): string {
+    const qualifiedName = this.qualifier ?? this.classMemberName;
+
     if (this.nestedProperty === null) {
-      return this.classMemberName;
+      return qualifiedName;
     }
 
-    return this.classMemberName + Case.capital(this.nestedProperty);
+    return qualifiedName + Case.capital(this.nestedProperty);
   }
 
   isLifecycle(): boolean {

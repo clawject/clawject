@@ -1,16 +1,17 @@
-import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct, PreDestroy, Primary } from 'clawject';
-import { IMyContext } from './IMyContext';
+import { Bean, CatContext, ContainerManager, Embedded, Lazy, PostConstruct, PreDestroy, Primary, Qualifier } from 'clawject';
 
-
-class A {
-  @PostConstruct
-  postConstruct() {
-    console.log('PostConstruct from class');
-  }
+interface Test {
+  foo: string;
 }
 
-class MyContext extends CatContext<IMyContext> {
-  a = Bean(A);
+class MyContext extends CatContext {
+  @Lazy @Bean @Qualifier('test3') test1: Test = { foo: '123' };
+  @Lazy @Bean @Qualifier('test4') test2: Test = { foo: '123' };
+
+  @Bean
+  bean(test4: Test): any {
+
+  }
 
   // @Bean test0(
   //   test1: any,
@@ -39,20 +40,3 @@ class MyContext extends CatContext<IMyContext> {
 }
 
 console.log(Array.from(ContainerManager.init(MyContext).getAllBeans()));
-
-// class Bar {
-//     constructor(
-//         private foo: Foo,
-//     ) {}
-// }
-//
-// class Foo {
-//     constructor(
-//         private bar: Bar,
-//     ) {}
-// }
-//
-// class MyContext2 extends CatContext {
-//     foo = Bean(Foo);
-//     bar = Bean(Bar);
-// }

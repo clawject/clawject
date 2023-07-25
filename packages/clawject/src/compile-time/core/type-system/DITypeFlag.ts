@@ -1,5 +1,6 @@
 export enum DITypeFlag {
-  UNSUPPORTED = -1,
+  UNSUPPORTED = -2,
+  ANONYMOUS = -1,
 
   //BASE
   ANY,

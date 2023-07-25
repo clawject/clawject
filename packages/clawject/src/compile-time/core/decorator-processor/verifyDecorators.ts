@@ -68,11 +68,12 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
     }
     const decoratorNode = decorators[0];
 
-    const isTargetCompatible = DecoratorRules.isCompatibleTarget(decoratorKind, decoratorTarget);
+    const compatibleTargets = DecoratorRules.getCompatibleTargets(decoratorKind);
 
-    if (!isTargetCompatible) {
+    if (!compatibleTargets.has(decoratorTarget)) {
+      const expectedTargets = Array.from(compatibleTargets).map(it => `'${it}'`).join(', ');
       errors.push(new NotSupportedError(
-        `@${decoratorKind} is not compatible with target "${decoratorTarget}".`,
+        `@${decoratorKind} is not compatible with target '${decoratorTarget}', expected targets: ${expectedTargets}.`,
         decoratorNode,
         null,
       ));
@@ -114,6 +115,24 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         return;
       }
     }
+
+    //Will check argument static knowingness
+    args.forEach((arg, index) => {
+      const staticallyKnowingness = DecoratorRules.getArgumentsStaticallyKnowingness(decoratorKind);
+
+      if (!staticallyKnowingness[index]) {
+        return;
+      }
+
+      if (!ts.isStringLiteral(arg) && !ts.isNumericLiteral(arg) && !ts.isBooleanLiteral(arg)) {
+        errors.push(new NotSupportedError(
+          `Argument #${index} should be statically known literal.`,
+          arg,
+          null,
+        ));
+      }
+    });
+
   });
 
   return errors;

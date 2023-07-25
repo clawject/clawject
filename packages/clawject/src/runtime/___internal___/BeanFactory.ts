@@ -19,8 +19,7 @@ export class BeanFactory {
     private configurationName: string,
     private instance: CatContext, //TODO consider use not only CatContext
     private beans: ContextManagerConfig['beans'],
-  ) {
-  }
+  ) {}
 
   public getPublicBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);

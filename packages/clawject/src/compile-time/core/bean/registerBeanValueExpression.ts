@@ -8,6 +8,7 @@ import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
+import { getBeanQualifierValue } from './getBeanQualifierValue';
 
 export const registerBeanValueExpression = (
   configuration: Configuration,
@@ -26,5 +27,6 @@ export const registerBeanValueExpression = (
   bean.diType = DITypeBuilder.buildForClassBean(type, bean) ?? DITypeBuilder.build(type);
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
   bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
+  bean.qualifier = getBeanQualifierValue(bean);
   configuration.beanRegister.register(bean);
 };

@@ -32,7 +32,7 @@ export function processCatContext(node: ts.ClassDeclaration, compilationContext:
   if (restrictedClassMembersByName.length !== 0) {
     restrictedClassMembersByName.forEach(it => {
       compilationContext.report(new IncorrectNameError(
-        `"${it.name?.getText()}" name is reserved for the di-container.`,
+        `'${it.name?.getText()}' name is reserved for the di-container.`,
         it,
         context,
       ));

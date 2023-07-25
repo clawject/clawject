@@ -1,4 +1,4 @@
-import ts, { TypeFlags } from 'typescript';
+import ts, { ObjectFlags, TypeFlags } from 'typescript';
 import { DIType } from './DIType';
 import { get } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
@@ -64,7 +64,6 @@ export class DITypeBuilder {
       ?.map(it => it.types).flat() ?? [];
 
     const implementsClauseTypes = heritageClausesMembers.map(typeChecker.getTypeAtLocation);
-    // .filter(it => it.symbol !== tsTypeSymbol); //TODO FILTER "THIS" arg
 
     const baseDIType = this._build(tsType, actualTypeArguments, this.emptyWeakMap);
     const clauseTypes = implementsClauseTypes.map(it => {
@@ -135,6 +134,10 @@ export class DITypeBuilder {
 
   private static setTypeFlag(diType: DIType, tsType: ts.Type): void {
     switch (true) {
+    case diType.parsedTSObjectFlags.has(ObjectFlags.Anonymous):
+      diType.typeFlag = DITypeFlag.ANONYMOUS;
+      break;
+
     case diType.parsedTSTypeFlags.has(TypeFlags.Any):
       diType.typeFlag = DITypeFlag.ANY;
       break;

@@ -30,7 +30,7 @@ export function processImplicitComponents(
 
     if (isNameReserved(it.name?.getText() ?? '')) {
       compilationContext.report(new IncorrectNameError(
-        `"${it.name?.getText() ?? ''}" name is reserved for the di-container.`,
+        `'${it.name?.getText() ?? ''}' name is reserved for the di-container.`,
         it,
         null,
       ));
