@@ -24,7 +24,7 @@ export const getBeanQualifierValue = (bean: Bean): string | null => {
 
   if (!qualifierValueText) {
     getCompilationContext().report(new IncorrectNameError(
-      'Qualifier name can not be empty.',
+      'Qualifier can not be empty.',
       qualifierValue,
       null,
     ));

@@ -5,7 +5,7 @@ interface Test {
 }
 
 class MyContext extends CatContext {
-  @Lazy @Bean @Qualifier('test3') test1: Test = { foo: '123' };
+  @Lazy @Bean @Qualifier('') test1: Test = { foo: '123' };
   @Lazy @Bean @Qualifier('test4') test2: Test = { foo: '123' };
 
   @Bean
