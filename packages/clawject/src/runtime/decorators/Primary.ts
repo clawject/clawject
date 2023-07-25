@@ -1,7 +1,7 @@
 import { ErrorBuilder } from '../ErrorBuilder';
-import { Decorator } from './Decorator';
+import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
 export type PrimaryTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
-export const Primary: Decorator<PrimaryTarget> = () => {
+export const Primary: DecoratorWithoutArguments<PrimaryTarget> = () => {
   throw ErrorBuilder.usageWithoutConfiguredDI('@Primary');
 };

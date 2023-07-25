@@ -1,7 +1,7 @@
 import { ErrorBuilder } from '../ErrorBuilder';
-import { Decorator } from './Decorator';
+import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
 export type EmbeddedTarget = PropertyDecorator & MethodDecorator;
-export const Embedded: Decorator<EmbeddedTarget> = () => {
+export const Embedded: DecoratorWithoutArguments<EmbeddedTarget> = () => {
   throw ErrorBuilder.usageWithoutConfiguredDI('@Embedded');
 };

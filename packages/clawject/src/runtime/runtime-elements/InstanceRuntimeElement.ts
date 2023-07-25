@@ -1,4 +1,3 @@
-import { StaticRuntimeElement } from './StaticRuntimeElement';
 import { RuntimeElementFactories } from './RuntimeElementFactories';
 
 export enum InstanceRuntimeElement {
@@ -6,5 +5,5 @@ export enum InstanceRuntimeElement {
 }
 
 export interface InstanceRuntimeElementsTypeMap extends Record<InstanceRuntimeElement, unknown> {
-  [StaticRuntimeElement.CONTEXT_MANAGER]: RuntimeElementFactories;
+  [InstanceRuntimeElement.CONTEXT_ELEMENT_FACTORIES]: RuntimeElementFactories;
 }
