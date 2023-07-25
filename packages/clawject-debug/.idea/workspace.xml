@@ -5,19 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/DecoratorWithoutArguments.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/07-primary.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/08-qualifier.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/isNameReserved.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/isNameReserved.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Bean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Bean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/BeforeDesctruct.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/PreDestroy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Decorator.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Embedded.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Embedded.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Lazy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Lazy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/PostConstruct.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/PostConstruct.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Primary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Primary.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/runtime-elements/InstanceRuntimeElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/runtime-elements/InstanceRuntimeElement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/07-scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/08-lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/10-lazy.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/011-embedded.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/012-lifecycle.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +141,7 @@
       <workItem from="1689706407340" duration="10031000" />
       <workItem from="1690028603764" duration="1483000" />
       <workItem from="1690035215259" duration="5884000" />
-      <workItem from="1690303898450" duration="2940000" />
+      <workItem from="1690303898450" duration="3548000" />
     </task>
     <servers />
   </component>

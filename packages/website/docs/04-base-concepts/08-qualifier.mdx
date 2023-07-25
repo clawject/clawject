@@ -1,0 +1,39 @@
+---
+title: '@Qualifier'
+id: qualifier
+---
+
+<hr/>
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+## Overview
+
+@Qualifier decorator allows us to specify a name for a bean.
+This can be particularly useful when multiple beans of the same type exist,
+and we want to specify which bean to use in a certain scenario.
+In the future, this decorator will be used for a few more use cases.
+
+## Using @Qualifier to Specify a Bean's Name
+
+```ts
+class MyContext extends CatContext {
+  @Bean
+  @Qualifier('cat')
+  animal1 = new Animal('meow');
+
+  @Bean
+  @Qualifier('dog')
+  animal2 = new Animal('woof');
+
+  @PostConstruct
+  postConstruct(
+    cat: Animal // animal1 bean with qualifier 'cat' will be injected here
+  ) {
+    console.log(cat.sound);
+  }
+}
+```
