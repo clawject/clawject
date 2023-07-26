@@ -63,7 +63,8 @@ the `postConstruct` method will be called when `Foo` instance is created.
 
 ## @PreDestroy
 
-A method decorated with @PreDestroy runs only once, just before Clawject removes bean from the context.
+Clawject calls the methods annotated with @PostConstruct only once,
+just before context clearing or bean removal from context.
 
 The purpose of this method should be to release resources or perform other cleanup tasks,
 such as closing a database connection, before the bean gets destroyed.
