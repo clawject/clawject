@@ -13,6 +13,7 @@ export const processConfigurationClass = (node: ts.ClassDeclaration): ts.ClassDe
   const configuration = ConfigurationRepository.register(node);
 
   if (node.members.some(ts.isConstructorDeclaration)) {
+    //TODO reconsider it
     compilationContext.report(new NotSupportedError(
       'Configuration classes cannot have constructor.',
       node,

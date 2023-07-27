@@ -4,13 +4,12 @@ import { Validator } from 'jsonschema';
 import schema from './schema.json';
 import { CONSTANTS } from '../../constants';
 import { merge } from 'lodash';
-import { LanguageServiceLogger } from '../../lsp/LanguageServiceLogger';
 import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { LanguageService } from '../../lsp/LanguageService';
 
 export class ConfigLoader {
   private static defaultConfig: IDIConfig = {
-    mode: 'atomic',
+    mode: 'application',
     unsafeTSVersion: false,
     features: {
       advancedClassTypeResolution: true,

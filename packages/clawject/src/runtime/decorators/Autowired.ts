@@ -1,9 +1,8 @@
-export function Autowired(property: any, context: any);
-export function Autowired<T>(): T;
-/**
- * Legacy decorators
- * */
-export function Autowired(target: Object, propertyKey: string | symbol);
-export function Autowired() {
-  throw new Error('TODO');
-}
+import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
+import { ErrorBuilder } from '../ErrorBuilder';
+
+export type AutowiredTarget = PropertyDecorator;
+export const Autowired: DecoratorWithoutArguments<AutowiredTarget> = () => {
+  throw ErrorBuilder.usageWithoutConfiguredDI('@Autowired');
+};
+

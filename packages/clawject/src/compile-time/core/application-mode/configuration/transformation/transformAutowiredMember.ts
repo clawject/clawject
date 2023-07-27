@@ -1,9 +1,9 @@
 import ts, { factory } from 'typescript';
-import { AutowiredElement } from '../../../autowired/AutowiredElement';
+import { Autowired } from '../../../autowired/Autowired';
 import { isDecoratorFromLibrary } from '../../../decorator-processor/isDecoratorFromLibrary';
 import { InternalsAccessBuilder } from '../../../internals-access/InternalsAccessBuilder';
 
-export const transformAutowiredMember = (autowired: AutowiredElement, node: ts.ClassElement): ts.ClassElement => {
+export const transformAutowiredMember = (autowired: Autowired, node: ts.ClassElement): ts.ClassElement => {
   const castedNode = node as ts.PropertyDeclaration;
   const newInitializer = InternalsAccessBuilder.internalGetInstanceCallExpression(autowired.runtimeId);
 

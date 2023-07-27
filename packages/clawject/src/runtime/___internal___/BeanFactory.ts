@@ -15,7 +15,7 @@ export class BeanFactory {
   private proxyRegister = new Map<string, any>();
 
   constructor(
-    private id: string | null,
+    private id: string | null, // Null in application mode
     private configurationName: string,
     private instance: CatContext, //TODO consider use not only CatContext
     private beans: ContextManagerConfig['beans'],

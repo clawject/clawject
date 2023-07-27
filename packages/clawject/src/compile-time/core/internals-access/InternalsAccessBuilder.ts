@@ -3,7 +3,7 @@ import upath from 'upath';
 import { CONSTANTS } from '../../../constants';
 
 export enum InternalElementKind {
-  InternalApplicationFactory = 'InternalApplicationFactory',
+  ApplicationManager = 'ApplicationManager',
   ContextManager = 'ContextManager',
 }
 
@@ -41,10 +41,12 @@ export class InternalsAccessBuilder {
     );
   }
 
+
+  //TODO remove
   static internalGetInstanceCallExpression(runtimeId: string): ts.CallExpression {
     return factory.createCallExpression(
       factory.createPropertyAccessExpression(
-        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.InternalApplicationFactory),
+        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ApplicationManager),
         factory.createIdentifier('getInstanceFor')
       ),
       undefined,

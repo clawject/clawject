@@ -1,10 +1,7 @@
-import { ClassConstructor } from '../ClassConstructor';
+import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
+import { ErrorBuilder } from '../ErrorBuilder';
 
-export function Component<T>(target: ClassConstructor<T>, context: any);
-/**
- * Legacy decorators
- * */
-export function Component<T extends Function>(target: T): T | void;
-export function Component() {
-  throw new Error('TODO');
-}
+export type ComponentTarget = ClassDecorator;
+export const Component: DecoratorWithoutArguments<ComponentTarget> = () => {
+  throw ErrorBuilder.usageWithoutConfiguredDI('@Component');
+};

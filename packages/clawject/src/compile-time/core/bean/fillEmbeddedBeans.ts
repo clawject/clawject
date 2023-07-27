@@ -87,7 +87,7 @@ export const fillEmbeddedBeans = (
     }, new Map<string, DIType[]>());
 
     declarationsTypes.forEach((types, name) => {
-      const intersectionType = DITypeBuilder.buildSyntheticIntersection(types);
+      const intersectionType = DITypeBuilder.buildSyntheticIntersectionOrPlain(types);
 
       const bean = new Bean({
         classMemberName: rootBean.classMemberName,

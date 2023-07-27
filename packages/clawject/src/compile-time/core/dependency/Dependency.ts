@@ -9,7 +9,7 @@ export class Dependency extends BaseElement<ts.ParameterDeclaration> {
 
   qualifiedBean: Bean | null = null;
   /**
-   * For array, map, set
+   * For array, map, set or in application mode
    * */
   qualifiedBeans: Bean[] | null = null;
 }

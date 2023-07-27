@@ -3,15 +3,14 @@ import { DIType } from '../type-system/DIType';
 import { Configuration } from '../configuration/Configuration';
 import { BaseElement } from '../BaseElement';
 
-export class AutowiredElement extends BaseElement {
+export class Autowired extends BaseElement {
   declare id: string; //Set by AutowiredRegister during registration
   declare parent: Configuration | Component; //Set by AutowiredRegister during registration
-  declare name: string;
+  declare classMemberName: string;
+  qualifier: string | null = null;
   declare diType: DIType;
-  //TODO
-  resolved: unknown | null = null;
 
-  constructor(values: Partial<AutowiredElement> = {}) {
+  constructor(values: Partial<Autowired> = {}) {
     super();
 
     Object.assign(this, values);

@@ -10,11 +10,6 @@ import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuild
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
-  //Skipping declaration files for now, maybe in future - there could be declared some configurations/services/etc
-  if (sourceFile.isDeclarationFile) {
-    return sourceFile;
-  }
-
   let shouldAddImports = false;
 
   //TODO create function that will register entrypoint and verify all classes for not allowed and members

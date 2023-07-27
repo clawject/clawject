@@ -1,12 +1,13 @@
 import ts, { ObjectFlags, TypeFlags } from 'typescript';
 import { DIType } from './DIType';
-import { get } from 'lodash';
+import { compact, get } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
 import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { Bean } from '../bean/Bean';
+import { Component } from '../component/Component';
 
 /**
  * notes:
@@ -26,6 +27,46 @@ export class DITypeBuilder {
     return this._build(tsType, null, genericSymbolLookupTable);
   }
 
+  static buildForClassComponent(component: Component): DIType {
+    const typeChecker = getCompilationContext().typeChecker;
+    const classType = typeChecker.getTypeAtLocation(component.node) as ts.InterfaceType;
+
+    const typeParameters = classType.typeParameters ?? [];
+
+    const genericSymbolLookupTable = new WeakMap<ts.Symbol, DIType>();
+
+    typeParameters.forEach((typeParameter) => {
+      const types = compact([
+        typeChecker.getDefaultFromTypeParameter(typeParameter),
+        typeChecker.getBaseConstraintOfType(typeParameter),
+      ]);
+
+      if (types.length === 0) {
+        const unknownType = this.unknown();
+        genericSymbolLookupTable.set(typeParameter.symbol, unknownType);
+
+        return;
+      }
+
+      const diTypes = types.map((it) => this.build(it));
+      const diType = this.buildSyntheticIntersectionOrPlain(diTypes);
+
+      genericSymbolLookupTable.set(typeParameter.symbol, diType);
+    });
+
+    const heritageClausesMembers = component.node.heritageClauses
+      ?.map(it => it.types).flat() ?? [];
+
+    const implementsClauseTypes = heritageClausesMembers.map(typeChecker.getTypeAtLocation);
+
+    const baseDIType = this._build(classType, typeParameters, genericSymbolLookupTable);
+    const clauseTypes = implementsClauseTypes.map(it =>
+      this._build(it, null, genericSymbolLookupTable)
+    );
+
+    return this.buildSyntheticIntersectionOrPlain([baseDIType, ...clauseTypes]);
+  }
+
   static buildForClassBean(tsType: ts.Type, bean: Bean): DIType | null {
     if (!ConfigLoader.get().features.advancedClassTypeResolution) {
       return null;
@@ -40,7 +81,7 @@ export class DITypeBuilder {
     const actualTypeArguments = targetTypeTypeArguments.map((_, index) =>
       resolvedTypeArguments[index]
     );
-    const genericSymbolArgumentNameToType = new Map<ts.Symbol, ts.Type>(
+    const genericSymbolToType = new Map<ts.Symbol, ts.Type>(
       actualTypeArguments.map((it, index) => {
         bean.genericSymbolLookupTable.set(targetTypeTypeArguments[index].symbol, this._build(it, null, this.emptyWeakMap));
 
@@ -72,15 +113,19 @@ export class DITypeBuilder {
       }
 
       const resolvedTypeArguments = Array.from(typeChecker.getTypeArguments(it))
-        .map(it => genericSymbolArgumentNameToType.get(it.symbol) ?? it);
+        .map(it => genericSymbolToType.get(it.symbol) ?? it);
 
       return this._build(it, resolvedTypeArguments, this.emptyWeakMap);
     });
 
-    return this.buildSyntheticIntersection([baseDIType, ...clauseTypes]);
+    return this.buildSyntheticIntersectionOrPlain([baseDIType, ...clauseTypes]);
   }
 
-  static buildSyntheticIntersection(diTypes: DIType[]): DIType {
+  static buildSyntheticIntersectionOrPlain(diTypes: DIType[]): DIType {
+    if (diTypes.length === 1) {
+      return diTypes[0];
+    }
+
     const diType = new DIType();
     diType.tsTypeFlags = ts.TypeFlags.Intersection;
     diType.parsedTSTypeFlags = new Set([ts.TypeFlags.Intersection]);
@@ -90,10 +135,19 @@ export class DITypeBuilder {
     return diType;
   }
 
-  static empty(): DIType {
+  static any(): DIType {
     const diType = new DIType();
 
     diType.tsTypeFlags = ts.TypeFlags.Any;
+    diType.parsedTSTypeFlags = new Set();
+
+    return diType;
+  }
+
+  static unknown(): DIType {
+    const diType = new DIType();
+
+    diType.tsTypeFlags = ts.TypeFlags.Unknown;
     diType.parsedTSTypeFlags = new Set();
 
     return diType;

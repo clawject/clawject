@@ -2,7 +2,7 @@ import { Configuration } from '../configuration/Configuration';
 import { Component } from '../component/Component';
 import { isAutowiredClassElement } from '../ts/predicates/isAutowiredClassElement';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { AutowiredElement } from './AutowiredElement';
+import { Autowired } from './Autowired';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const registerAutowired = (parent: Configuration | Component) => {
@@ -14,13 +14,16 @@ export const registerAutowired = (parent: Configuration | Component) => {
       const type = typeChecker.getTypeAtLocation(member);
       const diType = DITypeBuilder.build(type);
 
-      const autowiredElement = new AutowiredElement({
+      const autowiredElement = new Autowired({
         node: member,
-        name: member.name.getText(), //TODO handle names
+        classMemberName: member.name.getText(), //TODO check if name is statically known
+        //TODO add qualifier
         diType: diType,
       });
       parent.autowiredRegister.register(autowiredElement);
       return;
     }
   });
+
+  //TODO verify autowired elements
 };

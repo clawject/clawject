@@ -1,17 +1,17 @@
-import { AutowiredElement } from './AutowiredElement';
+import { Autowired } from './Autowired';
 import { Component } from '../component/Component';
 import { Configuration } from '../configuration/Configuration';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
 import { FileGraph } from '../file-graph/FileGraph';
 
-export class AutowiredRegister extends AbstractElementRegister<AutowiredElement> {
+export class AutowiredRegister extends AbstractElementRegister<Autowired> {
   constructor(
     public parent: Configuration | Component,
   ) {
     super();
   }
 
-  override register(autowired: AutowiredElement): void {
+  override register(autowired: Autowired): void {
     autowired.id = `${this.parent.id}_${this.counter}`;
     this.counter++;
 
