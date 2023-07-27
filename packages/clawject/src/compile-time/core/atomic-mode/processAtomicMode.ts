@@ -4,9 +4,6 @@ import { CompilationContext } from '../../compilation-context/CompilationContext
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
 import { processCatContext } from './processCatContext';
 import { processImplicitComponents } from './processImplicitComponents';
-import { verifyDecorators } from '../decorator-processor/verifyDecorators';
-import { DecoratorTarget } from '../decorator-processor/DecoratorTarget';
-import { isPropertyWithArrowFunction } from '../ts/predicates/isPropertyWithArrowFunction';
 import { getDecoratorVerificationErrors } from './getDecoratorVerificationErrors';
 
 export const processAtomicMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {

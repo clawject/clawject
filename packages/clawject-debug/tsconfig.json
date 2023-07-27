@@ -17,6 +17,10 @@
       {
         "name": "clawject-language-service",
         "transform": "../clawject/src/transformer/index.ts"
+      },
+      {
+        "transform": "../clawject/src/transformer/metadata.ts",
+        "afterDeclarations": true
       }
     ]
   },

@@ -5,9 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompilationMetadataBuilder.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompilationMetadataParser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompileTimeElement.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/constants.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/models/CompilationComponentMetadata.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/models/CompilationConfigurationMetadata.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/models/CompilationMetadata.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/transformer/metadata.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/012-lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/012-lifecycle.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/configuration/processConfigurationClass.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/configuration/processConfigurationClass.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processAtomicMode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processAtomicMode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processCatContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processCatContext.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/isNameReserved.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/isNameReserved.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/runtime-elements/InstanceRuntimeElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/runtime-elements/InstanceRuntimeElement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/runtime-elements/StaticRuntimeElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/runtime-elements/StaticRuntimeElement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/ts-version/isTSVersionValid.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/ts-version/isTSVersionValid.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +33,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/index.ts" root0="FORCE_HIGHLIGHTING" />
@@ -26,6 +46,9 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2SWsMTfMDhfAmFhsRNX599K7Jvc" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -38,8 +61,12 @@
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/art/IdeaProjects/clawject/packages/clawject-debug&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -49,7 +76,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.TypeScript&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/art/IdeaProjects/clawject/packages/clawject-debug/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -137,7 +164,11 @@
       <workItem from="1689706407340" duration="10031000" />
       <workItem from="1690028603764" duration="1483000" />
       <workItem from="1690035215259" duration="5884000" />
-      <workItem from="1690303898450" duration="4795000" />
+      <workItem from="1690303898450" duration="12981000" />
+      <workItem from="1690453614816" duration="36000" />
+      <workItem from="1690453677128" duration="105000" />
+      <workItem from="1690453801098" duration="619000" />
+      <workItem from="1690454441881" duration="614000" />
     </task>
     <servers />
   </component>
@@ -157,6 +188,10 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

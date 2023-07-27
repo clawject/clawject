@@ -11,13 +11,14 @@ import { DecoratorRules } from '../compile-time/core/decorator-processor/Decorat
 
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const compilationContext = getCompilationContext();
-  compilationContext.assignProgram(program);
 
   if (!compilationContext.languageServiceMode) {
     verifyTSVersion();
   }
 
   return context => sourceFile => {
+    compilationContext.assignProgram(program);
+
     if (!compilationContext.languageServiceMode) {
       cleanup(sourceFile.fileName);
     }

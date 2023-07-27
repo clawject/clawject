@@ -4,17 +4,9 @@ interface Test {
   foo: string;
 }
 
-const a =  {
-  a: 'b',
-};
-
-const b = 'b';
-
-class MyContext extends CatContext {
+export class MyContext extends CatContext {
   @Bean @Qualifier('_123') test1: Test = { foo: '123' };
   @Bean @Qualifier('test4') test2: Test = { foo: '123' };
-
-  [b] = '123';
 
   // @Bean test0(
   //   test1: any,

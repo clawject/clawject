@@ -2,22 +2,19 @@ import ts from 'typescript';
 import { Configuration } from './Configuration';
 import { unquoteString } from '../utils/unquoteString';
 import { DependencyGraph } from '../dependency-graph/DependencyGraph';
-import { BeanKind } from '../bean/BeanKind';
-import { FileGraph } from '../file-graph/FileGraph';
 
 export class ConfigurationRepository {
   static fileNameToLastConfigurationCounter = new Map<string, number>();
   static fileNameToConfigurations = new Map<string, Configuration[]>();
   static configurationIdToConfiguration = new Map<string, Configuration>();
 
-  static register(classDeclaration: ts.ClassDeclaration, allowedBeanKinds: Set<BeanKind>): Configuration {
+  static register(classDeclaration: ts.ClassDeclaration): Configuration {
     const sourceFile = classDeclaration.getSourceFile();
 
     const configuration = new Configuration();
 
     configuration.id = this.buildId(classDeclaration);
     configuration.fileName = classDeclaration.getSourceFile().fileName;
-    configuration.allowedBeanKinds = allowedBeanKinds;
     configuration.node = classDeclaration;
 
     if (classDeclaration.name !== undefined) {
