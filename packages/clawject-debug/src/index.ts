@@ -18,7 +18,7 @@ interface Test<T> {
 }
 
 @Component
-class MyComponent<T extends string> implements Test<T> {
+class MyComponent<T extends string> {
   constructor(
     data: T,
   ) {}

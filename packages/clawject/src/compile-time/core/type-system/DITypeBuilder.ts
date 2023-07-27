@@ -33,8 +33,6 @@ export class DITypeBuilder {
 
     const typeParameters = classType.typeParameters ?? [];
 
-    const genericSymbolLookupTable = new WeakMap<ts.Symbol, DIType>();
-
     typeParameters.forEach((typeParameter) => {
       const types = compact([
         typeChecker.getDefaultFromTypeParameter(typeParameter),
@@ -43,7 +41,7 @@ export class DITypeBuilder {
 
       if (types.length === 0) {
         const unknownType = this.unknown();
-        genericSymbolLookupTable.set(typeParameter.symbol, unknownType);
+        component.genericSymbolLookupTable.set(typeParameter.symbol, unknownType);
 
         return;
       }
@@ -51,7 +49,7 @@ export class DITypeBuilder {
       const diTypes = types.map((it) => this.build(it));
       const diType = this.buildSyntheticIntersectionOrPlain(diTypes);
 
-      genericSymbolLookupTable.set(typeParameter.symbol, diType);
+      component.genericSymbolLookupTable.set(typeParameter.symbol, diType);
     });
 
     const heritageClausesMembers = component.node.heritageClauses
@@ -59,9 +57,9 @@ export class DITypeBuilder {
 
     const implementsClauseTypes = heritageClausesMembers.map(typeChecker.getTypeAtLocation);
 
-    const baseDIType = this._build(classType, typeParameters, genericSymbolLookupTable);
+    const baseDIType = this._build(classType, typeParameters, component.genericSymbolLookupTable);
     const clauseTypes = implementsClauseTypes.map(it =>
-      this._build(it, null, genericSymbolLookupTable)
+      this._build(it, null, component.genericSymbolLookupTable)
     );
 
     return this.buildSyntheticIntersectionOrPlain([baseDIType, ...clauseTypes]);
