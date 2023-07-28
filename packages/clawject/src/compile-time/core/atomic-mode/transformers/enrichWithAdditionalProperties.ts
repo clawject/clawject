@@ -3,85 +3,68 @@ import { getBeanConfigObjectLiteral } from './getBeanConfigObjectLiteral';
 import { Configuration } from '../../configuration/Configuration';
 import { ConfigLoader } from '../../../config/ConfigLoader';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
-import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
-import { getElementFactoriesInstanceProperty } from './getElementFactoriesInstanceProperty';
+import { getBeanFactoriesPropertyAssignment } from './getBeanFactoriesPropertyAssignment';
+import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
 
-export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, context: Configuration): ts.ClassDeclaration => {
-  const contextName = ConfigLoader.get().features.keepContextNames && context.name ?
-    factory.createStringLiteral(context.name)
+export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassDeclaration => {
+  const contextName = ConfigLoader.get().features.keepContextNames && configuration.name ?
+    factory.createStringLiteral(configuration.name)
     : factory.createIdentifier('undefined');
-  const lifecycleConfigProperty = getLifecycleConfigProperty(context);
-  const beanConfigProperty = getBeanConfigObjectLiteral(context);
+  const lifecycleConfigProperty = getLifecycleConfigProperty(configuration);
+  const beanConfigProperty = getBeanConfigObjectLiteral(configuration);
+  const contextBuilderExpression = getContextBuilderExpression(configuration);
+
+  const contextManagerConfig = factory.createObjectLiteralExpression(
+    [
+      factory.createPropertyAssignment(
+        factory.createIdentifier('id'),
+        factory.createStringLiteral(configuration.runtimeId)
+      ),
+      factory.createPropertyAssignment(
+        factory.createIdentifier('contextName'),
+        contextName
+      ),
+      factory.createPropertyAssignment(
+        factory.createIdentifier('contextConstructor'),
+        factory.createThis()
+      ),
+      factory.createPropertyAssignment(
+        factory.createIdentifier('lifecycle'),
+        lifecycleConfigProperty
+      ),
+      factory.createPropertyAssignment(
+        factory.createIdentifier('beans'),
+        beanConfigProperty
+      ),
+      factory.createPropertyAssignment(
+        factory.createIdentifier('lazy'),
+        configuration.lazyExpression.getAndDispose()
+      ),
+      factory.createPropertyAssignment(
+        factory.createIdentifier('contextBuilder'),
+        contextBuilderExpression,
+      )
+    ],
+    true
+  );
+
 
   const staticInitBlock = factory.createClassStaticBlockDeclaration(factory.createBlock(
     [factory.createExpressionStatement(factory.createCallExpression(
       factory.createPropertyAccessExpression(
-        factory.createIdentifier('Object'),
+        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
         factory.createIdentifier('defineProperty')
       ),
       undefined,
       [
         factory.createThis(),
-        factory.createStringLiteral(StaticRuntimeElement.CONTEXT_MANAGER),
-        factory.createObjectLiteralExpression(
-          [
-            factory.createPropertyAssignment(
-              factory.createIdentifier('value'),
-              factory.createNewExpression(
-                InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
-                undefined,
-                [factory.createObjectLiteralExpression(
-                  [
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('id'),
-                      factory.createStringLiteral(context.runtimeId)
-                    ),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('contextName'),
-                      contextName
-                    ),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('contextConstructor'),
-                      factory.createThis()
-                    ),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('lifecycle'),
-                      lifecycleConfigProperty
-                    ),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('beans'),
-                      beanConfigProperty
-                    ),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('lazy'),
-                      context.lazyExpression.getAndDispose()
-                    )
-                  ],
-                  true
-                )]
-              )
-            ),
-            factory.createPropertyAssignment(
-              factory.createIdentifier('configurable'),
-              factory.createFalse()
-            ),
-            factory.createPropertyAssignment(
-              factory.createIdentifier('enumerable'),
-              factory.createFalse()
-            ),
-            factory.createPropertyAssignment(
-              factory.createIdentifier('writable'),
-              factory.createFalse()
-            )
-          ],
-          true
-        )
+        factory.createStringLiteral(StaticRuntimeElement.CONTEXT_METADATA),
+        contextManagerConfig
       ]
     ))],
     true
   ));
-  const elementFactoriesInstanceProperty = getElementFactoriesInstanceProperty(context);
 
   return factory.updateClassDeclaration(
     node,
@@ -92,7 +75,6 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, contex
     [
       ...node.members,
       staticInitBlock,
-      elementFactoriesInstanceProperty,
     ]
   );
 };
@@ -127,3 +109,46 @@ const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExp
     true,
   );
 };
+
+function getContextBuilderExpression(configuration: Configuration): ts.Expression {
+  const beanFactoriesPropertyAssignment = getBeanFactoriesPropertyAssignment(configuration);
+
+  return factory.createArrowFunction(
+    undefined,
+    undefined,
+    [],
+    undefined,
+    factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+    factory.createBlock(
+      [
+        factory.createVariableStatement(
+          undefined,
+          factory.createVariableDeclarationList(
+            [factory.createVariableDeclaration(
+              factory.createIdentifier('instance'),
+              undefined,
+              undefined,
+              factory.createNewExpression(
+                factory.createThis(),
+                undefined,
+                []
+              )
+            )],
+            ts.NodeFlags.Const
+          )
+        ),
+        factory.createReturnStatement(factory.createObjectLiteralExpression(
+          [
+            factory.createPropertyAssignment(
+              factory.createIdentifier('instance'),
+              factory.createIdentifier('instance')
+            ),
+            beanFactoriesPropertyAssignment,
+          ],
+          true
+        ))
+      ],
+      true
+    )
+  );
+}

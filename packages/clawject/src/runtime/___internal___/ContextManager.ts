@@ -1,78 +1,82 @@
 import { CatContext } from '../CatContext';
-import { ClassConstructor } from '../ClassConstructor';
 import { ErrorBuilder } from '../ErrorBuilder';
 import { BeanFactory } from './BeanFactory';
 import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
-import { getStaticRuntimeElementFromInstanceConstructor } from '../utils/getStaticRuntimeElementFromInstanceConstructor';
-import { StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
 import { RuntimeLifecycleMetadata } from '../runtime-elements/RuntimeLifecycleMetadata';
 import { ScopeRegister } from '../scope/ScopeRegister';
-import { getInstanceRuntimeElementFromInstance } from '../utils/getInstanceRuntimeElementFromInstance';
-import { InstanceRuntimeElement } from '../runtime-elements/InstanceRuntimeElement';
+import { ClassConstructor } from '../ClassConstructor';
+import { RuntimeElementFactories } from '../runtime-elements/RuntimeElementFactories';
+import { getStaticRuntimeElementFromConstructor, StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
 
-export interface ContextManagerConfig {
+type BuiltContext = {
+  instance: CatContext;
+  factories: RuntimeElementFactories;
+}
+
+export interface ContextMetadata {
   id: string;
   contextName: string;
-  contextConstructor: ClassConstructor<CatContext>;
   lifecycle: RuntimeLifecycleMetadata;
   beans: Record<string, RuntimeBeanMetadata>;
   lazy: boolean;
+  contextBuilder: () => BuiltContext;
 }
 
 export class ContextManager {
-  declare public metadata: ContextManagerConfig;
-  private contextPool = new Map<any, CatContext>();
-  private configPool = new Map<CatContext, any>();
-  private beanFactories = new Map<CatContext, BeanFactory>();
+  static contextPool = new Map<ClassConstructor<CatContext>, Map<any, BuiltContext>>();
+  static configPool = new Map<CatContext, any>();
+  static beanFactories = new Map<CatContext, BeanFactory>();
 
-  constructor(metadata: ContextManagerConfig) {
-    Object.defineProperty(this, 'metadata', {
-      get(): ContextManagerConfig {
-        return metadata;
-      },
-      enumerable: false,
-      configurable: false,
-    });
-  }
+  static instantiateContext(contextConstructor: ClassConstructor<CatContext>, key: any, config: any): CatContext {
+    const contextMetadata = this.getContextMetadataOrThrow(contextConstructor);
 
-  public static createSet<T>(values: T[]): Set<T> {
-    return new Set(values);
-  }
+    Object.values(contextMetadata.beans)
+      .forEach(it => ScopeRegister.assureRegistered(it.scope));
 
-  public static createMap<K, V>(values: [K, V][]): Map<K, V> {
-    return new Map(values);
-  }
-
-  public static extractManagerFromInstance(instance: CatContext<any, any>): ContextManager {
-    const contextManager = getStaticRuntimeElementFromInstanceConstructor(
-      instance,
-      StaticRuntimeElement.CONTEXT_MANAGER
+    const builtContext = contextMetadata.contextBuilder();
+    const beanFactory = new BeanFactory(
+      contextMetadata.id,
+      contextMetadata.contextName,
+      contextMetadata.beans,
+      builtContext.factories,
     );
 
-    if (!contextManager) {
-      throw ErrorBuilder.usageWithoutConfiguredDI();
+    const contexts = this.contextPool.get(contextConstructor) ?? new Map();
+    if (!this.contextPool.has(contextConstructor)) {
+      this.contextPool.set(contextConstructor, contexts);
     }
 
-    return contextManager;
+    contexts.set(key, builtContext);
+    this.configPool.set(builtContext.instance, config);
+    this.beanFactories.set(builtContext.instance, beanFactory);
+
+    this.postConstruct(contextMetadata, builtContext);
+
+    return builtContext.instance;
   }
 
-  public static getConfigForInstance(instance: CatContext<any, any>): any {
-    const contextManager = this.extractManagerFromInstance(instance);
+  static disposeContext(contextConstructor: ClassConstructor<CatContext>, key: any): void {
+    const contextMetadata = this.getContextMetadataOrThrow(contextConstructor);
 
-    return contextManager.configPool.get(instance);
-  }
+    const builtContext = this.contextPool.get(contextConstructor)?.get(key);
 
-  public static getPrivateBeanFromFactory(beanName: string, instance: CatContext<any, any>): any {
-    const contextManager = this.extractManagerFromInstance(instance);
-
-    if (!contextManager) {
-      throw ErrorBuilder.usageWithoutConfiguredDI();
+    if (!builtContext) {
+      console.warn(`Context ${contextMetadata.contextName} with key ${key} not found`);
+      return;
     }
 
-    return contextManager.beanFactories.get(instance)?.getBean(beanName);
+    this.contextPool.delete(key);
+    this.configPool.delete(builtContext.instance);
+    this.beanFactories.delete(builtContext.instance);
+
+    this.preDestroy(contextMetadata, builtContext);
   }
 
-  public getBeanFactoryOrThrow(instance: CatContext): BeanFactory {
+  static getConfigForInstance(instance: CatContext<any, any>): any {
+    return this.configPool.get(instance);
+  }
+
+  static getBeanFactoryOrThrow(instance: CatContext): BeanFactory {
     const beanFactory = this.beanFactories.get(instance);
 
     if (!beanFactory) {
@@ -82,82 +86,57 @@ export class ContextManager {
     return beanFactory;
   }
 
-  public instantiateContext(key: any, config: any): any {
-    Object.values(this.metadata.beans)
-      .forEach(it => ScopeRegister.assureRegistered(it.scope));
+  static getContextMetadataOrThrow(contextConstructor: ClassConstructor<CatContext>): ContextMetadata {
+    const metadata = getStaticRuntimeElementFromConstructor(
+      contextConstructor,
+      StaticRuntimeElement.CONTEXT_METADATA
+    );
 
-    const instance = new this.metadata.contextConstructor();
-
-    this.contextPool.set(key, instance);
-    this.configPool.set(instance, config);
-    this.beanFactories.set(instance, new BeanFactory(
-      this.metadata.id,
-      this.metadata.contextName,
-      instance,
-      this.metadata.beans,
-    ));
-
-    this.postConstruct(instance);
-
-    return instance;
-  }
-
-  public getInstanceOrInstantiate(key: any, config: any): CatContext {
-    return this.contextPool.get(key) ?? this.instantiateContext(key, config);
-  }
-
-  public getInstanceOrThrow(key: any): CatContext {
-    const instance = this.contextPool.get(key);
-
-    if (!instance) {
-      throw ErrorBuilder.noContextByKey(this.metadata.contextName, key);
+    if (!metadata) {
+      throw ErrorBuilder.classNotInheritorOfCatContext(contextConstructor);
     }
 
-    return instance;
+    return metadata;
   }
 
-  public dispose(key: any): void {
-    const instance = this.contextPool.get(key);
+  public static getPrivateBeanFromFactory(beanName: string, instance: CatContext<any, any>): any {
+    const beanFactory = this.beanFactories.get(instance);
 
-    if (!instance) {
-      console.warn(`Context ${this.metadata.contextName} with key ${key} not found`);
-      return;
+    if (!beanFactory) {
+      throw ErrorBuilder.usageWithoutConfiguredDI();
     }
 
-    this.contextPool.delete(key);
-    this.configPool.delete(instance);
-    this.preDestroy(instance);
+    return beanFactory.getBean(beanName);
   }
 
-  private postConstruct(instance: CatContext): void {
-    Object.entries(this.metadata.beans).forEach(([beanName, beanConfig]) => {
-      const isBeanLazy = beanConfig.lazy === null ? this.metadata.lazy : beanConfig.lazy;
+  private static postConstruct(contextMetadata: ContextMetadata, builtContext: BuiltContext): void {
+    Object.entries(contextMetadata.beans).forEach(([beanName, beanConfig]) => {
+      const isBeanLazy = beanConfig.lazy === null ? contextMetadata.lazy : beanConfig.lazy;
 
       if (!isBeanLazy && beanConfig.scope === 'singleton') {
-        this.beanFactories.get(instance)?.getBean(beanName);
+        this.beanFactories.get(builtContext.instance)?.getBean(beanName);
       }
     });
-    this.metadata.lifecycle.POST_CONSTRUCT?.forEach((methodName) => {
-      this.getElementFactory(instance, methodName)();
+    contextMetadata.lifecycle.POST_CONSTRUCT?.forEach((methodName) => {
+      this.getElementFactory(contextMetadata, builtContext, methodName)();
     });
   }
 
-  private preDestroy(instance: CatContext): void {
-    Object.keys(this.metadata.beans).forEach(beanName => {
-      this.beanFactories.get(instance)?.destroyBean(beanName);
+  private static preDestroy(contextMetadata: ContextMetadata, builtContext: BuiltContext): void {
+    Object.keys(contextMetadata.beans).forEach(beanName => {
+      this.beanFactories.get(builtContext.instance)?.destroyBean(beanName);
     });
 
-    this.metadata.lifecycle.PRE_DESTROY?.forEach((methodName) => {
-      this.getElementFactory(instance, methodName)();
+    contextMetadata.lifecycle.PRE_DESTROY?.forEach((methodName) => {
+      this.getElementFactory(contextMetadata, builtContext, methodName)();
     });
   }
 
-  private getElementFactory(instance: CatContext, name: string): () => any {
-    const elementFactory =
-      getInstanceRuntimeElementFromInstance(instance, InstanceRuntimeElement.CONTEXT_ELEMENT_FACTORIES)?.[name];
+  private static getElementFactory(contextMetadata: ContextMetadata, builtContext: BuiltContext, name: string): () => any {
+    const elementFactory = builtContext.factories[name];
 
     if (!elementFactory) {
-      throw ErrorBuilder.noElementFactoryFound(this.metadata.contextName, name);
+      throw ErrorBuilder.noElementFactoryFound(contextMetadata.contextName, name);
     }
 
     return elementFactory;

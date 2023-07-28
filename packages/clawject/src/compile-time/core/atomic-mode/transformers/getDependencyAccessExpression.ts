@@ -27,7 +27,7 @@ export const getDependencyAccessExpression = (dependency: Dependency): ts.Expres
 
       return factory.createCallExpression(
         factory.createPropertyAccessExpression(
-          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
+          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
           factory.createIdentifier('createSet')
         ),
         undefined,
@@ -51,7 +51,7 @@ export const getDependencyAccessExpression = (dependency: Dependency): ts.Expres
 
       return factory.createCallExpression(
         factory.createPropertyAccessExpression(
-          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
+          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
           factory.createIdentifier('createMap')
         ),
         undefined,
@@ -87,7 +87,7 @@ function getBeanAccessExpression(qualifiedBean: Bean): ts.Expression {
     undefined,
     [
       factory.createStringLiteral(qualifiedBean.classMemberName),
-      factory.createThis()
+      factory.createIdentifier('instance')
     ]
   );
 

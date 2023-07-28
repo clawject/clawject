@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { registerMethodBeanDependencies } from './registerMethodBeanDependencies';
-import { registerPropertyBeanDependencies } from './registerPropertyBeanDependencies';
+import { registerClassConstructorBeanDependencies } from './registerClassConstructorBeanDependencies';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer } from '../ts/types';
 import { registerArrowFunctionBeanDependencies } from './registerArrowFunctionBeanDependencies';
 import { Configuration } from '../configuration/Configuration';
@@ -11,7 +11,7 @@ export const registerBeanDependencies = (configuration: Configuration) => {
   configuration.beanRegister.elements.forEach(bean => {
     switch (bean.kind) {
     case BeanKind.CLASS_CONSTRUCTOR:
-      registerPropertyBeanDependencies(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
+      registerClassConstructorBeanDependencies(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
       break;
 
     case BeanKind.FACTORY_METHOD:

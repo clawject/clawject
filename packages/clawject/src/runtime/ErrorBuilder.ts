@@ -1,12 +1,16 @@
 import { GITHUB_REPO_LINK } from './constants';
+import { ClassConstructor } from './ClassConstructor';
 
 export class ErrorBuilder {
   static beanNotFoundInContext(contextName: string | null, beanName: string): Error {
     return new Error(`Bean '${beanName}' is missing in context '${this.getContextName(contextName)}'`);
   }
 
-  static classNotInheritorOfCatContext(): Error {
-    return new Error('Class that is passed to the Container is not an inheritor of CatContext');
+  static classNotInheritorOfCatContext(clazz: ClassConstructor<any>): Error {
+    const error = new Error('Class that is passed to the Container is not an inheritor of CatContext');
+    Object.defineProperty(error, 'class', clazz);
+
+    return error;
   }
 
   static noContextByKey(contextName: string | null, contextKey: any): Error {

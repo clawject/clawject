@@ -45,7 +45,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
 
   if (!node.name) {
     getCompilationContext().report(new IncorrectNameError(
-      'Lifecycle element should have statically known name.',
+      'Lifecycle element should have a name.',
       node,
       null
     ));

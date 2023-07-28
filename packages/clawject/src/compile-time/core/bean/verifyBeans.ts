@@ -9,6 +9,7 @@ import ts from 'typescript';
 import { DuplicateNameError } from '../../compilation-context/messages/errors/DuplicateNameError';
 import { BeanKind } from './BeanKind';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
+import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNSUPPORTED, 'unsupported'],
@@ -101,8 +102,8 @@ function verifyName(bean: Bean): void {
     return;
   }
 
-  compilationContext.report(new NotSupportedError(
-    'Bean name should be statically known.',
+  compilationContext.report(new IncorrectNameError(
+    'Bean element should have statically known name.',
     bean.node.name,
     bean.parentConfiguration
   ));

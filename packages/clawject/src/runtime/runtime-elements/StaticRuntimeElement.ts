@@ -1,13 +1,28 @@
-import { ContextManager } from '../___internal___/ContextManager';
 import { RuntimeComponentMetadata } from './RuntimeComponentMetadata';
+import { ContextMetadata } from '../___internal___/ContextManager';
+import { getConstructorFromInstance } from '../utils/getConstructorFromInstance';
+import { ClassConstructor } from '../ClassConstructor';
 
 export enum StaticRuntimeElement {
-  CONTEXT_MANAGER = 'clawject_context_manager',
+  CONTEXT_METADATA = 'clawject_context_metadata',
   COMPONENT_METADATA = 'clawject_component_metadata',
-  //TODO move from here because it's not runtime
 }
 
 export interface StaticRuntimeElementsTypeMap extends Record<StaticRuntimeElement, unknown> {
-  [StaticRuntimeElement.CONTEXT_MANAGER]: ContextManager;
+  [StaticRuntimeElement.CONTEXT_METADATA]: ContextMetadata;
   [StaticRuntimeElement.COMPONENT_METADATA]: RuntimeComponentMetadata;
 }
+
+export const getStaticRuntimeElementFromInstanceConstructor = <T extends StaticRuntimeElement>(instance: any, key: T): StaticRuntimeElementsTypeMap[T] | null => {
+  const instanceConstructor = getConstructorFromInstance(instance);
+
+  if (!instanceConstructor) {
+    return null;
+  }
+
+  return instanceConstructor[key as any] ?? null;
+};
+
+export const getStaticRuntimeElementFromConstructor = <T extends StaticRuntimeElement>(constructor: ClassConstructor<any>, key: T): StaticRuntimeElementsTypeMap[T] | null => {
+  return constructor[key as any] ?? null;
+};

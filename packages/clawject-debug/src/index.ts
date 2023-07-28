@@ -17,11 +17,22 @@ interface Test<T> {
 
 }
 
-@Component
-class MyComponent<T extends string> {
-  constructor(
-    data: T,
-  ) {}
+// @Component
+// class MyComponent<T extends string> {
+//   constructor(
+//     data: T,
+//   ) {}
+// }
+
+class MyContext extends CatContext {
+  @Bean data = (number: number) => 'data';
+
+  @Bean test = 123;
+}
+
+class ImplicitComponent {
+  @PostConstruct
+  method() {}
 }
 
 @Configuration

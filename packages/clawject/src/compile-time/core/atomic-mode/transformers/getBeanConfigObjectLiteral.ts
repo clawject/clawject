@@ -9,7 +9,7 @@ export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLit
 
   const objectLiteralMembers: ts.PropertyAssignment[] = beansToDefine.map(bean => (
     factory.createPropertyAssignment(
-      factory.createComputedPropertyName(factory.createStringLiteral(bean.classMemberName)),
+      factory.createIdentifier(bean.classMemberName),
       factory.createObjectLiteralExpression(
         [
           factory.createPropertyAssignment(

@@ -1,15 +1,12 @@
-import { CatContext } from '../CatContext';
 import { ErrorBuilder } from '../ErrorBuilder';
 import { ScopeRegister } from '../scope/ScopeRegister';
 import { ObjectFactoryImpl } from '../object-factory/ObjectFactoryImpl';
 import { Callback } from '../types/Callback';
 import { LifecycleKind } from '../../compile-time/core/component-lifecycle/LifecycleKind';
-import { ContextManagerConfig } from './ContextManager';
+import { ContextMetadata } from './ContextManager';
 import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
-import { StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
-import { getStaticRuntimeElementFromInstanceConstructor } from '../utils/getStaticRuntimeElementFromInstanceConstructor';
-import { getInstanceRuntimeElementFromInstance } from '../utils/getInstanceRuntimeElementFromInstance';
-import { InstanceRuntimeElement } from '../runtime-elements/InstanceRuntimeElement';
+import { getStaticRuntimeElementFromInstanceConstructor, StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
+import { RuntimeElementFactories } from '../runtime-elements/RuntimeElementFactories';
 
 export class BeanFactory {
   private proxyRegister = new Map<string, any>();
@@ -17,8 +14,8 @@ export class BeanFactory {
   constructor(
     private id: string | null, // Null in application mode
     private configurationName: string,
-    private instance: CatContext, //TODO consider use not only CatContext
-    private beans: ContextManagerConfig['beans'],
+    private beans: ContextMetadata['beans'],
+    private factories: RuntimeElementFactories,
   ) {}
 
   public getPublicBean(name: string): any {
@@ -137,8 +134,7 @@ export class BeanFactory {
   }
 
   private getElementFactory(name: string): () => any {
-    const elementFactory =
-      getInstanceRuntimeElementFromInstance(this.instance, InstanceRuntimeElement.CONTEXT_ELEMENT_FACTORIES)?.[name];
+    const elementFactory = this.factories[name];
 
     if (!elementFactory) {
       throw ErrorBuilder.noElementFactoryFound(this.configurationName, name);

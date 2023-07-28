@@ -9,7 +9,7 @@ import { LanguageService } from '../../lsp/LanguageService';
 
 export class ConfigLoader {
   private static defaultConfig: IDIConfig = {
-    mode: 'application',
+    mode: 'atomic',
     unsafeTSVersion: false,
     features: {
       advancedClassTypeResolution: true,

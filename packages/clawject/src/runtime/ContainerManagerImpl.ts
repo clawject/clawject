@@ -6,7 +6,6 @@ import { ErrorBuilder } from './ErrorBuilder';
 import { ClassConstructor } from './ClassConstructor';
 import { CustomScope } from './scope/CustomScope';
 import { ScopeRegister } from './scope/ScopeRegister';
-import { StaticRuntimeElement } from './runtime-elements/StaticRuntimeElement';
 import { ContextManager } from './___internal___/ContextManager';
 
 const DEFAULT_KEY = undefined;
@@ -21,10 +20,9 @@ export class ContainerManagerImpl implements ContainerManager {
   init<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
   init<T extends {}, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
   init(context: ClassConstructor<CatContext<any>>, init: ContextInit & Partial<ContextInitConfig<any>> = DEFAULT_INIT): InitializedContext<any> {
-    const contextManager = this.getContextManagerOrThrow(context);
-    const contextInstance = contextManager.instantiateContext(init.key, init.config);
+    const contextInstance = ContextManager.instantiateContext(context, init.key, init.config);
 
-    const initializedContext = new InitializedContextImpl(contextInstance, contextManager);
+    const initializedContext = new InitializedContextImpl(contextInstance);
 
     this.setCachedInitializedContext(context, init.key, initializedContext);
 
@@ -38,9 +36,7 @@ export class ContainerManagerImpl implements ContainerManager {
       return initializedContext;
     }
 
-    const contextManager = this.getContextManagerOrThrow(context);
-
-    throw ErrorBuilder.noContextByKey(contextManager.metadata.contextName, key);
+    throw ErrorBuilder.noContextByKey(ContextManager.getContextMetadataOrThrow(context).contextName, key);
   }
 
   getOrInit<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
@@ -56,9 +52,7 @@ export class ContainerManagerImpl implements ContainerManager {
   }
 
   clear(context: ClassConstructor<CatContext<any>>, key: any = DEFAULT_KEY): void {
-    const contextManager = this.getContextManagerOrThrow(context);
-
-    contextManager.dispose(key);
+    ContextManager.disposeContext(context, key);
     this.instances.get(context)?.delete(key);
 
     if (this.instances.get(context)?.size === 0) {
@@ -68,20 +62,6 @@ export class ContainerManagerImpl implements ContainerManager {
 
   registerScope(scopeName: string, scope: CustomScope): void {
     ScopeRegister.registerScope(scopeName, scope);
-  }
-
-  private getContextManagerOrThrow(context: ClassConstructor<any>): ContextManager {
-    if (!(context.prototype instanceof CatContext)) {
-      throw ErrorBuilder.classNotInheritorOfCatContext();
-    }
-
-    const contextManager = context[StaticRuntimeElement.CONTEXT_MANAGER] as ContextManager | undefined;
-
-    if (!contextManager) {
-      throw ErrorBuilder.usageWithoutConfiguredDI();
-    }
-
-    return contextManager;
   }
 
   private setCachedInitializedContext(context: ClassConstructor<CatContext<any>>, key: any, initializedContext: InitializedContext<any>): void {

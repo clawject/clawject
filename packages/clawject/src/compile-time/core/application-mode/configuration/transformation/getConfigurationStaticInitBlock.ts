@@ -20,7 +20,11 @@ export function getConfigurationStaticInitBlock(): ts.ClassElement {
           [],
           undefined,
           factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-          factory.createThis()
+          factory.createNewExpression(
+            factory.createThis(),
+            undefined,
+            []
+          )
         )
       ]
     ))],

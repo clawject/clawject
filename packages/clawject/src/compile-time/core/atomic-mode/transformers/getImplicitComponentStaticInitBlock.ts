@@ -2,12 +2,13 @@ import ts, { factory } from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
 import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
+import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
   return factory.createClassStaticBlockDeclaration(factory.createBlock(
     [factory.createExpressionStatement(factory.createCallExpression(
       factory.createPropertyAccessExpression(
-        factory.createIdentifier('Object'),
+        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
         factory.createIdentifier('defineProperty')
       ),
       undefined,

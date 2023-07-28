@@ -1,23 +1,21 @@
 import { InitializedContext } from './InitializedContext';
 import { CatContext } from './CatContext';
-import { ContextManager } from './___internal___/ContextManager';
+import { ContextManager } from './___internal___';
 
 export class InitializedContextImpl implements InitializedContext<any> {
   constructor(
     public instance: CatContext<any, any>,
-    public contextManager: ContextManager
-  ) {
-  }
+  ) {}
 
   getBean(beanName: string): any {
-    return this.contextManager.getBeanFactoryOrThrow(this.instance).getPublicBean(beanName);
+    return ContextManager.getBeanFactoryOrThrow(this.instance).getPublicBean(beanName);
   }
 
   getBeans(): any {
-    return this.contextManager.getBeanFactoryOrThrow(this.instance).getPublicBeans();
+    return ContextManager.getBeanFactoryOrThrow(this.instance).getPublicBeans();
   }
 
   getAllBeans(): any {
-    return this.contextManager.getBeanFactoryOrThrow(this.instance).getAllBeans();
+    return ContextManager.getBeanFactoryOrThrow(this.instance).getAllBeans();
   }
 }

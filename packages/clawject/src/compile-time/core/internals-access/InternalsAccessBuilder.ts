@@ -5,6 +5,7 @@ import { CONSTANTS } from '../../../constants';
 export enum InternalElementKind {
   ApplicationManager = 'ApplicationManager',
   ContextManager = 'ContextManager',
+  Utils = 'Utils',
 }
 
 export class InternalsAccessBuilder {

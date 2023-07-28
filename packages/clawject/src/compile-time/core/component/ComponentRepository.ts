@@ -18,7 +18,7 @@ export class ComponentRepository {
     component.node = classDeclaration;
 
     if (classDeclaration.name !== undefined) {
-      component.name = unquoteString(classDeclaration.name.getText());
+      component.className = unquoteString(classDeclaration.name.getText());
     }
 
     const components = this.fileNameToComponents.get(sourceFile.fileName) ?? [];
