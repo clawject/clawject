@@ -22,6 +22,7 @@ const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.AbstractKeyword, 'abstract'],
   [ts.SyntaxKind.StaticKeyword, 'static'],
   [ts.SyntaxKind.DeclareKeyword, 'declare'],
+  [ts.SyntaxKind.PrivateKeyword, 'private'],
 ]);
 
 export const verifyBeans = (configuration: Configuration): void => {

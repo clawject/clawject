@@ -12,7 +12,7 @@ and it can be a dependency for other Beans.
 
 Almost anything can be a Bean, but there are some restrictions:
   - Should not be of type: `undefined`, `void`, `null`, `never`, etc.
-  - Should not have the following modifiers: `abstract`, `static` or `declare`
+  - Should not have the following modifiers: `abstract`, `static`, `declare` or `private`
   - Bean should have a statically known name
 
 ```ts title="Example of invalid declaration"
