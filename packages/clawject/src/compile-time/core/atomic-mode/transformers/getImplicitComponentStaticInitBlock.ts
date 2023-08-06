@@ -49,7 +49,7 @@ const getLifecycleConfigProperty = (component: Component): ts.ObjectLiteralExpre
     [LifecycleKind.PRE_DESTROY]: [],
   };
 
-  component.componentLifecycleRegister.elements.forEach(componentLifecycle => {
+  component.lifecycleRegister.elements.forEach(componentLifecycle => {
     componentLifecycle.lifecycles.forEach(lifecycle => {
       lifecycleToClassElementNames[lifecycle].push(componentLifecycle.classMemberName);
     });

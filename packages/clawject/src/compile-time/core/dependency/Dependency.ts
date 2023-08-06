@@ -1,9 +1,9 @@
 import ts from 'typescript';
 import { DIType } from '../type-system/DIType';
 import { Bean } from '../bean/Bean';
-import { BaseElement } from '../BaseElement';
+import { Entity } from '../Entity';
 
-export class Dependency extends BaseElement<ts.ParameterDeclaration> {
+export class Dependency extends Entity<ts.ParameterDeclaration> {
   declare parameterName: string;
   declare diType: DIType;
 

@@ -4,7 +4,7 @@ import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpress
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { Dependency } from '../dependency/Dependency';
-import { BaseElement } from '../BaseElement';
+import { Entity } from '../Entity';
 import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { WeakNodeHolder } from '../WeakNodeHolder';
@@ -17,7 +17,7 @@ export type BeanNode = ts.MethodDeclaration
   | ts.PropertyDeclaration
   | ClassPropertyWithExpressionInitializer;
 
-export class Bean<T extends BeanNode = BeanNode> extends BaseElement<T> {
+export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   declare id: string; //Set by Context or Configuration during registration
   declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
   declare classMemberName: string;

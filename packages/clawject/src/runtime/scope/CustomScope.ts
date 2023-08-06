@@ -61,4 +61,13 @@ export interface CustomScope {
    * @see {@link PreDestroy}
    */
   registerDestructionCallback(name: string, callback: () => void): void;
+
+  /**
+   * Indicates whether a proxy should be injected or the raw object.
+   *
+   * Note that in most cases you need to use a proxy, so this method should return `true` or just can be not defined.
+   *
+   * @returns `true` if a proxy should be injected, `false` otherwise.
+   */
+  useProxy?(): boolean;
 }

@@ -51,7 +51,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
           ts.factory.createToken(ts.SyntaxKind.PrivateKeyword),
           ts.factory.createToken(ts.SyntaxKind.StaticKeyword)
         ],
-        ts.factory.createIdentifier(CompileTimeElement.COMPILATION_METADATA),
+        ts.factory.createIdentifier(CompileTimeElement.COMPILE_TIME_METADATA),
         undefined,
         undefined,
         undefined

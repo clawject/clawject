@@ -64,7 +64,7 @@ export class LanguageServiceReportBuilder {
           file: this.getSourceFile(it.nodeDetails.filePath),
           start: it.nodeDetails.startOffset,
           code: 0,
-          messageText: `Bean '${it.beanName}' is declared here.`,
+          messageText: `'${it.beanName}' is declared here.`,
           category: this.getDiagnosticCategory(message),
         });
 
@@ -78,7 +78,7 @@ export class LanguageServiceReportBuilder {
 
     if (message instanceof CanNotRegisterBeanError) {
       const causes: tsServer.DiagnosticRelatedInformation[] = message.missingCandidates.map(it => ({
-        messageText: `Can not find Bean candidate for '${it.name}'`,
+        messageText: `Can not find Bean candidate for '${it.name}'.`,
         start: it.nodeDetails.startOffset,
         length: it.nodeDetails.length,
         code: 0,
@@ -93,7 +93,7 @@ export class LanguageServiceReportBuilder {
       messageDescription = '';
 
       const candidatesByType: tsServer.DiagnosticRelatedInformation[] = message.candidatesByType.map(it => ({
-        messageText: `bean '${it.declarationName ?? '<anonymous>'}' matched by type.`,
+        messageText: `'${it.declarationName ?? '<anonymous>'}' matched by type.`,
         start: it.startOffset,
         length: it.length,
         code: 0,
@@ -102,7 +102,7 @@ export class LanguageServiceReportBuilder {
       }));
 
       const candidatesByName: tsServer.DiagnosticRelatedInformation[] = message.candidatesByName.map(it => ({
-        messageText: `bean '${it.declarationName ?? '<anonymous>'}' matched by name.`,
+        messageText: `'${it.declarationName ?? '<anonymous>'}' matched by name.`,
         start: it.startOffset,
         length: it.length,
         code: 0,
@@ -114,7 +114,7 @@ export class LanguageServiceReportBuilder {
 
       if (message.beanKind === BeanKind.CLASS_CONSTRUCTOR) {
         relatedInformation.push({
-          messageText: `bean '${message.beanDeclarationNodeDetails.declarationName}' is declared here.`,
+          messageText: `'${message.beanDeclarationNodeDetails.declarationName}' is declared here.`,
           start: message.beanDeclarationNodeDetails.startOffset,
           length: message.beanDeclarationNodeDetails.length,
           code: 0,
@@ -183,7 +183,7 @@ export class LanguageServiceReportBuilder {
     const nodeDetails = relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails;
 
     return {
-      messageText: `related context: '${relatedConfigurationMetadata.name}'`,
+      messageText: `'${relatedConfigurationMetadata.name}' is declared here.`,
       length: nodeDetails.length,
       start: nodeDetails.startOffset,
       file: this.getSourceFile(relatedConfigurationMetadata.fileName),

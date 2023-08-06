@@ -14,4 +14,8 @@ export class PrototypeScope implements CustomScope {
   remove(name: string): ObjectFactoryResult | null {
     return null;
   }
+
+  useProxy(): boolean {
+    return false;
+  }
 }

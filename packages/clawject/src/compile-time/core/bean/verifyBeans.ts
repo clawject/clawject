@@ -17,6 +17,7 @@ const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.NEVER, 'never'],
   [DITypeFlag.VOID, 'void'],
   [DITypeFlag.UNDEFINED, 'undefined'],
+  [DITypeFlag.UNION, 'union'],
 ]);
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.AbstractKeyword, 'abstract'],
@@ -70,16 +71,6 @@ function verifyBeanType(bean: Bean): void {
 
   if (bean.isLifecycle()) {
     // Lifecycle methods can return anything
-    return;
-  }
-
-  if (bean.diType.isUnion) {
-    compilationContext.report(new IncorrectTypeError(
-      'Union type is not supported as a Bean type.',
-      bean.node.type ?? bean.node,
-      parentConfiguration,
-    ));
-    parentConfiguration.beanRegister.deregister(bean);
     return;
   }
 

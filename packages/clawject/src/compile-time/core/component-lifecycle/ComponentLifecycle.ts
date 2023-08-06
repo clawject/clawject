@@ -1,9 +1,9 @@
 import ts from 'typescript';
-import { BaseElement } from '../BaseElement';
+import { Entity } from '../Entity';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { LifecycleKind } from './LifecycleKind';
 
-export class ComponentLifecycle extends BaseElement<ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer> {
+export class ComponentLifecycle extends Entity<ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer> {
   declare id: string;
   declare classMemberName: string;
   declare lifecycles: Set<LifecycleKind>;

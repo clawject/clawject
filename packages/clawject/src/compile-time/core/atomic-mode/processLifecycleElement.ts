@@ -81,7 +81,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     node: node,
   });
 
-  component.componentLifecycleRegister.register(componentLifecycle);
+  component.lifecycleRegister.register(componentLifecycle);
 
   if (ts.isMethodDeclaration(node)) {
     return factory.updateMethodDeclaration(

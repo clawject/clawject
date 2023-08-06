@@ -1,3 +1,3 @@
 export enum CompileTimeElement {
-  COMPILATION_METADATA = 'clawject_compilation_metadata',
+  COMPILE_TIME_METADATA = 'clawject_compile_time_metadata',
 }

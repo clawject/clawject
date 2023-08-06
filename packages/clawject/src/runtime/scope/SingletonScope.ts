@@ -25,4 +25,8 @@ export class SingletonScope implements CustomScope {
 
     return instance;
   }
+
+  useProxy(): boolean {
+    return true;
+  }
 }

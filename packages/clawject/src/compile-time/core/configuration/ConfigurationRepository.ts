@@ -18,7 +18,7 @@ export class ConfigurationRepository {
     configuration.node = classDeclaration;
 
     if (classDeclaration.name !== undefined) {
-      configuration.name = unquoteString(classDeclaration.name.getText());
+      configuration.className = unquoteString(classDeclaration.name.getText());
     }
 
     const configurations = this.fileNameToConfigurations.get(sourceFile.fileName) ?? [];

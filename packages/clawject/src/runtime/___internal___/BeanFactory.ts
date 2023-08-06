@@ -64,16 +64,14 @@ export class BeanFactory {
 
     const scopedBeanName = this.buildScopedBeanName(name);
 
-    let bean;
+    const useProxy = scope.useProxy?.() ?? true;
 
-    if (beanConfig.scope === 'singleton' || beanConfig.scope === 'prototype') {
-      bean = scope.get(scopedBeanName, objectFactory);
-    } else {
-      bean = this.getOrBuildBeanProxy(
+    const bean = useProxy
+      ? this.getOrBuildBeanProxy(
         name,
         () => scope.get(scopedBeanName, objectFactory),
-      );
-    }
+      )
+      : scope.get(scopedBeanName, objectFactory);
 
     const hasLifecyclePreDestroy = (getStaticRuntimeElementFromInstanceConstructor(
       bean, StaticRuntimeElement.COMPONENT_METADATA

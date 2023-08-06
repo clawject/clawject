@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'Clawject - Dependency Injection for TypeScript',
+    title: 'Clawject: DI made easy',
     tagline: 'TypeScript DI made easy',
     favicon: 'img/favicon.ico',
 
@@ -75,12 +75,11 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
             // Replace with your project's social card
-            image: 'img/docusaurus-social-card.jpg',
             navbar: {
                 title: 'Clawject',
                 logo: {
                     alt: 'Clawject logo',
-                    src: 'img/logo.svg',
+                    src: 'img/logo-head.svg',
                 },
                 items: [
                     {
@@ -89,11 +88,11 @@ const config = {
                         position: 'left',
                         label: 'Docs',
                     },
-                    {
-                        position: 'left',
-                        label: 'Playground',
-                        to: '/playground',
-                    },
+                    // {
+                    //     position: 'left',
+                    //     label: 'Playground',
+                    //     to: '/playground',
+                    // },
                     {
                         href: 'https://github.com/clawject/clawject',
                         label: 'GitHub',
@@ -105,7 +104,7 @@ const config = {
                 style: 'dark',
                 links: [
                     {
-                        label: '<> with ❤️ by artem1458',
+                        label: 'Made with ♥ by artem1458',
                         href: 'https://github.com/artem1458',
                     },
                     // {

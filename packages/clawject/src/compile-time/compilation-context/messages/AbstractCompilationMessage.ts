@@ -34,7 +34,7 @@ export abstract class AbstractCompilationMessage {
     }
 
     return {
-      name: relatedConfiguration.name ?? '<anonymous>',
+      name: relatedConfiguration.className ?? '<anonymous>',
       fileName: relatedConfiguration.fileName,
       nodeDetails: getNodeDetails(relatedConfiguration.node),
       nameNodeDetails: relatedConfiguration.node.name ? getNodeDetails(relatedConfiguration.node.name) : null,

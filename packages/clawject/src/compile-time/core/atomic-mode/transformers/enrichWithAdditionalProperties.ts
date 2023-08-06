@@ -8,8 +8,8 @@ import { getBeanFactoriesPropertyAssignment } from './getBeanFactoriesPropertyAs
 import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
 
 export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassDeclaration => {
-  const contextName = ConfigLoader.get().features.keepContextNames && configuration.name ?
-    factory.createStringLiteral(configuration.name)
+  const contextName = ConfigLoader.get().features.keepContextNames && configuration.className ?
+    factory.createStringLiteral(configuration.className)
     : factory.createIdentifier('undefined');
   const lifecycleConfigProperty = getLifecycleConfigProperty(configuration);
   const beanConfigProperty = getBeanConfigObjectLiteral(configuration);

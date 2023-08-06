@@ -5,7 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../website/static/img/logo-bg-dark.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/static/img/logo-head.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/AbstractCompilationMessage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/AbstractCompilationMessage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/BaseElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/Entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processLifecycleElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processLifecycleElement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/enrichWithAdditionalProperties.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/enrichWithAdditionalProperties.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getImplicitComponentStaticInitBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getImplicitComponentStaticInitBlock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/autowired/Autowired.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/autowired/Autowired.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompileTimeElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompileTimeElement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/component-lifecycle/ComponentLifecycle.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/component-lifecycle/ComponentLifecycle.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/component/Component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/component/Component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/Configuration.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/Configuration.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/Dependency.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/Dependency.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceReportBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceReportBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/BeanFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/BeanFactory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/CustomScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/CustomScope.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/PrototypeScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/PrototypeScope.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/SingletonScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/SingletonScope.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/metadata.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/metadata.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/components/HomepageFeatures/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/components/HomepageFeatures/styles.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/css/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/css/custom.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/docusaurus-social-card.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/docusaurus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/../website/static/img/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../website/static/img/logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/undraw_docusaurus_mountain.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/undraw_docusaurus_react.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/undraw_docusaurus_tree.svg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,31 +73,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/art/IdeaProjects/clawject/packages/clawject-debug&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/art/IdeaProjects/clawject/packages/clawject-debug/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "last_opened_file_path": "/Users/art/IdeaProjects/clawject/packages/clawject-debug",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "settings.typescriptcompiler",
+    "ts.external.directory.path": "/Users/art/IdeaProjects/clawject/packages/clawject-debug/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="npm.run:ttsc_debug">
+}]]></component>
+  <component name="RunManager" selected="npm.run:upgradeClawject">
     <configuration name="run:ttsc_debug" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -115,11 +150,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:ttsc_debug" />
         <item itemvalue="npm.run:upgradeClawject" />
-        <item itemvalue="npm.run:ttsc_watch" />
+        <item itemvalue="npm.run:ttsc_debug" />
         <item itemvalue="npm.run:webpack_prod" />
         <item itemvalue="npm.run:webpack_hot" />
+        <item itemvalue="npm.run:ttsc_watch" />
       </list>
     </recent_temporary>
   </component>
@@ -153,7 +188,10 @@
       <workItem from="1690456316168" duration="3053000" />
       <workItem from="1690475624908" duration="238000" />
       <workItem from="1690475951129" duration="13152000" />
-      <workItem from="1690560053702" duration="8582000" />
+      <workItem from="1690560053702" duration="17036000" />
+      <workItem from="1691148692752" duration="1057000" />
+      <workItem from="1691159172904" duration="1933000" />
+      <workItem from="1691161671201" duration="3641000" />
     </task>
     <servers />
   </component>
