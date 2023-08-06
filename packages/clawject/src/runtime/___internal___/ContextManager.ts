@@ -19,6 +19,7 @@ export interface ContextMetadata {
   lifecycle: RuntimeLifecycleMetadata;
   beans: Record<string, RuntimeBeanMetadata>;
   lazy: boolean;
+  scope: string;
   contextBuilder: () => BuiltContext;
 }
 
@@ -31,13 +32,14 @@ export class ContextManager {
     const contextMetadata = this.getContextMetadataOrThrow(contextConstructor);
 
     Object.values(contextMetadata.beans)
-      .forEach(it => ScopeRegister.assureRegistered(it.scope));
+      .forEach(it => ScopeRegister.assureRegistered(it.scope ?? contextMetadata.scope));
 
     const builtContext = contextMetadata.contextBuilder();
     const beanFactory = new BeanFactory(
       contextMetadata.id,
       contextMetadata.contextName,
       contextMetadata.beans,
+      contextMetadata.scope,
       builtContext.factories,
     );
 

@@ -15,6 +15,7 @@ export class BeanFactory {
     private id: string | null, // Null in application mode
     private configurationName: string,
     private beans: ContextMetadata['beans'],
+    private contextScope: string,
     private factories: RuntimeElementFactories,
   ) {}
 
@@ -52,7 +53,7 @@ export class BeanFactory {
 
   getBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);
-    const scope = ScopeRegister.getScope(beanConfig.scope);
+    const scope = ScopeRegister.getScope(beanConfig.scope ?? this.contextScope);
     const objectFactory = new ObjectFactoryImpl(() => {
       const elementFactory = this.getElementFactory(name);
       const instantiatedBean = elementFactory();
@@ -86,7 +87,7 @@ export class BeanFactory {
 
   destroyBean(name: string): void {
     const beanConfig = this.getBeanConfig(name);
-    const scope = ScopeRegister.getScope(beanConfig.scope);
+    const scope = ScopeRegister.getScope(beanConfig.scope ?? this.contextScope);
 
     this.proxyRegister.delete(name);
 

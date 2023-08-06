@@ -7,7 +7,7 @@ export const getBeanScopeExpressionValue = (bean: Bean): ts.Expression => {
   const decoratorMetadata = extractDecoratorMetadata(bean.node, DecoratorKind.Scope);
 
   if (decoratorMetadata === null) {
-    return ts.factory.createStringLiteral('singleton');
+    return ts.factory.createNull();
   }
 
   return decoratorMetadata.args[0];

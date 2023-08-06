@@ -42,6 +42,10 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, config
         configuration.lazyExpression.getAndDispose()
       ),
       factory.createPropertyAssignment(
+        factory.createIdentifier('scope'),
+        configuration.scopeExpression.getAndDispose()
+      ),
+      factory.createPropertyAssignment(
         factory.createIdentifier('contextBuilder'),
         contextBuilderExpression,
       )

@@ -14,9 +14,9 @@ export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): Abstr
   const errors: AbstractCompilationMessage[] = [];
 
   if (isExtendsCatContext(node)) {
-    verifyDecorators(node, DecoratorTarget.CatContextClass);
+    errors.push(...verifyDecorators(node, DecoratorTarget.CatContextClass));
   } else {
-    verifyDecorators(node, DecoratorTarget.Class);
+    errors.push(...verifyDecorators(node, DecoratorTarget.Class));
   }
 
   node.members.forEach(it => {

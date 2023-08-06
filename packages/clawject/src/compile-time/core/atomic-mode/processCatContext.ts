@@ -11,10 +11,12 @@ import { enrichWithAdditionalProperties } from './transformers/enrichWithAdditio
 import { processMembers } from './transformers/processMembers';
 import { isNameReserved } from '../utils/isNameReserved';
 import { getConfigurationLazyExpressionValue } from './transformers/getConfigurationLazyExpressionValue';
+import { getConfigurationScopeExpressionValue } from './transformers/getConfigurationScopeExpressionValue';
 
 export function processCatContext(node: ts.ClassDeclaration, compilationContext: CompilationContext): ts.Node {
   const context = ConfigurationRepository.register(node);
   context.lazyExpression.node = getConfigurationLazyExpressionValue(context);
+  context.scopeExpression.node = getConfigurationScopeExpressionValue(context);
 
   const restrictedClassMembersByName = node.members
     .filter(it => isNameReserved(it.name?.getText() ?? ''));

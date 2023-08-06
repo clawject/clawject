@@ -10,7 +10,8 @@ import {
   Qualifier,
   Configuration,
   Component,
-  Autowired
+  Autowired,
+  Scope
 } from 'clawject';
 
 class Test {}

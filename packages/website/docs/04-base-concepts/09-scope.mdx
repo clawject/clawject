@@ -10,11 +10,10 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
-## Overview
-
 The Scope of Bean is a way to define when Bean will be created and how it is managed by container.
 
-Clawject provides `@Scope` decorator to define a scope and has 2 built-in scopes: `singleton` and `prototype`.
+Clawject provides `@Scope` decorator to define a scope and have 2 built-in scopes:
+`singleton` and `prototype`, default value is `singleton`.
 
 ## Singleton scope *(default)*
 
@@ -163,6 +162,95 @@ class MyContext extends CatContext {
 }
 ```
 
-As you can see - Scopes is a very simple concept, but it is very important to understand it.
+As you can see - Scopes is a basic concept, but it is very important to understand it.
 
 If you want to define your own scope, for example `HTTPRequestScope` - you can check out the [Custom Scopes](../05-advanced-concepts/02-custom-scopes.mdx) section.
+
+## Scope on CatContext class
+
+When we put @Scope decorator over the class that is inheritor of `CatContext`,
+it indicates that all the beans that are declared in context should have scope that is defined in decorator.
+
+Let's have a look here:
+
+```ts
+class Foo {
+  constructor() {
+    console.log('Foo has been created');
+  }
+}
+
+@Scope('prototype')
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+
+  @PostConstruct
+  postConstruct(
+    foo1: Foo, // <- logs "Foo has been created"
+    foo2: Foo, // <- logs "Foo has been created",
+  ) {}
+}
+```
+
+As we see, `foo` bean will be created twice,
+because it's requested 2 times and it inherits prototype scope from context.
+
+## Scope on Beans
+
+We can also put @Scope decorator over the bean declaration.
+
+```ts
+class Foo {
+  @PostConstruct
+  postConstruct() {
+    console.log('Foo bean has been created');
+  }
+}
+
+class MyContext extends CatContext {
+  @Scope('prototype') foo = Bean(Foo);
+
+  @PostConstruct
+  postConstruct(
+    foo1: Foo, // <- logs "Foo bean has been created"
+    foo2: Foo, // <- logs "Foo bean has been created",
+  ) {}
+}
+```
+
+As you can see - we've defined scope on `foo` bean, and foo was instantiated 2 times.
+
+## Combining @Scope on CatContext and Bean
+
+We can also combine @Scope decorator on CatContext and Bean.
+If Bean is decorated with `@Scope`, it overrides the `@Scope` on `CatContext` level for this bean,
+if not - value from `CatContext` is used.
+
+```ts
+class Foo {
+  @PostConstruct
+  postConstruct() {
+    console.log('Foo bean has been created');
+  }
+}
+class Bar {
+  @PostConstruct
+  postConstruct() {
+    console.log('Bar bean has been created');
+  }
+}
+
+@Scope('prototype')
+class MyContext extends CatContext {
+    foo = Bean(Foo);
+    @Scope('singleton') bar = Bean(Bar);
+
+    @PostConstruct
+    postConstruct(
+      foo1: Foo, // <- logs "Foo bean has been created"
+      foo2: Foo, // <- logs "Foo bean has been created",
+      bar1: Bar, // <- logs "Bar bean has been created"
+      bar2: Bar, // <- logs nothing, because Bar is a singleton
+    ) {}
+}
+```
