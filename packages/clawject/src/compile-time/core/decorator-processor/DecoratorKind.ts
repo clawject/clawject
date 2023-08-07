@@ -10,6 +10,8 @@ export enum DecoratorKind {
   Scope = 'Scope',
   Primary = 'Primary',
   Qualifier = 'Qualifier',
+  ComponentScan = 'ComponentScan',
+  Import = 'Import',
 }
 
 export const DecoratorKinds = new Set(Object.values(DecoratorKind));

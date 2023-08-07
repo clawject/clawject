@@ -9,3 +9,5 @@ export { Qualifier, QualifierTarget } from './Qualifier';
 export { Configuration, ConfigurationTarget } from './Configuration';
 export { Component, ComponentTarget } from './Component';
 export { Autowired, AutowiredTarget } from './Autowired';
+export { ComponentScan, ComponentScanTarget, ComponentScanOptions, ComponentScanWithOptions } from './ComponentScan';
+export { Import, ImportTarget } from './Import';

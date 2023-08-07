@@ -5,11 +5,14 @@ import path from 'path';
 import { parse } from 'csv-parse/sync';
 import { ArgsCount } from './extractDecoratorMetadata';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { DecoratorParent } from './DecoratorParent';
 
 export class DecoratorRules {
   private static wasInitialized = false;
 
   private static targetMatrix = new Map<DecoratorKind, Set<DecoratorTarget>>();
+
+  private static parentMatrix = new Map<DecoratorKind, Set<DecoratorParent>>();
 
   private static compatibilityToOtherDecoratorsMatrix = new Map<DecoratorKind, Set<DecoratorKind>>();
 
@@ -23,6 +26,9 @@ export class DecoratorRules {
 
     this.targetMatrix = csvToCompatibilityMatrix<DecoratorKind, DecoratorTarget>(
       getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorTargets.csv')) ?? ''
+    );
+    this.parentMatrix = csvToCompatibilityMatrix<DecoratorKind, DecoratorParent>(
+      getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorParents.csv')) ?? ''
     );
     this.compatibilityToOtherDecoratorsMatrix =  csvToCompatibilityMatrix<DecoratorKind, DecoratorKind>(
       getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorCompatibility.csv')) ?? ''
@@ -60,6 +66,16 @@ export class DecoratorRules {
 
     if (!matrix) {
       throw new Error(`No targets found for decorator ${decoratorKind}.`);
+    }
+
+    return matrix;
+  }
+
+  static getCompatibleParents(decoratorKind: DecoratorKind): Set<DecoratorParent> {
+    const matrix = this.parentMatrix.get(decoratorKind);
+
+    if (!matrix) {
+      throw new Error(`No parens found for decorator ${decoratorKind}.`);
     }
 
     return matrix;

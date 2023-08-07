@@ -7,15 +7,17 @@ import { DecoratorKind } from './DecoratorKind';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { IncorrectArgumentsLengthError } from '../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
+import { DecoratorParent } from './DecoratorParent';
 
-export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget): AbstractCompilationMessage[] => {
+export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget, decoratorParent: DecoratorParent | null): AbstractCompilationMessage[] => {
   const errors: AbstractCompilationMessage[] = [];
   const nodeDecorators = getDecoratorsMap(node);
+  const nodeDecoratorsArray = Array.from(nodeDecorators.entries());
 
   //Checking compatibility between decorators
-  const incompatibleNodeDecorators = Array.from(nodeDecorators.entries())
+  const incompatibleNodeDecorators = nodeDecoratorsArray
     .reduce((acc, [currentDecorator]) => {
-      Array.from(nodeDecorators.entries()).forEach(([otherDecorator, decoratorExpressions]) => {
+      nodeDecoratorsArray.forEach(([otherDecorator, decoratorExpressions]) => {
         if (decoratorExpressions.length === 0 || otherDecorator === currentDecorator) {
           return;
         }
@@ -52,7 +54,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
     });
   });
 
-  //Checking decoratorsCount, argumentsCount, target compatibility
+  //Checking decoratorsCount, argumentsCount, target compatibility, parent compatibility
   nodeDecorators.forEach((decorators, decoratorKind) => {
     if (decorators.length === 0) {
       return;
@@ -71,13 +73,27 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
     const compatibleTargets = DecoratorRules.getCompatibleTargets(decoratorKind);
 
     if (!compatibleTargets.has(decoratorTarget)) {
-      const expectedTargets = Array.from(compatibleTargets).map(it => `'${it}'`).join(', ');
+      const expectedTargets = Array.from(compatibleTargets).join(', ');
       errors.push(new NotSupportedError(
-        `@${decoratorKind} is not compatible with target '${decoratorTarget}', expected targets: ${expectedTargets}.`,
+        `@${decoratorKind} is not compatible with target ${decoratorTarget}, can be applied to: ${expectedTargets}.`,
         decoratorNode,
         null,
       ));
       return;
+    }
+
+    if (decoratorParent !== null) {
+      const compatibleParents = DecoratorRules.getCompatibleParents(decoratorKind);
+
+      if (!compatibleParents.has(decoratorParent)) {
+        const expectedParents = Array.from(compatibleParents).join(', ');
+        errors.push(new NotSupportedError(
+          `@${decoratorKind} can not be used inside ${decoratorParent}, can be used inside: ${expectedParents}.`,
+          decoratorNode,
+          null,
+        ));
+        return;
+      }
     }
 
     //Will check arguments count
@@ -124,7 +140,13 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         return;
       }
 
-      if (!ts.isStringLiteral(arg) && !ts.isNumericLiteral(arg) && !ts.isBooleanLiteral(arg)) {
+      if (
+        !ts.isStringLiteral(arg) &&
+        !ts.isNumericLiteral(arg) &&
+        !ts.isBooleanLiteral(arg) &&
+        !ts.isObjectLiteralExpression(arg) &&
+        !ts.isArrayLiteralExpression(arg)
+      ) {
         errors.push(new NotSupportedError(
           `Argument #${index} should be statically known literal.`,
           arg,

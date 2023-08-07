@@ -14,7 +14,14 @@ import {
   Scope
 } from 'clawject';
 
-class Test {}
+
+interface Test {
+  foo: string;
+}
+
+class A {
+  @Bean @Component() data = 123;
+}
 
 export class MyContext extends CatContext {
   @Bean test1: Test = { foo: '123' };

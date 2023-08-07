@@ -4,4 +4,6 @@ export enum DecoratorTarget {
   ClassFunction = 'ClassFunction',
   CatContextClass = 'CatContextClass',
   Bean = 'Bean',
+  ConfigurationClass = 'ConfigurationClass',
+  ComponentClass = 'ComponentClass',
 }
