@@ -5,23 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorParent.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorParents.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/ComponentScan.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Import.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/types/NotEmptyArray.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/getDecoratorVerificationErrors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/getDecoratorVerificationErrors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorKind.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorKind.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorRules.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorRules.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorTarget.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorTarget.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorArguments.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorArguments.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorCompatibility.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorCompatibility.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorTargets.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorTargets.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/verifyDecorators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/verifyDecorators.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getDecoratorsOnly.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getDecoratorsOnly.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +64,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="npm.run:upgradeClawject">
+  <component name="RunManager" selected="npm.run:ttsc_debug">
     <configuration name="run:ttsc_debug" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -131,8 +117,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:ttsc_debug" />
+        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:webpack_prod" />
         <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.run:ttsc_watch" />
@@ -173,7 +159,7 @@
       <workItem from="1691148692752" duration="1057000" />
       <workItem from="1691159172904" duration="1933000" />
       <workItem from="1691161671201" duration="9668000" />
-      <workItem from="1691421311969" duration="1110000" />
+      <workItem from="1691421311969" duration="2053000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { DecoratorKind } from './DecoratorKind';
-import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
+import { getDecorators } from '../ts/utils/getDecorators';
 import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
 import { DecoratorRules } from './DecoratorRules';
 
@@ -16,7 +16,7 @@ export interface ArgsCount {
 
 //Assuming that everything is checked by verifyDecorators, so returning null if decorators count is wrong
 export const extractDecoratorMetadata = (node: ts.Node, decorator: DecoratorKind): DecoratorMetadata | null => {
-  const decorators = getDecoratorsOnly(node)
+  const decorators = getDecorators(node)
     .filter(it => isDecoratorFromLibrary(it, decorator));
 
   if (decorators.length === 0) {

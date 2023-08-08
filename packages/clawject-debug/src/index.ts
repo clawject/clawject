@@ -19,9 +19,9 @@ interface Test {
   foo: string;
 }
 
-class A {
-  @Bean @Component() data = 123;
-}
+// class A {
+//   @Bean data = 123;
+// }
 
 export class MyContext extends CatContext {
   @Bean test1: Test = { foo: '123' };

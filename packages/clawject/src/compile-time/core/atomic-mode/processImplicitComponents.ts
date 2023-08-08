@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { isLifecycleMethodBean } from '../ts/predicates/isLifecycleMethodBean';
 import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
-import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
+import { getDecorators } from '../ts/utils/getDecorators';
 import { ComponentRepository } from '../component/ComponentRepository';
 import { Component } from '../component/Component';
 import { processLifecycleElement } from './processLifecycleElement';
@@ -18,7 +18,7 @@ export function processImplicitComponents(
   let component: Component | null = null;
 
   const newMembers = node.members.map(it => {
-    const elementDecorators = getDecoratorsOnly(it);
+    const elementDecorators = getDecorators(it);
     const hasDecoratorsFromLibrary = elementDecorators
       .some(it => isDecoratorFromLibrary(it, undefined));
 

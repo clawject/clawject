@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
-import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
+import { getDecorators } from '../ts/utils/getDecorators';
 import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { processConfigurationClass } from './configuration/processConfigurationClass';
 import { processComponent } from '../component/processComponent';
@@ -22,7 +22,7 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
       return statement;
     }
 
-    const classDecorators = getDecoratorsOnly(statement);
+    const classDecorators = getDecorators(statement);
 
     const isComponent = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Component));
     const isConfiguration = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Configuration));

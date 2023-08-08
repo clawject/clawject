@@ -1,11 +1,11 @@
 import ts from 'typescript';
 import { DecoratorKind, DecoratorKinds } from './DecoratorKind';
-import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
+import { getDecorators } from '../ts/utils/getDecorators';
 import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
 
 export const getDecoratorsMap = (node: ts.Node): Map<DecoratorKind, ts.Decorator[]> => {
   const resultMap = new Map<DecoratorKind, ts.Decorator[]>();
-  const decorators = getDecoratorsOnly(node);
+  const decorators = getDecorators(node);
 
   DecoratorKinds.forEach(decoratorKind => {
     decorators.forEach(decorator => {

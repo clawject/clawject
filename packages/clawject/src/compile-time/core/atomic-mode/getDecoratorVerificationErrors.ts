@@ -12,13 +12,13 @@ import { isBeanValueExpression } from '../ts/predicates/isBeanValueExpression';
 import { DecoratorParent } from '../decorator-processor/DecoratorParent';
 import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
-import { getDecoratorsOnly } from '../ts/utils/getDecoratorsOnly';
+import { getDecorators } from '../ts/utils/getDecorators';
 
 export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): AbstractCompilationMessage[] => {
   const errors: AbstractCompilationMessage[] = [];
 
   const isCatContext = isExtendsCatContext(node);
-  const classDecorators = getDecoratorsOnly(node);
+  const classDecorators = getDecorators(node);
 
   let decoratorParent: DecoratorParent;
 
