@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
     title: 'Clawject: DI made easy',
     tagline: 'TypeScript DI made easy',
-    favicon: 'img/favicon.ico',
+    favicon: 'img/favicon.svg',
 
     // Set the production url of your site here
     url: 'https://clawject.org',
@@ -77,9 +77,10 @@ const config = {
             // Replace with your project's social card
             navbar: {
                 title: 'Clawject',
+                hideOnScroll: true,
                 logo: {
                     alt: 'Clawject logo',
-                    src: 'img/logo-head.svg',
+                    src: 'img/logo.svg',
                 },
                 items: [
                     {

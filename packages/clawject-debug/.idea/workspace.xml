@@ -5,9 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../clawject/test/negative/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/static/img/favicon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/static/img/logo-big.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getDecoratorsOnly.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/utils/getDecoratorsOnly.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/01-intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/01-intro.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/02-setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/02-setup.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/01-ioc_di.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/01-ioc_di.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/011-embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/011-embedded.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/012-lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/012-lifecycle.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/02-type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/02-type-system.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/03-container-manager.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/03-container-manager.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/04-initialized-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/04-initialized-context.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/01-declare-bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/01-declare-bean.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/02-bean-types.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/02-bean-types.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/index.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/index.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/07-primary.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/07-primary.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/08-qualifier.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/08-qualifier.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/10-lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/10-lazy.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/01-injecting-collections.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/01-injecting-collections.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/02-custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/02-custom-scopes.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/css/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/css/custom.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/../website/static/img/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/logo-bg-dark.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/logo-head.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/static/img/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../website/static/img/logo.svg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,11 +144,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:ttsc_debug" />
-        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:webpack_prod" />
         <item itemvalue="npm.run:webpack_hot" />
+        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:ttsc_watch" />
+        <item itemvalue="npm.run:ttsc_debug" />
       </list>
     </recent_temporary>
   </component>
@@ -159,7 +186,7 @@
       <workItem from="1691148692752" duration="1057000" />
       <workItem from="1691159172904" duration="1933000" />
       <workItem from="1691161671201" duration="9668000" />
-      <workItem from="1691421311969" duration="2053000" />
+      <workItem from="1691421311969" duration="3217000" />
     </task>
     <servers />
   </component>
