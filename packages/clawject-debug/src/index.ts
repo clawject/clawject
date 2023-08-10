@@ -24,6 +24,10 @@ interface Test {
 // }
 
 export class MyContext extends CatContext {
+  @Bean beanThatReturnsOne = (arg: 2) => 1 as const;
+  @Bean beanThatReturnsTwo = (arg: 3) => 2 as const;
+  @Bean beanThatReturnsThree = (arg: 1) => 3 as const;
+
   @Bean test1: Test = { foo: '123' };
   @Bean test2: Test = { foo: '1234' };
 

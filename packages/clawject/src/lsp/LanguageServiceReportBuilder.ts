@@ -58,7 +58,8 @@ export class LanguageServiceReportBuilder {
     const relatedInformation: tsServer.DiagnosticRelatedInformation[] = [];
 
     if (message instanceof CircularDependenciesError) {
-      message.cycleMembers.filter(it => !it.isTarget).forEach(it => {
+      const firstMember = message.cycleMembers[0];
+      message.cycleMembers.filter(it => it !== firstMember).forEach(it => {
         relatedInformation.push({
           length: it.nodeDetails.length,
           file: this.getSourceFile(it.nodeDetails.filePath),
@@ -67,12 +68,9 @@ export class LanguageServiceReportBuilder {
           messageText: `'${it.beanName}' is declared here.`,
           category: this.getDiagnosticCategory(message),
         });
-
-        return it.beanName;
       });
 
-      messageDetails = message.cycleMembers
-        .map(it => it.beanName)
+      messageDetails = [...message.cycleMembers, firstMember].map(it => it.beanName)
         .join(' -> ');
     }
 

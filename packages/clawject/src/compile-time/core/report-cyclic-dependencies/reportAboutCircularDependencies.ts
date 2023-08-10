@@ -18,10 +18,8 @@ export const reportAboutCircularDependencies = (
       const targetBean = cycle[0];
 
       compilationContext.report(new CircularDependenciesError(
-        null,
         targetBean.node.name,
         context,
-        targetBean,
         cycle
       ));
     });

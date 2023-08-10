@@ -3,6 +3,7 @@ import { Bean } from '../bean/Bean';
 import { Configuration } from '../configuration/Configuration';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { mapFilter } from '../utils/mapFilter';
+import { analyzeGraph } from 'graph-cycles';
 
 export class DependencyGraph {
   static graph = new Graph();
@@ -12,38 +13,21 @@ export class DependencyGraph {
   }
 
   static getCycle(): Map<Configuration, Bean[][]> {
-    const cycledBeanIds = alg.findCycles(this.graph);
-
-    if (cycledBeanIds.length === 0) {
+    if (alg.isAcyclic(this.graph)) {
       return new Map();
     }
 
-    const flatCycledBeanIds = new Set(cycledBeanIds.flat());
-    const filteredGraph = this.graph.filterNodes(id => flatCycledBeanIds.has(id));
-    const filteredGraphEdges = filteredGraph.edges();
+    const { cycles } = analyzeGraph(
+      this.graph.nodes().map(node => {
+        const nodeEdges = (this.graph.outEdges(node) ?? []).map(it => it.w);
 
-    const cycles = new Map<string, string[]>();
+        return [node, nodeEdges];
+      })
+    );
 
-    filteredGraphEdges.forEach(edge => {
-      let currentNode = edge.v;
-      const cycle = cycles.get(edge.v) ?? [edge.v];
-      cycles.set(edge.v, cycle);
+    const allBeanIds = new Set(cycles.flat());
+    const relatedConfigurations = this.getRelatedConfigurations(allBeanIds);
 
-      while (true) {
-        const nextEdge = filteredGraphEdges.find((e) => e.v === currentNode);
-        if (nextEdge) {
-          cycle.push(nextEdge.w);
-          currentNode = nextEdge.w;
-          if (currentNode === edge.v) {
-            break;
-          }
-        } else {
-          break;
-        }
-      }
-    });
-
-    const relatedConfigurations = this.getRelatedConfigurations(cycledBeanIds);
     const resultMap = new Map<Configuration, Bean[][]>();
 
     cycles.forEach(idsList => {
@@ -80,9 +64,9 @@ export class DependencyGraph {
   }
 
   //returns beanId to Configuration
-  private static getRelatedConfigurations(beanIds: string[][] | string[]): Map<string, Configuration> {
+  private static getRelatedConfigurations(beanIds: Set<string>): Map<string, Configuration> {
     return new Map(mapFilter(
-      beanIds.flat(),
+      Array.from(beanIds),
       it => [it, ConfigurationRepository.getConfigurationByBeanId(it)],
       (it): it is [string, Configuration] => it[1] !== null,
     ));

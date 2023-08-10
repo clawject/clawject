@@ -11,6 +11,7 @@
     "commander": "^9.3.0",
     "cosmiconfig": "^7.0.1",
     "csv-parse": "^5.4.0",
+    "graph-cycles": "^1.2.1",
     "graphlib": "^2.1.8",
     "jsonschema": "^1.4.1",
     "lodash": "^4.17.21",

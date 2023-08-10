@@ -10,7 +10,6 @@ class CycleMember {
   constructor(
     public beanName: string,
     public nodeDetails: NodeDetails,
-    public isTarget: boolean
   ) {}
 }
 
@@ -21,19 +20,41 @@ export class CircularDependenciesError extends AbstractCompilationMessage {
   public cycleMembers: CycleMember[];
 
   constructor(
-    details: string | null,
     place: ts.Node,
     relatedConfiguration: Configuration | null,
-    targetBean: Bean,
     cycleMembers: Bean[],
   ) {
-    super(details, place, relatedConfiguration);
+    super(null, place, relatedConfiguration);
 
     this.cycleMembers = cycleMembers
       .map(bean => new CycleMember(
         bean.fullName,
         getNodeDetails(bean.node.name),
-        bean === targetBean
       ));
+  }
+
+  cyclePresentation(positionDetailsCallback?: (cycleMember: CycleMember) => string): string {
+    const cycleHead = '┌─────┐';
+    const cycleMiddle = '↑     ↓';
+    const cycleEnd = '└─────┘';
+
+    const cycleMembersFormatted = this.cycleMembers
+      .map((it, index) => {
+        const isLast = index === this.cycleMembers.length - 1;
+
+        let text = `|  ${it.beanName}`;
+
+        if (positionDetailsCallback) {
+          text += ` ${positionDetailsCallback(it)}`;
+        }
+
+        if (isLast) {
+          return text;
+        }
+
+        return [text, cycleMiddle];
+      }).flat();
+
+    return [cycleHead, ...cycleMembersFormatted, cycleEnd].join('\n');
   }
 }

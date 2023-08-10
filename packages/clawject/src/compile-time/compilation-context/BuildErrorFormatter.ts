@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import { BeanCandidateNotFoundError } from './messages/errors/BeanCandidateNotFoundError';
 import upath from 'upath';
 import { CircularDependenciesError } from './messages/errors/CircularDependenciesError';
-import { uniqBy } from 'lodash';
 import { CanNotRegisterBeanError } from './messages/errors/CanNotRegisterBeanError';
 import { MissingBeansDeclaration } from './messages/errors/MissingBeansDeclaration';
 import { DuplicateNameError } from './messages/errors/DuplicateNameError';
@@ -64,12 +63,11 @@ export class BuildErrorFormatter {
     const baseMessage = `${messagePrefixWithDescriptions}${errorDetails} ${filePathWithPosition}`;
 
     if (error instanceof CircularDependenciesError) {
+      const cyclePresentation = error.cyclePresentation((cycleMember) => this.getPathWithPosition(cycleMember.nodeDetails));
+
       return [
-        `${messagePrefixWithDescriptions} ${error.cycleMembers.map(it => `'${it.beanName}'`).join(' -> ')}`,
-        uniqBy(error.cycleMembers, it => it.beanName).map(it => {
-          return `  Bean '${it.beanName}' is declared here: ${this.getPathWithPosition(it.nodeDetails)}`;
-        }
-        ).join('\n'),
+        messagePrefixWithDescriptions,
+        ...cyclePresentation.split('\n').map(it => `  ${it}`),
       ].join('\n');
     }
 
