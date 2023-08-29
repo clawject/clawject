@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const packageJson = require('../package.json');
+
+const constantsFile = fs.readFileSync('src/constants/index.ts', 'utf8');
+const tsVersionRange = constantsFile.match(/TS_VERSION_RANGE = '(.*)'/)[1];
+
+const libraryVersion = process.env.NPM_PACKAGE_VERSION || '0.0.0';
+
+packageJson.version = libraryVersion;
+packageJson.peerDependencies = {
+  typescript: tsVersionRange
+};
+
+fs.writeFileSync('dist/package.json', JSON.stringify(packageJson, null, 2));
+fs.writeFileSync('src/constants/index.ts', constantsFile.replace(/LIBRARY_VERSION = '(.*)'/, `LIBRARY_VERSION = '${libraryVersion}'`));

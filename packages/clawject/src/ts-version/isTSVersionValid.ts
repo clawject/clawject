@@ -7,8 +7,5 @@ export const isTSVersionValid = (version: string): boolean => {
     return true;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const packageJson = require(CONSTANTS.packageJsonPath);
-
-  return semver.satisfies(version, packageJson.peerDependencies.typescript);
+  return semver.satisfies(version, CONSTANTS.tsVersionRange);
 };

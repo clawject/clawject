@@ -24,7 +24,7 @@ export class BaseTypesRepository {
     const libraryDeclarationFile = compilationContext.program.getSourceFile(CONSTANTS.typeReferenceTablePath);
 
     if (!libraryDeclarationFile) {
-      throw new Error(`${CONSTANTS.libraryName} library declaration file (clawject/runtime/___TypeReferenceTable___.d.ts) not found`);
+      throw new Error(`${CONSTANTS.libraryName} library declaration file (${CONSTANTS.typeReferenceTablePath}) not found\n${JSON.stringify(compilationContext.program.getSourceFiles().map(it => it.fileName), null, 2)}\n`);
     }
 
     const typeTableDeclaration = libraryDeclarationFile.statements
