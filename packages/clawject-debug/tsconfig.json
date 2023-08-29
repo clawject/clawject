@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
     "target": "ESNext",
@@ -11,6 +10,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "outDir": "dist",
+    "esModuleInterop": true,
     "declaration": true,
     "sourceMap": false,
     "plugins": [

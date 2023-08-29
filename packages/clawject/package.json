@@ -1,7 +1,40 @@
 {
   "name": "clawject",
-  "version": "0.0.1",
-  "type": "commonjs",
+  "version": "SHOULD_BE_REPLACED_BY_THE_BUILD_SCRIPT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/mjs/index.js",
+      "default": "./dist/mjs/index.js"
+    },
+    "./runtime/___internal___": {
+      "require": "./dist/cjs/runtime/___internal___/index.js",
+      "import": "./dist/mjs/runtime/___internal___/index.js",
+      "default": "./dist/mjs/runtime/___internal___/index.js"
+    },
+    "./lsp": {
+      "require": "./dist/cjs/lsp/index.js",
+      "import": "./dist/mjs/lsp/index.js",
+      "default": "./dist/mjs/lsp/index.js"
+    },
+    "./webpack": {
+      "require": "./dist/cjs/webpack/index.js",
+      "import": "./dist/mjs/webpack/index.js",
+      "default": "./dist/mjs/webpack/index.js"
+    },
+    "./transformer": {
+      "require": "./dist/cjs/transformer/index.js",
+      "import": "./dist/mjs/transformer/index.js",
+      "default": "./dist/mjs/transformer/index.js"
+    },
+    "./transformer/metadata": {
+      "require": "./dist/cjs/transformer/metadata.js",
+      "import": "./dist/mjs/transformer/metadata.js",
+      "default": "./dist/mjs/transformer/metadata.js"
+    }
+  },
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
   "dependencies": {
@@ -17,7 +50,6 @@
     "lodash": "^4.17.21",
     "minimatch": "^5.1.0",
     "semver": "^7.5.1",
-    "ts-morph": "^17.0.1",
     "upath": "^2.0.1"
   },
   "devDependencies": {
@@ -30,7 +62,6 @@
     "@types/node": "^17.0.42",
     "@types/semver": "^7.5.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
-    "@types/webpack": "^5.28.1",
     "concurrently": "^7.2.1",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
@@ -41,9 +72,7 @@
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "ttypescript": "^1.5.15",
-    "typescript": "4.9.5"
-  },
-  "peerDependencies": {
-    "typescript": ">=4.8 <=4.9"
+    "typescript": "4.9.5",
+    "webpack": "^5.88.2"
   }
 }

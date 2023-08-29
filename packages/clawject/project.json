@@ -9,14 +9,24 @@
       "options": {
         "cwd": "packages/clawject",
         "commands": [
-          "rm -rf dist",
-          "rm -rf ../../dist/packages/clawject",
-          "tsc --p tsconfig.lib.json",
-          "yarn run copyfiles -u 1 src/**/*.csv dist/packages/clawject/src",
-          "mkdir -p ../../dist/packages/clawject && mv dist/packages/clawject/src/* ../../dist/packages/clawject",
-          "cp package.json ../../dist/packages/clawject",
-          "cp ../../LICENSE ../../dist/packages/clawject/LICENSE",
-          "cp README.md ../../dist/packages/clawject/README.md",
+          "rm -rf dist ../../dist/packages/clawject",
+
+          "mkdir -p dist/dist/cjs",
+          "mkdir -p dist/dist/mjs",
+
+          "sh build_scripts/create_package_json",
+          "node build_scripts/prepare_files",
+
+          "tsc --p tsconfig.cjs.json",
+          "tsc --p tsconfig.json",
+
+          "yarn run copyfiles -u 1 src/**/*.csv dist/dist/cjs",
+          "yarn run copyfiles -u 1 src/**/*.csv dist/dist/mjs",
+
+          "cp ../../LICENSE dist/LICENSE",
+          "cp README.md dist/README.md",
+
+          "mkdir -p ../../dist/packages/clawject && mv dist/* ../../dist/packages/clawject",
           "rm -rf dist"
         ],
         "parallel": false,

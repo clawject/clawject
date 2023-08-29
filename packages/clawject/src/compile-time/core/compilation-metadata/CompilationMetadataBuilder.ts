@@ -6,9 +6,6 @@ import { CONSTANTS } from '../../../constants';
 import { CompilationComponentMetadata } from './models/CompilationComponentMetadata';
 import { Component } from '../component/Component';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const packageJson = require(CONSTANTS.packageJsonPath);
-
 export class CompilationMetadataBuilder {
   static buildForConfiguration(configuration: Configuration): string {
     const metadata = this.buildCompilationMetadataForConfiguration(configuration);
@@ -33,14 +30,10 @@ export class CompilationMetadataBuilder {
     return `${COMPILATION_METADATA_TOKENS.LINE_START}${line}${COMPILATION_METADATA_TOKENS.LINE_END}`;
   }
 
-  private static getClawjectVersion(): string {
-    return packageJson.version;
-  }
-
   private static buildCompilationMetadataForConfiguration(configuration: Configuration): CompilationConfigurationMetadata {
     return {
       kind: CompilationMetadataKind.Configuration,
-      clawjectVersion: this.getClawjectVersion(),
+      clawjectVersion: CONSTANTS.libraryVersion,
       beans: Array.from(configuration.beanRegister.elements).map(bean => ({
         classMemberName: bean.classMemberName,
         kind: bean.kind,
@@ -54,7 +47,7 @@ export class CompilationMetadataBuilder {
   private static buildCompilationMetadataForComponent(component: Component): CompilationComponentMetadata {
     return {
       kind: CompilationMetadataKind.Component,
-      clawjectVersion: this.getClawjectVersion(),
+      clawjectVersion: CONSTANTS.libraryVersion,
       qualifier: null,
     };
   }
