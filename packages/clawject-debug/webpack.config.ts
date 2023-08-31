@@ -1,5 +1,6 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { ClawjectTransformer } from 'clawject/transformer';
+import { ClawjectMetadataTransformer } from 'clawject/transformer/metadata';
 import { ClawjectWebpackPlugin } from 'clawject/webpack';
 import HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -22,6 +23,7 @@ module.exports = {
           // compiler: 'ts-patch',
           getCustomTransformers: (program: any, getProgram: any) => ({
             before: [ClawjectTransformer(getProgram)],
+            afterDeclarations: [ClawjectMetadataTransformer(getProgram)]
           })
         }
       }

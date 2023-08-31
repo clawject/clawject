@@ -18,7 +18,7 @@
           "node build_scripts/prepare_files",
 
           "tsc --p tsconfig.cjs.json",
-          "tsc --p tsconfig.json",
+          "tsc --p tsconfig.mjs.json",
 
           "yarn run copyfiles -u 1 src/**/*.csv dist/dist/cjs",
           "yarn run copyfiles -u 1 src/**/*.csv dist/dist/mjs",
