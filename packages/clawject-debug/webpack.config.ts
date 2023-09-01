@@ -5,7 +5,7 @@ import { ClawjectWebpackPlugin } from 'clawject/webpack';
 import HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/errors.ts',
+  entry: './src/index.ts',
   mode: 'development',
   devtool: 'source-map',
   resolve: {
