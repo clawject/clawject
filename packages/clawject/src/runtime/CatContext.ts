@@ -8,35 +8,32 @@ import { ContextManager } from './___internal___/ContextManager';
  *
  * C is a config type this will be passed in context initialization stage.
  *
- * @example Declaring your own context with some beans inside and starting service:
+ * @example Declaring your own context with some beans inside and starting service.
+ * ```ts
  * class MyRepository {
- *     readData(): string {
- *         // ...
- *     }
+ *   readData(): string {}
  * }
  *
  * class MyService {
- *     constructor(
- *         private repository: MyRepository
- *     ) {}
+ *   constructor(private repository: MyRepository) {}
  *
- *     start(): void {
- *         // ...
- *     }
+ *   start(): void {}
  * }
  *
  * class MyContext extends CatContext {
  *   @PostConstruct
  *   postConstruct(myService: MyService): void {
- *       myService.start();
+ *     myService.start();
  *   }
  *
  *   myRepository = Bean(MyRepository);
  *   myService = Bean(MyService);
  * }
+ * ```
  *
  * @see {@link Bean}
  * @see {@link PostConstruct}
+ * @public
  */
 export abstract class CatContext<T extends {} = {}, C = undefined> {
   /**

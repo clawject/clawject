@@ -9,6 +9,7 @@ import { processApplicationMode } from '../compile-time/core/application-mode/pr
 import { cleanup } from '../compile-time/core/cleaner/cleanup';
 import { DecoratorRules } from '../compile-time/core/decorator-processor/DecoratorRules';
 
+/** @public */
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const compilationContext = getCompilationContext();
 
@@ -55,6 +56,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
 
 
 //For webpack + ts-loader
+/** @public */
 export const ClawjectTransformer = (programGetter: () => ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const target = {} as ts.Program;
 
@@ -70,4 +72,5 @@ export const ClawjectTransformer = (programGetter: () => ts.Program): ts.Transfo
   return transformer(programProxy);
 };
 
+/** @public */
 export default transformer;

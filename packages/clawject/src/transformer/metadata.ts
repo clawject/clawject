@@ -7,6 +7,7 @@ import { Configuration } from '../compile-time/core/configuration/Configuration'
 import { Component } from '../compile-time/core/component/Component';
 import { CompileTimeElement } from '../compile-time/core/compilation-metadata/CompileTimeElement';
 
+/** @public */
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const compilationContext = getCompilationContext();
 
@@ -93,6 +94,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
   };
 };
 
+/** @public */
 export const ClawjectMetadataTransformer = (programGetter: () => ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const target = {} as ts.Program;
 

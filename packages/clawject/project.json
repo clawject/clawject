@@ -19,6 +19,18 @@
 
           "tsc --p tsconfig.cjs.json",
           "tsc --p tsconfig.mjs.json",
+          "tsc --p tsconfig.types.json",
+
+          "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.root.json",
+          "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.___internal___.json",
+          "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.webpack.json",
+          "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.transformer.json",
+          "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.transformer-metadata.json",
+
+          "rm dist/clawject.d.ts",
+          "rm -rf dist/types",
+          "mv dist/api/* dist",
+          "rm -rf dist/api",
 
           "yarn run copyfiles -u 1 src/**/*.csv dist/dist/cjs",
           "yarn run copyfiles -u 1 src/**/*.csv dist/dist/mjs",

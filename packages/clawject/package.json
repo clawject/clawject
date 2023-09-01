@@ -38,7 +38,6 @@
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
   "dependencies": {
-    "big.js": "^6.2.1",
     "case": "^1.6.3",
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
@@ -53,7 +52,7 @@
     "upath": "^2.0.1"
   },
   "devDependencies": {
-    "@types/big.js": "^6.1.6",
+    "@microsoft/api-extractor": "^7.36.4",
     "@types/glob": "^7.2.0",
     "@types/graphlib": "^2.1.8",
     "@types/lodash": "^4.14.182",

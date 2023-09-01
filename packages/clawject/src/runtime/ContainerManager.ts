@@ -4,10 +4,12 @@ import { ContainerManagerImpl } from './ContainerManagerImpl';
 import { ClassConstructor } from './ClassConstructor';
 import { CustomScope } from './scope/CustomScope';
 
+/** @public */
 export interface ContextInit {
   key?: any;
 }
 
+/** @public */
 export interface ContextInitConfig<C = never> {
   config: C;
 }
@@ -18,6 +20,7 @@ export interface ContextInitConfig<C = never> {
  * You can utilize `ContainerManager` to initialize, get, or clear contexts.
  *
  * This object can be used anywhere in your code.
+ * @public
  */
 export interface ContainerManager {
   /**
@@ -39,7 +42,7 @@ export interface ContainerManager {
    * @param context - The context class constructor that should be retrieved.
    * @param key - Optional key for getting a specific context.
    * @returns The initialized context.
-   * @throws {Error} If the context was not initialized.
+   * @throws NoInitializedContextFoundError If the context was not initialized.
    */
   get<T extends object>(context: ClassConstructor<CatContext<T>>, key?: any): InitializedContext<T>;
 
@@ -49,7 +52,7 @@ export interface ContainerManager {
    *
    * @param context - The context class constructor that should be retrieved or initialized.
    * @param init - Optional initialization object.
-   * @returns The initialized context.
+   * @returns InitializedContext.
    */
   getOrInit<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
 
@@ -70,4 +73,5 @@ export interface ContainerManager {
   registerScope(scopeName: string, scope: CustomScope): void;
 }
 
+/** @public */
 export const ContainerManager: ContainerManager = new ContainerManagerImpl();

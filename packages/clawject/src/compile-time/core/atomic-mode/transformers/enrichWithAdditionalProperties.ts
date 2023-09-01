@@ -19,7 +19,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, config
     [
       factory.createPropertyAssignment(
         factory.createIdentifier('id'),
-        factory.createStringLiteral(configuration.runtimeId)
+        factory.createNumericLiteral(configuration.runtimeId)
       ),
       factory.createPropertyAssignment(
         factory.createIdentifier('contextName'),

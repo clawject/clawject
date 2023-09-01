@@ -1,3 +1,8 @@
+/**
+ * This object is an access point to all beans in context.
+ *
+ * @public
+ */
 export interface InitializedContext<T> {
   /**
    * Returns bean by name if it's declared in T.

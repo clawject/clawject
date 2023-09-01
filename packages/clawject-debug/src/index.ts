@@ -8,9 +8,6 @@ import {
   PreDestroy,
   Primary,
   Qualifier,
-  Configuration,
-  Component,
-  Autowired,
   Scope
 } from 'clawject';
 

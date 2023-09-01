@@ -14,7 +14,7 @@ type BuiltContext = {
 }
 
 export interface ContextMetadata {
-  id: string;
+  id: number;
   contextName: string;
   lifecycle: RuntimeLifecycleMetadata;
   beans: Record<string, RuntimeBeanMetadata>;

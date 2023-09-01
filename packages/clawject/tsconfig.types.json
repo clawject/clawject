@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.mjs.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "dist/types"
+  }
+}

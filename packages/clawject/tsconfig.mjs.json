@@ -1,10 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "declaration": true,
     "module": "esnext",
     "outDir": "dist/dist/mjs",
-    "declarationDir": "dist",
     "target": "esnext"
   }
 }

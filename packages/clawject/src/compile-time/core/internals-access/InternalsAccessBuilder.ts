@@ -44,14 +44,14 @@ export class InternalsAccessBuilder {
 
 
   //TODO remove
-  static internalGetInstanceCallExpression(runtimeId: string): ts.CallExpression {
+  static internalGetInstanceCallExpression(runtimeId: number): ts.CallExpression {
     return factory.createCallExpression(
       factory.createPropertyAccessExpression(
         InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ApplicationManager),
         factory.createIdentifier('getInstanceFor')
       ),
       undefined,
-      [factory.createStringLiteral(runtimeId)],
+      [factory.createNumericLiteral(runtimeId)],
     );
   }
 }
