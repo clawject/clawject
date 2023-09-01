@@ -25,11 +25,11 @@ export function getConfigurationInitProperty(configuration: Configuration): ts.C
     .filter(it => !it.isLifecycle())
     .map(it => {
       const dependencyIds = Array.from(it.dependencies)
-        .map(dependency => factory.createStringLiteral(dependency.runtimeId));
+        .map(dependency => factory.createNumericLiteral(dependency.runtimeId));
 
       return factory.createArrayLiteralExpression(
         [
-          factory.createStringLiteral(it.runtimeId),
+          factory.createNumericLiteral(it.runtimeId),
           factory.createArrowFunction(
             undefined,
             undefined,
@@ -68,7 +68,7 @@ export function getConfigurationInitProperty(configuration: Configuration): ts.C
     .map(dependency => {
       return factory.createArrayLiteralExpression(
         [
-          factory.createStringLiteral(dependency.runtimeId),
+          factory.createNumericLiteral(dependency.runtimeId),
           factory.createArrayLiteralExpression(
             dependency.qualifiedBeans?.map(it =>  factory.createStringLiteral(it.id)) ?? [],
             false

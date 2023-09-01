@@ -1,5 +1,6 @@
 import { GITHUB_REPO_LINK } from './constants';
 import { ClassConstructor } from './ClassConstructor';
+import { NoInitializedContextFoundError } from './errors';
 
 export class ErrorBuilder {
   static beanNotFoundInContext(contextName: string | null, beanName: string): Error {
@@ -13,8 +14,8 @@ export class ErrorBuilder {
     return error;
   }
 
-  static noContextByKey(contextName: string | null, contextKey: any): Error {
-    return new Error(`Context '${this.getContextName(contextName)}' and key ${this.contextKeyToString(contextKey)} was not initialized`);
+  static noInitializedContextFoundError(contextName: string | null, contextKey: any): NoInitializedContextFoundError {
+    return new NoInitializedContextFoundError(`Context '${this.getContextName(contextName)}' and key ${this.contextKeyToString(contextKey)} was not initialized`);
   }
 
   static usageWithoutConfiguredDI(cause: string = 'DI'): Error {

@@ -15,6 +15,7 @@ const reportDIErrorsHook = (compilation: Compilation) => {
   compilation.errors.push(buildWebpackError(message));
 };
 
+/** @public */
 export class ClawjectWebpackPlugin {
   apply(compiler: Compiler) {
     compiler.hooks.afterEnvironment.tap(ClawjectWebpackPlugin.name, () => {

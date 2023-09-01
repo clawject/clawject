@@ -3,9 +3,11 @@
 import { CatContext } from './CatContext';
 
 /**
- * This is an interface for <b>internal</b> usage only, it's not used in any other api of this library.
+ * It is a <b>internal</b> interface, it's not used in any other parts of this library api.
+ * It's used to store type references for the transformer on build stage.
  *
  * Please <b>do not</b> use this interface in your own code.
+ * @public
  * */
 export interface ___TypeReferenceTable___ {
   array: ReadonlyArray<any> | Array<any> | readonly any[] | any[];

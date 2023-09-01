@@ -36,7 +36,7 @@ export class ContainerManagerImpl implements ContainerManager {
       return initializedContext;
     }
 
-    throw ErrorBuilder.noContextByKey(ContextManager.getContextMetadataOrThrow(context).contextName, key);
+    throw ErrorBuilder.noInitializedContextFoundError(ContextManager.getContextMetadataOrThrow(context).contextName, key);
   }
 
   getOrInit<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;

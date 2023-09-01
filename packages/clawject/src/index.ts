@@ -1,11 +1,13 @@
 export * from './runtime/decorators';
+export * from './runtime/errors';
 
-export { ContainerManager, ContextInit, ContextInitConfig } from './runtime/ContainerManager';
-export { InitializedContext } from './runtime/InitializedContext';
+export { ContainerManager, type ContextInit, type ContextInitConfig } from './runtime/ContainerManager';
+export type { InitializedContext } from './runtime/InitializedContext';
+export type { ClassConstructor } from './runtime/ClassConstructor';
 
 export { CatContext } from './runtime/CatContext';
 
-export { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/ObjectFactory';
+export type { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/ObjectFactory';
 
 export { CustomScope } from './runtime/scope/CustomScope';
 

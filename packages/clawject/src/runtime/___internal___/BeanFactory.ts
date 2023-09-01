@@ -12,7 +12,7 @@ export class BeanFactory {
   private proxyRegister = new Map<string, any>();
 
   constructor(
-    private id: string | null, // Null in application mode
+    private id: number | null, // Null in application mode
     private configurationName: string,
     private beans: ContextMetadata['beans'],
     private contextScope: string,
