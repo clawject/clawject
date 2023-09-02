@@ -3,7 +3,11 @@ import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
 /** @public */
 export type PrimaryTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
-/** @public */
+/**
+ *
+ * @docs https://clawject.org/docs/base-concepts/primary
+ *
+ * @public */
 export const Primary: DecoratorWithoutArguments<PrimaryTarget> = () => {
   throw ErrorBuilder.usageWithoutConfiguredDI('@Primary');
 };

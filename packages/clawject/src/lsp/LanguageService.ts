@@ -6,10 +6,12 @@ import { CONSTANTS } from '../constants';
 
 export class LanguageService {
   private static pluginInfo: tsServer.server.PluginCreateInfo | null = null;
+  declare private static originalGetSemanticDiagnostics: tsServer.LanguageService['getSemanticDiagnostics'];
   static configFileErrors: string[] = [];
 
   static assignPluginInfo(pluginInfo: tsServer.server.PluginCreateInfo): void {
     this.pluginInfo = pluginInfo;
+    this.originalGetSemanticDiagnostics = pluginInfo.languageService.getSemanticDiagnostics.bind(pluginInfo.languageService);
   }
 
   static getSemanticDiagnostics: tsServer.LanguageService['getSemanticDiagnostics'] = (fileName) => {
@@ -17,7 +19,7 @@ export class LanguageService {
       return [];
     }
 
-    const prior = this.pluginInfo.languageService.getSemanticDiagnostics(fileName);
+    const prior = this.originalGetSemanticDiagnostics(fileName);
 
     if (this.configFileErrors.length > 0) {
       return [

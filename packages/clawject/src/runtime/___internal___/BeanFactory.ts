@@ -126,7 +126,7 @@ export class BeanFactory {
     const beanConfig = this.beans[name];
 
     if (!beanConfig) {
-      throw ErrorBuilder.beanNotFoundInContext(this.configurationName, name);
+      throw ErrorBuilder.beanNotFound(this.configurationName, name);
     }
 
     return beanConfig;

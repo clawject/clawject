@@ -3,7 +3,6 @@ import { Editor, useMonaco } from '@monaco-editor/react';
 import Layout from '@theme/Layout';
 
 import styles from './playground.module.css';
-import clsx from 'clsx';
 
 export const Playground = () => {
   const monaco = useMonaco();
@@ -20,7 +19,6 @@ export const Playground = () => {
     //
     // console.log(monaco.languages.typescript.typescriptDefaults.addExtraLib());
   }, [monaco]);
-
 
 
   return (

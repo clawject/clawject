@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { IncorrectTypeDefinitionError } from '../../compilation-context/messages/errors/IncorrectTypeDefinitionError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
@@ -28,15 +27,6 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
   const typeChecker = compilationContext.typeChecker;
   const type = typeChecker.getTypeAtLocation(typeArgNode);
   const diType = DITypeBuilder.build(type);
-
-  if (!diType.isObject) {
-    compilationContext.report(new IncorrectTypeDefinitionError(
-      'Should be an object-like type.',
-      typeArgNode,
-      context,
-    ));
-    return;
-  }
 
   context.registerDIType(diType);
   const typeProperties = type.getProperties();

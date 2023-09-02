@@ -74,19 +74,19 @@ export class DIType {
   }
 
   get isArray(): boolean {
-    return BaseTypesRepository.getBaseTypes().array.isCompatible(this);
+    return BaseTypesRepository.getBaseTypes().Array.isCompatible(this);
   }
 
   get isSet(): boolean {
-    return BaseTypesRepository.getBaseTypes().set.isCompatible(this);
+    return BaseTypesRepository.getBaseTypes().Set.isCompatible(this);
   }
 
   get isMap(): boolean {
-    return BaseTypesRepository.getBaseTypes().map.isCompatible(this);
+    return BaseTypesRepository.getBaseTypes().Map.isCompatible(this);
   }
 
   get isMapStringToAny(): boolean {
-    return BaseTypesRepository.getBaseTypes().mapStringToAny.isCompatible(this);
+    return BaseTypesRepository.getBaseTypes().MapStringToAny.isCompatible(this);
   }
 
   get isOptionalUndefined(): boolean {

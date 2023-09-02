@@ -1,6 +1,7 @@
 import { CustomScope } from './CustomScope';
 import { SingletonScope } from './SingletonScope';
 import { PrototypeScope } from './PrototypeScope';
+import { DuplicateScopeError, ScopeIsNotRegisteredError } from '../errors';
 
 export class ScopeRegister {
   private static scopes = new Map<string, CustomScope>([
@@ -10,7 +11,7 @@ export class ScopeRegister {
 
   static registerScope(name: string, scope: CustomScope): void {
     if (this.scopes.has(name)) {
-      throw new Error(`Scope with name ${name} is already registered.`);
+      throw new DuplicateScopeError(`Scope with name ${name} is already registered.`);
     }
 
     this.scopes.set(name, scope);
@@ -26,7 +27,7 @@ export class ScopeRegister {
     const scope = this.scopes.get(name);
 
     if (!scope) {
-      throw new Error(`Scope with name ${name} is not registered.`);
+      throw new ScopeIsNotRegisteredError(`Scope with name ${name} is not registered.`);
     }
   }
 }

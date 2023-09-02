@@ -63,7 +63,7 @@ export class ContextManager {
     const builtContext = this.contextPool.get(contextConstructor)?.get(key);
 
     if (!builtContext) {
-      console.warn(`Context ${contextMetadata.contextName} with key ${key} not found`);
+      console.warn(`Context '${contextMetadata.contextName}' not found when trying to destroy it, key: `, key);
       return;
     }
 

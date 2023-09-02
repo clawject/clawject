@@ -39,14 +39,15 @@ export class BaseTypesRepository {
         acc[curr.name?.getText() ?? ''] = curr;
 
         return acc;
-      }, {} as Record<string, ts.TypeElement>);
+      }, {} as Record<keyof ___TypeReferenceTable___, ts.TypeElement>);
 
     this.baseTypes = {
-      array: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['array'])),
-      set: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['set'])),
-      map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['map'])),
-      mapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['mapStringToAny'])),
+      Array: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Array'])),
+      Set: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Set'])),
+      Map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
+      MapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
       CatContext: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['CatContext'])),
+      Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
       runClawjectApplication: DITypeBuilder.any(),
       // runClawjectApplication: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication'])),
     };

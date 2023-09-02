@@ -3,8 +3,6 @@ title: CatContext
 id: cat-context
 ---
 
-## Overview
-
 CatContext is a class that represents the IoC container.
 The container is responsible for instantiating, configuring and assembling objects known as Beans and managing their life cycles.
 
@@ -22,7 +20,7 @@ export class MyContext extends CatContext {}
 To init container, you need to use ContainerManager interface and pass class to the init method.
 
 ```ts
-import { ContainerManager } from 'clawject'; 
+import { ContainerManager } from 'clawject';
 
 ContainerManager.init(MyContext);
 ```
@@ -53,7 +51,7 @@ and if not - compile-time error will be reported.
 
 ExternalBeans type should always be object-like and with statically known members.
 
-## Passing external configuration
+## Config
 
 If you need to pass some additional information externally -
 you can do it by specifying the second generic argument in `CatContext`.

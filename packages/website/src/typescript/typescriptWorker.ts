@@ -1,4 +1,5 @@
 import * as ts from 'runtimeTS';
+import { createSystem, createVirtualTypeScriptEnvironment } from '@typescript/vfs';
 
 function compile(fileNames: string[], options: ts.CompilerOptions): void {
   const compilerHost = ts.createCompilerHost(options, true);
@@ -11,7 +12,7 @@ function compile(fileNames: string[], options: ts.CompilerOptions): void {
 
   allDiagnostics.forEach(diagnostic => {
     if (diagnostic.file) {
-      const { line, character } = ts.getLineAndCharacterOfPosition(diagnostic.file, diagnostic.start);
+      const {line, character} = ts.getLineAndCharacterOfPosition(diagnostic.file, diagnostic.start);
       const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
       console.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
     } else {
@@ -30,8 +31,6 @@ compile(process.argv.slice(2), {
   target: ts.ScriptTarget.ES5,
   module: ts.ModuleKind.CommonJS
 });
-
-import { createSystem, createVirtualCompilerHost, createVirtualTypeScriptEnvironment } from '@typescript/vfs';
 
 const fsMap = new Map<string, string>();
 const system = createSystem(fsMap);

@@ -9,7 +9,13 @@ export type BeanWithClassConstructorExplicitType = <T>(classConstructor: ClassCo
 /** @public */
 export type BeanWithClassConstructor = <T, A extends any[], C extends ClassConstructor<T, A>>(classConstructor: C) =>
   (...args: ConstructorParameters<C>) => InstanceType<C>;
-/** @public */
+/**
+ * Indicates that a method/property produces/contains a bean to be managed by the Clawject container.
+ *
+ * @docs https://clawject.org/docs/base-concepts/bean
+ *
+ * @public
+ */
 export const Bean: DecoratorWithoutArguments<BeanTarget> & BeanWithClassConstructor & BeanWithClassConstructorExplicitType = () => {
   throw ErrorBuilder.usageWithoutConfiguredDI('@Bean');
 };
