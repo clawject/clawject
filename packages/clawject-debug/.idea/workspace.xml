@@ -7,54 +7,8 @@
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/BaseTypesRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/BaseTypesRepository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DIType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DIType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/CatContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/CatContext.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/ContainerManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/ContainerManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/ContainerManagerImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/ContainerManagerImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/ErrorBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/ErrorBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/InitializedContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/InitializedContext.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___TypeReferenceTable___.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___TypeReferenceTable___.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/BeanFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/BeanFactory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/ContextManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/ContextManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Bean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Bean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/DecoratorWithoutArguments.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/DecoratorWithoutArguments.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Embedded.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Embedded.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Lazy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Lazy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/PostConstruct.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/PostConstruct.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/PreDestroy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/PreDestroy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Primary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Primary.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Qualifier.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Qualifier.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Scope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Scope.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/errors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/errors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/ScopeRegister.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/ScopeRegister.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/01-intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/01-intro.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/02-setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/02-setup.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/01-ioc_di.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/01-ioc_di.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/011-embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/011-embedded.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/012-lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/012-lifecycle.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/02-type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/02-type-system.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/03-container-manager.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/03-container-manager.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/04-initialized-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/04-initialized-context.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/05-cat-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/05-cat-context.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/01-declare-bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/01-declare-bean.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/02-bean-types.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/02-bean-types.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/index.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/index.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/07-primary.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/07-primary.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/08-qualifier.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/08-qualifier.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/09-scope.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/10-lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/10-lazy.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/01-injecting-collections.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/01-injecting-collections.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/02-custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/05-advanced-concepts/02-custom-scopes.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/components/playground/Playground.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/components/playground/Playground.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/components/playground/playground.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/components/playground/playground.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/css/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/css/custom.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/typescript/typescriptWorker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/typescript/typescriptWorker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/object-factory/ObjectFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/object-factory/ObjectFactory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/CustomScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/CustomScope.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +170,7 @@
       <workItem from="1693339407114" duration="2098000" />
       <workItem from="1693375461498" duration="8200000" />
       <workItem from="1693568818593" duration="1382000" />
-      <workItem from="1693570801118" duration="6232000" />
+      <workItem from="1693570801118" duration="8329000" />
     </task>
     <servers />
   </component>

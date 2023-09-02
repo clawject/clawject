@@ -1,6 +1,13 @@
 import { ObjectFactory, ObjectFactoryResult } from '../object-factory/ObjectFactory';
 
-/** @public */
+/**
+ * The interface that represents a custom scope.
+ * You should implement it if you want to register custom scope.
+ *
+ * @docs https://clawject.org/docs/advanced-concepts/custom-scopes
+ *
+ * @public
+ */
 export interface CustomScope {
   /**
    * Return the object with the given name from the underlying scope,
@@ -58,7 +65,7 @@ export interface CustomScope {
    *
    * @param name - the name of the object to execute the destruction callback for
    * @param callback - the destruction callback to be executed.
-   * @see {@link PreDestroy}
+   * @see PreDestroy
    */
   registerDestructionCallback(name: string, callback: () => void): void;
 
