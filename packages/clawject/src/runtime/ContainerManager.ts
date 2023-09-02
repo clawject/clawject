@@ -6,6 +6,9 @@ import { CustomScope } from './scope/CustomScope';
 
 /** @public */
 export interface ContextInit {
+  /**
+   * Default value is `undefined`.
+   */
   key?: any;
 }
 
@@ -17,23 +20,25 @@ export interface ContextInitConfig<C = never> {
 /**
  * `ContainerManager` serves as the main entry point for working with Dependency Injection (DI).
  *
- * You can utilize `ContainerManager` to initialize, get, or clear contexts.
+ * You can utilize `ContainerManager` to initialize, acquire or clear contexts.
  *
- * This object can be used anywhere in your code.
  * @public
  */
 export interface ContainerManager {
   /**
-   * Initializes `CatContext` and returns an {@link InitializedContext} object.
+   * Initializes inheritor of {@link CatContext} class and returns {@link InitializedContext} object.
    *
    * If the context was already initialized but not cleared, a new context will be instantiated and cached in place of the old one.
-   * Not clearing the context may lead to memory leaks.
+   * Note that not clearing contexts may lead to memory leaks.
    *
    * @param context - The context class constructor that should be initialized.
    * @param init - Optional initialization object.
-   * @returns The initialized context.
+   * @returns InitializedContext The initialized context.
+   *
+   * @docs https://clawject.org/docs/base-concepts/container-manager/#containermanagerinit
    */
   init<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
+  init<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
   /**
    * Returns an {@link InitializedContext} object if it was initialized,
@@ -55,23 +60,33 @@ export interface ContainerManager {
    * @returns InitializedContext.
    */
   getOrInit<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
+  getOrInit<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
   /**
-   * Clears an initialized context. If the initialized context was not found, logs a warning to the console.
+   * Destroys an initialized context.
+   * If the initialized context was not found, logs warning to the console.
    *
    * @param context - The context class constructor that should be cleared.
    * @param key - Optional key for clearing a specific context.
    */
-  clear(context: ClassConstructor<CatContext<any>>, key?: any): void;
+  destroy(context: ClassConstructor<CatContext<any>>, key?: any): void;
 
   /**
    * Registers a custom scope.
    *
    * @param scopeName - The name of the scope that should be registered.
    * @param scope - The custom scope object.
+   *
+   * @throws DuplicateScopeError If the scope with the same name was already registered.
+   *
+   * @docs https://clawject.org/docs/base-concepts/container-manager/#containermanagerregisterscope
    */
   registerScope(scopeName: string, scope: CustomScope): void;
 }
 
-/** @public */
+/**
+ * Singleton instance of {@link ContainerManager} interface that can be used anywhere in your code.
+ *
+ * @public
+ */
 export const ContainerManager: ContainerManager = new ContainerManagerImpl();

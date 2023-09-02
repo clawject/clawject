@@ -2,50 +2,37 @@ import { ErrorBuilder } from './ErrorBuilder';
 import { ContextManager } from './___internal___/ContextManager';
 
 /**
- * It's a class you should extend from to declare your own context.
+ * Class that represents the IoC container.
+ * The container is responsible for instantiating,
+ * configuring and assembling objects known as Beans and managing their life cycles.
  *
- * T is a plain map of beans that will be accessible via {@link Context#getBean} or {@link Context#getBeans}.
+ * It's an abstract class that can be extended to create a custom container.
  *
- * C is a config type this will be passed in context initialization stage.
+ * @typeParam T - Plain object of beans
+ * that will be accessible via {@link InitializedContext#getBean} or {@link InitializedContext#getBeans}.
  *
- * @example Declaring your own context with some beans inside and starting service.
- * ```ts
- * class MyRepository {
- *   readData(): string {}
- * }
+ * @typeParam C - Config that will be passed in context initialization stage.
  *
- * class MyService {
- *   constructor(private repository: MyRepository) {}
- *
- *   start(): void {}
- * }
- *
- * class MyContext extends CatContext {
- *   @PostConstruct
- *   postConstruct(myService: MyService): void {
- *     myService.start();
- *   }
- *
- *   myRepository = Bean(MyRepository);
- *   myService = Bean(MyService);
- * }
- * ```
- *
- * @see {@link Bean}
- * @see {@link PostConstruct}
+ * @see Bean
+ * @docs https://clawject.org/docs/base-concepts/cat-context
  * @public
  */
-export abstract class CatContext<T extends {} = {}, C = undefined> {
+export abstract class CatContext<T extends object = {}, C = undefined> {
   /**
-   * Returns config that was passed in context initialization stage via {@link Container#initContext} or {@link Container#getOrInitContext}.
+   * Returns config object
+   * that was passed in context initialization stage via {@link ContainerManager#init} or {@link ContainerManager#getOrInit}.
+   *
+   * @docs https://clawject.org/docs/base-concepts/cat-context/#config
    * */
   protected get config(): C {
     return ContextManager.getConfigForInstance(this);
   }
 
   /**
-   * Needed to type ContainerManager init/get methods.
+   * Needed to save type reference for {@link ContainerManager ContainerManagers} {@link ContainerManager#init init}/{@link ContainerManager#get get}/{@link ContainerManager#getOrInit getOrInit} methods.
    * Accessing this property will always throw an error.
+   *
+   * @throws IllegalAccessError if you'll try to access this property.
    * */
   protected get clawject_context_type(): T {
     throw ErrorBuilder.illegalAccess('CatContext.clawject_context_type');

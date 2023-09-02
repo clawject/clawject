@@ -1,14 +1,14 @@
 import { GITHUB_REPO_LINK } from './constants';
 import { ClassConstructor } from './ClassConstructor';
-import { NoInitializedContextFoundError } from './errors';
+import { BeanNotFoundError, ClassNotInheritorOfCatContextError, IllegalAccessError, NoInitializedContextFoundError, UsageWithoutConfiguredDIError } from './errors';
 
 export class ErrorBuilder {
-  static beanNotFoundInContext(contextName: string | null, beanName: string): Error {
-    return new Error(`Bean '${beanName}' is missing in context '${this.getContextName(contextName)}'`);
+  static beanNotFound(contextName: string | null, beanName: string): BeanNotFoundError {
+    return new BeanNotFoundError(`Bean '${beanName}' is not found in context '${this.getContextName(contextName)}'`);
   }
 
-  static classNotInheritorOfCatContext(clazz: ClassConstructor<any>): Error {
-    const error = new Error('Class that is passed to the Container is not an inheritor of CatContext');
+  static classNotInheritorOfCatContext(clazz: ClassConstructor<any>): ClassNotInheritorOfCatContextError {
+    const error = new ClassNotInheritorOfCatContextError('Class that is passed to the Container is not an inheritor of CatContext');
     Object.defineProperty(error, 'class', clazz);
 
     return error;
@@ -18,16 +18,12 @@ export class ErrorBuilder {
     return new NoInitializedContextFoundError(`Context '${this.getContextName(contextName)}' and key ${this.contextKeyToString(contextKey)} was not initialized`);
   }
 
-  static usageWithoutConfiguredDI(cause: string = 'DI'): Error {
-    return new Error(`You are trying to use ${cause} without without proper 'clawject' configuration or in wrong place, please check the documentation ${GITHUB_REPO_LINK}`);
+  static usageWithoutConfiguredDI(cause: string = 'DI'): UsageWithoutConfiguredDIError {
+    return new UsageWithoutConfiguredDIError(`You are trying to use ${cause} without without proper 'clawject' configuration or in wrong place, please check the documentation ${GITHUB_REPO_LINK}`);
   }
 
-  static illegalAccess(cause: string): Error {
-    return new Error(`Illegal access to ${cause}, please check the documentation ${GITHUB_REPO_LINK}`);
-  }
-
-  static constructorNotFound(place: string): Error {
-    return new Error(`Constructor of ${place} not found.`);
+  static illegalAccess(cause: string): IllegalAccessError {
+    return new IllegalAccessError(`Illegal access to ${cause}, please check the documentation ${GITHUB_REPO_LINK}`);
   }
 
   static noElementFactoryFound(contextName: string | null, name: string): Error {

@@ -2,7 +2,7 @@
 title: Inject Arrays and Collections
 ---
 
-<br/>
+
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
@@ -12,13 +12,12 @@ import TabItem from '@theme/TabItem';
 Sometimes you need to inject an array or collection of beans into another bean,
 for example, when you need to inject listeners into a publisher, or caches into a cache manager.
 
-All arrays and collections that are injected are non-singletons, so mutating one of them will not affect other beans.
-
 Clawject has some reserved types for arrays and collections:
   - array: `ReadonlyArray<any> | Array<any> | readonly any[] | any[]`
   - set: `ReadonlySet<any> | Set<any>`
   - map: `ReadonlyMap<string, any> | Map<string, any>`
 
+Note that all arrays and collections that are injected are non-singletons, so mutating one of them will not affect other beans.
 
 Let's look at how we can inject arrays and collections with Clawject:
 
@@ -29,25 +28,25 @@ Let's look at how we can inject arrays and collections with Clawject:
 
 ```ts
 class Cache<T> {
-    clear(): void { /* ... */ }
+  clear(): void { /* ... */ }
 }
 
 class CacheManager {
-    constructor(
-        private caches: Cache<any>[],
-    ) {}
+  constructor(
+    private caches: Cache<any>[],
+  ) {}
 
-    clearAll(): void {
-        this.caches.forEach(cache => cache.clear());
-    }
+  clearAll(): void {
+    this.caches.forEach(cache => cache.clear());
+  }
 }
 
 class MyContext extends CatContext {
-    stringCache = Bean(Cache<string>)
-    numberCache = Bean(Cache<number>)
-    booleanCache = Bean(Cache<boolean>)
+  stringCache = Bean(Cache<string>);
+  numberCache = Bean(Cache<number>);
+  booleanCache = Bean(Cache<boolean>);
 
-    cacheManager = Bean(CacheManager)
+  cacheManager = Bean(CacheManager);
 }
 ```
 
@@ -59,25 +58,25 @@ class MyContext extends CatContext {
 
 ```ts
 class Cache<T> {
-    clear(): void { /* ... */ }
+  clear(): void { /* ... */ }
 }
 
 class CacheManager {
-    constructor(
-        private caches: Array<Cache<any>>,
-    ) {}
+  constructor(
+    private caches: Array<Cache<any>>,
+  ) {}
 
-    clearAll(): void {
-        this.caches.forEach(cache => cache.clear());
-    }
+  clearAll(): void {
+    this.caches.forEach(cache => cache.clear());
+  }
 }
 
 class MyContext extends CatContext {
-    stringCache = Bean(Cache<string>)
-    numberCache = Bean(Cache<number>)
-    booleanCache = Bean(Cache<boolean>)
+  stringCache = Bean(Cache<string>)
+  numberCache = Bean(Cache<number>)
+  booleanCache = Bean(Cache<boolean>)
 
-    cacheManager = Bean(CacheManager)
+  cacheManager = Bean(CacheManager)
 }
 ```
 
@@ -89,25 +88,25 @@ class MyContext extends CatContext {
 
 ```ts
 class Cache<T> {
-    clear(): void { /* ... */ }
+  clear(): void { /* ... */ }
 }
 
 class CacheManager {
-    constructor(
-        private caches: ReadonlyArray<Cache<any>>,
-    ) {}
+  constructor(
+    private caches: ReadonlyArray<Cache<any>>,
+  ) {}
 
-    clearAll(): void {
-        this.caches.forEach(cache => cache.clear());
-    }
+  clearAll(): void {
+    this.caches.forEach(cache => cache.clear());
+  }
 }
 
 class MyContext extends CatContext {
-    stringCache = Bean(Cache<string>)
-    numberCache = Bean(Cache<number>)
-    booleanCache = Bean(Cache<boolean>)
+  stringCache = Bean(Cache<string>)
+  numberCache = Bean(Cache<number>)
+  booleanCache = Bean(Cache<boolean>)
 
-    cacheManager = Bean(CacheManager)
+  cacheManager = Bean(CacheManager)
 }
 ```
 
@@ -119,25 +118,25 @@ class MyContext extends CatContext {
 
 ```ts
 class Cache<T> {
-    clear(): void { /* ... */ }
+  clear(): void { /* ... */ }
 }
 
 class CacheManager {
-    constructor(
-        private caches: Set<Cache<any>>,
-    ) {}
+  constructor(
+    private caches: Set<Cache<any>>,
+  ) {}
 
-    clearAll(): void {
-        this.caches.forEach(cache => cache.clear());
-    }
+  clearAll(): void {
+    this.caches.forEach(cache => cache.clear());
+  }
 }
 
 class MyContext extends CatContext {
-    stringCache = Bean(Cache<string>)
-    numberCache = Bean(Cache<number>)
-    booleanCache = Bean(Cache<boolean>)
+  stringCache = Bean(Cache<string>)
+  numberCache = Bean(Cache<number>)
+  booleanCache = Bean(Cache<boolean>)
 
-    cacheManager = Bean(CacheManager)
+  cacheManager = Bean(CacheManager)
 }
 ```
 
@@ -149,25 +148,25 @@ class MyContext extends CatContext {
 
 ```ts
 class Cache<T> {
-    clear(): void { /* ... */ }
+  clear(): void { /* ... */ }
 }
 
 class CacheManager {
-    constructor(
-        private caches: ReadonlySet<Cache<any>>,
-    ) {}
+  constructor(
+    private caches: ReadonlySet<Cache<any>>,
+  ) {}
 
-    clearAll(): void {
-        this.caches.forEach(cache => cache.clear());
-    }
+  clearAll(): void {
+    this.caches.forEach(cache => cache.clear());
+  }
 }
 
 class MyContext extends CatContext {
-    stringCache = Bean(Cache<string>)
-    numberCache = Bean(Cache<number>)
-    booleanCache = Bean(Cache<boolean>)
+  stringCache = Bean(Cache<string>)
+  numberCache = Bean(Cache<number>)
+  booleanCache = Bean(Cache<boolean>)
 
-    cacheManager = Bean(CacheManager)
+  cacheManager = Bean(CacheManager)
 }
 ```
 
@@ -179,28 +178,28 @@ class MyContext extends CatContext {
 
 ```ts
 class Cache<T> {
-    clear(): void { /* ... */ }
+  clear(): void { /* ... */ }
 }
 
 class CacheManager {
-    constructor(
-        private caches: Map<string, Cache<any>>,
-    ) {}
+  constructor(
+    private caches: Map<string, Cache<any>>,
+  ) {}
 
-    clearAll(): void {
-        this.caches.forEach((cache, beanName) => {
-            console.log(`Clearing cache ${beanName}`);
-            cache.clear();
-        });
-    }
+  clearAll(): void {
+    this.caches.forEach((cache, beanName) => {
+      console.log(`Clearing cache ${beanName}`);
+      cache.clear();
+    });
+  }
 }
 
 class MyContext extends CatContext {
-    stringCache = Bean(Cache<string>)
-    numberCache = Bean(Cache<number>)
-    booleanCache = Bean(Cache<boolean>)
+  stringCache = Bean(Cache<string>)
+  numberCache = Bean(Cache<number>)
+  booleanCache = Bean(Cache<boolean>)
 
-    cacheManager = Bean(CacheManager)
+  cacheManager = Bean(CacheManager)
 }
 ```
 
@@ -212,28 +211,28 @@ class MyContext extends CatContext {
 
 ```ts
 class Cache<T> {
-    clear(): void { /* ... */ }
+  clear(): void { /* ... */ }
 }
 
 class CacheManager {
-    constructor(
-        private caches: ReadonlyMap<string, Cache<any>>,
-    ) {}
+  constructor(
+    private caches: ReadonlyMap<string, Cache<any>>,
+  ) {}
 
-    clearAll(): void {
-        this.caches.forEach((cache, beanName) => {
-            console.log(`Clearing cache ${beanName}`);
-            cache.clear();
-        });
-    }
+  clearAll(): void {
+    this.caches.forEach((cache, beanName) => {
+      console.log(`Clearing cache ${beanName}`);
+      cache.clear();
+    });
+  }
 }
 
 class MyContext extends CatContext {
-    stringCache = Bean(Cache<string>)
-    numberCache = Bean(Cache<number>)
-    booleanCache = Bean(Cache<boolean>)
+  stringCache = Bean(Cache<string>)
+  numberCache = Bean(Cache<number>)
+  booleanCache = Bean(Cache<boolean>)
 
-    cacheManager = Bean(CacheManager)
+  cacheManager = Bean(CacheManager)
 }
 ```
 
@@ -248,16 +247,16 @@ To access such beans — you should match the type of collection and bean name.
 
 ```ts
 class MyContext extends CatContext {
-    @Bean myCollection: Set<string> = new Set(['foo', 'bar', 'baz']);
-    @Bean string1 = 'quux';
-    @Bean string2 = 'quuux';
+  @Bean myCollection: Set<string> = new Set(['foo', 'bar', 'baz']);
+  @Bean string1 = 'quux';
+  @Bean string2 = 'quuux';
 
-    @PostConstruct
-    postConstruct(
-        myCollection: Set<string>, // myCollection bean will be injected
-        otherStrings: Set<string>, // Set of string1 and string2 beans will be injected
-    ): void {
-        console.log(this.myCollection);
-    }
+  @PostConstruct
+  postConstruct(
+    myCollection: Set<string>, // myCollection bean will be injected
+    otherStrings: Set<string>, // Set of string1 and string2 beans will be injected
+  ): void {
+    console.log(this.myCollection);
+  }
 }
 ```

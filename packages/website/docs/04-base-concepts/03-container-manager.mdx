@@ -3,10 +3,6 @@ title: ContainerManager
 id: container-manager
 ---
 
-<br/>
-
-## Overview
-
 ContainerManager is a main entry point to work with DI.
 You can use ContainerManager to initialize, get or clear contexts.
 
@@ -120,7 +116,7 @@ try {
 ### `ContainerManager.getOrInit`
 This method is a combination of `init` and `get` methods.
 
-If context was not initialized, it will be initialized and `InitializedContext` object will be returned.<br/>If context was initialized, `InitializedContext` object will be returned.
+If context was not initialized, it will be initialized and `InitializedContext` object will be returned.If context was initialized, `InitializedContext` object will be returned.
 
 #### Get and init context
 
@@ -133,4 +129,44 @@ const initializedContext1 = ContainerManager.getOrInit(MyContext);
 const initializedContext2 = ContainerManager.getOrInit(MyContext);
 
 console.log(initializedContext1 === initializedContext2); // <-- Will print "true"
+```
+
+
+### `ContainerManager.clear`
+This method destroys already initialized context.
+
+If the initialized context was not found, logs warning to the console.
+
+#### Destroying initialized context
+
+```ts
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext {}
+
+ContainerManager.init(MyContext);
+ContainerManager.destroy(MyContext);
+```
+
+#### Destroying non-initialized context
+
+```ts
+import { ContainerManager, CatContext } from 'clawject';
+
+class MyContext extends CatContext {}
+
+ContainerManager.destroy(MyContext); // <-- Will print warn "Context 'MyContext' not found when trying to destroy it"
+```
+
+### `ContainerManager.registerScope`
+
+This method allows you to register a new [Custom Scope](../05-advanced-concepts/02-custom-scopes.mdx) and [use it](./09-scope.mdx) for beans.
+
+#### Registering a new scope
+
+```ts
+import { ContainerManager } from 'clawject';
+import { HTTPRequestScope } from './HTTPRequestScope';
+
+ContainerManager.registerScope('http-request', new HTTPRequestScope());
 ```

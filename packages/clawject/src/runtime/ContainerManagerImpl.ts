@@ -51,7 +51,7 @@ export class ContainerManagerImpl implements ContainerManager {
     return this.init(context, init);
   }
 
-  clear(context: ClassConstructor<CatContext<any>>, key: any = DEFAULT_KEY): void {
+  destroy(context: ClassConstructor<CatContext<any>>, key: any = DEFAULT_KEY): void {
     ContextManager.disposeContext(context, key);
     this.instances.get(context)?.delete(key);
 

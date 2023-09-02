@@ -6,41 +6,41 @@
 
 /* You can override the default Infima variables here. */
 :root {
-    --ifm-color-primary: #734851;
-    --ifm-color-primary-dark: #A4609C;
-    --ifm-color-primary-darker: #6C5E93;
-    --ifm-color-primary-darkest: #6C5E93;
-    --ifm-color-primary-light: rgba(254, 109, 115, 0.41);
-    --ifm-color-primary-lighter: var(--ifm-color-primary-light);
-    --ifm-color-primary-lightest: var(--ifm-color-primary-light);
-    --ifm-code-font-size: 85%;
-    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-color-primary: #734851;
+  --ifm-color-primary-dark: #A4609C;
+  --ifm-color-primary-darker: #6C5E93;
+  --ifm-color-primary-darkest: #6C5E93;
+  --ifm-color-primary-light: rgba(254, 109, 115, 0.41);
+  --ifm-color-primary-lighter: var(--ifm-color-primary-light);
+  --ifm-color-primary-lightest: var(--ifm-color-primary-light);
+  --ifm-code-font-size: 85%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
-    --ifm-navbar-link-hover-color: var(--ifm-color-primary);
-    --ifm-navbar-link-active-color: var(--ifm-link-color);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
+  --ifm-navbar-link-active-color: var(--ifm-link-color);
 
-    --ifm-footer-padding-horizontal: calc(var(--ifm-spacing-horizontal));
-    --ifm-footer-padding-vertical: calc(var(--ifm-spacing-vertical));
+  --ifm-footer-padding-horizontal: calc(var(--ifm-spacing-horizontal));
+  --ifm-footer-padding-vertical: calc(var(--ifm-spacing-vertical));
 }
 
 .footer__links {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .code-block-red-line {
-    background-color: #ff000020;
-    display: block;
-    margin: 0 calc(-1 * var(--ifm-pre-padding));
-    padding: 0 var(--ifm-pre-padding);
-    border-left: 3px solid #ff000080;
+  background-color: #ff000020;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+  border-left: 3px solid #ff000080;
 }
 
 .code-block-green-line {
-    background-color: #e6ffec;
-    display: block;
-    margin: 0 calc(-1 * var(--ifm-pre-padding));
-    padding: 0 var(--ifm-pre-padding);
-    border-left: 3px solid #ccffd8;
+  background-color: #e6ffec;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+  border-left: 3px solid #ccffd8;
 }
 
 .navbar__logo {
@@ -49,12 +49,12 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-    --ifm-color-primary: #25c2a0;
-    --ifm-color-primary-dark: #21af90;
-    --ifm-color-primary-darker: #1fa588;
-    --ifm-color-primary-darkest: #1a8870;
-    --ifm-color-primary-light: #29d5b0;
-    --ifm-color-primary-lighter: #32d8b4;
-    --ifm-color-primary-lightest: #4fddbf;
-    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }

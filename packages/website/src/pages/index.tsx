@@ -10,7 +10,7 @@ function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <div className={styles.homepageHeader}>
-      <LogoBig className={styles.logo} />
+      <LogoBig className={styles.logo}/>
       <div className={styles.logo}></div>
     </div>
   );

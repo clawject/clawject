@@ -3,17 +3,17 @@
 import { CatContext } from './CatContext';
 
 /**
- * It is a <b>internal</b> interface, it's not used in any other parts of this library api.
- * It's used to store type references for the transformer on build stage.
+ * This is a <b>internal</b> interface, it's not used in any other parts of this library api.
  *
- * Please <b>do not</b> use this interface in your own code.
+ * Please <b>do not use </b> this interface in your own code because <b>it could and will be changed</b> in the future.
  * @public
  * */
 export interface ___TypeReferenceTable___ {
-  array: ReadonlyArray<any> | Array<any> | readonly any[] | any[];
-  set: ReadonlySet<any> | Set<any>;
-  map: ReadonlyMap<any, any> | Map<any, any>;
-  mapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
+  Array: ReadonlyArray<any> | Array<any> | readonly any[] | any[];
+  Set: ReadonlySet<any> | Set<any>;
+  Map: ReadonlyMap<any, any> | Map<any, any>;
+  MapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
   CatContext: CatContext<any, any>;
+  Promise: Promise<any> | PromiseLike<any>;
   // runClawjectApplication: runClawjectApplication;
 }

@@ -1,15 +1,4 @@
-import {
-  Bean,
-  CatContext,
-  ContainerManager,
-  Embedded,
-  Lazy,
-  PostConstruct,
-  PreDestroy,
-  Primary,
-  Qualifier,
-  Scope
-} from 'clawject';
+import { Bean, CatContext, ContainerManager, PostConstruct } from 'clawject';
 
 interface Test {
   foo: string;
@@ -19,12 +8,13 @@ interface Test {
 //   @Bean data = 123;
 // }
 
-export class MyContext extends CatContext {
+export class MyContext extends CatContext<{}, number> {
   @Bean beanThatReturnsOne = (arg: 2) => 1 as const;
-  @Bean beanThatReturnsTwo = () => 2 as const;
+  @Bean beanThatReturnsTwo = (arg: 3) => 2 as const;
+  @Bean beanThatReturnsThree = (arg: 1) => 3 as const;
 
-  @Bean test1: Test = { foo: '123' };
-  @Bean test2: Test = { foo: '1234' };
+  @Bean test1: Test = {foo: '123'};
+  @Bean test2: Test = {foo: '1234'};
 
   @PostConstruct
   postConstruct(
