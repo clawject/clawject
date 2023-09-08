@@ -36,7 +36,7 @@
           "yarn run copyfiles -u 1 src/**/*.csv dist/dist/mjs",
 
           "cp ../../LICENSE dist/LICENSE",
-          "cp README.md dist/README.md",
+          "cp ../../README.md dist/README.md",
 
           "mkdir -p ../../dist/packages/clawject && mv dist/* ../../dist/packages/clawject",
           "rm -rf dist"
