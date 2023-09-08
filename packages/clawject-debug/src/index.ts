@@ -9,6 +9,16 @@ interface Test {
 //   @Bean data = 123;
 // }
 
+class ValueHolder<T> {
+  constructor(public value: T) {}
+}
+
+class MyContext2 extends CatContext {
+  @Bean stringOrNumber(): ValueHolder<string | number> {
+    return new ValueHolder('Masya');
+  }
+}
+
 export class MyContext extends CatContext {
   @Bean beanThatReturnsOne = (arg: 2) => 1 as const;
   @Bean beanThatReturnsTwo = (arg: 3) => 2 as const;
