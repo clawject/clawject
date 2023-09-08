@@ -1,0 +1,260 @@
+---
+title: Errors
+---
+
+Clawject provides few types of errors compile-time and runtime.
+
+## Compile-time errors
+Each compile time error has own code that can be used to identify it.
+Each code is unique and consists of prefix `CT` and number.
+Example: `CT17`.
+
+### CT1: IncorrectNameError
+It occurs when the name of the element is not met some requirements:
+- The name is empty
+- The name of class member name is reserved by Clawject, for example: `clawject_context_metadata`, `clawject_context_type`, etc.
+
+Solution: Rename the element.
+
+### CT2: DecoratorsCountError
+It occurs when the element has more than one same decorator.
+Example:
+```ts
+class MyContext extends CatContext {
+  @Bean
+  @Bean
+  cat = new Cat();
+}
+```
+Solution: Remove extra decorators.
+
+### CT3: TypeQualifyError
+It occurs when Clawject can't qualify a type of element or return type of method or function.
+
+Solution: Specify the type of element explicitly.
+
+### CT4: CanNotRegisterBeanError
+It occurs when the element can't be registered as a bean because some of the bean dependencies could not be resolved.
+This error appears directly on bean declaration in `CatContext` classes.
+
+Solution:
+- Define missing dependencies in the context.
+- Check a topic about [how dependencies are resolved](/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx#how-dependencies-are-resolved)
+- If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
+- Specify primary bean for the dependency with [`@Primary`](/docs/04-base-concepts/07-primary.mdx) decorator.
+
+### CT5: BeanCandidateNotFoundError
+It occurs when the bean candidate for the specific dependency could not be resolved.
+- When declaring bean with [@Bean decorator](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-decorator) - error will
+  appear on the corresponding parameter of the **factory-function**.
+- When declaring bean with [Bean function](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-function) - error will
+  appear on the corresponding parameter of the **class constructor**.
+Also - if you have more than one matching candidate for injection - Clawject will notify you which candidate is matching by name and type.
+
+Solution:
+- Define missing dependencies in the context.
+- Check a topic about [how dependencies are resolved](/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx#how-dependencies-are-resolved)
+- If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
+- Specify primary bean for the dependency with [`@Primary`](/docs/04-base-concepts/07-primary.mdx) decorator.
+
+### CT6: MissingInitializerError
+It occurs when a property or method that is registered as a bean or lifecycle hook does not have an initializer.
+Example:
+```ts
+class MyContext extends CatContext {
+  @Bean cat: Cat;
+  @PostConstruct postConstruct(): void;
+}
+```
+
+Solution: Add initializer to the property or method.
+
+### CT7: CircularDependenciesError
+It occurs when some beans have circular dependencies between each other.
+A circular dependency occurs when a bean A depends on another bean B, and the bean B depends on bean A as well:<br/>
+Bean A → Bean B → Bean A
+
+Of course, we could have more beans implied:<br/>
+Bean A → Bean B → Bean C → Bean D → Bean E → Bean A
+
+Example:
+```ts
+class A {
+  constructor(b: B) {}
+}
+class B {
+  constructor(a: A) {}
+}
+class MyContext extends CatContext {
+  //Error here
+  @Bean A(b: B): A {
+    return new A(b);
+  }
+  @Bean B(a: A): B {
+    return new B(a);
+  }
+}
+```
+
+Clawject will detect circular dependencies at compile-time and report this error in a readable way.
+
+Solution:
+- Redesign. When we have a circular dependency, it’s likely we have a design problem and that the responsibilities are not well separated.
+  We should try to redesign the components properly so that their hierarchy is well-designed, and there is no need for circular dependencies.
+- If we can’t redesign the components, we can assign the instance after creation.
+  It's not the best way, but it works.
+  Note that field `b` in `A` will be available only after the creation of the bean `B`.
+  Example:
+  ```ts
+  class A {
+    declare public b: B;
+  }
+  class B {
+    constructor(a: A) {}
+  }
+  class MyContext extends CatContext {
+    @Bean A(): A {
+      return new A();
+    }
+    @Bean B(a: A): B {
+      const instance = new B(a);
+      a.b = instance;
+
+      return instance;
+    }
+  }
+  ```
+
+### CT8: IncorrectTypeError
+It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](/docs/04-base-concepts/06-bean/02-bean-types.mdx).
+
+Solution: Use only supported types.
+
+### CT9: IncorrectArgumentsLengthError
+It occurs when required arguments count not match requirements. Example:
+
+```ts
+class MyContext extends CatContext {
+  @Qualifier() cat = Bean(Cat)
+}
+```
+
+In this example - `@Qualifier` decorator requires exactly one argument to be passed, but it was not provided, so Clawject will report error.
+
+Solution: Pass required arguments count.
+
+### CT10: DependencyResolvingError
+It occurs when the dependencies of class constructor could not be resolved. This error occurs only when using [Bean function](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-function). Examples:
+- Didn't pass class to the **Bean function**:
+  ```ts
+  class MyContext extends CatContext {
+    @Bean cat = Bean();
+  }
+  ```
+- More than one or no class declaration found, `Dog` class is declared, but `Cat` is not:
+  ```ts
+  class Dog {}
+  class MyContext extends CatContext {
+    @Bean cat = Bean(Cat);
+    @Bean dog = Bean(Dog);
+  }
+  ```
+
+Solution: Use **factory-method** with [@Bean decorator](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-decorator)
+instead of **Bean function**.
+
+### CT11: NotSupportedError
+It occurs when some feature is not supported by Clawject. Example:
+- Using `@PostConstruct` decorator on method with arguments outside CatContext class:
+  ```ts
+  class Cat {
+    @PostConstruct
+    meow(data: any): void {}
+  }
+  ```
+- Using `@Embedded` decorator with bean declared with [Bean function](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-function):
+  ```ts
+  class MyContext extends CatContext {
+    @Embedded cat = Bean(Cat);
+  }
+  ```
+- Unsupported class members modifiers:
+  ```ts
+  class MyContext extends CatContext {
+    static cat1 = Bean(Cat);
+    abstract cat2 = Bean(Cat);
+    @Bean declare cat3: Cat;
+    private cat4 = Bean(Cat);
+  }
+  ```
+- Using decorators in inappropriate places, for example `@Bean` decorator in not CatContext class:
+  ```ts
+  class Dog {}
+  class Cat {
+    @Bean
+    dog(): Dog {}
+  }
+  ```
+- Inappropriate decorators combination:
+  ```ts
+  @Bean @Embedded
+  class MyContext extends CatContext {
+    @Bean @PostConstruct cat = Bean(Cat);
+  }
+  ```
+- Inappropriate decorator target:
+  ```ts
+  @Bean
+  class MyContext extends CatContext {}
+  ```
+
+### CT12: MissingBeansDeclaration
+It occurs when the context does not have required beans that are declared in CatContext interface. Example:
+```ts
+interface IMyContext {
+  cat: Cat;
+  dog: Dog;
+}
+class MyContext extends CatContext<IMyContext> {
+  cat = Bean(Cat);
+}
+```
+
+### CT13: TypeMismatchError
+It occurs when the type of Bean is not compatible with a type declared in CatContext interface. Example:
+```ts
+interface IMyContext {
+  cat: Dog;
+}
+class MyContext extends CatContext<IMyContext> {
+  cat = Bean(Cat);
+}
+```
+
+### CT14: DuplicateNameError
+It occurs when few beans have the same name (class member name or name defined via [`@Qualifier decorator`](/docs/04-base-concepts/08-qualifier.mdx)). Example:
+```ts
+class MyContext extends CatContext {
+  cat = Bean(Cat);
+  @Qualifier('cat') dog = Bean(Dog);
+}
+```
+
+### CT15: NotStaticallyKnownError
+It occurs when value or name in some part of code is not statically known. Example:
+- The name of element is computed or uniq Symbol:
+  ```ts
+  const BeanName = 'MasyaCat';
+  const UniqSymbol = Symbol.for('MasyaCat');
+  class MyContext extends CatContext {
+    ['Masya' + 'Cat'] = Bean(Cat);
+    [BeanName] = Bean(Cat);
+    [UniqSymbol] = Bean(Cat);
+  }
+  ```
+- Arguments on some decorators are computed:
+  ```ts
+  class MyContext extends CatContext {
+    @Qualifier('Masya' + 'Cat') cat = Bean(Cat);
+  }
+  ```

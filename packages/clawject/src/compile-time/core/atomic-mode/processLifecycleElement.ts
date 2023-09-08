@@ -8,9 +8,10 @@ import { IncorrectNameError } from '../../compilation-context/messages/errors/In
 import { getNameFromNodeOrNull } from '../ts/utils/getNameFromNodeOrNull';
 import { ComponentLifecycle } from '../component-lifecycle/ComponentLifecycle';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
-import { IncorrectArgumentsLengthError } from '../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
+import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
+import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 
 export function processLifecycleElement(node: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer, component: Component): ts.ClassElement {
   const compilationContext = getCompilationContext();
@@ -34,7 +35,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   const argumentsLength = getArgumentsLength(node);
 
   if (argumentsLength > 0) {
-    getCompilationContext().report(new IncorrectArgumentsLengthError(
+    getCompilationContext().report(new NotSupportedError(
       'Lifecycle elements could not have arguments outside of CatContext classes.',
       node,
       null
@@ -54,7 +55,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   }
 
   if (!isStaticallyKnownPropertyName(node.name)) {
-    getCompilationContext().report(new IncorrectNameError(
+    getCompilationContext().report(new NotStaticallyKnownError(
       'Lifecycle element should have statically known name.',
       node,
       null
@@ -66,7 +67,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   const classMemberName = getNameFromNodeOrNull(node);
 
   if (classMemberName === null) {
-    compilationContext.report(new IncorrectNameError(
+    compilationContext.report(new NotStaticallyKnownError(
       'Lifecycle element should have statically known name.',
       node,
       null

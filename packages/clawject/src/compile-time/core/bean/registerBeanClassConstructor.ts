@@ -74,7 +74,7 @@ export const registerBeanClassConstructor = (
 
   if(callSignatures.length !== 1) {
     compilationContext.report(new DependencyResolvingError(
-      'Can not resolve Bean signature, try to use method Bean instead.',
+      'Can not resolve Bean signature, try to use factory-method Bean instead.',
       classElement,
       configuration,
     ));

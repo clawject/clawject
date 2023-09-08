@@ -14,7 +14,6 @@ export class MyContext extends CatContext {
   @Bean beanThatReturnsTwo = (arg: 3) => 2 as const;
   @Bean beanThatReturnsThree = (arg: 1) => 3 as const;
 
-  @Bean data = 1;
   @Bean data2 = 1;
 
   // @Bean test0(

@@ -14,7 +14,7 @@ class MissingCandidate {
 }
 
 export class CanNotRegisterBeanError extends AbstractCompilationMessage {
-  public code = MessageCode.CT15;
+  public code = MessageCode.CT4;
   public type = MessageType.ERROR;
   public description = 'Can not register Bean.';
   public missingCandidates: MissingCandidate[];
