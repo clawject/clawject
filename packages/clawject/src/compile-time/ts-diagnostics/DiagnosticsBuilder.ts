@@ -48,7 +48,7 @@ export class DiagnosticsBuilder {
       if (getCompilationContext().languageServiceMode) {
         const firstMember = message.cycleMembers[0];
         messageDetails = [...message.cycleMembers, firstMember].map(it => it.beanName)
-          .join(' -> ');
+          .join(' → ');
       } else {
         messageDetails = '\n' + message.cyclePresentation();
       }

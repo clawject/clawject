@@ -10,6 +10,7 @@ import { DuplicateNameError } from '../../compilation-context/messages/errors/Du
 import { BeanKind } from './BeanKind';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
+import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNSUPPORTED, 'unsupported'],
@@ -94,7 +95,7 @@ function verifyName(bean: Bean): void {
     return;
   }
 
-  compilationContext.report(new IncorrectNameError(
+  compilationContext.report(new NotStaticallyKnownError(
     'Bean element should have statically known name.',
     bean.node.name,
     bean.parentConfiguration

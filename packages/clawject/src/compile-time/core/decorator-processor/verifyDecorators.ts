@@ -8,6 +8,7 @@ import { NotSupportedError } from '../../compilation-context/messages/errors/Not
 import { IncorrectArgumentsLengthError } from '../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 import { DecoratorParent } from './DecoratorParent';
+import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 
 export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget, decoratorParent: DecoratorParent | null): AbstractCompilationMessage[] => {
   const errors: AbstractCompilationMessage[] = [];
@@ -147,7 +148,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         !ts.isObjectLiteralExpression(arg) &&
         !ts.isArrayLiteralExpression(arg)
       ) {
-        errors.push(new NotSupportedError(
+        errors.push(new NotStaticallyKnownError(
           `Argument #${index} should be statically known literal.`,
           arg,
           null,
