@@ -10,22 +10,20 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "outDir": "dist",
+    "baseUrl": "./src",
+    "rootDir": ".",
     "esModuleInterop": true,
     "declaration": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "plugins": [
       {
         "name": "clawject-language-service",
-        "transform": "../clawject/src/transformer/index.ts"
+        "transform": "clawject/transformer"
       },
       {
-        "transform": "../clawject/src/transformer/metadata.ts",
+        "transform": "clawject/transformer/metadata",
         "afterDeclarations": true
       }
     ]
-  },
-  "include": [
-    "src",
-    "webpack.config.ts"
-  ]
+  }
 }

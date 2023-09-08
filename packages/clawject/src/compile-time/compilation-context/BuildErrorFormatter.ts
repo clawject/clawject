@@ -7,6 +7,7 @@ import { CircularDependenciesError } from './messages/errors/CircularDependencie
 import { CanNotRegisterBeanError } from './messages/errors/CanNotRegisterBeanError';
 import { MissingBeansDeclaration } from './messages/errors/MissingBeansDeclaration';
 import { DuplicateNameError } from './messages/errors/DuplicateNameError';
+import { TypeMismatchError } from './messages/errors/TypeMismatchError';
 
 export class BuildErrorFormatter {
   static formatErrors(compilationErrors: AbstractCompilationMessage[]): string | null {
@@ -102,6 +103,14 @@ export class BuildErrorFormatter {
       });
 
       return [baseMessage, ...missingElementsRelatedInformation].join('\n');
+    }
+
+    if (error instanceof TypeMismatchError) {
+      const typeMismatchElements = error.mismatchElements.map(it => {
+        return `  '${it.name}' is declared here. ${this.getPathWithPosition(it.location)}`;
+      });
+
+      return [baseMessage, ...typeMismatchElements].join('\n');
     }
 
     return baseMessage;

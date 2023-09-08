@@ -7,6 +7,8 @@ import { ContextMetadata } from './ContextManager';
 import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
 import { getStaticRuntimeElementFromInstanceConstructor, StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
 import { RuntimeElementFactories } from '../runtime-elements/RuntimeElementFactories';
+import { Utils } from './Utils';
+import { RuntimeErrors } from '../errors';
 
 export class BeanFactory {
   private proxyRegister = new Map<string, any>();
@@ -53,7 +55,8 @@ export class BeanFactory {
 
   getBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);
-    const scope = ScopeRegister.getScope(beanConfig.scope ?? this.contextScope);
+    const scopeName = beanConfig.scope ?? this.contextScope;
+    const scope = ScopeRegister.getScope(scopeName);
     const objectFactory = new ObjectFactoryImpl(() => {
       const elementFactory = this.getElementFactory(name);
       const instantiatedBean = elementFactory();
@@ -70,6 +73,7 @@ export class BeanFactory {
     const bean = useProxy
       ? this.getOrBuildBeanProxy(
         name,
+        scopeName,
         () => scope.get(scopedBeanName, objectFactory),
       )
       : scope.get(scopedBeanName, objectFactory);
@@ -150,63 +154,65 @@ export class BeanFactory {
     return `${this.id}_${name}`;
   }
 
-  private getOrBuildBeanProxy(name: string, scopeBeanGetter: () => any): any {
+  private getOrBuildBeanProxy(name: string, scopeName: string, scopeBeanGetter: () => any): any {
     let proxy = this.proxyRegister.get(name);
+
+    const assertNotPrimitiveAndConstruct = () => {
+      const bean = scopeBeanGetter();
+
+      if (Utils.isObject(bean)) {
+        return bean;
+      }
+
+      const msg =
+        `Bean named "${bean}", with scope: "${scopeName}" - ` +
+        'contains primitive value which could not be wrapped in Proxy, '+
+        'ES standard allows only object proxies.' +
+        'To solve this issue - you can wrap your primitive value in object.';
+
+      throw new RuntimeErrors.PrimitiveWrappedInProxyError(msg);
+    };
 
     if (!proxy) {
       const proxyHandler: Required<ProxyHandler<any>> = {
         apply: (_: any, thisArg: any, argArray: any[]) => {
-          return Reflect.apply(scopeBeanGetter(), thisArg, argArray);
+          return Reflect.apply(assertNotPrimitiveAndConstruct(), thisArg, argArray);
         },
         construct: (_: any, argArray: any[], newTarget: Function): object => {
-          return Reflect.construct(scopeBeanGetter(), argArray, newTarget);
+          return Reflect.construct(assertNotPrimitiveAndConstruct(), argArray, newTarget);
         },
         defineProperty: (_: any, property: string | symbol, attributes: PropertyDescriptor): boolean => {
-          return Reflect.defineProperty(scopeBeanGetter(), property, attributes);
+          return Reflect.defineProperty(assertNotPrimitiveAndConstruct(), property, attributes);
         },
         deleteProperty: (_: any, property: string | symbol): boolean => {
-          return Reflect.deleteProperty(scopeBeanGetter(), property);
+          return Reflect.deleteProperty(assertNotPrimitiveAndConstruct(), property);
         },
         get: (_: any, property: string | symbol, receiver: any) => {
-          return Reflect.get(scopeBeanGetter(), property, receiver);
+          return Reflect.get(assertNotPrimitiveAndConstruct(), property, receiver);
         },
         getOwnPropertyDescriptor: (_: any, property: string | symbol): PropertyDescriptor | undefined => {
-          return Reflect.getOwnPropertyDescriptor(scopeBeanGetter(), property);
+          return Reflect.getOwnPropertyDescriptor(assertNotPrimitiveAndConstruct(), property);
         },
         getPrototypeOf: (_: any): object | null => {
-          return Reflect.getPrototypeOf(scopeBeanGetter());
+          return Reflect.getPrototypeOf(assertNotPrimitiveAndConstruct());
         },
         has: (_: any, property: string | symbol): boolean => {
-          return Reflect.has(scopeBeanGetter(), property);
+          return Reflect.has(assertNotPrimitiveAndConstruct(), property);
         },
         isExtensible: (_: any): boolean => {
-          const bean = scopeBeanGetter();
-
-          if (bean !== null && typeof bean === 'object') {
-            return Reflect.isExtensible(scopeBeanGetter());
-          }
-
-          return Object.isExtensible(bean);
+          return Reflect.isExtensible(assertNotPrimitiveAndConstruct());
         },
         ownKeys: (_: any): ArrayLike<string | symbol> => {
-          return Reflect.ownKeys(scopeBeanGetter());
+          return Reflect.ownKeys(assertNotPrimitiveAndConstruct());
         },
         preventExtensions: (_: any): boolean => {
-          const bean = scopeBeanGetter();
-
-          if (bean !== null && typeof bean === 'object') {
-            return Reflect.preventExtensions(bean);
-          }
-
-          Object.preventExtensions(bean);
-
-          return !Reflect.isExtensible(bean);
+          return Reflect.preventExtensions(assertNotPrimitiveAndConstruct());
         },
         set: (_: any, property: string | symbol, newValue: any, receiver: any): boolean => {
-          return Reflect.set(scopeBeanGetter(), property, newValue, receiver);
+          return Reflect.set(assertNotPrimitiveAndConstruct(), property, newValue, receiver);
         },
         setPrototypeOf: (_: any, value: object | null): boolean => {
-          return Reflect.setPrototypeOf(scopeBeanGetter(), value);
+          return Reflect.setPrototypeOf(assertNotPrimitiveAndConstruct(), value);
         }
       };
 

@@ -32,7 +32,7 @@ export abstract class CatContext<T extends object = {}, C = undefined> {
    * Needed to save type reference for {@link ContainerManager ContainerManagers} {@link ContainerManager#init init}/{@link ContainerManager#get get}/{@link ContainerManager#getOrInit getOrInit} methods.
    * Accessing this property will always throw an error.
    *
-   * @throws IllegalAccessError if you'll try to access this property.
+   * @throws RuntimeErrors.IllegalAccessError if you'll try to access this property.
    * */
   protected get clawject_context_type(): T {
     throw ErrorBuilder.illegalAccess('CatContext.clawject_context_type');

@@ -1,17 +1,11 @@
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import { ClawjectTransformer } from 'clawject/transformer';
-import { ClawjectMetadataTransformer } from 'clawject/transformer/metadata';
 import { ClawjectWebpackPlugin } from 'clawject/webpack';
-import HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
   mode: 'development',
-  devtool: 'source-map',
   resolve: {
-    fallback: {
-      assert: require.resolve('assert')
-    },
     extensions: ['.js', '.ts'],
   },
   module: {
@@ -20,11 +14,9 @@ module.exports = {
         test: /\.ts$/,
         loader: 'ts-loader',
         options: {
-          // compiler: 'ts-patch',
-          getCustomTransformers: (program: any, getProgram: any) => ({
-            before: [ClawjectTransformer(getProgram)],
-            afterDeclarations: [ClawjectMetadataTransformer(getProgram)]
-          })
+          // getCustomTransformers: (program: any) => {
+          //   console.log(program);
+          // }
         }
       }
     ],

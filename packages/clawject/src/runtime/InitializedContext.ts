@@ -9,7 +9,7 @@ export interface InitializedContext<T> {
   /**
    * Returns bean by name if it's declared in T.
    *
-   * @throws BeanNotFoundError - If bean is not found.
+   * @throws RuntimeErrors.BeanNotFoundError - If bean is not found.
    *
    * @docs https://clawject.org/docs/base-concepts/initialized-context/#initializedcontextgetbean
    */

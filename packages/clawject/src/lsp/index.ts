@@ -7,7 +7,6 @@ import { LanguageService } from './LanguageService';
 import { LanguageServiceCache } from './LanguageServiceCache';
 import { ModificationTracker } from './ModificationTracker';
 import { isTSVersionValid } from '../ts-version/isTSVersionValid';
-import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 
 export function ClawjectLanguageServicePlugin(modules: {
@@ -22,7 +21,7 @@ export function ClawjectLanguageServicePlugin(modules: {
     LanguageServiceLogger.assignPluginInfo(info);
     Compiler.assignPluginInfo(info);
     ModificationTracker.assignPluginInfo(info);
-    LanguageServiceReportBuilder.assignPluginInfo(info);
+    // SemanticDiagnosticsBuilder.assignPluginInfo(info);
     LanguageService.assignPluginInfo(info);
 
     LanguageServiceLogger.log('Clawject language service plugin created');

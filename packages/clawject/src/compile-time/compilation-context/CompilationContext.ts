@@ -5,14 +5,14 @@ import { AbstractCompilationMessage } from './messages/AbstractCompilationMessag
 export class CompilationContext {
   areErrorsHandled = false;
   languageServiceMode = false;
-  private messages: AbstractCompilationMessage[] = [];
+  private _messages: AbstractCompilationMessage[] = [];
   private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
   private _program: ts.Program | null = null;
 
   get program(): ts.Program {
     if (!this._program) {
-      throw new Error('ts.Program is not assigned, most likely you didn\'t add transformer to your tsconfig.json or webpack configuragtion');
+      throw new Error('Program is not assigned, most likely you didn\'t add transformer to your tsconfig.json or webpack configuragtion');
     }
 
     return this._program;
@@ -22,8 +22,12 @@ export class CompilationContext {
     return this.program.getTypeChecker();
   }
 
+  get messages(): AbstractCompilationMessage[] {
+    return this._messages;
+  }
+
   get errors(): AbstractCompilationMessage[] {
-    return this.messages.filter(it => it.type === MessageType.ERROR);
+    return this._messages.filter(it => it.type === MessageType.ERROR);
   }
 
   assignProgram(program: ts.Program | null): void {
@@ -31,7 +35,7 @@ export class CompilationContext {
   }
 
   report(message: AbstractCompilationMessage): void {
-    this.messages.push(message);
+    this._messages.push(message);
 
     const messagesByPath = this.pathToMessages.get(message.place.filePath) ?? [];
     messagesByPath.push(message);
@@ -39,16 +43,16 @@ export class CompilationContext {
   }
 
   getMessagesByFileName(fileName: string): AbstractCompilationMessage[] {
-    return Array.from(this.messages).filter(it => it.place.filePath === fileName);
+    return Array.from(this._messages).filter(it => it.place.filePath === fileName);
   }
 
   clearMessagesByFileName(fileName: string): void {
-    this.messages = this.messages.filter(it => it.place.filePath !== fileName);
+    this._messages = this._messages.filter(it => it.place.filePath !== fileName);
     this.pathToMessages.delete(fileName);
   }
 
   clear(): void {
-    this.messages = [];
+    this._messages = [];
     this.pathToMessages = new Map<string, AbstractCompilationMessage[]>();
   }
 }

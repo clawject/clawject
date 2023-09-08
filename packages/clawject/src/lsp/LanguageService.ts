@@ -15,7 +15,9 @@ export class LanguageService {
   }
 
   static getSemanticDiagnostics: tsServer.LanguageService['getSemanticDiagnostics'] = (fileName) => {
-    if (!this.pluginInfo) {
+    const program = this.pluginInfo?.languageService.getProgram();
+
+    if (!this.pluginInfo || !program) {
       return [];
     }
 
@@ -38,7 +40,8 @@ export class LanguageService {
 
     Compiler.ensureCompiled();
 
-    const diagnostics = LanguageServiceCache.semanticDiagnosticsCache.get(fileName) ?? LanguageServiceReportBuilder.buildSemanticDiagnostics(fileName);
+    const diagnostics = LanguageServiceCache.semanticDiagnosticsCache.get(fileName)
+      ?? LanguageServiceReportBuilder.buildSemanticDiagnostics(fileName);
     LanguageServiceCache.semanticDiagnosticsCache.set(fileName, diagnostics);
 
     return [

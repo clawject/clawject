@@ -1,29 +1,29 @@
 import { GITHUB_REPO_LINK } from './constants';
 import { ClassConstructor } from './ClassConstructor';
-import { BeanNotFoundError, ClassNotInheritorOfCatContextError, IllegalAccessError, NoInitializedContextFoundError, UsageWithoutConfiguredDIError } from './errors';
+import { RuntimeErrors } from './errors';
 
 export class ErrorBuilder {
-  static beanNotFound(contextName: string | null, beanName: string): BeanNotFoundError {
-    return new BeanNotFoundError(`Bean '${beanName}' is not found in context '${this.getContextName(contextName)}'`);
+  static beanNotFound(contextName: string | null, beanName: string): RuntimeErrors.BeanNotFoundError {
+    return new RuntimeErrors.BeanNotFoundError(`Bean '${beanName}' is not found in context '${this.getContextName(contextName)}'`);
   }
 
-  static classNotInheritorOfCatContext(clazz: ClassConstructor<any>): ClassNotInheritorOfCatContextError {
-    const error = new ClassNotInheritorOfCatContextError('Class that is passed to the Container is not an inheritor of CatContext');
+  static classNotInheritorOfCatContext(clazz: ClassConstructor<any>): RuntimeErrors.ClassNotInheritorOfCatContextError {
+    const error = new RuntimeErrors.ClassNotInheritorOfCatContextError('Class that is passed to the Container is not an inheritor of CatContext');
     Object.defineProperty(error, 'class', clazz);
 
     return error;
   }
 
-  static noInitializedContextFoundError(contextName: string | null, contextKey: any): NoInitializedContextFoundError {
-    return new NoInitializedContextFoundError(`Context '${this.getContextName(contextName)}' and key ${this.contextKeyToString(contextKey)} was not initialized`);
+  static noInitializedContextFoundError(contextName: string | null, contextKey: any): RuntimeErrors.NoInitializedContextFoundError {
+    return new RuntimeErrors.NoInitializedContextFoundError(`Context '${this.getContextName(contextName)}' and key ${this.contextKeyToString(contextKey)} was not initialized`);
   }
 
-  static usageWithoutConfiguredDI(cause: string = 'DI'): UsageWithoutConfiguredDIError {
-    return new UsageWithoutConfiguredDIError(`You are trying to use ${cause} without without proper 'clawject' configuration or in wrong place, please check the documentation ${GITHUB_REPO_LINK}`);
+  static usageWithoutConfiguredDI(cause: string = 'DI'): RuntimeErrors.UsageWithoutConfiguredDIError {
+    return new RuntimeErrors.UsageWithoutConfiguredDIError(`You are trying to use ${cause} without without proper 'clawject' configuration or in wrong place, please check the documentation ${GITHUB_REPO_LINK}`);
   }
 
-  static illegalAccess(cause: string): IllegalAccessError {
-    return new IllegalAccessError(`Illegal access to ${cause}, please check the documentation ${GITHUB_REPO_LINK}`);
+  static illegalAccess(cause: string): RuntimeErrors.IllegalAccessError {
+    return new RuntimeErrors.IllegalAccessError(`Illegal access to ${cause}, please check the documentation ${GITHUB_REPO_LINK}`);
   }
 
   static noElementFactoryFound(contextName: string | null, name: string): Error {

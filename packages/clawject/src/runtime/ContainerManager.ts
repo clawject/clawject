@@ -47,7 +47,7 @@ export interface ContainerManager {
    * @param context - The context class constructor that should be retrieved.
    * @param key - Optional key for getting a specific context.
    * @returns The initialized context.
-   * @throws NoInitializedContextFoundError If the context was not initialized.
+   * @throws RuntimeErrors.NoInitializedContextFoundError If the context was not initialized.
    */
   get<T extends object>(context: ClassConstructor<CatContext<T>>, key?: any): InitializedContext<T>;
 
@@ -77,7 +77,7 @@ export interface ContainerManager {
    * @param scopeName - The name of the scope that should be registered.
    * @param scope - The custom scope object.
    *
-   * @throws DuplicateScopeError If the scope with the same name was already registered.
+   * @throws RuntimeErrors.DuplicateScopeError If the scope with the same name was already registered.
    *
    * @docs https://clawject.org/docs/base-concepts/container-manager/#containermanagerregisterscope
    */

@@ -15,11 +15,11 @@ export class BaseTypesRepository {
   }
 
   static init(): void {
-    const compilationContext = getCompilationContext();
-
     if (this.baseTypes !== null) {
       return;
     }
+
+    const compilationContext = getCompilationContext();
 
     const libraryDeclarationFile = compilationContext.program.getSourceFile(CONSTANTS.typeReferenceTablePath);
 
@@ -55,7 +55,11 @@ export class BaseTypesRepository {
 
   static getBaseTypes(): BaseTypes {
     if (this.baseTypes === null) {
-      throw new Error('Base types are not initialized');
+      this.init();
+
+      if (this.baseTypes === null) {
+        throw new Error('Base types are not initialized');
+      }
     }
 
     return this.baseTypes;

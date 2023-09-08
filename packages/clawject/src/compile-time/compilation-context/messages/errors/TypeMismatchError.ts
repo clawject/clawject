@@ -5,23 +5,34 @@ import { Configuration } from '../../../core/configuration/Configuration';
 import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { compact } from 'lodash';
+import { Bean } from '../../../core/bean/Bean';
+
+class BeanTypeMismatch {
+  constructor(
+    public name: string,
+    public location: NodeDetails,
+  ) {}
+}
 
 export class TypeMismatchError extends AbstractCompilationMessage {
   public code = MessageCode.CT13;
   public type = MessageType.ERROR;
   public description = 'Type mismatch.';
-  public locations: NodeDetails[];
+  public mismatchElements: BeanTypeMismatch[];
 
   constructor(
     details: string | null,
     place: ts.Node,
     relatedConfiguration: Configuration | null,
-    mismatchElements: ts.Symbol[],
+    mismatchElements: Bean[],
   ) {
     super(details, place, relatedConfiguration);
 
-    this.locations = compact(mismatchElements.map(it => {
-      return it.declarations?.map(getNodeDetails);
-    }).flat());
+    this.mismatchElements = compact(mismatchElements.map(it => {
+      return new BeanTypeMismatch(
+        it.fullName,
+        getNodeDetails(it.node)
+      );
+    }));
   }
 }
