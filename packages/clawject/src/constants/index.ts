@@ -1,9 +1,8 @@
 import upath from 'upath';
 
-/**
- * The Next line is parsed by the build script
- * */
+/** this line is parsed by the build script */
 const TS_VERSION_RANGE = '>=4.8 <=4.9';
+/** this line is replaced by the build script */
 const LIBRARY_VERSION = '0.0.0';
 
 export const CONSTANTS = {

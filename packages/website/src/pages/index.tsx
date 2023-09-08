@@ -8,10 +8,9 @@ import styles from './index.module.css';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
+
   return (
     <div className={styles.homepageHeader}>
-      <LogoBig className={styles.logo}/>
-      <div className={styles.logo}></div>
     </div>
   );
 }

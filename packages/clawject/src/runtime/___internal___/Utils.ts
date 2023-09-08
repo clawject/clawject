@@ -12,4 +12,9 @@ export class Utils {
       value: value,
     });
   }
+
+  public static isObject(value: any): boolean {
+    const type = typeof value;
+    return value !== null && (typeof type === 'object' || typeof type === 'function');
+  }
 }

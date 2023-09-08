@@ -38,7 +38,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
     }, new Map<string, Bean>());
 
   const missingElements: ts.Symbol[] = [];
-  const typeMismatchElements: ts.Symbol[] = [];
+  const typeMismatchElements: Bean[] = [];
 
   typeProperties.forEach((property) => {
     const propertyName = property.getName();
@@ -52,7 +52,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
     }
 
     if (!propertyDIType.isCompatible(bean.diType)) {
-      typeMismatchElements.push(property);
+      typeMismatchElements.push(bean);
       return;
     }
 
@@ -70,7 +70,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
 
   if (typeMismatchElements.length > 0) {
     compilationContext.report(new TypeMismatchError(
-      'Type of Bean is not compatible with type of property declared in a context type.',
+      'Following Beans are not compatible with type declared in base Context type.',
       typeArgNode,
       context,
       typeMismatchElements,

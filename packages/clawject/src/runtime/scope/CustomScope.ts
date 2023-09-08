@@ -72,7 +72,11 @@ export interface CustomScope {
   /**
    * Indicates whether a proxy should be injected or the raw object.
    *
-   * Note that in most cases you need to use a proxy, so this method should return `true` or just can be not defined.
+   * In default scopes (singleton, prototype) `false` value is returned from this method,
+   * but if you want to implement your own scope (for example - http-request scope),
+   * most likely you will need to return `true` from this method.
+   *
+   * Be careful with primitive values, because they are not supported by JavaScript Proxies (at least for now).
    *
    * @returns boolean `true` if a proxy should be injected, `false` otherwise.
    */

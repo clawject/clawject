@@ -2,8 +2,6 @@
 title: Setup 🛠️
 ---
 
-
-
 ## Prerequisites
   - Node.js version 16 or above
   - TypeScript version 4.8–4.9
@@ -39,27 +37,25 @@ npm install clawject
 </Tabs>
 ```
 
+### Webpack
 
+There are a few ways how you can use **Clawject** with **webpack**.
 
-### Webpack and ts-loader
+:::info Note that
 
-:::info Please note
-
-If you're going to use **ts-loader** - make sure **transpileOnly** mode is disabled.
+If you're going to use webpack with **ts-loader** - make sure **transpileOnly** mode is disabled.
 Basically, **transpileOnly** disables the ability to perform static type checking,
 which is required for **Clawject** to work.
-
-Also, if you're using **Babel** - please make sure that it's applied after ts-loader.
-
 [ts-loader#transpileOnly](https://github.com/TypeStrong/ts-loader#transpileonly)
 
+Also, if you're using **Babel** - please make sure that it's applied **after** ts-loader.
 :::
 
-To start using Clawject with **webpack and ts-loader**, you need to pass typescript transformer.
+#### ts-loader with custom compiler + ts-patch (the most convenient way)
 
 ```mdx-code-block
 <Tabs>
-<TabItem value="ts-webpack" label="TS webpack configuration">
+<TabItem value="webpackconfig" label="webpack.config.ts">
 ```
 
 ```ts
