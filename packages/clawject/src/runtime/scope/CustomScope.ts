@@ -78,7 +78,7 @@ export interface CustomScope {
    *
    * Be careful with primitive values because they are not supported by JavaScript Proxies (at least for now),
    * and if bean with scope that returns `true` from this method will be created -
-   * error will be thrown {@link RuntimeErrors.PrimitiveWrappedInProxyError}.
+   * error will be thrown {@link RuntimeErrors.PrimitiveCouldNotBeWrappedInProxyError}.
    *
    * @returns boolean `true` if a proxy should be injected, `false` otherwise.
    */
