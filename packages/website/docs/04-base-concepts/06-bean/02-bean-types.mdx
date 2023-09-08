@@ -100,13 +100,9 @@ class MyContext extends CatContext {
 
   @PostConstruct
   postConstruct(
-    // highlight-next-line-green
     foo: Foo, // <- "foo" will be injected
-    // highlight-next-line-green
     iFoo: IFoo, // <- "foo" will be injected, "Foo" explicitly implements "IFoo"
-    // highlight-next-line-green
     abstractFoo: AbstractFoo, // <- "foo" will be injected, "Foo" explicitly extends "AbstractFoo"
-    // highlight-next-line-red
     abstractBar: AbstractBar, // <- compilation error will be reported, no bean of type "AbstractBar" were found
   ) {}
 }
@@ -125,9 +121,7 @@ class MyContext extends CatContext {
 
   @PostConstruct
   postConstruct(
-    // highlight-next-line-green
     iFoo: IFoo, // <- "foo" will be injected by explicit type
-    // highlight-next-line-red
     foo: Foo, // <- compilation error will be reported, no bean of type "Foo" were found
   ) {}
 }

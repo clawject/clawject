@@ -19,7 +19,6 @@ class Bar implements IBar { /* ... */ }
 
 class Foo {
   constructor(
-    // highlight-next-line-green
     private bar: IBar // <-- Clawject will automatically inject implementation of IBar interface
   ) {}
 
