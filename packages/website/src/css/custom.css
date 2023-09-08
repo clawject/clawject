@@ -1,5 +1,13 @@
 :root {
+  --ifm-color-primary: #f84d75;
+  --ifm-color-primary-dark: #c71d44;
+  --ifm-color-primary-darker: #a11542;
+  --ifm-color-primary-darkest: #7c113c;
+  --ifm-color-primary-light: #ff7aa7;
+  --ifm-color-primary-lighter: #ff96c3;
+  --ifm-color-primary-lightest: #ffb1d9;
 
+  --ifm-link-hover-color: #538ce9;
 }
 
 /* You can override the default Infima variables here. */
