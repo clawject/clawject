@@ -170,7 +170,7 @@ export class BeanFactory {
         'ES standard allows only object proxies.' +
         'To solve this issue - you can wrap your primitive value in object.';
 
-      throw new RuntimeErrors.PrimitiveWrappedInProxyError(msg);
+      throw new RuntimeErrors.PrimitiveCouldNotBeWrappedInProxyError(msg);
     };
 
     if (!proxy) {

@@ -345,7 +345,7 @@ class MyContext extends CatContext {
 
 **Solution:** Register scope before using it.
 
-### PrimitiveWrappedInProxyError
+### PrimitiveCouldNotBeWrappedInProxyError
 It occurs when your scope implementation defines `useProxy` method that is returned `true`, and bean that is returned primitive value
 was decorated with this scope.
 JavaScript does not allow wrapping primitive values in proxy, so this error will be thrown. Example:
