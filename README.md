@@ -1,1 +1,1 @@
-<div style="display: flex;justify-content: center; padding: 40px"><a alt="Clawject logo" href="https://clawject.org" target="_blank" rel="noreferrer"><img src="https://clawject.org/img/logo.svg" width="100"></a></div>
+<div align="center"><a alt="Clawject logo" href="https://clawject.org" target="_blank" rel="noreferrer"><img src="https://clawject.org/img/logo.svg" width="100"></a></div>
