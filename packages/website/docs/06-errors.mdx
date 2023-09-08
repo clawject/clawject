@@ -138,12 +138,12 @@ class MyContext extends CatContext {
 
 **Solution:** Use only supported types or wrap an unsupported type in the object. Example:
 ```ts
-class ValueHolder<T> {
+class Value<T> {
   constructor(public value: T) {}
 }
 class MyContext extends CatContext {
-  @Bean stringOrNumber(): ValueHolder<string | number> {
-    return new ValueHolder('string');
+  @Bean stringOrNumber(): Value<string | number> {
+    return new Value('string');
   }
 }
 ```
