@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../website/docs/06-errors.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/CanNotRegisterBeanError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/CanNotRegisterBeanError.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/IncorrectTypeDefinitionError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/NotStaticallyKnownError.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processLifecycleElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processLifecycleElement.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanClassConstructor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanClassConstructor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/verifyDecorators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/verifyDecorators.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/_category_.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/_category_.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/06-errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/06-errors.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
