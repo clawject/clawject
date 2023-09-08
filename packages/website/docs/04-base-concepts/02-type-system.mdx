@@ -62,7 +62,6 @@ class Dog {
 
 class MyContext extends CatContext {
   @PostConstruct
-  // highlight-next-line-red
   meow(animal: Cat): void { // <- error will be reported here
     animal.voice();
   }

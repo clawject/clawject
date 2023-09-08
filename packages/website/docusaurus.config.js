@@ -150,14 +150,6 @@ const config = {
                         line: 'highlight-next-line',
                         block: {start: 'highlight-start', end: 'highlight-end'},
                     },
-                    {
-                        className: 'code-block-red-line',
-                        line: 'highlight-next-line-red',
-                    },
-                    {
-                        className: 'code-block-green-line',
-                        line: 'highlight-next-line-green',
-                    },
                 ],
             },
         }),
