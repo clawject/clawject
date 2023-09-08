@@ -1,8 +1,9 @@
 ---
 title: Errors
+description: Compile-time and runtime errors.
 ---
 
-Clawject provides few types of errors compile-time and runtime.
+Clawject produces few types of errors compile-time and runtime.
 
 ## Compile-time errors
 Each compile time error has own code that can be used to identify it.
@@ -14,7 +15,7 @@ It occurs when the name of the element is not met some requirements:
 - The name is empty
 - The name of class member name is reserved by Clawject, for example: `clawject_context_metadata`, `clawject_context_type`, etc.
 
-Solution: Rename the element.
+**Solution:** Rename the element.
 
 ### CT2: DecoratorsCountError
 It occurs when the element has more than one same decorator.
@@ -26,18 +27,18 @@ class MyContext extends CatContext {
   cat = new Cat();
 }
 ```
-Solution: Remove extra decorators.
+**Solution:** Remove extra decorators.
 
 ### CT3: TypeQualifyError
 It occurs when Clawject can't qualify a type of element or return type of method or function.
 
-Solution: Specify the type of element explicitly.
+**Solution:** Specify the type of element explicitly.
 
 ### CT4: CanNotRegisterBeanError
 It occurs when the element can't be registered as a bean because some of the bean dependencies could not be resolved.
 This error appears directly on bean declaration in `CatContext` classes.
 
-Solution:
+**Solution:**
 - Define missing dependencies in the context.
 - Check a topic about [how dependencies are resolved](/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx#how-dependencies-are-resolved)
 - If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
@@ -51,7 +52,7 @@ It occurs when the bean candidate for the specific dependency could not be resol
   appear on the corresponding parameter of the **class constructor**.
 Also - if you have more than one matching candidate for injection - Clawject will notify you which candidate is matching by name and type.
 
-Solution:
+**Solution:**
 - Define missing dependencies in the context.
 - Check a topic about [how dependencies are resolved](/docs/04-base-concepts/06-bean/03-bean-dependencies.mdx#how-dependencies-are-resolved)
 - If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
@@ -67,7 +68,7 @@ class MyContext extends CatContext {
 }
 ```
 
-Solution: Add initializer to the property or method.
+**Solution:** Add initializer to the property or method.
 
 ### CT7: CircularDependenciesError
 It occurs when some beans have circular dependencies between each other.
@@ -98,7 +99,7 @@ class MyContext extends CatContext {
 
 Clawject will detect circular dependencies at compile-time and report this error in a readable way.
 
-Solution:
+**Solution:**
 - Redesign. When we have a circular dependency, it’s likely we have a design problem and that the responsibilities are not well separated.
   We should try to redesign the components properly so that their hierarchy is well-designed, and there is no need for circular dependencies.
 - If we can’t redesign the components, we can assign the instance after creation.
@@ -128,7 +129,7 @@ Solution:
 ### CT8: IncorrectTypeError
 It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](/docs/04-base-concepts/06-bean/02-bean-types.mdx).
 
-Solution: Use only supported types.
+**Solution:** Use only supported types.
 
 ### CT9: IncorrectArgumentsLengthError
 It occurs when required arguments count not match requirements. Example:
@@ -141,7 +142,7 @@ class MyContext extends CatContext {
 
 In this example - `@Qualifier` decorator requires exactly one argument to be passed, but it was not provided, so Clawject will report error.
 
-Solution: Pass required arguments count.
+**Solution:** Pass required arguments count.
 
 ### CT10: DependencyResolvingError
 It occurs when the dependencies of class constructor could not be resolved. This error occurs only when using [Bean function](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-function). Examples:
@@ -160,7 +161,7 @@ It occurs when the dependencies of class constructor could not be resolved. This
   }
   ```
 
-Solution: Use **factory-method** with [@Bean decorator](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-decorator)
+**Solution:** Use **factory-method** with [@Bean decorator](/docs/04-base-concepts/06-bean/01-declare-bean.mdx#using-bean-decorator)
 instead of **Bean function**.
 
 ### CT11: NotSupportedError
@@ -208,6 +209,8 @@ It occurs when some feature is not supported by Clawject. Example:
   class MyContext extends CatContext {}
   ```
 
+**Solution:** Do not use unsupported features.
+
 ### CT12: MissingBeansDeclaration
 It occurs when the context does not have required beans that are declared in CatContext interface. Example:
 ```ts
@@ -220,6 +223,8 @@ class MyContext extends CatContext<IMyContext> {
 }
 ```
 
+**Solution:** Declare missing beans in the context.
+
 ### CT13: TypeMismatchError
 It occurs when the type of Bean is not compatible with a type declared in CatContext interface. Example:
 ```ts
@@ -231,6 +236,8 @@ class MyContext extends CatContext<IMyContext> {
 }
 ```
 
+**Solution:** Change the type of Bean to match the type declared in CatContext interface or vice versa.
+
 ### CT14: DuplicateNameError
 It occurs when few beans have the same name (class member name or name defined via [`@Qualifier decorator`](/docs/04-base-concepts/08-qualifier.mdx)). Example:
 ```ts
@@ -239,6 +246,8 @@ class MyContext extends CatContext {
   @Qualifier('cat') dog = Bean(Dog);
 }
 ```
+
+**Solution:** Change the name of one of the beans.
 
 ### CT15: NotStaticallyKnownError
 It occurs when value or name in some part of code is not statically known. Example:
@@ -258,3 +267,100 @@ It occurs when value or name in some part of code is not statically known. Examp
     @Qualifier('Masya' + 'Cat') cat = Bean(Cat);
   }
   ```
+
+**Solution:** Use only statically known values and names when it's required.
+
+## Runtime errors
+Runtime errors are regular JavaScript errors that can be thrown during the application execution.
+Clawject exporting Error classes that can be caught and handled in the application code.
+Each error has `name` property, so it can be identified via name or via `instanceof` operator.
+
+### NoInitializedContextFoundError
+It occurs when the context is not initialized, and you're trying
+to get [`InitializedContext`](/docs/04-base-concepts/04-initialized-context.mdx) object
+from [`ContainerManager`](/docs/04-base-concepts/03-container-manager.mdx).
+Example:
+```ts
+class MyContext extends CatContext {}
+ContainerManager.get(MyContext);
+```
+
+**Solution:** Initialize the context before getting it from the container manager.
+
+### BeanNotFoundError
+It occurs when the bean that is requested is not found in the context. Example:
+```ts
+interface IMyContext {
+  cat: Cat;
+}
+class MyContext extends CatContext<IMyContext> {
+  cat = Bean(Cat);
+}
+const initializedContext = ContainerManager.init(MyContext);
+
+initializedContext.getBean('dog');
+```
+
+**Solution:** Define missing bean in the context.
+
+### ClassNotInheritorOfCatContextError
+It occurs when you're trying to initialize the context that is not inherited from CatContext. Example:
+```ts
+class MyContext {}
+ContainerManager.init(MyContext);
+```
+
+**Solution:** Inherit context from CatContext.
+
+### UsageWithoutConfiguredDIError
+It occurs when you're trying to use Clawject without proper configuration,
+for example - you're forgotten to add Clawject transformer to the tsconfig.json file.
+
+**Solution:** Configure Clawject properly.
+
+### IllegalAccessError
+It occurs when you're trying to access some internal clawject property or method that is not allowed to access.
+
+**Solution:** Do not access internal clawject properties and methods.
+
+### DuplicateScopeError
+It occurs when you're trying to register the scope that is already registered. Example:
+```ts
+class MyCustomScope implements CustomScope {
+  //...
+}
+ContainerManager.registerScope('myCustomScope', new MyCustomScope());
+ContainerManager.registerScope('myCustomScope', new MyCustomScope());
+```
+
+**Solution:** Register only one scope with the same name.
+
+### ScopeIsNotRegisteredError
+It occurs when you're trying to assign non-registered scope to the bean. Example:
+```ts
+class MyContext extends CatContext {
+  @Scope('MySuperScopeThatIsNotRegistered') cat = Bean(Cat);
+}
+```
+
+**Solution:** Register scope before using it.
+
+### PrimitiveWrappedInProxyError
+It occurs when your scope implementation defines `useProxy` method that is returned `true`, and bean that is returned primitive value
+was decorated with this scope.
+JavaScript does not allow wrapping primitive values in proxy, so this error will be thrown. Example:
+```ts
+class MyCustomScope implements CustomScope {
+  useProxy(): boolean {
+    return true;
+  }
+  //...
+}
+class MyContext extends CatContext {
+  @Scope('MyCustomScope') cat = Bean(Cat);
+}
+ContainerManager.registerScope('MyCustomScope', new MyCustomScope());
+ContainerManager.init(MyContext);
+```
+
+**Solution:** Do not return primitive values from beans that are decorated with scope that defines `useProxy` method that is returned `true`.
