@@ -76,7 +76,9 @@ export interface CustomScope {
    * but if you want to implement your own scope (for example - http-request scope),
    * most likely you will need to return `true` from this method.
    *
-   * Be careful with primitive values, because they are not supported by JavaScript Proxies (at least for now).
+   * Be careful with primitive values because they are not supported by JavaScript Proxies (at least for now),
+   * and if bean with scope that returns `true` from this method will be created -
+   * error will be thrown {@link RuntimeErrors.PrimitiveWrappedInProxyError}.
    *
    * @returns boolean `true` if a proxy should be injected, `false` otherwise.
    */
