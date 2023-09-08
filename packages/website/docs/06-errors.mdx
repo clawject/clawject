@@ -127,9 +127,26 @@ Clawject will detect circular dependencies at compile-time and report this error
   ```
 
 ### CT8: IncorrectTypeError
-It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](/docs/04-base-concepts/06-bean/02-bean-types.mdx).
+It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](/docs/04-base-concepts/06-bean/02-bean-types.mdx). Example:
+```ts
+class MyContext extends CatContext {
+  @Bean stringOrNumber(): string | number {
+    return 'Masya';
+  }
+}
+```
 
-**Solution:** Use only supported types.
+**Solution:** Use only supported types or wrap an unsupported type in the object. Example:
+```ts
+class ValueHolder<T> {
+  constructor(public value: T) {}
+}
+class MyContext extends CatContext {
+  @Bean stringOrNumber(): ValueHolder<string | number> {
+    return new ValueHolder('string');
+  }
+}
+```
 
 ### CT9: IncorrectArgumentsLengthError
 It occurs when required arguments count not match requirements. Example:
