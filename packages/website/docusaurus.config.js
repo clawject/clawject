@@ -105,7 +105,7 @@ const config = {
                 style: 'dark',
                 links: [
                     {
-                        label: 'Made with ♥ by artem1458',
+                        label: 'Made with <3 by artem1458',
                         href: 'https://github.com/artem1458',
                     },
                     // {
