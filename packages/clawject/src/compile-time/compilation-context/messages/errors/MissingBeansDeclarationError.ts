@@ -13,7 +13,7 @@ class MissingElement {
   ) {}
 }
 
-export class MissingBeansDeclaration extends AbstractCompilationMessage {
+export class MissingBeansDeclarationError extends AbstractCompilationMessage {
   public code = MessageCode.CT12;
   public type = MessageType.ERROR;
   public description = 'Missing Bean declaration.';

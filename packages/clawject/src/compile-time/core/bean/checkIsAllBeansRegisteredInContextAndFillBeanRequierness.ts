@@ -3,7 +3,7 @@ import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { MissingBeansDeclaration } from '../../compilation-context/messages/errors/MissingBeansDeclaration';
+import { MissingBeansDeclarationError } from '../../compilation-context/messages/errors/MissingBeansDeclarationError';
 import { TypeMismatchError } from '../../compilation-context/messages/errors/TypeMismatchError';
 
 export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context: Configuration): void => {
@@ -60,7 +60,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
   });
 
   if (missingElements.length > 0) {
-    compilationContext.report(new MissingBeansDeclaration(
+    compilationContext.report(new MissingBeansDeclarationError(
       'Following beans are required, but not found in context.',
       typeArgNode,
       context,

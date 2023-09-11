@@ -152,6 +152,18 @@ const config = {
                     },
                 ],
             },
+
+            algolia: {
+                appId: 'XY3XUTLPXF',
+                apiKey: '55b87fd126a26b83c535c8e62371a41f',
+
+                indexName: 'clawject',
+
+                // Optional: path for search page that enabled by default (`false` to disable it)
+                searchPagePath: 'search',
+
+                //... other Algolia params
+            },
         }),
 };
 
