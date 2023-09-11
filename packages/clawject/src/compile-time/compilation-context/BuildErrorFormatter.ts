@@ -5,7 +5,7 @@ import { BeanCandidateNotFoundError } from './messages/errors/BeanCandidateNotFo
 import upath from 'upath';
 import { CircularDependenciesError } from './messages/errors/CircularDependenciesError';
 import { CanNotRegisterBeanError } from './messages/errors/CanNotRegisterBeanError';
-import { MissingBeansDeclaration } from './messages/errors/MissingBeansDeclaration';
+import { MissingBeansDeclarationError } from './messages/errors/MissingBeansDeclarationError';
 import { DuplicateNameError } from './messages/errors/DuplicateNameError';
 import { TypeMismatchError } from './messages/errors/TypeMismatchError';
 
@@ -89,7 +89,7 @@ export class BuildErrorFormatter {
       return [baseMessage, ...causes].join('\n');
     }
 
-    if (error instanceof MissingBeansDeclaration) {
+    if (error instanceof MissingBeansDeclarationError) {
       const missingElementsRelatedInformation = error.missingElementsLocations.map(it => {
         return `  '${it.name}' is declared here. ${this.getPathWithPosition(it.nodeDetails)}`;
       });

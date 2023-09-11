@@ -228,7 +228,7 @@ It occurs when some feature is not supported by Clawject. Example:
 
 **Solution:** Do not use unsupported features.
 
-### CT12: MissingBeansDeclaration
+### CT12: MissingBeansDeclarationError
 It occurs when the context does not have required beans that are declared in CatContext interface. Example:
 ```ts
 interface IMyContext {
@@ -374,10 +374,10 @@ class MyCustomScope implements CustomScope {
   //...
 }
 class MyContext extends CatContext {
-  @Scope('MyCustomScope') cat = Bean(Cat);
+  @Bean @Scope('MyCustomScope') cat = 'Masya';
 }
 ContainerManager.registerScope('MyCustomScope', new MyCustomScope());
 ContainerManager.init(MyContext);
 ```
 
-**Solution:** Do not return primitive values from beans that are decorated with scope that defines `useProxy` method that is returned `true`.
+**Solution:** Do not return primitive values from beans that are using scope that defines that object should be proxied.

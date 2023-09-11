@@ -6,7 +6,7 @@ import { CircularDependenciesError } from '../compilation-context/messages/error
 import { CanNotRegisterBeanError } from '../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanCandidateNotFoundError } from '../compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { BeanKind } from '../core/bean/BeanKind';
-import { MissingBeansDeclaration } from '../compilation-context/messages/errors/MissingBeansDeclaration';
+import { MissingBeansDeclarationError } from '../compilation-context/messages/errors/MissingBeansDeclarationError';
 import { DuplicateNameError } from '../compilation-context/messages/errors/DuplicateNameError';
 import { MessageType } from '../compilation-context/messages/MessageType';
 import { TypeMismatchError } from '../compilation-context/messages/errors/TypeMismatchError';
@@ -14,7 +14,7 @@ import { TypeMismatchError } from '../compilation-context/messages/errors/TypeMi
 const MESSAGES_WITHOUT_CONTEXT_DETAILS = [
   CircularDependenciesError,
   CanNotRegisterBeanError,
-  MissingBeansDeclaration,
+  MissingBeansDeclarationError,
   BeanCandidateNotFoundError,
   DuplicateNameError,
 ];
@@ -102,7 +102,7 @@ export class DiagnosticsBuilder {
       }
     }
 
-    if (message instanceof MissingBeansDeclaration) {
+    if (message instanceof MissingBeansDeclarationError) {
       const missingElementsRelatedInformation: ts.DiagnosticRelatedInformation[] = message.missingElementsLocations.map(it => ({
         messageText: `'${it.name}' is declared here.`,
         start: it.nodeDetails.startOffset,
