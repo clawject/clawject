@@ -1,7 +1,7 @@
 import { CompilationMetadata, CompilationMetadataKind } from './models/CompilationMetadata';
 import { COMPILATION_METADATA_TOKENS } from './constants';
 
-export class CompilationMetadataParser {
+export class CompilationMetadataReader {
   private static METADATA_KINDS = Object.values(CompilationMetadataKind);
 
   static parse(metadata: string): CompilationMetadata | null {

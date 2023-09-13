@@ -6,13 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/BuildErrorFormatter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/BuildErrorFormatter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/MissingBeansDeclaration.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/MissingBeansDeclarationError.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/checkIsAllBeansRegisteredInContextAndFillBeanRequierness.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/01-intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/01-intro.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/06-errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/06-errors.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompilationMetadataParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompilationMetadataReader.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +65,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="npm.run:upgradeClawject">
+  <component name="RunManager" selected="npm.run:tsc">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -123,8 +118,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:tsc" />
+        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:webpack_prod" />
         <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.run:tscw" />
