@@ -1,15 +1,13 @@
 import { Bean, CatContext, ContainerManager } from 'clawject';
-import { IMyContext } from './IMyContext';
 
 interface Test {
   foo: string;
 }
 
-
 export class MyContext extends CatContext {
   @Bean beanThatReturnsOne = (arg: 2) => 1 as const;
   @Bean beanThatReturnsTwo = (arg: 3) => 2 as const;
-  @Bean beanThatReturnsThree = () => 3 as const;
+  @Bean beanThatReturnsThree = (arg: 1) => 3 as const;
 
   @Bean data2 = 1;
 
@@ -39,4 +37,4 @@ export class MyContext extends CatContext {
   // }
 }
 
-console.log(typeof ContainerManager.init(MyContext).getBeans());
+console.log(ContainerManager.destroy(MyContext));

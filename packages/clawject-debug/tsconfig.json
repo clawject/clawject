@@ -17,12 +17,7 @@
     "sourceMap": true,
     "plugins": [
       {
-        "name": "clawject-language-service",
-        "transform": "clawject/transformer"
-      },
-      {
-        "transform": "clawject/transformer/metadata",
-        "afterDeclarations": true
+        "transform": "../clawject/src/transformer/index.ts"
       }
     ]
   }

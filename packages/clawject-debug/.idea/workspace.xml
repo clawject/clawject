@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompilationMetadataParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/compilation-metadata/CompilationMetadataReader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/negative/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/01-intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/01-intro.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/03-container-manager.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/03-container-manager.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +29,7 @@
     <option name="indexEntireGoPath" value="true" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/node_modules/clawject/index.d.ts" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/node_modules/webpack/package.json" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/index.ts" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -65,7 +74,12 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="npm.run:tsc">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.run:ttsc_debug">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -76,11 +90,11 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="run:tscw" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="run:ttsc_debug" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="run:tscw" />
+        <script value="run:ttsc_debug" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -118,11 +132,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:tsc" />
-        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:webpack_prod" />
         <item itemvalue="npm.run:webpack_hot" />
-        <item itemvalue="npm.run:tscw" />
+        <item itemvalue="npm.run:upgradeClawject" />
+        <item itemvalue="npm.run:ttsc_debug" />
+        <item itemvalue="npm.run:tsc" />
       </list>
     </recent_temporary>
   </component>
@@ -212,6 +226,11 @@
           <url>file://$PROJECT_DIR$/node_modules/clawject/dist/mjs/transformer/index.js</url>
           <line>43</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts</url>
+          <line>61</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
