@@ -3,29 +3,28 @@ title: Introduction 👋
 slug: /
 ---
 
-## What is Clawject and Why
-Clawject is a Dependency Injection framework for TypeScript with great development experience.
-Forget about **injection tokens** and boilerplate code, just write **classes, interfaces and types** and let Clawject do the rest!
+# Why Clawject
+Introducing Clawject, the TypeScript Dependency Injection framework that's here to make your coding life a breeze.
+No more wrestling with injection tokens and drowning in boilerplate code.
+With Clawject, you can simply focus on writing clean classes, defining interfaces, and managing types,
+while the framework takes care of the rest.
+Say goodbye to the headaches and hello to a smoother TypeScript development journey with Clawject!
+🎉
 
 ```ts title="main.ts"
-import { Bean, CatContext, ContainerManager } from 'clawject';
+import { Bean, CatContext } from 'clawject';
 
-interface IBar {}
+interface IFoo {}
+class Foo implements IFoo { /* ... */ }
 
-class Bar implements IBar { /* ... */ }
-
-class Foo {
+class Bar {
   constructor(
-    private bar: IBar // <-- Clawject will automatically inject implementation of IBar interface
+    private foo: IFoo // <-- Clawject will automatically inject implementation of IFoo interface
   ) {}
-
-  /* ... */
 }
 
-class MyContext extends CatContext {
-  foo = Bean(Foo);
-  bar = Bean(Bar);
+class ApplicationContext extends CatContext {
+  fooBean = Bean(Foo);
+  barBean = Bean(Bar);
 }
-
-ContainerManager.init(MyContext);
 ```
