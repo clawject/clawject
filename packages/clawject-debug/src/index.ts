@@ -1,40 +1,22 @@
-import { Bean, CatContext, ContainerManager } from 'clawject';
+import { Bean, CatContext, ContainerManager, PostConstruct } from 'clawject';
 
-interface Test {
-  foo: string;
+interface ITest {
+  a: string;
+}
+
+class Test implements ITest {
+  a = 'a';
 }
 
 export class MyContext extends CatContext {
-  @Bean beanThatReturnsOne = (arg: 2) => 1 as const;
-  @Bean beanThatReturnsTwo = (arg: 3) => 2 as const;
-  @Bean beanThatReturnsThree = (arg: 1) => 3 as const;
+  test = Bean(Test);
 
-  @Bean data2 = 1;
-
-  // @Bean test0(
-  //   test1: any,
-  // ): any {
-  //   return null;
-  // }
-  //
-  // @Bean test1(
-  //   test0: any,
-  // ): any {
-  //   return null;
-  // }
-  //
-  // @Bean number = 123;
-  // @Bean number2 = 123;
-  //
-  // @Bean data = 'data';
-  // classWithDependencies = Bean(ClassWithDependencies);
-  //
-  // @PostConstruct
-  // postConstruct(
-  //   data: number
-  // ) {
-  //   console.log(123);
-  // }
+  @PostConstruct
+  init(
+    dep0: Test
+  ) {
+    console.log(dep0.a);
+  }
 }
 
-console.log(ContainerManager.destroy(MyContext));
+console.log(ContainerManager.init(MyContext));
