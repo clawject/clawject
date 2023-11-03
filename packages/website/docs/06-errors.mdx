@@ -8,12 +8,18 @@ Clawject produces few types of errors compile-time and runtime.
 ## Compile-time errors
 Each compile time error has own code that can be used to identify it.
 Each code is unique and consists of prefix `CT` and number.
-Example: `CT17`.
+Example: `CT7`.
 
 ### CT1: IncorrectNameError
 It occurs when the name of the element is not met some requirements:
 - The name is empty
-- The name of class member name is reserved by Clawject, for example: `clawject_context_metadata`, `clawject_context_type`, etc.
+- The name of class member name is reserved by Clawject.
+  Reserved names are:
+  - `clawject_context_metadata`
+  - `clawject_component_metadata`
+  - `clawject_context_type`
+  - `clawject_configuration_init`
+  - `clawject_compile_time_metadata`
 
 **Solution:** Rename the element.
 

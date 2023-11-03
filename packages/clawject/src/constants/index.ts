@@ -17,3 +17,8 @@ if (process.env['CLAWJECT_DEBUG_MODE'] === 'true') {
   CONSTANTS.packageRootDir = upath.join(process.cwd(), 'node_modules/clawject');
   CONSTANTS.typeReferenceTablePath = upath.join(process.cwd(), 'node_modules/clawject/index.d.ts');
 }
+
+if (process.env['CLAWJECT_TEST_MODE'] === 'true') {
+  CONSTANTS.packageRootDir = '/node_modules/clawject';
+  CONSTANTS.typeReferenceTablePath = '/node_modules/clawject/index.d.ts';
+}
