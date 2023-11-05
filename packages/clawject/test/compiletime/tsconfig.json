@@ -13,5 +13,8 @@
   "include": [
     "helpers",
     "suites/**/*.test.ts"
+  ],
+  "exclude": [
+    "suites/**/fs/**/*"
   ]
 }

@@ -9,7 +9,6 @@ import ts from 'typescript';
 import { DuplicateNameError } from '../../compilation-context/messages/errors/DuplicateNameError';
 import { BeanKind } from './BeanKind';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
-import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
@@ -18,6 +17,7 @@ const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.NEVER, 'never'],
   [DITypeFlag.VOID, 'void'],
   [DITypeFlag.UNDEFINED, 'undefined'],
+  [DITypeFlag.NULL, 'null'],
   [DITypeFlag.UNION, 'union'],
 ]);
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([

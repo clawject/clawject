@@ -5,24 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/.eslintignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/Compiler.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/jest.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/setupJest.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT1_IncorrectNameError/IncorrectNameError.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT1_IncorrectNameError/fs/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT2_DecoratorsCountError/DecoratorsCountError.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT2_DecoratorsCountError/fs/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/yarn.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/DiagnosticsLight.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT4_CanNotRegisterBeanError/CanNotRegisterBeanError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT4_CanNotRegisterBeanError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT5_BeanCandidateNotFoundError/BeanCandidateNotFoundError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT5_BeanCandidateNotFoundError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT6_MissingInitializerError/MissingInitializerError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT6_MissingInitializerError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/BeanCandidateNotFoundError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/fs/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/BaseTypesRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/BaseTypesRepository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/constants/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/06-errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/06-errors.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +82,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:ttsc_debug">
+  <component name="RunManager" selected="npm.run:upgradeClawject">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -139,11 +135,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:ttsc_debug" />
         <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:webpack_prod" />
         <item itemvalue="npm.run:webpack_hot" />
-        <item itemvalue="npm.run:upgradeClawject" />
       </list>
     </recent_temporary>
   </component>
