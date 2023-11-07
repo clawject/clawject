@@ -1,14 +1,14 @@
 export interface DiagnosticsLight {
-  messageText: string;
-  start: number;
+  messageText: string | unknown;
+  start: number | undefined;
   file: {
-    fileName: string;
+    fileName: string | undefined;
   };
   relatedInformation?: {
-    messageText: string;
-    start: number;
+    messageText: string | unknown;
+    start: number | undefined;
     file: {
-      fileName: string;
+      fileName: string | undefined;
     };
   }[]
 }

@@ -5,7 +5,7 @@ import { FileGraph } from '../file-graph/FileGraph';
 import { BaseTypesRepository } from '../type-system/BaseTypesRepository';
 
 export const cleanup = (fileName: string): void => {
-  getCompilationContext().clearMessagesByFileName(fileName);
+  getCompilationContext().clearByProcessingFileName(fileName);
   ConfigurationRepository.clearByFileName(fileName);
   ComponentRepository.clearByFileName(fileName);
   FileGraph.clearByFileName(fileName);

@@ -1,5 +1,5 @@
 import { Compiler } from '../../helpers/Compiler';
-import { getFile } from '../../helpers/utils';
+import { getFile, matchDiagnostics } from '../../helpers/utils';
 import { DiagnosticsLight } from '../../helpers/DiagnosticsLight';
 
 describe('BeanCandidateNotFoundError', () => {
@@ -200,8 +200,6 @@ describe('BeanCandidateNotFoundError', () => {
     const searchedDiagnostic = diagnostics
       .filter((diagnostic) => diagnostic.source === 'CT5');
 
-    expect(searchedDiagnostic).toHaveLength(12);
-
-    expect(searchedDiagnostic).toMatchObject(expectedDiagnostic);
+    matchDiagnostics(searchedDiagnostic, expectedDiagnostic);
   });
 });

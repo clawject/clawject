@@ -5,20 +5,49 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/DiagnosticsLight.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT4_CanNotRegisterBeanError/CanNotRegisterBeanError.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT4_CanNotRegisterBeanError/fs/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT5_BeanCandidateNotFoundError/BeanCandidateNotFoundError.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT5_BeanCandidateNotFoundError/fs/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT6_MissingInitializerError/MissingInitializerError.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT6_MissingInitializerError/fs/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/BeanCandidateNotFoundError.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT10_DependencyResolvingError/DependencyResolvingError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT10_DependencyResolvingError/expectedDiagnostics.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT10_DependencyResolvingError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT12_MissingBeansDeclarationError/MissingBeansDeclarationError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT12_MissingBeansDeclarationError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT13_TypeMismatchError/TypeMismatchError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT13_TypeMismatchError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT14_DuplicateNameError/DuplicateNameError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT14_DuplicateNameError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT15_NotStaticallyKnownError/NotStaticallyKnownError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT15_NotStaticallyKnownError/fs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT7_CircularDependenciesError/CircularDependenciesError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT7_CircularDependenciesError/expectedDiagnosticsBeanFactoryArrowFunction.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT7_CircularDependenciesError/expectedDiagnosticsBeanFactoryMethod.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT7_CircularDependenciesError/expectedDiagnosticsBeanFunction.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT7_CircularDependenciesError/fs/beanFactoryArrowFunction.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT7_CircularDependenciesError/fs/beanFactoryMethod.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT7_CircularDependenciesError/fs/beanFunction.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT9_IncorrectArgumentsLengthError/IncorrectArgumentsLengthError.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT9_IncorrectArgumentsLengthError/expectedDiagnostics.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT9_IncorrectArgumentsLengthError/fs/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ClassWithDependencies.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IMyContext.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/InterfaceClassWithDependencies.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/CompilationContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/CompilationContext.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/AbstractCompilationMessage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/AbstractCompilationMessage.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/cleaner/cleanup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/cleaner/cleanup.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/Compiler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/Compiler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/DiagnosticsLight.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/DiagnosticsLight.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/helpers/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT1_IncorrectNameError/IncorrectNameError.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT1_IncorrectNameError/IncorrectNameError.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT4_CanNotRegisterBeanError/CanNotRegisterBeanError.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT4_CanNotRegisterBeanError/CanNotRegisterBeanError.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT5_BeanCandidateNotFoundError/BeanCandidateNotFoundError.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT5_BeanCandidateNotFoundError/BeanCandidateNotFoundError.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/IncorrectTypeError.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/IncorrectTypeError.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/fs/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT8_IncorrectTypeError/fs/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/06-errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/06-errors.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +111,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:upgradeClawject">
+  <component name="RunManager" selected="npm.run:ttsc_watch">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -103,21 +132,21 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="run:upgradeClawject" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="run:ttsc_watch" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="run:upgradeClawject" />
+        <script value="run:ttsc_watch" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="run:webpack_hot" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="run:upgradeClawject" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="run:webpack_hot" />
+        <script value="run:upgradeClawject" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -135,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.run:ttsc_watch" />
         <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:ttsc_debug" />
         <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:webpack_prod" />
-        <item itemvalue="npm.run:webpack_hot" />
       </list>
     </recent_temporary>
   </component>
