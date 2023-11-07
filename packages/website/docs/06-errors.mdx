@@ -172,15 +172,15 @@ It occurs when the dependencies of class constructor could not be resolved. This
 - Didn't pass class to the **Bean function**:
   ```ts
   class MyContext extends CatContext {
-    @Bean cat = Bean();
+    cat = Bean();
   }
   ```
 - More than one or no class declaration found, `Dog` class is declared, but `Cat` is not:
   ```ts
   class Dog {}
   class MyContext extends CatContext {
-    @Bean cat = Bean(Cat);
-    @Bean dog = Bean(Dog);
+    cat = Bean(Cat);
+    dog = Bean(Dog);
   }
   ```
 
@@ -207,8 +207,7 @@ It occurs when some feature is not supported by Clawject. Example:
   class MyContext extends CatContext {
     static cat1 = Bean(Cat);
     abstract cat2 = Bean(Cat);
-    @Bean declare cat3: Cat;
-    private cat4 = Bean(Cat);
+    private cat3 = Bean(Cat);
   }
   ```
 - Using decorators in inappropriate places, for example `@Bean` decorator in not CatContext class:

@@ -4,7 +4,7 @@ import { verifyTSVersion } from './verifyTSVersion';
 import { processAtomicMode } from '../compile-time/core/atomic-mode/processAtomicMode';
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 import { processApplicationMode } from '../compile-time/core/application-mode/processApplicationMode';
-import { cleanup } from '../compile-time/core/cleaner/cleanup';
+import { cleanup, cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { DecoratorRules } from '../compile-time/core/decorator-processor/DecoratorRules';
 import { TransformerExtras } from 'ts-patch';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
@@ -12,6 +12,11 @@ import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildEr
 
 /** @public */
 const transformer = (program: ts.Program, config: unknown, transformerExtras?: TransformerExtras): ts.TransformerFactory<ts.SourceFile> => {
+  if (process.env['CLAWJECT_TEST_MODE'] === 'true') {
+    //Needed to clean up state between tests
+    cleanupAll();
+  }
+
   const compilationContext = getCompilationContext();
 
   if (!compilationContext.languageServiceMode) {
@@ -20,6 +25,7 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
 
   return context => sourceFile => {
     compilationContext.assignProgram(program);
+    compilationContext.currentlyProcessedFile = sourceFile.fileName;
 
     if (!compilationContext.languageServiceMode) {
       cleanup(sourceFile.fileName);
@@ -61,6 +67,8 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
         }
       }
     }
+
+    compilationContext.assignCurrentlyProcessedFileName(null);
 
     return transformedSourceFile;
   };

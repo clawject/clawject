@@ -3,6 +3,7 @@ import { Configuration } from '../../core/configuration/Configuration';
 import { MessageCode } from './MessageCode';
 import { MessageType } from './MessageType';
 import { getNodeDetails, NodeDetails } from '../../core/ts/utils/getNodeDetails';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export interface IRelatedConfigurationMetadata {
   name: string;
@@ -19,6 +20,8 @@ export abstract class AbstractCompilationMessage {
   public readonly place: NodeDetails;
   public readonly relatedConfigurationMetadata: IRelatedConfigurationMetadata | null;
 
+  createdDuringProcessingFileFileName: string;
+
   public constructor(
     public readonly details: string | null,
     place: ts.Node,
@@ -26,6 +29,14 @@ export abstract class AbstractCompilationMessage {
   ) {
     this.place = getNodeDetails(place);
     this.relatedConfigurationMetadata = this.getRelatedConfigurationMetadata(relatedConfiguration);
+
+    const currentlyTransformingFile = getCompilationContext().currentlyProcessedFile;
+
+    if (currentlyTransformingFile === null) {
+      throw new Error('Currently transforming file is not assigned');
+    }
+
+    this.createdDuringProcessingFileFileName = currentlyTransformingFile;
   }
 
   private getRelatedConfigurationMetadata(relatedConfiguration: Configuration | null): IRelatedConfigurationMetadata | null {

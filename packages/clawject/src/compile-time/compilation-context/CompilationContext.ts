@@ -5,6 +5,7 @@ import { AbstractCompilationMessage } from './messages/AbstractCompilationMessag
 export class CompilationContext {
   areErrorsHandled = false;
   languageServiceMode = false;
+  currentlyProcessedFile: string | null = null;
   private _messages: AbstractCompilationMessage[] = [];
   private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
@@ -34,6 +35,10 @@ export class CompilationContext {
     this._program = program;
   }
 
+  assignCurrentlyProcessedFileName(fileName: string | null): void {
+    this.currentlyProcessedFile = fileName;
+  }
+
   report(message: AbstractCompilationMessage): void {
     this._messages.push(message);
 
@@ -42,13 +47,14 @@ export class CompilationContext {
     this.pathToMessages.set(message.place.filePath, messagesByPath);
   }
 
-  getMessagesByFileName(fileName: string): AbstractCompilationMessage[] {
-    return Array.from(this._messages).filter(it => it.place.filePath === fileName);
-  }
-
   clearMessagesByFileName(fileName: string): void {
     this._messages = this._messages.filter(it => it.place.filePath !== fileName);
     this.pathToMessages.delete(fileName);
+  }
+
+  clearByProcessingFileName(fileName: string): void {
+    this._messages = this._messages
+      .filter(it => it.createdDuringProcessingFileFileName !== fileName);
   }
 
   clear(): void {

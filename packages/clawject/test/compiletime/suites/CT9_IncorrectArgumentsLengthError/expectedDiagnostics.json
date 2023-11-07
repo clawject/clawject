@@ -1,0 +1,202 @@
+[
+  {
+    "messageText": "Incorrect arguments length. @Bean was used with 1 arguments, but expected 0.",
+    "start": 156,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Bean was used with 2 arguments, but expected 0.",
+    "start": 176,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Bean was used with 3 arguments, but expected 0.",
+    "start": 199,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @PostConstruct was used with 1 arguments, but expected 0.",
+    "start": 226,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @PostConstruct was used with 2 arguments, but expected 0.",
+    "start": 254,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @PostConstruct was used with 3 arguments, but expected 0.",
+    "start": 285,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @PreDestroy was used with 1 arguments, but expected 0.",
+    "start": 320,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @PreDestroy was used with 2 arguments, but expected 0.",
+    "start": 345,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @PreDestroy was used with 3 arguments, but expected 0.",
+    "start": 373,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Embedded was used with 1 arguments, but expected 0.",
+    "start": 411,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Embedded was used with 2 arguments, but expected 0.",
+    "start": 441,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Embedded was used with 3 arguments, but expected 0.",
+    "start": 474,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Lazy was used with 2 arguments, but expected at most 1.",
+    "start": 511,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Lazy was used with 3 arguments, but expected at most 1.",
+    "start": 547,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Scope was used with 2 arguments, but expected 1.",
+    "start": 590,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Scope was used with 3 arguments, but expected 1.",
+    "start": 624,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Primary was used with 1 arguments, but expected 0.",
+    "start": 664,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Primary was used with 2 arguments, but expected 0.",
+    "start": 693,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Primary was used with 3 arguments, but expected 0.",
+    "start": 725,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Qualifier was used with 2 arguments, but expected 1.",
+    "start": 761,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Qualifier was used with 3 arguments, but expected 1.",
+    "start": 799,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Lazy was used with 2 arguments, but expected at most 1.",
+    "start": 837,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Lazy was used with 3 arguments, but expected at most 1.",
+    "start": 896,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Scope was used with 2 arguments, but expected 1.",
+    "start": 961,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Incorrect arguments length. @Scope was used with 3 arguments, but expected 1.",
+    "start": 1018,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  }
+]

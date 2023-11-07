@@ -1,5 +1,6 @@
-import { getFile } from '../../helpers/utils';
+import { getFile, matchDiagnostics } from '../../helpers/utils';
 import { Compiler } from '../../helpers/Compiler';
+import { DiagnosticsLight } from '../../helpers/DiagnosticsLight';
 
 describe('IncorrectNameError', () => {
   let compiler: Compiler;
@@ -20,14 +21,32 @@ describe('IncorrectNameError', () => {
     const fileContent = getFile(__dirname, 'index.ts', { classMemberName });
     compiler.loadFile('/index.ts', fileContent);
 
+    const expectedDiagnostics: DiagnosticsLight[] = [
+      {
+        messageText: `Incorrect name. '${classMemberName}' name is reserved for the di-container.`,
+        start: 86,
+        file: {
+          fileName: '/index.ts'
+        },
+        relatedInformation: [
+          {
+            messageText: '\'MyContext\' is declared here.',
+            start: 53,
+            file: {
+              fileName: '/index.ts'
+            }
+          }
+        ]
+      }
+    ];
+
     //When
     const diagnostics = compiler.compile();
 
     //Then
-    expect(diagnostics).toHaveLength(1);
-    expect(diagnostics[0].messageText).toEqual(`Incorrect name. '${classMemberName}' name is reserved for the di-container.`);
-    expect(diagnostics[0].start).toEqual(86);
-    expect(diagnostics[0].file?.fileName).toEqual('/index.ts');
-    expect(diagnostics[0].source).toEqual('CT1');
+    const searchedDiagnostic = diagnostics
+      .filter((diagnostic) => diagnostic.source === 'CT1');
+
+    matchDiagnostics(searchedDiagnostic, expectedDiagnostics);
   });
 });

@@ -10,6 +10,7 @@ import { DuplicateNameError } from '../../compilation-context/messages/errors/Du
 import { BeanKind } from './BeanKind';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
+import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNSUPPORTED, 'unsupported'],
@@ -76,9 +77,15 @@ function verifyBeanType(bean: Bean): void {
   }
 
   if (UNSUPPORTED_TYPES.has(bean.diType.typeFlag)) {
+    let typeNode = bean.node.type;
+
+    if (bean.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
+      typeNode = (bean.node as ClassPropertyWithArrowFunctionInitializer).initializer.type;
+    }
+
     compilationContext.report(new IncorrectTypeError(
       `Type '${UNSUPPORTED_TYPES.get(bean.diType.typeFlag)}' not supported as a Bean type.`,
-      bean.node.type ?? bean.node,
+      typeNode ?? bean.node,
       parentConfiguration,
     ));
     parentConfiguration.beanRegister.deregister(bean);

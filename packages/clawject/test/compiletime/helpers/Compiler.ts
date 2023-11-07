@@ -34,7 +34,6 @@ export class Compiler {
     this.loadFile('/node_modules/clawject/package.json', contentJson);
     this.loadFile('/package.json', JSON.stringify({
       name: 'test',
-      version: '0.0.0',
       dependencies: {
         clawject: '0.0.0',
       },
@@ -47,17 +46,15 @@ export class Compiler {
 
   compile(): ts.Diagnostic[] {
     const program = ts.createProgram({
-      rootNames: [...this.virtualFSMap.keys()],
+      rootNames: [
+        ...this.virtualFSMap.keys(),
+      ],
       options: compilerOptions,
       host: this.host.compilerHost,
     });
-    return Array.from(program.emit(
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined
-    ).diagnostics);
+    const emitResult = program.emit();
+
+    return Array.from(emitResult.diagnostics);
   }
 }
 
