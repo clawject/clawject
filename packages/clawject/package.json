@@ -50,7 +50,7 @@
     "upath": "^2.0.1"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.36.4",
+    "@microsoft/api-extractor": "^7.38.2",
     "@types/graphlib": "^2.1.8",
     "@types/lodash": "^4.14.182",
     "@types/node": "^17.0.42",
@@ -59,7 +59,7 @@
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "ts-patch": "^3.0.2",
-    "typescript": "4.9.5",
+    "typescript": "5.2.2",
     "webpack": "^5.88.2"
   }
 }

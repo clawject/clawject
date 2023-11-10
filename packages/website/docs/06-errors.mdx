@@ -310,7 +310,9 @@ ContainerManager.get(MyContext);
 **Solution:** Initialize the context before getting it from the container manager.
 
 ### BeanNotFoundError
-It occurs when the bean that is requested is not found in the context. Example:
+It occurs when the bean that is requested is not found in the context.
+This error should not appear if everything is configured correctly.
+Example:
 ```ts
 interface IMyContext {
   cat: Cat;
