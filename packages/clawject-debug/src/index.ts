@@ -1,14 +1,18 @@
-import { Bean, CatContext, Qualifier } from 'clawject';
+import { CatContext } from 'clawject';
 
-const BeanName = 'a';
-const UniqSymbol = Symbol.for('UniqSymbol');
+export type ClawjectMethodDecorator = <This extends CatContext<any, any>, Args extends any[], Return>(
+  target: (this: This, ...args: Args) => Return,
+  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
+) => (this: This, ...args: Args) => Return;
+export type ClawjectFieldDecorator = <This extends CatContext<any, any>, Value extends any>(
+  target: undefined,
+  context: ClassFieldDecoratorContext<This, Value>
+) => (this: This, value: Value) => Value;
+export type DecoratorWithoutArguments<T> = T & ((this: void) => T);
 
-class MyContextWithPropertyNames extends CatContext {
-  @Bean ['computed' + 'property'] = 'a';
-  @Bean [BeanName] = 'b';
-  @Bean [UniqSymbol] = 'c';
-}
+const Bean: DecoratorWithoutArguments<ClawjectMethodDecorator> & DecoratorWithoutArguments<ClawjectFieldDecorator> = undefined as any;
 
-class MyContextWithQualifier extends CatContext {
-  @Bean @Qualifier('computed' + 'qualifier') d = 'd';
+class MyContext extends CatContext {
+
+  @Bean() method = 123;
 }

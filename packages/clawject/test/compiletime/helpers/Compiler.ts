@@ -4,7 +4,7 @@ import { createDefaultMapFromNodeModules } from '@typescript/vfs';
 import * as path from 'path';
 
 const compilerOptions: ts.CompilerOptions = {
-  experimentalDecorators: true,
+  experimentalDecorators: ts.versionMajorMinor.startsWith('4'),
   target: ts.ScriptTarget.Latest,
   moduleResolution: ts.ModuleResolutionKind.NodeJs,
   plugins: [
