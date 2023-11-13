@@ -3,10 +3,6 @@ title: Bean Types
 id: bean-type
 ---
 
-```mdx-code-block
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-```
 Bean type is a type of value that bean will provide as a dependency for other beans.
 
 There are a few restrictions on bean value types: `undefined`, `void`, `null`, `never` or union type.
@@ -14,6 +10,9 @@ If you specify an invalid bean type, you will get compile-time error.
 Let's take a look at invalid bean types:
 
 ```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 <Tabs>
 <TabItem value="undefined-void-null-never" label="undefined, void, null, never">
 ```
