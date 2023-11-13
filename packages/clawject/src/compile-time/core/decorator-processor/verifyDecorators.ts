@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { getDecoratorsMap } from './getDecoratorsMap';
 import { DecoratorTarget } from './DecoratorTarget';
 import { DecoratorRules } from './DecoratorRules';
-import { DecoratorsCountError } from '../../compilation-context/messages/errors/DecoratorsCountError';
+import { DuplicateDecoratorError } from '../../compilation-context/messages/errors/DuplicateDecoratorError';
 import { DecoratorKind } from './DecoratorKind';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { IncorrectArgumentsLengthError } from '../../compilation-context/messages/errors/IncorrectArgumentsLengthError';
@@ -62,7 +62,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
     }
 
     if (decorators.length > 1) {
-      errors.push(new DecoratorsCountError(
+      errors.push(new DuplicateDecoratorError(
         `@${decoratorKind} was used ${decorators.length} times, but expected 1.`,
         decorators[1],
         null,

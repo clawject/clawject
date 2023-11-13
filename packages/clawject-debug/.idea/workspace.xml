@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/02-bean-types.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/04-base-concepts/06-bean/02-bean-types.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../website/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/DecoratorsCountError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/DuplicateDecoratorError.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/verifyDecorators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/verifyDecorators.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT2_DecoratorsCountError/DecoratorsCountError.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT2_DuplicateDecoratorError/DuplicateDecoratorError.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT2_DecoratorsCountError/fs/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT2_DuplicateDecoratorError/fs/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

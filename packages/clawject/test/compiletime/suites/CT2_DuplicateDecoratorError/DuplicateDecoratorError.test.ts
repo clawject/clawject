@@ -1,7 +1,7 @@
 import { Compiler } from '../../helpers/Compiler';
 import { getFile } from '../../helpers/utils';
 
-describe('DecoratorsCountError', () => {
+describe('DuplicateDecoratorError', () => {
   let compiler: Compiler;
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('DecoratorsCountError', () => {
     ${3}
     ${4}
     ${5}
-  `('should report DecoratorsCountError, decoratorsCount: $decoratorsCount', ({ decoratorsCount }) => {
+  `('should report DuplicateDecoratorError, decoratorsCount: $decoratorsCount', ({ decoratorsCount }) => {
     it.each`
         decoratorName      | expectedStart
         ${'Bean'}          | ${98}
