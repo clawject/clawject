@@ -3,7 +3,7 @@ import { SingletonScope } from './SingletonScope';
 import { PrototypeScope } from './PrototypeScope';
 import { RuntimeErrors } from '../errors';
 
-export class ScopeRegister {
+export class InternalScopeRegister {
   private static scopes = new Map<string, CustomScope>([
     ['singleton', new SingletonScope()],
     ['prototype', new PrototypeScope()],
@@ -17,10 +17,18 @@ export class ScopeRegister {
     this.scopes.set(name, scope);
   }
 
+  static unregisterScope(name: string): boolean {
+    return this.scopes.delete(name);
+  }
+
   static getScope(name: string): CustomScope {
     this.assureRegistered(name);
 
     return this.scopes.get(name)!;
+  }
+
+  static hasScope(name: string): boolean {
+    return this.scopes.has(name);
   }
 
   static assureRegistered(name: string): void | never {

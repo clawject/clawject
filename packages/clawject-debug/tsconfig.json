@@ -3,7 +3,7 @@
     "module": "commonjs",
     "target": "ESNext",
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": false,
+    "experimentalDecorators": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -18,7 +18,7 @@
     "plugins": [
       {
         "name": "clawject-language-service",
-        "transform": "../clawject/src/transformer/index.ts"
+        "transform": "clawject/transformer"
       }
     ]
   }

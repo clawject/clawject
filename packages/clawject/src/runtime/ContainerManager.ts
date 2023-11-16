@@ -2,7 +2,6 @@ import { InitializedContext } from './InitializedContext';
 import { CatContext } from './CatContext';
 import { ContainerManagerImpl } from './ContainerManagerImpl';
 import { ClassConstructor } from './ClassConstructor';
-import { CustomScope } from './scope/CustomScope';
 
 /** @public */
 export interface ContextInit {
@@ -70,18 +69,6 @@ export interface ContainerManager {
    * @param key - Optional key for clearing a specific context.
    */
   destroy(context: ClassConstructor<CatContext<any>>, key?: any): void;
-
-  /**
-   * Registers a custom scope.
-   *
-   * @param scopeName - The name of the scope that should be registered.
-   * @param scope - The custom scope object.
-   *
-   * @throws RuntimeErrors.DuplicateScopeError If the scope with the same name was already registered.
-   *
-   * @docs https://clawject.org/docs/base-concepts/container-manager/#containermanagerregisterscope
-   */
-  registerScope(scopeName: string, scope: CustomScope): void;
 }
 
 /**

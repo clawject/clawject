@@ -5,7 +5,7 @@ import { ContainerManager, ContextInit, ContextInitConfig } from './ContainerMan
 import { ErrorBuilder } from './ErrorBuilder';
 import { ClassConstructor } from './ClassConstructor';
 import { CustomScope } from './scope/CustomScope';
-import { ScopeRegister } from './scope/ScopeRegister';
+import { InternalScopeRegister } from './scope/InternalScopeRegister';
 import { ContextManager } from './___internal___/ContextManager';
 
 const DEFAULT_KEY = undefined;
@@ -61,7 +61,7 @@ export class ContainerManagerImpl implements ContainerManager {
   }
 
   registerScope(scopeName: string, scope: CustomScope): void {
-    ScopeRegister.registerScope(scopeName, scope);
+    InternalScopeRegister.registerScope(scopeName, scope);
   }
 
   private setCachedInitializedContext(context: ClassConstructor<CatContext<any>>, key: any, initializedContext: InitializedContext<any>): void {

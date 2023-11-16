@@ -2,8 +2,6 @@
 title: Custom Scopes
 ---
 
-
-
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -17,7 +15,7 @@ Clawject provides a mechanism for creating custom scopes for scenarios such as t
 
 ## Creating a CustomScope Class
 
-In order to create a custom scope, you should implement the `CustomScope` interface.
+To create a custom scope, you should implement the `CustomScope` interface.
 
 In the following steps, we will implement `http-request` scope that
 is using [AsyncLocalStorage](https://nodejs.org/api/async_context.html#class-asynclocalstorage)
@@ -127,7 +125,7 @@ class RequestScope implements CustomScope {
 }
 ```
 
-### Removing an Object from Scope
+### Removing an Object from the Scope
 Next, let's implement the remove method,
 which removes the named object from the scope and also removes its registered
 destruction callback, returning the removed object.

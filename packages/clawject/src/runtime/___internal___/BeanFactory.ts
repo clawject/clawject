@@ -1,5 +1,5 @@
 import { ErrorBuilder } from '../ErrorBuilder';
-import { ScopeRegister } from '../scope/ScopeRegister';
+import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ObjectFactoryImpl } from '../object-factory/ObjectFactoryImpl';
 import { Callback } from '../types/Callback';
 import { LifecycleKind } from '../../compile-time/core/component-lifecycle/LifecycleKind';
@@ -56,7 +56,7 @@ export class BeanFactory {
   getBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);
     const scopeName = beanConfig.scope ?? this.contextScope;
-    const scope = ScopeRegister.getScope(scopeName);
+    const scope = InternalScopeRegister.getScope(scopeName);
     const objectFactory = new ObjectFactoryImpl(() => {
       const elementFactory = this.getElementFactory(name);
       const instantiatedBean = elementFactory();
@@ -91,7 +91,7 @@ export class BeanFactory {
 
   destroyBean(name: string): void {
     const beanConfig = this.getBeanConfig(name);
-    const scope = ScopeRegister.getScope(beanConfig.scope ?? this.contextScope);
+    const scope = InternalScopeRegister.getScope(beanConfig.scope ?? this.contextScope);
 
     this.proxyRegister.delete(name);
 
