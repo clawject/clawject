@@ -13,8 +13,8 @@ import TabItem from '@theme/TabItem';
 Clawject type system following a typescript type system as much as possible,
 but there is one major difference -
 TypeScript using
-[duck typing](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#structural-type-system),
-and Clawject using [nominal typing](https://en.wikipedia.org/wiki/Nominal_type_system).
+[structural type system (duck typing)](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#structural-type-system)
+but Clawject using [nominal typing](https://en.wikipedia.org/wiki/Nominal_type_system).
 
 As an example - we have 2 classes `Cat` and `Dog`, both of them have the same properties and methods,
 if we will use `Cat` instead of `Dog` or vice versa -
@@ -35,12 +35,12 @@ class Dog {
   }
 }
 
-function meow(animal: Cat): void {
+function doMeow(animal: Cat): void {
   animal.voice();
 }
 
 const dog = new Dog();
-meow(dog); // <- TypeScript will not complain about it
+doMeow(dog); // <- TypeScript will not complain about it
 ```
 
 But clawject will and report compile error about missing Bean declaration for `Cat`:
@@ -62,7 +62,7 @@ class Dog {
 
 class MyContext extends CatContext {
   @PostConstruct
-  meow(animal: Cat): void { // <- error will be reported here
+  doMeow(animal: Cat): void { // <- error will be reported here
     animal.voice();
   }
 
