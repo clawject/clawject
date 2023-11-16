@@ -4,6 +4,7 @@ export * from './runtime/errors';
 export { ContainerManager, type ContextInit, type ContextInitConfig } from './runtime/ContainerManager';
 export type { InitializedContext } from './runtime/InitializedContext';
 export type { ClassConstructor } from './runtime/ClassConstructor';
+export { ScopeRegister } from './runtime/ScopeRegister';
 
 export { CatContext } from './runtime/CatContext';
 

@@ -1,0 +1,460 @@
+---
+title: Bean
+id: bean
+---
+
+```mdx-code-block
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+Bean is an object that is managed and constructed by Clawject container it can have dependencies,
+and it can be a dependency for other Beans.
+
+## Declare Bean
+
+There are a few ways to declare a Bean, let's explore all of them one by one.
+
+### Using `@Bean` decorator
+You can decorate property or method with `@Bean` decorator to declare a Bean.
+
+When you're decorating **method** or property that holds **arrow function** -
+it's your responsibility to provide return value for bean,
+if it's class - it should be instantiated, if it's some dynamic value — it should be returned from function provided.
+
+Functions decorated with `@Bean` decorator called **factory-functions**.
+
+You can provide bean dependencies via function arguments by specifying an argument type.
+
+```ts title="Declaring method and arrow function beans"
+class Foo {}
+
+class MyContext extends CatContext {
+  @Bean foo(): Foo {
+    return new Foo();
+  }
+
+  @Bean fooConstructorName = (foo: Foo): string => foo.constructor.name;
+}
+```
+
+When your bean doesn't have any dependencies -
+you can just assign value to property decorated with `@Bean` decorator.
+
+```ts title="Declaring bean without dependencies"
+class Foo {}
+
+class MyContext extends CatContext {
+  @Bean foo = new Foo();
+}
+```
+
+### Using `Bean` function
+It can be quite annoying to declare each dependency in method or arrow function for your class,
+especially when your class has a lot of dependencies.
+So, if you add/change/remove a dependency - you need to change it in factory-function level as well.
+To solve this inconvenience Clawject has `Bean` function that accepts class constructor,
+and automatically instantiate it with all needed dependencies.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="bean-function" label="Declaring bean with Bean function">
+```
+
+```ts
+class Bar {}
+class Baz {}
+
+class Foo {
+  constructor(
+    private dependency0: string,
+    private dependency1: number,
+    private dependency2: Bar,
+    private dependency3: Baz,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+
+  @Bean stringBean = 'dependency0';
+  @Bean numberBean = 1;
+  barBean = Bean(Bar);
+  bazBean = Bean(Baz);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="no-bean-function" label="Declaring bean with @Bean decorator and method">
+```
+
+```ts
+class Bar {}
+class Baz {}
+
+class Foo {
+  constructor(
+    private dependency0: string,
+    private dependency1: number,
+    private dependency2: Bar,
+    private dependency3: Baz,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean foo(
+    dependency0: string,
+    dependency1: number,
+    dependency2: Bar,
+    dependency3: Baz,
+  ) {
+    return new Foo(
+      dependency0,
+      dependency1,
+      dependency2,
+      dependency3,
+    );
+  }
+
+  @Bean stringBean = 'dependency0';
+  @Bean numberBean = 1;
+
+  @Bean barBean() {
+    return new Bar();
+  }
+
+  @Bean bazBean() {
+    return new Baz();
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Bean Types
+
+Bean type is a type of value that bean will provide as a dependency for other beans.
+
+There are a few restrictions on bean value types: `undefined`, `void`, `null`, `never` or union type.
+If you specify an invalid bean type, you will get compile-time error.
+Let's take a look at invalid bean types:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="undefined-void-null-never" label="undefined, void, null, never">
+```
+
+```ts
+class MyContext extends CatContext {
+  @Bean foo: undefined = undefined;
+  @Bean bar: void = undefined;
+  @Bean baz: null = null;
+  @Bean quux(): never { throw new Error('never'); }
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="union-type" label="union">
+```
+
+```ts
+class MyContext extends CatContext {
+  @Bean foo: string | number = 'string';
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Specifying Bean type
+You can specify the type explicitly for each property,
+but it is not necessary to, because Clawject using TypeScript type system to infer types.
+
+The next two examples are equivalent:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="infer-type" label="Infering type based on value">
+```
+
+```ts
+class MyContext extends CatContext {
+  @Bean foo = 'fooValue'; // <- type of Bean will be "string"
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="explicitly-specify-type" label="Specify type explicitly">
+```
+
+```ts
+class MyContext extends CatContext {
+  @Bean foo: string = 'fooValue'; // <- type of Bean will be "string"
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+When your bean type is a class-type -
+Clawject will automatically resolve a class type including `implements` and `extends` clauses types.
+
+Note that only first level of `extends` and `implements` clauses will be resolved,
+so if your class extends another class, and that class extends another class, -
+only a first class type will be resolved.
+
+Let's take a look at the next example:
+
+```ts
+class AbstractBar {}
+class AbstractFoo extends AbstractBar {}
+
+interface IFoo {}
+
+class Foo extends AbstractFoo implements IFoo {}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+
+  @PostConstruct
+  postConstruct(
+    foo: Foo, // <- "foo" will be injected
+    iFoo: IFoo, // <- "foo" will be injected, "Foo" explicitly implements "IFoo"
+    abstractFoo: AbstractFoo, // <- "foo" will be injected, "Foo" explicitly extends "AbstractFoo"
+    abstractBar: AbstractBar, // <- compilation error will be reported, no bean of type "AbstractBar" were found
+  ) {}
+}
+```
+
+If you don't want to resolve `implements` and `extends` types,
+you can specify a type of bean explicitly, or disable this feature globally.
+TODO link to configuration guide
+
+```ts
+interface IFoo {}
+class Foo implements IFoo {}
+
+class MyContext extends CatContext {
+  foo: IFoo = Bean(Foo);
+
+  @PostConstruct
+  postConstruct(
+    iFoo: IFoo, // <- "foo" will be injected by explicit type
+    foo: Foo, // <- compilation error will be reported, no bean of type "Foo" were found
+  ) {}
+}
+```
+
+## Bean Dependencies
+
+Bean dependency is a parameter of a bean that is injected by Clawject.
+Dependency can be declared in class constructor, or in a `factory-method`.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="class-bean-dependency" label="Class-Constructor Bean dependencies">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string,
+    private baz: number,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar = 'barValue';
+  @Bean baz = 42;
+
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="factory-function-bean-dependencies" label="Factory-Method bean dependencies">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string,
+    private baz: number,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar = 'barValue';
+  @Bean baz = 42;
+
+  @Bean foo(bar: string, baz: number) {
+    return new Foo(bar, baz)
+  }
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## How dependencies are resolved
+
+There are a few steps that are taken to resolve bean dependencies.
+
+Firstly - Clawject try to find all beans that are compatible with a dependency type.
+If none of the compatible bean candidates are found - compilation error will be reported.
+
+If only **one** compatible bean is found - it's used as a dependency.
+
+```ts
+class Foo {
+  constructor(
+    private bar: string // <- "barBean" will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean barBean = 'barValue';
+
+  foo = Bean(Foo);
+}
+```
+
+If **more than one** compatible bean is found - Clawject try to find a candidate that has the same name as parameter.
+If such bean is found - it's used as a dependency.
+
+```ts
+class Foo {
+  constructor(
+    private bar: string // <- "bar" will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar = 'barValue';
+  @Bean barOther = 'barOtherValue';
+
+  foo = Bean(Foo);
+}
+```
+
+If **more than one** compatible bean is found, and none of them has the same name
+as parameter - then compilation error will be reported.
+
+```ts
+class Foo {
+  constructor(
+    private bar: string // <- compilation error
+  ) {}
+}
+
+class MyContext extends CatContext {
+  @Bean bar1 = 'bar1Value';
+  @Bean bar2 = 'bar2Value';
+
+  foo = Bean(Foo);
+}
+```
+
+## Optional dependencies
+
+Dependencies can be optional, if there are no suitable bean candidates found - `undefined` or `null` will be injected.
+
+Let's take a look at how we can mark dependency as optional:
+
+```mdx-code-block
+<Tabs>
+<TabItem value="optional-operator" label="Optional operator">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar?: string, // <- optional dependency, `undefined` will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="union-undefined" label="Union with undefined">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string | undefined, // <- optional dependency, `undefined` will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+
+<TabItem value="union-null" label="Union with null">
+```
+
+```ts
+class Foo {
+  constructor(
+    private bar: string | null, // <- optional dependency, `null` will be injected
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo);
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Circular dependencies
+
+Clawject will detect circular dependencies and report compilation error with involved beans.
+
+```ts
+class Bar {
+  constructor(
+    private foo: Foo,
+  ) {}
+}
+
+class Foo {
+  constructor(
+    private bar: Bar,
+  ) {}
+}
+
+class MyContext extends CatContext {
+  foo = Bean(Foo); // <- Circular dependencies detected. foo <—> bar
+  bar = Bean(Bar); // <- Circular dependencies detected. bar <—> foo
+}
+```

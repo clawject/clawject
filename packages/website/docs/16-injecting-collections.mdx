@@ -2,8 +2,6 @@
 title: Inject Arrays and Collections
 ---
 
-
-
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -42,11 +40,11 @@ class CacheManager {
 }
 
 class MyContext extends CatContext {
-  stringCache = Bean(Cache<string>);
-  numberCache = Bean(Cache<number>);
-  booleanCache = Bean(Cache<boolean>);
+  stringCache = Bean(Cache<string>)
+  numberCache = Bean(Cache<number>)
+  booleanCache = Bean(Cache<boolean>)
 
-  cacheManager = Bean(CacheManager);
+  cacheManager = Bean(CacheManager)
 }
 ```
 
@@ -247,7 +245,7 @@ To access such beans — you should match the type of collection and bean name.
 
 ```ts
 class MyContext extends CatContext {
-  @Bean myCollection: Set<string> = new Set(['foo', 'bar', 'baz']);
+  @Bean myCollection = new Set(['foo', 'bar', 'baz']);
   @Bean string1 = 'quux';
   @Bean string2 = 'quuux';
 
@@ -255,8 +253,6 @@ class MyContext extends CatContext {
   postConstruct(
     myCollection: Set<string>, // myCollection bean will be injected
     otherStrings: Set<string>, // Set of string1 and string2 beans will be injected
-  ): void {
-    console.log(this.myCollection);
-  }
+  ): void {}
 }
 ```

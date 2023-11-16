@@ -3,7 +3,7 @@ import { ErrorBuilder } from '../ErrorBuilder';
 import { BeanFactory } from './BeanFactory';
 import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
 import { RuntimeLifecycleMetadata } from '../runtime-elements/RuntimeLifecycleMetadata';
-import { ScopeRegister } from '../scope/ScopeRegister';
+import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ClassConstructor } from '../ClassConstructor';
 import { RuntimeElementFactories } from '../runtime-elements/RuntimeElementFactories';
 import { getStaticRuntimeElementFromConstructor, StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
@@ -32,7 +32,7 @@ export class ContextManager {
     const contextMetadata = this.getContextMetadataOrThrow(contextConstructor);
 
     Object.values(contextMetadata.beans)
-      .forEach(it => ScopeRegister.assureRegistered(it.scope ?? contextMetadata.scope));
+      .forEach(it => InternalScopeRegister.assureRegistered(it.scope ?? contextMetadata.scope));
 
     const builtContext = contextMetadata.contextBuilder();
     const beanFactory = new BeanFactory(

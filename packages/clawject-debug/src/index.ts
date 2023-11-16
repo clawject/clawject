@@ -1,18 +1,15 @@
-import { CatContext } from 'clawject';
-
-export type ClawjectMethodDecorator = <This extends CatContext<any, any>, Args extends any[], Return>(
-  target: (this: This, ...args: Args) => Return,
-  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
-) => (this: This, ...args: Args) => Return;
-export type ClawjectFieldDecorator = <This extends CatContext<any, any>, Value extends any>(
-  target: undefined,
-  context: ClassFieldDecoratorContext<This, Value>
-) => (this: This, value: Value) => Value;
-export type DecoratorWithoutArguments<T> = T & ((this: void) => T);
-
-const Bean: DecoratorWithoutArguments<ClawjectMethodDecorator> & DecoratorWithoutArguments<ClawjectFieldDecorator> = undefined as any;
+import { Bean, CatContext, PostConstruct } from 'clawject';
 
 class MyContext extends CatContext {
+  @Bean myCollection = new Set(['foo', 'bar', 'baz']);
+  @Bean string1 = 'quux';
+  @Bean string2 = 'quuux';
 
-  @Bean() method = 123;
+  @PostConstruct
+  postConstruct(
+    myCollection: Set<string>, // myCollection bean will be injected
+    otherStrings: Set<string>, // Set of string1 and string2 beans will be injected
+  ): void {
+    console.log(this.myCollection);
+  }
 }
