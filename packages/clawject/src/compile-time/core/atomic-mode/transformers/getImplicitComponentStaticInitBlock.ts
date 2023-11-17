@@ -1,7 +1,6 @@
 import ts, { factory } from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
-import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
@@ -9,34 +8,20 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
     [factory.createExpressionStatement(factory.createCallExpression(
       factory.createPropertyAccessExpression(
         InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
-        factory.createIdentifier('defineProperty')
+        factory.createIdentifier('defineComponentMetadata')
       ),
       undefined,
       [
         factory.createThis(),
-        factory.createStringLiteral(StaticRuntimeElement.COMPONENT_METADATA),
         factory.createObjectLiteralExpression(
-          [factory.createPropertyAssignment(
-            factory.createIdentifier('get'),
-            factory.createArrowFunction(
-              undefined,
-              undefined,
-              [],
-              undefined,
-              factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-              factory.createParenthesizedExpression(factory.createObjectLiteralExpression(
-                [
-                  factory.createPropertyAssignment(
-                    factory.createIdentifier('lifecycle'),
-                    getLifecycleConfigProperty(component)
-                  )
-                ],
-                true
-              ))
+          [
+            factory.createPropertyAssignment(
+              factory.createIdentifier('lifecycle'),
+              getLifecycleConfigProperty(component)
             )
-          )],
+          ],
           true
-        )
+        ),
       ]
     ))],
     true

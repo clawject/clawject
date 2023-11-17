@@ -39,4 +39,9 @@ export namespace RuntimeErrors {
   export class PrimitiveCouldNotBeWrappedInProxyError extends Error {
     override name = 'PrimitiveCouldNotBeWrappedInProxyError' as const;
   }
+
+  /** @public */
+  export class NoClassMetadataFoundError extends Error {
+    override name = 'NoClassMetadataFoundError' as const;
+  }
 }

@@ -1,29 +1,28 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import { ClawjectWebpackPlugin } from 'clawject/webpack';
 
-module.exports = {
+export default {
   entry: './src/index.ts',
   mode: 'development',
   resolve: {
-    extensions: ['.js', '.ts'],
+    extensions: ['.js', '.ts', '.mjs'],
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
-        loader: 'ts-loader',
-        options: {
-          // getCustomTransformers: (program: any) => {
-          //   console.log(program);
-          // }
-        }
-      }
+        loader: 'ts-loader'
+      },
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin(),
     new CleanWebpackPlugin(),
-    new ClawjectWebpackPlugin(),
   ]
 };

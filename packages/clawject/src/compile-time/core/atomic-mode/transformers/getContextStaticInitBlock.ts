@@ -5,9 +5,8 @@ import { ConfigLoader } from '../../../config/ConfigLoader';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { getBeanFactoriesPropertyAssignment } from './getBeanFactoriesPropertyAssignment';
-import { StaticRuntimeElement } from '../../../../runtime/runtime-elements/StaticRuntimeElement';
 
-export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassDeclaration => {
+export const getContextStaticInitBlock = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassStaticBlockDeclaration => {
   const contextName = ConfigLoader.get().features.keepContextNames && configuration.className ?
     factory.createStringLiteral(configuration.className)
     : factory.createIdentifier('undefined');
@@ -15,7 +14,7 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, config
   const beanConfigProperty = getBeanConfigObjectLiteral(configuration);
   const contextBuilderExpression = getContextBuilderExpression(configuration);
 
-  const contextManagerConfig = factory.createObjectLiteralExpression(
+  const runtimeContextMetadata = factory.createObjectLiteralExpression(
     [
       factory.createPropertyAssignment(
         factory.createIdentifier('id'),
@@ -24,10 +23,6 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, config
       factory.createPropertyAssignment(
         factory.createIdentifier('contextName'),
         contextName
-      ),
-      factory.createPropertyAssignment(
-        factory.createIdentifier('contextConstructor'),
-        factory.createThis()
       ),
       factory.createPropertyAssignment(
         factory.createIdentifier('lifecycle'),
@@ -54,33 +49,20 @@ export const enrichWithAdditionalProperties = (node: ts.ClassDeclaration, config
   );
 
 
-  const staticInitBlock = factory.createClassStaticBlockDeclaration(factory.createBlock(
+  return factory.createClassStaticBlockDeclaration(factory.createBlock(
     [factory.createExpressionStatement(factory.createCallExpression(
       factory.createPropertyAccessExpression(
         InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
-        factory.createIdentifier('defineProperty')
+        factory.createIdentifier('defineContextMetadata')
       ),
       undefined,
       [
         factory.createThis(),
-        factory.createStringLiteral(StaticRuntimeElement.CONTEXT_METADATA),
-        contextManagerConfig
+        runtimeContextMetadata
       ]
     ))],
     true
   ));
-
-  return factory.updateClassDeclaration(
-    node,
-    node.modifiers,
-    node.name,
-    node.typeParameters,
-    node.heritageClauses,
-    [
-      ...node.members,
-      staticInitBlock,
-    ]
-  );
 };
 
 const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExpression => {

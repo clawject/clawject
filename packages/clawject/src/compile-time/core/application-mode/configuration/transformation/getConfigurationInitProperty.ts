@@ -80,7 +80,7 @@ export function getConfigurationInitProperty(configuration: Configuration): ts.C
 
   return factory.createPropertyDeclaration(
     [factory.createToken(ts.SyntaxKind.PrivateKeyword)],
-    factory.createIdentifier(InstanceRuntimeElement.CONFIGURATION_INIT),
+    factory.createIdentifier('InstanceRuntimeElement.CONFIGURATION_INIT'),
     undefined,
     undefined,
     factory.createArrowFunction(

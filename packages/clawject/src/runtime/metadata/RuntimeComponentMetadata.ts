@@ -1,4 +1,4 @@
-import { RuntimeLifecycleMetadata } from './RuntimeLifecycleMetadata';
+import { RuntimeLifecycleMetadata } from './MetadataTypes';
 
 export type RuntimeComponentMetadata = {
   lifecycle: RuntimeLifecycleMetadata;

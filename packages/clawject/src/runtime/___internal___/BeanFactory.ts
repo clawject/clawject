@@ -3,29 +3,25 @@ import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ObjectFactoryImpl } from '../object-factory/ObjectFactoryImpl';
 import { Callback } from '../types/Callback';
 import { LifecycleKind } from '../../compile-time/core/component-lifecycle/LifecycleKind';
-import { ContextMetadata } from './ContextManager';
-import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
-import { getStaticRuntimeElementFromInstanceConstructor, StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
-import { RuntimeElementFactories } from '../runtime-elements/RuntimeElementFactories';
 import { Utils } from './Utils';
 import { RuntimeErrors } from '../errors';
+import { RuntimeBeanMetadata } from '../metadata/MetadataTypes';
+import { RuntimeContextMetadata, RuntimeContextFactoriesMetadata } from '../metadata/RuntimeContextMetadata';
+import { MetadataStorage } from '../metadata/MetadataStorage';
 
 export class BeanFactory {
   private proxyRegister = new Map<string, any>();
 
   constructor(
-    private id: number | null, // Null in application mode
-    private configurationName: string,
-    private beans: ContextMetadata['beans'],
-    private contextScope: string,
-    private factories: RuntimeElementFactories,
+    private runtimeContextMetadata: RuntimeContextMetadata,
+    private factories: RuntimeContextFactoriesMetadata,
   ) {}
 
   public getPublicBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);
 
     if (!beanConfig.public) {
-      console.warn(`Bean ${name} is not defined in Context's interface. This Bean will not be checked for type matching with Context's interface at compile-time. Context: ${this.configurationName}`);
+      console.warn(`Bean ${name} is not defined in Context's interface. This Bean will not be checked for type matching with Context's interface at compile-time. Context: ${this.runtimeContextMetadata.contextName}`);
     }
 
     return this.getBean(name);
@@ -34,7 +30,7 @@ export class BeanFactory {
   public getPublicBeans(): Record<string, any> {
     const result: Record<string, any> = {};
 
-    Object.entries(this.beans).forEach(([beanName, beanConfig]) => {
+    Object.entries(this.runtimeContextMetadata.beans).forEach(([beanName, beanConfig]) => {
       if (beanConfig.public) {
         result[beanName] = this.getBean(beanName);
       }
@@ -46,7 +42,7 @@ export class BeanFactory {
   getAllBeans(): Map<string, any> {
     const result = new Map<string, any>();
 
-    Object.keys(this.beans).forEach(beanName => {
+    Object.keys(this.runtimeContextMetadata.beans).forEach(beanName => {
       result.set(beanName, this.getBean(beanName));
     });
 
@@ -55,7 +51,7 @@ export class BeanFactory {
 
   getBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);
-    const scopeName = beanConfig.scope ?? this.contextScope;
+    const scopeName = beanConfig.scope ?? this.runtimeContextMetadata.scope;
     const scope = InternalScopeRegister.getScope(scopeName);
     const objectFactory = new ObjectFactoryImpl(() => {
       const elementFactory = this.getElementFactory(name);
@@ -78,9 +74,8 @@ export class BeanFactory {
       )
       : scope.get(scopedBeanName, objectFactory);
 
-    const hasLifecyclePreDestroy = (getStaticRuntimeElementFromInstanceConstructor(
-      bean, StaticRuntimeElement.COMPONENT_METADATA
-    )?.lifecycle.PRE_DESTROY.length || 0) > 0;
+    const componentMetadata = MetadataStorage.getComponentMetadataByClassInstance(bean);
+    const hasLifecyclePreDestroy = componentMetadata !== null && componentMetadata.lifecycle.PRE_DESTROY.length > 0;
 
     if (hasLifecyclePreDestroy) {
       scope.registerDestructionCallback(scopedBeanName, this.getBeanDestructionCallback(bean));
@@ -91,7 +86,7 @@ export class BeanFactory {
 
   destroyBean(name: string): void {
     const beanConfig = this.getBeanConfig(name);
-    const scope = InternalScopeRegister.getScope(beanConfig.scope ?? this.contextScope);
+    const scope = InternalScopeRegister.getScope(beanConfig.scope ?? this.runtimeContextMetadata.scope);
 
     this.proxyRegister.delete(name);
 
@@ -112,25 +107,16 @@ export class BeanFactory {
       return;
     }
 
-    const implicitComponentMetadata = getStaticRuntimeElementFromInstanceConstructor(
-      instance,
-      StaticRuntimeElement.COMPONENT_METADATA
-    );
-
-    if (!implicitComponentMetadata) {
-      return;
-    }
-
-    implicitComponentMetadata.lifecycle[lifecycleKind].forEach(methodName => {
+    MetadataStorage.getComponentMetadataByClassInstance(instance)?.lifecycle[lifecycleKind].forEach(methodName => {
       instance[methodName]();
     });
   }
 
   private getBeanConfig(name: string): RuntimeBeanMetadata {
-    const beanConfig = this.beans[name];
+    const beanConfig = this.runtimeContextMetadata.beans[name];
 
     if (!beanConfig) {
-      throw ErrorBuilder.beanNotFound(this.configurationName, name);
+      throw ErrorBuilder.beanNotFound(this.runtimeContextMetadata.contextName, name);
     }
 
     return beanConfig;
@@ -140,18 +126,18 @@ export class BeanFactory {
     const elementFactory = this.factories[name];
 
     if (!elementFactory) {
-      throw ErrorBuilder.noElementFactoryFound(this.configurationName, name);
+      throw ErrorBuilder.noElementFactoryFound(this.runtimeContextMetadata.contextName, name);
     }
 
     return elementFactory;
   }
 
   private buildScopedBeanName(name: string): string {
-    if (this.id === null) {
+    if (this.runtimeContextMetadata.id === null) {
       return name;
     }
 
-    return `${this.id}_${name}`;
+    return `${this.runtimeContextMetadata.id}_${name}`;
   }
 
   private getOrBuildBeanProxy(name: string, scopeName: string, scopeBeanGetter: () => any): any {
@@ -166,7 +152,7 @@ export class BeanFactory {
 
       const msg =
         `Bean named "${bean}", with scope: "${scopeName}" - ` +
-        'contains primitive value which could not be wrapped in Proxy, '+
+        'contains primitive value which could not be wrapped in Proxy, ' +
         'ES standard allows only object proxies.' +
         'To solve this issue - you can wrap your primitive value in object.';
 

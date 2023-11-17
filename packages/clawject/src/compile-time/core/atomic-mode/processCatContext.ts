@@ -7,8 +7,7 @@ import { checkIsAllBeansRegisteredInContextAndFillBeanRequierness } from '../bea
 import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
 import { buildDependencyGraphAndFillQualifiedBeans } from '../dependency-graph/buildDependencyGraphAndFillQualifiedBeans';
 import { reportAboutCircularDependencies } from '../report-cyclic-dependencies/reportAboutCircularDependencies';
-import { enrichWithAdditionalProperties } from './transformers/enrichWithAdditionalProperties';
-import { processMembers } from './transformers/processMembers';
+import { transformContext } from './transformers/transformContext';
 import { isNameReserved } from '../utils/isNameReserved';
 import { getConfigurationLazyExpressionValue } from './transformers/getConfigurationLazyExpressionValue';
 import { getConfigurationScopeExpressionValue } from './transformers/getConfigurationScopeExpressionValue';
@@ -43,8 +42,5 @@ export function processCatContext(node: ts.ClassDeclaration, compilationContext:
     return node;
   }
 
-  const enrichedWithAdditionalProperties = enrichWithAdditionalProperties(node, context);
-  const withProcessedMembers = processMembers(enrichedWithAdditionalProperties, context);
-
-  return withProcessedMembers;
+  return transformContext(node, context);
 }

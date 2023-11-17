@@ -10,10 +10,12 @@ import { isLifecycleArrowFunctionBean } from '../ts/predicates/isLifecycleArrowF
 import { getImplicitComponentStaticInitBlock } from './transformers/getImplicitComponentStaticInitBlock';
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
 import { isNameReserved } from '../utils/isNameReserved';
+import { Value } from '../Value';
 
 export function processImplicitComponents(
   node: ts.ClassDeclaration,
   compilationContext: CompilationContext,
+  shouldAddImports: Value<boolean>
 ): ts.Node {
   let component: Component | null = null;
 
@@ -24,7 +26,11 @@ export function processImplicitComponents(
 
     if (!hasDecoratorsFromLibrary) {
       return it;
+    } else {
+      //If there are decorators from library, then we should add imports
+      shouldAddImports.value = true;
     }
+
 
     component = component ?? ComponentRepository.register(node, false);
 

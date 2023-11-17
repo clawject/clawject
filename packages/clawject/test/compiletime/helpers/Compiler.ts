@@ -25,12 +25,12 @@ export class Compiler {
 
   constructor() {
     const clawjectBasePath = path.join(require.resolve('clawject'), '../../..');
-    const clawjectDeclarationFilePath = path.join(clawjectBasePath, 'index.d.ts');
+    const clawjectDeclarationFilePath = path.join(clawjectBasePath, 'dist/types', 'index.d.ts');
     const clawjectPackageJsonFilePath = path.join(clawjectBasePath, 'package.json');
     const contentDeclaration = this.host.compilerHost.readFile(clawjectDeclarationFilePath)!;
     const contentJson = this.host.compilerHost.readFile(clawjectPackageJsonFilePath)!;
 
-    this.loadFile('/node_modules/clawject/index.d.ts', contentDeclaration);
+    this.loadFile('/node_modules/clawject/dist/types/index.d.ts', contentDeclaration);
     this.loadFile('/node_modules/clawject/package.json', contentJson);
     this.loadFile('/package.json', JSON.stringify({
       name: 'test',

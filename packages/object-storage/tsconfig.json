@@ -1,3 +1,6 @@
 {
-  "extends": "./tsconfig.mjs.json"
+  "extends": "./tsconfig.esm.json",
+  "compilerOptions": {
+    "declaration": false
+  }
 }

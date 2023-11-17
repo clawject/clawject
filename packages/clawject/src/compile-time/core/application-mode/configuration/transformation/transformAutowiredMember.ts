@@ -1,11 +1,10 @@
 import ts, { factory } from 'typescript';
 import { Autowired } from '../../../autowired/Autowired';
 import { isDecoratorFromLibrary } from '../../../decorator-processor/isDecoratorFromLibrary';
-import { InternalsAccessBuilder } from '../../../internals-access/InternalsAccessBuilder';
 
 export const transformAutowiredMember = (autowired: Autowired, node: ts.ClassElement): ts.ClassElement => {
   const castedNode = node as ts.PropertyDeclaration;
-  const newInitializer = InternalsAccessBuilder.internalGetInstanceCallExpression(autowired.runtimeId);
+  // const newInitializer = InternalsAccessBuilder.internalGetInstanceCallExpression(autowired.runtimeId);
 
   return factory.updatePropertyDeclaration(
     castedNode,
@@ -13,6 +12,6 @@ export const transformAutowiredMember = (autowired: Autowired, node: ts.ClassEle
     castedNode.name,
     castedNode.questionToken,
     castedNode.type,
-    newInitializer,
+    castedNode.initializer,
   );
 };

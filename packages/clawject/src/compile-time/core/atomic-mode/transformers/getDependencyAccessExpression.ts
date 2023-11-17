@@ -9,62 +9,52 @@ export const getDependencyAccessExpression = (dependency: Dependency): ts.Expres
 
   //If qualifiedBeans are not null - that means that it's a collection
   if (qualifiedBeans !== null) {
+    let builderMethodName: string;
+
     if (dependency.diType.isArray) {
-      const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
-        return getBeanAccessExpression(qualifiedBean);
-      });
-
-      return factory.createArrayLiteralExpression(
-        callExpressionsForBeans,
-        false
-      );
+      builderMethodName = 'beanArray';
+    } else if (dependency.diType.isSet) {
+      builderMethodName = 'beanSet';
+    } else if (dependency.diType.isMapStringToAny) {
+      builderMethodName = 'beanMap';
+    } else {
+      throw Error('Unknown collection type met while building dependency access expression');
     }
 
-    if (dependency.diType.isSet) {
-      const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
-        return getBeanAccessExpression(qualifiedBean);
-      });
-
-      return factory.createCallExpression(
-        factory.createPropertyAccessExpression(
-          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
-          factory.createIdentifier('createSet')
+    return factory.createCallExpression(
+      factory.createPropertyAccessExpression(
+        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+        factory.createIdentifier(builderMethodName)
+      ),
+      undefined,
+      [
+        factory.createArrayLiteralExpression(
+          qualifiedBeans.map(qualifiedBean => (
+            factory.createArrayLiteralExpression(
+              createBeanExpressionsArray(qualifiedBean),
+            )
+          )),
+          true
         ),
-        undefined,
-        [factory.createArrayLiteralExpression(
-          callExpressionsForBeans,
-          false
-        )]
-      );
-    }
-
-    if (dependency.diType.isMapStringToAny) {
-      const callExpressionsForBeans = qualifiedBeans.map(qualifiedBean => {
-        return factory.createArrayLiteralExpression(
-          [
-            factory.createStringLiteral(qualifiedBean.fullName),
-            getBeanAccessExpression(qualifiedBean)
-          ],
-          false
-        );
-      });
-
-      return factory.createCallExpression(
-        factory.createPropertyAccessExpression(
-          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
-          factory.createIdentifier('createMap')
-        ),
-        undefined,
-        [factory.createArrayLiteralExpression(
-          callExpressionsForBeans,
-          false
-        )]
-      );
-    }
+        factory.createIdentifier('instance')
+      ]
+    );
   }
 
   if (qualifiedBean !== null) {
-    return getBeanAccessExpression(qualifiedBean);
+    return factory.createCallExpression(
+      factory.createPropertyAccessExpression(
+        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+        factory.createIdentifier('bean')
+      ),
+      undefined,
+      [
+        factory.createArrayLiteralExpression(
+          createBeanExpressionsArray(qualifiedBean),
+        ),
+        factory.createIdentifier('instance')
+      ]
+    );
   }
 
   if (dependency.diType.isOptionalUndefined || dependency.diType.isVoidUndefinedPlainUnionIntersection) {
@@ -78,25 +68,17 @@ export const getDependencyAccessExpression = (dependency: Dependency): ts.Expres
   return undefined;
 };
 
-function getBeanAccessExpression(qualifiedBean: Bean): ts.Expression {
-  let beanAccessExpression: ts.Expression = factory.createCallExpression(
-    factory.createPropertyAccessExpression(
-      InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ContextManager),
-      factory.createIdentifier('getPrivateBeanFromFactory')
-    ),
-    undefined,
-    [
-      factory.createStringLiteral(qualifiedBean.classMemberName),
-      factory.createIdentifier('instance')
-    ]
-  );
+
+function createBeanExpressionsArray(qualifiedBean: Bean): ts.Expression[] {
+  const classMemberName = factory.createStringLiteral(qualifiedBean.classMemberName);
 
   if (qualifiedBean.nestedProperty !== null) {
-    beanAccessExpression = factory.createElementAccessExpression(
-      beanAccessExpression,
+    return [
+      classMemberName,
       factory.createStringLiteral(qualifiedBean.nestedProperty),
-    );
+      factory.createStringLiteral(qualifiedBean.fullName)
+    ];
   }
 
-  return beanAccessExpression;
+  return [classMemberName];
 }

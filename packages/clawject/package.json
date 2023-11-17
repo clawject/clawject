@@ -2,42 +2,50 @@
   "name": "clawject",
   "version": "SHOULD_BE_REPLACED_BY_THE_BUILD_SCRIPT",
   "main": "dist/cjs/index.js",
-  "module": "dist/mjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "require": "./dist/cjs/index.js",
-      "import": "./dist/mjs/index.js",
-      "default": "./dist/mjs/index.js"
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
     },
     "./runtime/___internal___": {
+      "types": "./dist/types/runtime/___internal___/index.d.ts",
       "require": "./dist/cjs/runtime/___internal___/index.js",
-      "import": "./dist/mjs/runtime/___internal___/index.js",
-      "default": "./dist/mjs/runtime/___internal___/index.js"
+      "import": "./dist/esm/runtime/___internal___/index.js",
+      "default": "./dist/esm/runtime/___internal___/index.js"
     },
     "./lsp": {
+      "types": "./dist/types/lsp/index.d.ts",
       "require": "./dist/cjs/lsp/index.js",
-      "import": "./dist/mjs/lsp/index.js",
-      "default": "./dist/mjs/lsp/index.js"
+      "import": "./dist/esm/lsp/index.js",
+      "default": "./dist/esm/lsp/index.js"
     },
     "./webpack": {
+      "types": "./dist/types/webpack/index.d.ts",
       "require": "./dist/cjs/webpack/index.js",
-      "import": "./dist/mjs/webpack/index.js",
-      "default": "./dist/mjs/webpack/index.js"
+      "import": "./dist/esm/webpack/index.js",
+      "default": "./dist/esm/webpack/index.js"
     },
     "./transformer": {
+      "types": "./dist/types/transformer/index.d.ts",
       "require": "./dist/cjs/transformer/index.js",
-      "import": "./dist/mjs/transformer/index.js",
-      "default": "./dist/mjs/transformer/index.js"
+      "import": "./dist/esm/transformer/index.js",
+      "default": "./dist/esm/transformer/index.js"
     },
     "./transformer/metadata": {
+      "types": "./dist/types/transformer/metadata.d.ts",
       "require": "./dist/cjs/transformer/metadata.js",
-      "import": "./dist/mjs/transformer/metadata.js",
-      "default": "./dist/mjs/transformer/metadata.js"
+      "import": "./dist/esm/transformer/metadata.js",
+      "default": "./dist/esm/transformer/metadata.js"
     }
   },
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
   "dependencies": {
+    "@clawject/object-storage": "*",
     "case": "^1.6.3",
     "chalk": "^4.1.2",
     "cosmiconfig": "^7.0.1",

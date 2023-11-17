@@ -1,7 +1,7 @@
 {
   "extends": "./api-extractor.base.json",
-  "mainEntryPointFilePath": "<projectFolder>/dist/types/webpack/index.d.ts",
+  "mainEntryPointFilePath": "<projectFolder>/dist/raw-types/webpack/index.d.ts",
   "dtsRollup": {
-    "publicTrimmedFilePath": "<projectFolder>/dist/api/webpack/index.d.ts"
+    "publicTrimmedFilePath": "<projectFolder>/dist/dist/types/webpack/index.d.ts"
   }
 }
