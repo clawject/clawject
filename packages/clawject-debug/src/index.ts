@@ -13,3 +13,4 @@ class MyContext extends CatContext {
     console.log(this.myCollection);
   }
 }
+
