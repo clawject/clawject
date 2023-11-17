@@ -5,33 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../website/docs/core-concepts/ioc-di-basics.mdx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../website/docs/scope-register.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.verdaccio/config.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.verdaccio/htpasswd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/build_scripts/create_package_json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/jest.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/project.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/tsconfig.base.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/tsconfig.cjs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../object-storage/tsconfig.mjs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../project.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../tools/scripts/publish.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/../../LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../jest.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../jest.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/01-intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/intro.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/02-setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/setup.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/03-language-service.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/language-service.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/04-ioc_di.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/05-type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/type-system.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/06-container-manager.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/container-manager.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/07-initialized-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/initialized-context.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/08-cat-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/cat-context.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/09-bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/bean.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/10-primary.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/primary.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/11-qualifier.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/qualifier.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/12-scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/scope.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/13-lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/lazy.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/14-embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/embedded.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/15-lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/lifecycle.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/16-injecting-collections.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/injecting-collections.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/17-custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/custom-scopes.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/18-errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/errors.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/sidebars.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/sidebars.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/static/img/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/../website/static/img/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/static/img/favicon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../website/static/img/favicon.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tsconfig.base.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../tsconfig.base.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

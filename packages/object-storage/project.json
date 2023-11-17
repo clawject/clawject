@@ -1,0 +1,42 @@
+{
+  "name": "object-storage",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/object-storage/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/object-storage",
+        "commands": [
+          "rm -rf dist ../../dist/packages/object-storage",
+
+          "mkdir -p dist/dist/cjs",
+          "mkdir -p dist/dist/mjs",
+
+          "sh build_scripts/create_package_json",
+
+          "tsc --p tsconfig.cjs.json",
+          "tsc --p tsconfig.mjs.json",
+
+          "cp ../../LICENSE dist/LICENSE",
+          "cp README.md dist/",
+          "cp package.json dist/",
+
+          "mkdir -p ../../dist/packages/object-storage && mv dist/* ../../dist/packages/object-storage",
+          "rm -rf dist"
+        ],
+        "parallel": false,
+        "outputPath": "dist/packages/object-storage"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/object-storage/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
