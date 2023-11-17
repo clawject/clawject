@@ -10,24 +10,10 @@
     "module": "esnext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@clawject/clawject-language-service": [
-        "packages/clawject-language-service/src/index.js"
-      ],
-      "@clawject/clawject-vscode": [
-        "packages/clawject-vscode/src/index.js"
-      ]
-    }
+    "baseUrl": "."
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

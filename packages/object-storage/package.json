@@ -1,0 +1,16 @@
+{
+  "name": "@clawject/object-storage",
+  "private": false,
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Artem Korniev artemkakornev1@gmail.com",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/mjs/index.js",
+      "default": "./dist/mjs/index.js"
+    }
+  }
+}
