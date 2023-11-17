@@ -12,12 +12,13 @@
           "rm -rf dist ../../dist/packages/object-storage",
 
           "mkdir -p dist/dist/cjs",
-          "mkdir -p dist/dist/mjs",
+          "mkdir -p dist/dist/esm",
 
           "sh build_scripts/create_package_json",
 
           "tsc --p tsconfig.cjs.json",
-          "tsc --p tsconfig.mjs.json",
+          "tsc --p tsconfig.esm.json",
+          "tsc --p tsconfig.types.json",
 
           "cp ../../LICENSE dist/LICENSE",
           "cp README.md dist/",

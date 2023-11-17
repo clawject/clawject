@@ -7,8 +7,8 @@ export class ErrorBuilder {
     return new RuntimeErrors.BeanNotFoundError(`Bean '${beanName}' is not found in context '${this.getContextName(contextName)}'`);
   }
 
-  static classNotInheritorOfCatContext(clazz: ClassConstructor<any>): RuntimeErrors.ClassNotInheritorOfCatContextError {
-    const error = new RuntimeErrors.ClassNotInheritorOfCatContextError('Class that is passed to the Container is not an inheritor of CatContext');
+  static noClassMetadataFoundError(clazz: ClassConstructor<any>): RuntimeErrors.NoClassMetadataFoundError {
+    const error = new RuntimeErrors.NoClassMetadataFoundError('No class metadata found, most likely this class was not transformed because of misconfiguration of \'clawject\'');
     Object.defineProperty(error, 'class', clazz);
 
     return error;

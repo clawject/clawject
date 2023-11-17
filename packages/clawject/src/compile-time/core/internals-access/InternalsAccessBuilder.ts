@@ -4,12 +4,23 @@ import { CONSTANTS } from '../../../constants';
 
 export enum InternalElementKind {
   ApplicationManager = 'ApplicationManager',
-  ContextManager = 'ContextManager',
   Utils = 'Utils',
 }
 
 export class InternalsAccessBuilder {
-  private static TOKEN = 'CLAWJECT_INTERNAL_TOKEN_ಠ_ಠ';
+  private static _currentIdentifier: ts.Identifier | undefined;
+
+  static get currentIdentifier(): ts.Identifier {
+    if (!this._currentIdentifier) {
+      throw new Error('Current identifier is not set in InternalsAccessBuilder');
+    }
+
+    return this._currentIdentifier;
+  }
+
+  static setCurrentIdentifier(identifier: ts.Identifier): void {
+    this._currentIdentifier = identifier;
+  }
 
   static importDeclarationToInternal(): ts.ImportDeclaration {
     const importSpecifierPath = upath.join(
@@ -22,36 +33,17 @@ export class InternalsAccessBuilder {
       factory.createImportClause(
         false,
         undefined,
-        factory.createNamespaceImport(factory.createIdentifier(this.TOKEN))
+        factory.createNamespaceImport(this.currentIdentifier)
       ),
       factory.createStringLiteral(importSpecifierPath),
       undefined
     );
   }
 
-
-  static identifier(elementKind: InternalElementKind): ts.Identifier {
-    return ts.factory.createIdentifier(elementKind);
-  }
-
-
   static internalPropertyAccessExpression(elementKind: InternalElementKind): ts.PropertyAccessExpression {
     return factory.createPropertyAccessExpression(
-      factory.createIdentifier(this.TOKEN),
+      this.currentIdentifier,
       factory.createIdentifier(elementKind)
-    );
-  }
-
-
-  //TODO remove
-  static internalGetInstanceCallExpression(runtimeId: number): ts.CallExpression {
-    return factory.createCallExpression(
-      factory.createPropertyAccessExpression(
-        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ApplicationManager),
-        factory.createIdentifier('getInstanceFor')
-      ),
-      undefined,
-      [factory.createNumericLiteral(runtimeId)],
     );
   }
 }

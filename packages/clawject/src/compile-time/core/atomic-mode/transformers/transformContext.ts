@@ -6,8 +6,10 @@ import { Configuration } from '../../configuration/Configuration';
 import { BeanKind } from '../../bean/BeanKind';
 import { Bean, BeanNode } from '../../bean/Bean';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../../ts/types';
+import { getContextStaticInitBlock } from './getContextStaticInitBlock';
+import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 
-export const processMembers = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassDeclaration => {
+export const transformContext = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassDeclaration => {
   const newMembers = node.members.map(node => {
     const bean = configuration.beanRegister.getByNode(node as BeanNode);
 
@@ -27,17 +29,21 @@ export const processMembers = (node: ts.ClassDeclaration, configuration: Configu
     case BeanKind.LIFECYCLE_ARROW_FUNCTION:
     case BeanKind.VALUE_EXPRESSION:
       return transformArrowFunctionOrExpressionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer | ClassPropertyWithExpressionInitializer>);
-    }
 
-    return node;
+    default:
+      return node;
+    }
   });
 
   return factory.updateClassDeclaration(
     node,
-    node.modifiers,
+    node.modifiers?.filter(it => !isDecoratorFromLibrary(it, undefined)),
     node.name,
     node.typeParameters,
     node.heritageClauses,
-    newMembers
+    [
+      ...newMembers,
+      getContextStaticInitBlock(node, configuration),
+    ]
   );
 };

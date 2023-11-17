@@ -1,7 +1,7 @@
 {
   "name": "@clawject/clawject-debug",
   "version": "0.0.1",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "run:upgradeClawject": "yarn upgrade clawject clawject-language-service && ts-patch install",
     "run:tsc": "tsc",
@@ -9,8 +9,8 @@
     "run:tsc_debug": "cross-env CLAWJECT_DEBUG_MODE=true tsc",
     "run:tsc_watch": "cross-env CLAWJECT_DEBUG_MODE=true tsc -w",
     "run:node_debug": "node dist/src/index.js",
-    "run:webpack_hot": "webpack serve --config webpack.config.ts --mode development",
-    "run:webpack_prod": "webpack --config webpack.config.ts --mode production",
+    "run:webpack_hot": "webpack serve --config webpack.config.js --mode development",
+    "run:webpack_prod": "webpack --config webpack.config.js --mode production",
     "run:language_service": "tsserver --logVerbosity verbose --traceToConsole"
   },
   "dependencies": {

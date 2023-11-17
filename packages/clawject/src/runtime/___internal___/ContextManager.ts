@@ -1,27 +1,10 @@
 import { CatContext } from '../CatContext';
 import { ErrorBuilder } from '../ErrorBuilder';
 import { BeanFactory } from './BeanFactory';
-import { RuntimeBeanMetadata } from '../runtime-elements/RuntimeBeanMetadata';
-import { RuntimeLifecycleMetadata } from '../runtime-elements/RuntimeLifecycleMetadata';
 import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ClassConstructor } from '../ClassConstructor';
-import { RuntimeElementFactories } from '../runtime-elements/RuntimeElementFactories';
-import { getStaticRuntimeElementFromConstructor, StaticRuntimeElement } from '../runtime-elements/StaticRuntimeElement';
-
-type BuiltContext = {
-  instance: CatContext;
-  factories: RuntimeElementFactories;
-}
-
-export interface ContextMetadata {
-  id: number;
-  contextName: string;
-  lifecycle: RuntimeLifecycleMetadata;
-  beans: Record<string, RuntimeBeanMetadata>;
-  lazy: boolean;
-  scope: string;
-  contextBuilder: () => BuiltContext;
-}
+import { BuiltContext, RuntimeContextMetadata } from '../metadata/RuntimeContextMetadata';
+import { MetadataStorage } from '../metadata/MetadataStorage';
 
 export class ContextManager {
   static contextPool = new Map<ClassConstructor<CatContext>, Map<any, BuiltContext>>();
@@ -36,10 +19,7 @@ export class ContextManager {
 
     const builtContext = contextMetadata.contextBuilder();
     const beanFactory = new BeanFactory(
-      contextMetadata.id,
-      contextMetadata.contextName,
-      contextMetadata.beans,
-      contextMetadata.scope,
+      contextMetadata,
       builtContext.factories,
     );
 
@@ -88,14 +68,11 @@ export class ContextManager {
     return beanFactory;
   }
 
-  static getContextMetadataOrThrow(contextConstructor: ClassConstructor<CatContext>): ContextMetadata {
-    const metadata = getStaticRuntimeElementFromConstructor(
-      contextConstructor,
-      StaticRuntimeElement.CONTEXT_METADATA
-    );
+  static getContextMetadataOrThrow(contextConstructor: ClassConstructor<CatContext>): RuntimeContextMetadata {
+    const metadata = MetadataStorage.getContextMetadata(contextConstructor);
 
     if (!metadata) {
-      throw ErrorBuilder.classNotInheritorOfCatContext(contextConstructor);
+      throw ErrorBuilder.noClassMetadataFoundError(contextConstructor);
     }
 
     return metadata;
@@ -111,11 +88,12 @@ export class ContextManager {
     return beanFactory.getBean(beanName);
   }
 
-  private static postConstruct(contextMetadata: ContextMetadata, builtContext: BuiltContext): void {
+  private static postConstruct(contextMetadata: RuntimeContextMetadata, builtContext: BuiltContext): void {
     Object.entries(contextMetadata.beans).forEach(([beanName, beanConfig]) => {
-      const isBeanLazy = beanConfig.lazy === null ? contextMetadata.lazy : beanConfig.lazy;
+      const isBeanLazy = beanConfig.lazy ?? contextMetadata.lazy;
+      const beanScope = beanConfig.scope ?? contextMetadata.scope;
 
-      if (!isBeanLazy && beanConfig.scope === 'singleton') {
+      if (!isBeanLazy && beanScope === 'singleton') {
         this.beanFactories.get(builtContext.instance)?.getBean(beanName);
       }
     });
@@ -124,7 +102,7 @@ export class ContextManager {
     });
   }
 
-  private static preDestroy(contextMetadata: ContextMetadata, builtContext: BuiltContext): void {
+  private static preDestroy(contextMetadata: RuntimeContextMetadata, builtContext: BuiltContext): void {
     Object.keys(contextMetadata.beans).forEach(beanName => {
       this.beanFactories.get(builtContext.instance)?.destroyBean(beanName);
     });
@@ -134,7 +112,7 @@ export class ContextManager {
     });
   }
 
-  private static getElementFactory(contextMetadata: ContextMetadata, builtContext: BuiltContext, name: string): () => any {
+  private static getElementFactory(contextMetadata: RuntimeContextMetadata, builtContext: BuiltContext, name: string): () => any {
     const elementFactory = builtContext.factories[name];
 
     if (!elementFactory) {

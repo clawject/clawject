@@ -12,13 +12,13 @@
           "rm -rf dist ../../dist/packages/clawject",
 
           "mkdir -p dist/dist/cjs",
-          "mkdir -p dist/dist/mjs",
+          "mkdir -p dist/dist/esm",
 
           "sh build_scripts/create_package_json",
           "node build_scripts/prepare_files",
 
           "tsc --p tsconfig.cjs.json",
-          "tsc --p tsconfig.mjs.json",
+          "tsc --p tsconfig.esm.json",
           "tsc --p tsconfig.types.json",
 
           "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.root.json",
@@ -28,12 +28,10 @@
           "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.transformer-metadata.json",
 
           "rm dist/clawject.d.ts",
-          "rm -rf dist/types",
-          "mv dist/api/* dist",
-          "rm -rf dist/api",
+          "rm -rf dist/raw-types",
 
           "yarn run copyfiles -u 1 src/**/*.csv dist/dist/cjs",
-          "yarn run copyfiles -u 1 src/**/*.csv dist/dist/mjs",
+          "yarn run copyfiles -u 1 src/**/*.csv dist/dist/esm",
 
           "cp ../../LICENSE dist/LICENSE",
           "cp ../../README.md dist/README.md",

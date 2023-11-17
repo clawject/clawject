@@ -1,6 +1,4 @@
 import { ClassConstructor } from '../ClassConstructor';
-import { InstanceRuntimeElement } from '../runtime-elements/InstanceRuntimeElement';
-import { getInstanceRuntimeElementFromInstance } from '../utils/getInstanceRuntimeElementFromInstance';
 
 export class ApplicationManager {
   private static configurationInstances = new Map<ClassConstructor<any>, any>();
@@ -13,10 +11,9 @@ export class ApplicationManager {
 
     this.configurationInstances.set(configuration, configurationInstance);
 
-    const init = getInstanceRuntimeElementFromInstance(configurationInstance, InstanceRuntimeElement.CONFIGURATION_INIT);
+    const init = undefined;
 
     //TODO handle when init empty
-    init && init();
   }
 
   static registerBean(

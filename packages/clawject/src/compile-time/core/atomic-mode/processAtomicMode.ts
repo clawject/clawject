@@ -5,6 +5,8 @@ import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuild
 import { processCatContext } from './processCatContext';
 import { processImplicitComponents } from './processImplicitComponents';
 import { getDecoratorVerificationErrors } from './getDecoratorVerificationErrors';
+import { CONSTANTS } from '../../../constants';
+import { Value } from '../Value';
 
 export const processAtomicMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
@@ -12,7 +14,8 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
     return sourceFile;
   }
 
-  let shouldAddImports = false;
+  const shouldAddInternalImport = new Value(false);
+  InternalsAccessBuilder.setCurrentIdentifier(tsContext.factory.createUniqueName(CONSTANTS.libraryName));
 
   const visitor = (node: ts.Node): ts.Node => {
     if (!ts.isClassDeclaration(node)) {
@@ -31,10 +34,10 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
 
     //Registering contexts
     if (isExtendsCatContext(node)) {
-      shouldAddImports = true;
+      shouldAddInternalImport.value = true;
       transformedNode = processCatContext(node, compilationContext);
     } else {
-      transformedNode = processImplicitComponents(node, compilationContext);
+      transformedNode = processImplicitComponents(node, compilationContext, shouldAddInternalImport);
     }
 
     return ts.visitEachChild(transformedNode, visitor, tsContext);
@@ -44,7 +47,7 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
 
   const updatedStatements = Array.from(transformedFile.statements);
 
-  if (shouldAddImports) {
+  if (shouldAddInternalImport.value) {
     updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
   }
 
