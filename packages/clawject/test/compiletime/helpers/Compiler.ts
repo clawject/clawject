@@ -9,7 +9,7 @@ const compilerOptions: ts.CompilerOptions = {
   moduleResolution: ts.ModuleResolutionKind.NodeJs,
   plugins: [
     {
-      transform: 'clawject/transformer'
+      transform: '@clawject/di/transformer'
     }
   ] as any[]
 };
@@ -24,18 +24,18 @@ export class Compiler {
   private host = tsvfs.createVirtualCompilerHost(this.system, compilerOptions, ts);
 
   constructor() {
-    const clawjectBasePath = path.join(require.resolve('clawject'), '../../..');
+    const clawjectBasePath = path.join(require.resolve('@clawject/di'), '../../..');
     const clawjectDeclarationFilePath = path.join(clawjectBasePath, 'dist/types', 'index.d.ts');
     const clawjectPackageJsonFilePath = path.join(clawjectBasePath, 'package.json');
     const contentDeclaration = this.host.compilerHost.readFile(clawjectDeclarationFilePath)!;
     const contentJson = this.host.compilerHost.readFile(clawjectPackageJsonFilePath)!;
 
-    this.loadFile('/node_modules/clawject/dist/types/index.d.ts', contentDeclaration);
-    this.loadFile('/node_modules/clawject/package.json', contentJson);
+    this.loadFile('/node_modules/@clawject/di/dist/types/index.d.ts', contentDeclaration);
+    this.loadFile('/node_modules/@clawject/di/package.json', contentJson);
     this.loadFile('/package.json', JSON.stringify({
       name: 'test',
       dependencies: {
-        clawject: '0.0.0',
+        '@clawject/di': '0.0.0',
       },
     }));
   }

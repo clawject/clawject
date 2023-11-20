@@ -14,11 +14,14 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "declaration": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "plugins": [
       {
-        "name": "clawject-language-service",
-        "transform": "clawject/transformer"
+        "name": "@clawject/language-service",
+        "transform": "@clawject/di/transformer"
+      },
+      {
+        "transform": "typia/lib/transform"
       }
     ]
   },

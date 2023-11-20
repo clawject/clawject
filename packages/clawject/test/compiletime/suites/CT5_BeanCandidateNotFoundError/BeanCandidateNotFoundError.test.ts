@@ -17,14 +17,14 @@ describe('BeanCandidateNotFoundError', () => {
     const expectedDiagnostic: DiagnosticsLight[] = [
       {
         messageText: 'Found 0 injection candidates.',
-        start: 106,
+        start: 110,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'beanFunction\' is declared here.',
-            start: 256,
+            start: 260,
             file: {
               fileName: '/index.ts'
             }
@@ -33,28 +33,28 @@ describe('BeanCandidateNotFoundError', () => {
       },
       {
         messageText: 'Found 2 injection candidates.',
-        start: 123,
+        start: 127,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'str0\' matched by type.',
-            start: 209,
+            start: 213,
             file: {
               fileName: '/index.ts'
             }
           },
           {
             messageText: '\'str1\' matched by type.',
-            start: 232,
+            start: 236,
             file: {
               fileName: '/index.ts'
             }
           },
           {
             messageText: '\'beanFunction\' is declared here.',
-            start: 256,
+            start: 260,
             file: {
               fileName: '/index.ts'
             }
@@ -63,14 +63,14 @@ describe('BeanCandidateNotFoundError', () => {
       },
       {
         messageText: 'Found 0 injection candidates.',
-        start: 140,
+        start: 144,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'beanFunction\' is declared here.',
-            start: 256,
+            start: 260,
             file: {
               fileName: '/index.ts'
             }
@@ -80,28 +80,28 @@ describe('BeanCandidateNotFoundError', () => {
 
       {
         messageText: 'Found 0 injection candidates.',
-        start: 314,
+        start: 318,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Found 2 injection candidates.',
-        start: 331,
+        start: 335,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'str0\' matched by type.',
-            start: 209,
+            start: 213,
             file: {
               fileName: '/index.ts'
             }
           },
           {
             messageText: '\'str1\' matched by type.',
-            start: 232,
+            start: 236,
             file: {
               fileName: '/index.ts'
             }
@@ -110,7 +110,7 @@ describe('BeanCandidateNotFoundError', () => {
       },
       {
         messageText: 'Found 0 injection candidates.',
-        start: 348,
+        start: 352,
         file: {
           fileName: '/index.ts'
         },
@@ -118,28 +118,28 @@ describe('BeanCandidateNotFoundError', () => {
 
       {
         messageText: 'Found 0 injection candidates.',
-        start: 411,
+        start: 415,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Found 2 injection candidates.',
-        start: 428,
+        start: 432,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'str0\' matched by type.',
-            start: 209,
+            start: 213,
             file: {
               fileName: '/index.ts'
             }
           },
           {
             messageText: '\'str1\' matched by type.',
-            start: 232,
+            start: 236,
             file: {
               fileName: '/index.ts'
             }
@@ -148,7 +148,7 @@ describe('BeanCandidateNotFoundError', () => {
       },
       {
         messageText: 'Found 0 injection candidates.',
-        start: 445,
+        start: 449,
         file: {
           fileName: '/index.ts'
         },
@@ -156,28 +156,28 @@ describe('BeanCandidateNotFoundError', () => {
 
       {
         messageText: 'Found 0 injection candidates.',
-        start: 497,
+        start: 501,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Found 2 injection candidates.',
-        start: 514,
+        start: 518,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'str0\' matched by type.',
-            start: 209,
+            start: 213,
             file: {
               fileName: '/index.ts'
             }
           },
           {
             messageText: '\'str1\' matched by type.',
-            start: 232,
+            start: 236,
             file: {
               fileName: '/index.ts'
             }
@@ -186,7 +186,7 @@ describe('BeanCandidateNotFoundError', () => {
       },
       {
         messageText: 'Found 0 injection candidates.',
-        start: 531,
+        start: 535,
         file: {
           fileName: '/index.ts'
         },

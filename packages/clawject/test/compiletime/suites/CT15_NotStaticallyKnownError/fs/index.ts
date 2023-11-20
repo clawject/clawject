@@ -1,4 +1,4 @@
-import { Bean, CatContext, Qualifier } from 'clawject';
+import { Bean, CatContext, Qualifier } from '@clawject/di';
 
 const BeanName = 'a';
 const UniqSymbol = Symbol.for('UniqSymbol');

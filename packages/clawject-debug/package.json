@@ -11,22 +11,28 @@
     "run:node_debug": "node dist/src/index.js",
     "run:webpack_hot": "webpack serve --config webpack.config.js --mode development",
     "run:webpack_prod": "webpack --config webpack.config.js --mode production",
-    "run:language_service": "tsserver --logVerbosity verbose --traceToConsole"
+    "run:language_service": "tsserver --logVerbosity verbose --traceToConsole",
+    "vite:run": "vite",
+    "postinstall": "ts-patch install"
   },
   "dependencies": {
-    "clawject": "../../dist/packages/clawject",
-    "clawject-language-service": "../../packages/clawject-language-service"
+    "@clawject/di": "../../dist/packages/clawject",
+    "@clawject/language-service": "../../packages/language-service",
+    "typia": "^5.2.6"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.5",
     "@types/webpack": "^5.28.1",
     "clean-webpack-plugin": "^4.0.0",
     "cross-env": "^7.0.3",
     "html-webpack-plugin": "^5.5.3",
+    "rollup-plugin-typescript2": "^0.36.0",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
     "ts-patch": "^3.0.2",
     "ttypescript": "^1.5.15",
     "typescript": "^5.2.2",
+    "vite": "^5.0.0",
     "webpack": "^5.87.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"

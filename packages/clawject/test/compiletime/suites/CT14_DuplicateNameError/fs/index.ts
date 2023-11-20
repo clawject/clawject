@@ -1,4 +1,4 @@
-import { Bean, CatContext, Qualifier } from 'clawject';
+import { Bean, CatContext, Qualifier } from '@clawject/di';
 
 class MyContext extends CatContext {
   @Bean a = 42;

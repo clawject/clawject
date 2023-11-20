@@ -1,0 +1,15 @@
+{
+  "name": "@clawject/language-service",
+  "version": "1.0.0",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.mjs",
+      "default": "./index.mjs"
+    }
+  },
+  "peerDependencies": {
+    "@clawject/di": "*"
+  }
+}

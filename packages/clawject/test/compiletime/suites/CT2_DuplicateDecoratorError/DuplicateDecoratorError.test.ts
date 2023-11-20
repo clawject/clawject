@@ -17,14 +17,14 @@ describe('DuplicateDecoratorError', () => {
   `('should report DuplicateDecoratorError, decoratorsCount: $decoratorsCount', ({ decoratorsCount }) => {
     it.each`
         decoratorName      | expectedStart
-        ${'Bean'}          | ${98}
-        ${'PreDestroy'}    | ${110}
-        ${'Embedded'}      | ${106}
-        ${'Lazy'}          | ${98}
-        ${'PostConstruct'} | ${116}
-        ${'Scope'}         | ${100}
-        ${'Primary'}       | ${104}
-        ${'Qualifier'}     | ${108}
+        ${'Bean'}          | ${102}
+        ${'PreDestroy'}    | ${114}
+        ${'Embedded'}      | ${110}
+        ${'Lazy'}          | ${102}
+        ${'PostConstruct'} | ${120}
+        ${'Scope'}         | ${104}
+        ${'Primary'}       | ${108}
+        ${'Qualifier'}     | ${112}
     `('decoratorName: $decoratorName, expectedStart: $expectedStart', ({ decoratorName, expectedStart }) => {
       //Given
       const fileContent = getFile(__dirname, 'index.ts', {

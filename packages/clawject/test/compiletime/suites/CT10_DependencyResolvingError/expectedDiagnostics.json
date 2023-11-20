@@ -1,14 +1,14 @@
 [
   {
     "messageText": "Can not resolve dependency. Missing class constructor argument.",
-    "start": 89,
+    "start": 93,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'MyContext' is declared here.",
-        "start": 52,
+        "start": 56,
         "file": {
           "fileName": "/index.ts"
         }
@@ -17,14 +17,14 @@
   },
   {
     "messageText": "Can not resolve dependency. Try to use bean factory-method instead.",
-    "start": 108,
+    "start": 112,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'MyContext' is declared here.",
-        "start": 52,
+        "start": 56,
         "file": {
           "fileName": "/index.ts"
         }
@@ -33,14 +33,14 @@
   },
   {
     "messageText": "Can not resolve dependency. Try to use bean factory-method instead.",
-    "start": 124,
+    "start": 128,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'MyContext' is declared here.",
-        "start": 52,
+        "start": 56,
         "file": {
           "fileName": "/index.ts"
         }
@@ -49,14 +49,14 @@
   },
   {
     "messageText": "Can not resolve dependency. Try to use bean factory-method instead.",
-    "start": 142,
+    "start": 146,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'MyContext' is declared here.",
-        "start": 52,
+        "start": 56,
         "file": {
           "fileName": "/index.ts"
         }

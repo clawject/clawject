@@ -43,23 +43,23 @@ This error appears directly on bean declaration in `CatContext` classes.
 
 **Solution:**
 - Define missing dependencies in the context.
-- Check a topic about [how dependencies are resolved](/docs/bean.mdx#how-dependencies-are-resolved)
+- Check a topic about [how dependencies are resolved](/docs/api/bean.mdx#how-dependencies-are-resolved)
 - If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
-- Specify primary bean for the dependency with [`@Primary`](/docs/primary.mdx) decorator.
+- Specify primary bean for the dependency with [`@Primary`](/docs/api/primary.mdx) decorator.
 
 ### CT5: BeanCandidateNotFoundError
 It occurs when the bean candidate for the specific dependency could not be resolved.
-- When declaring bean with [@Bean decorator](todo.com) - error will
+- When declaring bean with [@Bean decorator](/docs/api/bean#bean-decorator) - error will
   appear on the corresponding parameter of the **factory-function**.
-- When declaring bean with [Bean function](todo.com) - error will
+- When declaring bean with [Bean function](/docs/api/bean/bean-function) - error will
   appear on the corresponding parameter of the **class constructor**.
 Also - if you have more than one matching candidate for injection - Clawject will notify you which candidate is matching by name and type.
 
 **Solution:**
 - Define missing dependencies in the context.
-- Check a topic about [how dependencies are resolved](TODO.com)
+- Check a topic about [how dependencies are resolved](/docs/api/bean#how-dependencies-are-resolved)
 - If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
-- Specify primary bean for the dependency with [`@Primary`](/docs/primary.mdx) decorator.
+- Specify primary bean for the dependency with [`@Primary`](/docs/api/primary.mdx) decorator.
 
 ### CT6: MissingInitializerError
 It occurs when a property or method that is registered as a bean or lifecycle hook does not have an initializer.
@@ -130,7 +130,7 @@ Clawject will detect circular dependencies at compile-time and report this error
   ```
 
 ### CT8: IncorrectTypeError
-It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](TODO.com). Example:
+It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](/docs/api/bean#bean-types). Example:
 ```ts
 class MyContext extends CatContext {
   @Bean stringOrNumber(): string | number {
@@ -165,7 +165,7 @@ In this example - `@Qualifier` decorator requires exactly one argument to be pas
 **Solution:** Pass required arguments count.
 
 ### CT10: DependencyResolvingError
-It occurs when the dependencies of class constructor could not be resolved. This error occurs only when using [Bean function](todo.com). Examples:
+It occurs when the dependencies of class constructor could not be resolved. This error occurs only when using [Bean function](/docs/api/bean#bean-function). Examples:
 - Didn't pass class to the **Bean function**:
   ```ts
   class MyContext extends CatContext {
@@ -181,7 +181,7 @@ It occurs when the dependencies of class constructor could not be resolved. This
   }
   ```
 
-**Solution:** Use **factory-method** with [@Bean decorator](todo.com)
+**Solution:** Use **factory-method** with [@Bean decorator](/docs/api/bean#bean-decorator)
 instead of **Bean function**.
 
 ### CT11: NotSupportedError
@@ -193,7 +193,7 @@ It occurs when some feature is not supported by Clawject. Example:
     meow(data: any): void {}
   }
   ```
-- Using `@Embedded` decorator with bean declared with [Bean function](todo.com):
+- Using `@Embedded` decorator with bean declared with [Bean function](/docs/api/bean#bean-function):
   ```ts
   class MyContext extends CatContext {
     @Embedded cat = Bean(Cat);
@@ -258,7 +258,7 @@ class MyContext extends CatContext<IMyContext> {
 **Solution:** Change the type of Bean to match the type declared in CatContext interface or vice versa.
 
 ### CT14: DuplicateNameError
-It occurs when few beans have the same name (class member name or name defined via [`@Qualifier decorator`](/docs/qualifier.mdx)). Example:
+It occurs when few beans have the same name (class member name or name defined via [`@Qualifier decorator`](/docs/api/qualifier.mdx)). Example:
 ```ts
 class MyContext extends CatContext {
   cat = Bean(Cat);
@@ -296,8 +296,8 @@ Each error has `name` property, so it can be identified via name or via `instanc
 
 ### NoInitializedContextFoundError
 It occurs when the context is not initialized, and you're trying
-to get [`InitializedContext`](/docs/initialized-context.mdx) object
-from [`ContainerManager`](/docs/container-manager.mdx).
+to get [`InitializedContext`](/docs/api/initialized-context.mdx) object
+from [`ContainerManager`](/docs/api/container-manager.mdx).
 Example:
 ```ts
 class MyContext extends CatContext {}

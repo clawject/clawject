@@ -11,7 +11,10 @@ export default {
     rules: [
       {
         test: /\.ts$/,
-        loader: 'ts-loader'
+        loader: 'ts-loader',
+        options: {
+          getCustomTransformers: (program)
+        }
       },
       {
         test: /\.m?js$/,

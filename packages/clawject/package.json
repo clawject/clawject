@@ -1,5 +1,5 @@
 {
-  "name": "clawject",
+  "name": "@clawject/di",
   "version": "SHOULD_BE_REPLACED_BY_THE_BUILD_SCRIPT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

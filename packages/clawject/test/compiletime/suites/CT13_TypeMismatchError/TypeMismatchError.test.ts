@@ -17,21 +17,21 @@ describe('TypeMismatchError', () => {
     const expectedDiagnostics: DiagnosticsLight[] = [
       {
         messageText: 'Type mismatch. Following Beans are not compatible with type declared in base Context type.',
-        start: 120,
+        start: 124,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'a\' is declared here.',
-            start: 136,
+            start: 140,
             file: {
               fileName: '/index.ts'
             }
           },
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 91,
+            start: 95,
             file: {
               fileName: '/index.ts'
             }

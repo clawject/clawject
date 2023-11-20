@@ -17,21 +17,21 @@ describe('CanNotRegisterBeanError', () => {
     const expectedDiagnostics: DiagnosticsLight[] = [
       {
         messageText: 'Can not register Bean.',
-        start: 337,
+        start: 341,
         file: {
           fileName: '/index.ts',
         },
         relatedInformation: [
           {
             messageText: 'Can not find Bean candidate for \'num\'.',
-            start: 100,
+            start: 104,
             file: {
               fileName: '/index.ts',
             },
           },
           {
             messageText: 'Can not find Bean candidate for \'sym\'.',
-            start: 117,
+            start: 121,
             file: {
               fileName: '/index.ts',
             },
@@ -40,14 +40,14 @@ describe('CanNotRegisterBeanError', () => {
       },
       {
         messageText: 'Can not register Bean.',
-        start: 402,
+        start: 406,
         file: {
           fileName: '/index.ts',
         },
         relatedInformation: [
           {
             messageText: 'Can not find Bean candidate for \'str\'.',
-            start: 222,
+            start: 226,
             file: {
               fileName: '/index.ts',
             },

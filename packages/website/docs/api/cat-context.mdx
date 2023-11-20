@@ -1,6 +1,5 @@
 ---
 title: CatContext
-id: cat-context
 ---
 
 CatContext is a class that represents the IoC container.
@@ -12,7 +11,7 @@ CatContext it's an abstract class that can be extended to create a custom contai
 To define container, you need to create a class that extends CatContext.
 
 ```ts
-import { CatContext } from 'clawject';
+import { CatContext } from '@clawject/di';
 
 export class MyContext extends CatContext {}
 ```
@@ -20,7 +19,7 @@ export class MyContext extends CatContext {}
 To init container, you need to use ContainerManager interface and pass class to the init method.
 
 ```ts
-import { ContainerManager } from 'clawject';
+import { ContainerManager } from '@clawject/di';
 
 ContainerManager.init(MyContext);
 ```
@@ -31,7 +30,7 @@ If you need to receive some Beans outside of context -
 you can do it by specifying the first generic argument in `CatContext`.
 
 ```ts
-import { Bean, CatContext, ContainerManager } from 'clawject';
+import { Bean, CatContext, ContainerManager } from '@clawject/di';
 
 interface MyExternalBeans {
   foo: string;
@@ -59,7 +58,7 @@ you can do it by specifying the second generic argument in `CatContext`.
 Config is available via protected getter `config`.
 
 ```ts
-import { CatContext, ContainerManager, PostConstruct } from 'clawject';
+import { CatContext, ContainerManager, PostConstruct } from '@clawject/di';
 
 interface MyConfig {
   foo: string;

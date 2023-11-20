@@ -17,14 +17,14 @@ describe('NotStaticallyKnownError', () => {
     const expectedDiagnostics: DiagnosticsLight[] = [
       {
         messageText: 'Element should be statically known. Bean element should have statically known name.',
-        start: 187,
+        start: 191,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContextWithPropertyNames\' is declared here.',
-            start: 131,
+            start: 135,
             file: {
               fileName: '/index.ts'
             }
@@ -33,14 +33,14 @@ describe('NotStaticallyKnownError', () => {
       },
       {
         messageText: 'Element should be statically known. Bean element should have statically known name.',
-        start: 228,
+        start: 232,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContextWithPropertyNames\' is declared here.',
-            start: 131,
+            start: 135,
             file: {
               fileName: '/index.ts'
             }
@@ -49,14 +49,14 @@ describe('NotStaticallyKnownError', () => {
       },
       {
         messageText: 'Element should be statically known. Bean element should have statically known name.',
-        start: 254,
+        start: 258,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContextWithPropertyNames\' is declared here.',
-            start: 131,
+            start: 135,
             file: {
               fileName: '/index.ts'
             }
@@ -65,7 +65,7 @@ describe('NotStaticallyKnownError', () => {
       },
       {
         messageText: 'Element should be statically known. Argument #0 should be statically known literal.',
-        start: 346,
+        start: 350,
         file: {
           fileName: '/index.ts'
         },

@@ -1,4 +1,4 @@
-import { Bean, CatContext, PostConstruct, PreDestroy } from 'clawject';
+import { Bean, CatContext, PostConstruct, PreDestroy } from '@clawject/di';
 
 export class MyContext extends CatContext {
   @Bean num: number;

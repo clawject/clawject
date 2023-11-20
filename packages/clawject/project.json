@@ -27,7 +27,7 @@
           "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.transformer.json",
           "yarn run api-extractor run --local --verbose -c api-extractor/api-extractor.transformer-metadata.json",
 
-          "rm dist/clawject.d.ts",
+          "rm dist/di.d.ts",
           "rm -rf dist/raw-types",
 
           "yarn run copyfiles -u 1 src/**/*.csv dist/dist/cjs",

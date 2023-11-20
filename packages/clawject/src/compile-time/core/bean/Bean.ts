@@ -15,7 +15,8 @@ export type BeanNode = ts.MethodDeclaration
   | ClassPropertyWithCallExpressionInitializer
   | ClassPropertyWithArrowFunctionInitializer
   | ts.PropertyDeclaration
-  | ClassPropertyWithExpressionInitializer;
+  | ClassPropertyWithExpressionInitializer
+  | ts.GetAccessorDeclaration;
 
 export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   declare id: string; //Set by Context or Configuration during registration

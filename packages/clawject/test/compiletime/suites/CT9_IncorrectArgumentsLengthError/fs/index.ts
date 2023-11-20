@@ -1,4 +1,4 @@
-import { Bean, CatContext, Embedded, Lazy, PostConstruct, PreDestroy, Primary, Qualifier, Scope } from 'clawject';
+import { Bean, CatContext, Embedded, Lazy, PostConstruct, PreDestroy, Primary, Qualifier, Scope } from '@clawject/di';
 
 class MyContext1 extends CatContext {
   @Bean(1) a1 = 42;

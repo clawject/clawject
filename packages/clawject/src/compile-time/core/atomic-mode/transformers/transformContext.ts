@@ -28,7 +28,7 @@ export const transformContext = (node: ts.ClassDeclaration, configuration: Confi
     case BeanKind.FACTORY_ARROW_FUNCTION:
     case BeanKind.LIFECYCLE_ARROW_FUNCTION:
     case BeanKind.VALUE_EXPRESSION:
-      return transformArrowFunctionOrExpressionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer | ClassPropertyWithExpressionInitializer>);
+      return transformArrowFunctionOrExpressionBean(bean as Bean<ClassPropertyWithArrowFunctionInitializer | ClassPropertyWithExpressionInitializer | ts.GetAccessorDeclaration>);
 
     default:
       return node;

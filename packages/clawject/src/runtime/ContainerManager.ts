@@ -36,8 +36,8 @@ export interface ContainerManager {
    *
    * @docs https://clawject.org/docs/base-concepts/container-manager/#containermanagerinit
    */
-  init<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
-  init<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
+  init<T extends object>(context: ClassConstructor<CatContext<T>, []>, init?: ContextInit): InitializedContext<T>;
+  init<T extends object, C>(context: ClassConstructor<CatContext<T, C>, []>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
   /**
    * Returns an {@link InitializedContext} object if it was initialized,
@@ -48,7 +48,7 @@ export interface ContainerManager {
    * @returns The initialized context.
    * @throws RuntimeErrors.NoInitializedContextFoundError If the context was not initialized.
    */
-  get<T extends object>(context: ClassConstructor<CatContext<T>>, key?: any): InitializedContext<T>;
+  get<T extends object>(context: ClassConstructor<CatContext<T>, []>, key?: any): InitializedContext<T>;
 
   /**
    * Returns an already initialized {@link InitializedContext} object if it was initialized,
@@ -58,8 +58,8 @@ export interface ContainerManager {
    * @param init - Optional initialization object.
    * @returns InitializedContext.
    */
-  getOrInit<T extends object>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
-  getOrInit<T extends object, C>(context: ClassConstructor<CatContext<T, C>>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
+  getOrInit<T extends object>(context: ClassConstructor<CatContext<T>, []>, init?: ContextInit): InitializedContext<T>;
+  getOrInit<T extends object, C>(context: ClassConstructor<CatContext<T, C>, []>, init: ContextInit & ContextInitConfig<C>): InitializedContext<T>;
 
   /**
    * Destroys an initialized context.

@@ -12,6 +12,10 @@ import { registerLifecycleBean } from './registerLifecycleBean';
 import { isLifecycleArrowFunctionBean } from '../ts/predicates/isLifecycleArrowFunctionBean';
 import { Configuration } from '../configuration/Configuration';
 import { fillEmbeddedBeans } from './fillEmbeddedBeans';
+import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
+import { DecoratorKind } from '../decorator-processor/DecoratorKind';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 
 export function registerBeans(configuration: Configuration): void {
   configuration.node.members.forEach((classElement) => {
@@ -33,6 +37,18 @@ export function registerBeans(configuration: Configuration): void {
     }
     if (isLifecycleMethodBean(classElement) || isLifecycleArrowFunctionBean(classElement)) {
       registerLifecycleBean(configuration, classElement);
+      return;
+    }
+
+    // Fail fast
+    const beanMetadata = extractDecoratorMetadata(classElement, DecoratorKind.Bean);
+
+    if (beanMetadata !== null) {
+      getCompilationContext().report(new NotSupportedError(
+        'Unknown Bean target.',
+        classElement,
+        configuration,
+      ));
       return;
     }
   });

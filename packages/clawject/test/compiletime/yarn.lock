@@ -297,6 +297,21 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@clawject/di@../../../../dist/packages/clawject":
+  version "0.0.0"
+  dependencies:
+    "@clawject/object-storage" "*"
+    case "^1.6.3"
+    chalk "^4.1.2"
+    cosmiconfig "^7.0.1"
+    csv-parse "^5.4.0"
+    graph-cycles "^1.2.1"
+    graphlib "^2.1.8"
+    jsonschema "^1.4.1"
+    lodash "^4.17.21"
+    semver "^7.5.1"
+    upath "^2.0.1"
+
 "@clawject/object-storage@*":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@clawject/object-storage/-/object-storage-1.0.0.tgz#9d6becf89f0e280a348300ab765c1b99304b491f"
@@ -942,21 +957,6 @@ cjs-module-lexer@^1.0.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.3.tgz#6c370ab19f8a3394e318fe682686ec0ac684d107"
   integrity sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==
-
-clawject@../../../../dist/packages/clawject:
-  version "0.0.0"
-  dependencies:
-    "@clawject/object-storage" "*"
-    case "^1.6.3"
-    chalk "^4.1.2"
-    cosmiconfig "^7.0.1"
-    csv-parse "^5.4.0"
-    graph-cycles "^1.2.1"
-    graphlib "^2.1.8"
-    jsonschema "^1.4.1"
-    lodash "^4.17.21"
-    semver "^7.5.1"
-    upath "^2.0.1"
 
 cliui@^8.0.1:
   version "8.0.1"

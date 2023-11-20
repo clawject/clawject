@@ -235,7 +235,7 @@ export class ApplicationContext extends CatContext {
 
 ```ts title="index.ts"
 import http from 'node:http';
-import { ContainerManager } from 'clawject';
+import { ContainerManager } from '@clawject/di';
 import { HttpExecutionContext } from './HttpExecutionContext';
 import { ApplicationContext } from './ApplicationContext';
 
@@ -282,7 +282,7 @@ export class HttpExecutionContext {
 ```
 
 ```ts title="RequestScope.ts"
-import { CustomScope, ObjectFactory, ObjectFactoryResult } from 'clawject';
+import { CustomScope, ObjectFactory, ObjectFactoryResult } from '@clawject/di';
 import { HttpExecutionContext } from './HttpExecutionContext';
 
 export class RequestScope implements CustomScope {
@@ -356,7 +356,7 @@ export class NonScopedBean {
 ```
 
 ```ts title="ApplicationContext.ts"
-import { Bean, CatContext, Scope } from 'clawject';
+import { Bean, CatContext, Scope } from '@clawject/di';
 import { ScopedBean } from './ScopedBean';
 import { NonScopedBean } from './NonScopedBean';
 

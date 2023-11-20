@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import ts from 'typescript';
 import { DiagnosticsLight } from './DiagnosticsLight';
-import { isArray, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 
 export const getFile = (dirname: string, fileName: string, parameters: Record<string, string>): string => {
   const fileContent = fs.readFileSync(path.join(dirname, 'fs', fileName), 'utf8');
