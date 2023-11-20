@@ -11,7 +11,7 @@
     "test:5.2": "yarn upgrade typescript@5.2.* ts-patch@3.0.2 && ts-patch install && jest"
   },
   "dependencies": {
-    "clawject": "../../../../dist/packages/clawject"
+    "@clawject/di": "../../../../dist/packages/clawject"
   },
   "devDependencies": {
     "@types/jest": "^29.5.7",

@@ -18,42 +18,42 @@ describe('MissingInitializerError', () => {
       //TODO Refactor to avoid duplication of diagnostics
       {
         messageText: 'Missing initializer.',
-        start: 119,
+        start: 123,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Missing initializer.',
-        start: 119,
+        start: 123,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Missing initializer.',
-        start: 119,
+        start: 123,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Missing initializer.',
-        start: 119,
+        start: 123,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Missing initializer. Lifecycle method should have a body.',
-        start: 155,
+        start: 159,
         file: {
           fileName: '/index.ts'
         },
       },
       {
         messageText: 'Missing initializer. Lifecycle method should have a body.',
-        start: 192,
+        start: 196,
         file: {
           fileName: '/index.ts'
         },

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts, { GetAccessorDeclaration } from 'typescript';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
@@ -12,7 +12,7 @@ import { getBeanQualifierValue } from './getBeanQualifierValue';
 
 export const registerBeanValueExpression = (
   configuration: Configuration,
-  classElement: ts.PropertyDeclaration,
+  classElement: ts.PropertyDeclaration | GetAccessorDeclaration,
 ): void => {
   const typeChecker = getCompilationContext().typeChecker;
   const type = typeChecker.getTypeAtLocation(classElement);

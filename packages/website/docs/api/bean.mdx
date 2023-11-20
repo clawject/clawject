@@ -1,6 +1,5 @@
 ---
 title: Bean
-id: bean
 ---
 
 ```mdx-code-block
@@ -15,8 +14,8 @@ and it can be a dependency for other Beans.
 
 There are a few ways to declare a Bean, let's explore all of them one by one.
 
-### Using `@Bean` decorator
-You can decorate property or method with `@Bean` decorator to declare a Bean.
+### `@Bean` decorator
+You can decorate property, getter or method with `@Bean` decorator to declare a Bean.
 
 When you're decorating **method** or property that holds **arrow function** -
 it's your responsibility to provide return value for bean,
@@ -27,14 +26,16 @@ Functions decorated with `@Bean` decorator called **factory-functions**.
 You can provide bean dependencies via function arguments by specifying an argument type.
 
 ```ts title="Declaring method and arrow function beans"
-class Foo {}
+class Foo {
+  name = 'foo';
+}
 
 class MyContext extends CatContext {
-  @Bean foo(): Foo {
+  @Bean foo() {
     return new Foo();
   }
 
-  @Bean fooConstructorName = (foo: Foo): string => foo.constructor.name;
+  @Bean fooName = (foo: Foo) => foo.name;
 }
 ```
 
@@ -49,7 +50,7 @@ class MyContext extends CatContext {
 }
 ```
 
-### Using `Bean` function
+### `Bean` function
 It can be quite annoying to declare each dependency in method or arrow function for your class,
 especially when your class has a lot of dependencies.
 So, if you add/change/remove a dependency - you need to change it in factory-function level as well.

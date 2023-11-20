@@ -1,4 +1,4 @@
-import { Bean, CatContext } from 'clawject';
+import { Bean, CatContext } from '@clawject/di';
 
 export class MyContext extends CatContext {
   @Bean undefinedValueExpression: undefined = undefined;

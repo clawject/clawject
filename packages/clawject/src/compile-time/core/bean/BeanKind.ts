@@ -16,6 +16,7 @@ export enum BeanKind {
 
   /**
    * @Bean valueExpression = 'someValue'
+   * @Bean get valueExpression(): number { return 123 }
    * */
   VALUE_EXPRESSION = 'VALUE_EXPRESSION',
 

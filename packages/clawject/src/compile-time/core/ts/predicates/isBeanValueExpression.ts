@@ -1,4 +1,4 @@
-import ts, { PropertyDeclaration } from 'typescript';
+import ts, { PropertyDeclaration, GetAccessorDeclaration } from 'typescript';
 import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
@@ -6,8 +6,8 @@ import { getCompilationContext } from '../../../../transformer/getCompilationCon
 
 export const isBeanValueExpression = (
   node: ts.Node
-): node is PropertyDeclaration => {
-  if (!ts.isPropertyDeclaration(node)) {
+): node is PropertyDeclaration | GetAccessorDeclaration => {
+  if (!ts.isPropertyDeclaration(node) && !ts.isGetAccessorDeclaration(node)) {
     return false;
   }
 
@@ -15,6 +15,10 @@ export const isBeanValueExpression = (
 
   if (decoratorMetadata === null) {
     return false;
+  }
+
+  if (ts.isGetAccessorDeclaration(node)) {
+    return true;
   }
 
   if (node.initializer === undefined) {

@@ -1,7 +1,7 @@
 {
-  "name": "clawject-language-service",
+  "name": "language-service",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/clawject-language-service",
+  "sourceRoot": "packages/language-service",
   "projectType": "library",
   "targets": {},
   "tags": []

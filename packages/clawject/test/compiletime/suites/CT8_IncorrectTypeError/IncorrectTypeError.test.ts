@@ -17,14 +17,14 @@ describe('IncorrectTypeError', () => {
     const expectedDiagnostic: DiagnosticsLight[] = [
       {
         messageText: 'Incorrect type. Type \'undefined\' not supported as a Bean type.',
-        start: 124,
+        start: 128,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -33,14 +33,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'void\' not supported as a Bean type.',
-        start: 176,
+        start: 180,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -49,14 +49,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'null\' not supported as a Bean type.',
-        start: 223,
+        start: 227,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -65,14 +65,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'never\' not supported as a Bean type.',
-        start: 266,
+        start: 270,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -81,14 +81,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'union\' not supported as a Bean type.',
-        start: 324,
+        start: 328,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -98,14 +98,14 @@ describe('IncorrectTypeError', () => {
 
       {
         messageText: 'Incorrect type. Type \'undefined\' not supported as a Bean type.',
-        start: 387,
+        start: 391,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -114,14 +114,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'void\' not supported as a Bean type.',
-        start: 448,
+        start: 452,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -130,14 +130,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'null\' not supported as a Bean type.',
-        start: 504,
+        start: 508,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -146,14 +146,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'never\' not supported as a Bean type.',
-        start: 556,
+        start: 560,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -162,14 +162,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'union\' not supported as a Bean type.',
-        start: 622,
+        start: 626,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -179,14 +179,14 @@ describe('IncorrectTypeError', () => {
 
       {
         messageText: 'Incorrect type. Type \'undefined\' not supported as a Bean type.',
-        start: 704,
+        start: 708,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -195,14 +195,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'void\' not supported as a Bean type.',
-        start: 779,
+        start: 783,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -211,14 +211,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'null\' not supported as a Bean type.',
-        start: 849,
+        start: 853,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -227,14 +227,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'never\' not supported as a Bean type.',
-        start: 915,
+        start: 919,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }
@@ -243,14 +243,14 @@ describe('IncorrectTypeError', () => {
       },
       {
         messageText: 'Incorrect type. Type \'union\' not supported as a Bean type.',
-        start: 995,
+        start: 999,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 59,
+            start: 63,
             file: {
               fileName: '/index.ts'
             }

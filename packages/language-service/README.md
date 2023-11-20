@@ -1,4 +1,4 @@
-# clawject-language-service
+# @clawject/language-service
 
 The Clawject Language Service provides code editors (VSCode, WebStorm, etc.) with a way to get errors
 and navigation inside Beans, Contexts, etc.
@@ -15,9 +15,9 @@ Not that if you're using VSCode - you can install [Clawject VSCode Extension](ht
 After installation of [clawject](https://www.npmjs.com/package/clawject) you should install this package:
 
 ```shell
-yarn add -D clawject-language-service
+yarn add -D @clawject/language-service
 #or
-npm install clawject-language-service --save-dev
+npm install @clawject/language-service --save-dev
 ```
 
 Then adding this plugin to your `tsconfig.json` file:
@@ -26,7 +26,7 @@ Then adding this plugin to your `tsconfig.json` file:
 {
   "compilerOptions": {
     "plugins": [
-      { "name": "clawject-language-service" }
+      { "name": "@clawject/language-service" }
     ]
   }
 }

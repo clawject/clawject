@@ -17,14 +17,14 @@ describe('DuplicateNameError', () => {
     const expectedDiagnostics: DiagnosticsLight[] = [
       {
         messageText: 'Duplicate name.',
-        start: 102,
+        start: 106,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'a\' is declared here.',
-            start: 134,
+            start: 138,
             file: {
               fileName: '/index.ts'
             }
@@ -33,14 +33,14 @@ describe('DuplicateNameError', () => {
       },
       {
         messageText: 'Duplicate name.',
-        start: 134,
+        start: 138,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'a\' is declared here.',
-            start: 102,
+            start: 106,
             file: {
               fileName: '/index.ts'
             }
@@ -49,14 +49,14 @@ describe('DuplicateNameError', () => {
       },
       {
         messageText: 'Duplicate name.',
-        start: 151,
+        start: 155,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'c\' is declared here.',
-            start: 167,
+            start: 171,
             file: {
               fileName: '/index.ts'
             }
@@ -65,14 +65,14 @@ describe('DuplicateNameError', () => {
       },
       {
         messageText: 'Duplicate name.',
-        start: 167,
+        start: 171,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'c\' is declared here.',
-            start: 151,
+            start: 155,
             file: {
               fileName: '/index.ts'
             }

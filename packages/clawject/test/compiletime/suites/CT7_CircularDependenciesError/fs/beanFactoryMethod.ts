@@ -1,4 +1,4 @@
-import { Bean, CatContext } from 'clawject';
+import { Bean, CatContext } from '@clawject/di';
 
 class A {
   constructor(b: B, c: C, d: D, e: E, f: F) {}

@@ -1,6 +1,5 @@
 ---
 title: ContainerManager
-id: container-manager
 ---
 
 ContainerManager is a main entry point to work with DI.
@@ -10,7 +9,7 @@ You can use ContainerManager to initialize, get or clear containers.
 Let's assume you're defined you context class like this:
 
 ```ts title="MyContext.ts"
-import { CatContext } from 'clawject';
+import { CatContext } from '@clawject/di';
 
 export class MyContext extends CatContext { /* ... */ }
 ```
@@ -18,7 +17,7 @@ export class MyContext extends CatContext { /* ... */ }
 To init container, you need to use ContainerManager object and pass context class to the `init` method.
 
 ```ts title="main.ts"
-import { ContainerManager } from 'clawject';
+import { ContainerManager } from '@clawject/di';
 import { MyContext } from './MyContext';
 
 ContainerManager.init(MyContext);
@@ -35,7 +34,7 @@ Not clearing context can cause memory leaks.
 #### Init context
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext { /* ... */ }
 
@@ -45,7 +44,7 @@ const myContext = ContainerManager.init(MyContext);
 #### Init context with a specific key
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext { /* ... */ }
 
@@ -57,7 +56,7 @@ const myContext = ContainerManager.init(MyContext, { key: myKey });
 #### Init context with an external configuration
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 interface IExternalConfiguration { /* ... */ }
 
@@ -74,7 +73,7 @@ Get method is used to retrieve `InitializedContext` object if context it was ini
 #### Get initialized context
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext { /* ... */ }
 
@@ -86,7 +85,7 @@ const initializedContext = ContainerManager.get(MyContext);
 #### Get initialized context by key
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext { /* ... */ }
 
@@ -100,7 +99,7 @@ const initializedContext = ContainerManager.get(MyContext, { key: myKey });
 #### Get context but not initializing it
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext { /* ... */ }
 
@@ -121,7 +120,7 @@ If context was not initialized, it will be initialized and `InitializedContext` 
 #### Get and init context
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext {}
 
@@ -140,7 +139,7 @@ If the initialized context was not found, logs warning to the console.
 #### Destroying initialized context
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext {}
 
@@ -151,22 +150,9 @@ ContainerManager.destroy(MyContext);
 #### Destroying non-initialized context
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext {}
 
 ContainerManager.destroy(MyContext); // <-- Will print warn "Context 'MyContext' not found when trying to destroy it"
-```
-
-### `ContainerManager.registerScope`
-
-This method allows you to register a new [Custom Scope](/docs/custom-scopes.mdx) and [use it](/docs/scope.mdx) for beans.
-
-#### Registering a new scope
-
-```ts
-import { ContainerManager } from 'clawject';
-import { HTTPRequestScope } from './HTTPRequestScope';
-
-ContainerManager.registerScope('http-request', new HTTPRequestScope());
 ```

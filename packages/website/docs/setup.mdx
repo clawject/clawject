@@ -6,147 +6,71 @@ title: Setup 🛠️
   - Node.js version 16 or above
   - TypeScript version 4.8–5.2
 
-## Clawject Installation
+## Installation
 
-```mdx-code-block
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-```
+import { AddDependency } from '@site/src/codeblocks/Setup';
 
-```mdx-code-block
-<Tabs>
-<TabItem value="yarn" label="yarn" default>
-```
+<AddDependency />
 
-```bash
-yarn add clawject
-```
+## ts-patch
+*Patches typescript to allow custom transformers (plugins) during build.*
 
-```mdx-code-block
-</TabItem>
+ts-patch is the best way to utilize **Clawject** features.
+It allows you to use **Clawject** with any build tool that uses **typescript** compiler.
 
-<TabItem value="npm" label="npm">
-```
+For detailed ts-patch configuration guide - please refer to [ts-patch documentation](https://github.com/nonara/ts-patch#readme).
 
-```bash
-npm install clawject
-```
+:::info
+You can also use **ttypescript** instead of **ts-patch**, but it's deprecated and not supports modern typescript versions
+[deprecation notice](https://github.com/cevek/ttypescript#deprecation-notice).
+:::
 
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
+### ts-patch, webpack, ts-loader
 
-### Webpack
-
-There are a few ways how you can use **Clawject** with **webpack**.
-
-If you're going to use webpack with **ts-loader** - make sure **transpileOnly** mode is disabled.
+:::tip
+When using webpack with **ts-loader** - make sure **transpileOnly** mode is disabled.
 Basically, **transpileOnly** disables the ability to perform static type checking,
 which is required for **Clawject** to work.
-[ts-loader#transpileOnly](https://github.com/TypeStrong/ts-loader#transpileonly)
-
 Also, if you're using **Babel** - please make sure that it's applied **after** ts-loader.
+[ts-loader#transpileOnly](https://github.com/TypeStrong/ts-loader#transpileonly)
+:::
 
-#### ts-loader with custom compiler + ts-patch (the most convenient way)
+import { TSPatchWebpackTSLoader } from '@site/src/codeblocks/Setup';
 
-```ts
-import { ClawjectWebpackPlugin } from 'clawject/webpack';
-import { ClawjectTransformer } from 'clawject/transformer';
+<TSPatchWebpackTSLoader />
 
-export default {
-  module: {
-    rules: [{
-      test: /\.ts$/,
-      loader: 'ts-loader',
-      options: {
-        getCustomTransformers: (program: any, getProgram: any) => ({
-          before: [ClawjectTransformer(getProgram)]
-        })
-      }
-    }]
-  },
-  plugins: [
-    new ClawjectWebpackPlugin()
-  ]
-};
-```
+### ts-patch, vite, rollup-plugin-typescript2
 
-### Webpack and ts-loader with custom compiler (ts-patch) TODO
+:::danger
+Currently **Vite** or **rollup-plugin-typescript2** not correctly utilizes ts-patch,
+it's ignoring compilation errors produced by Clawject, so it could lead to runtime errors.
+:::
 
-Instead of passing typescript transformer in webpack configuration -
-you should pass custom compiler, for example - **ts-patch**.
+import { TSPatchViteRollupPlugin } from '@site/src/codeblocks/Setup';
 
-```mdx-code-block
-<Tabs>
-<TabItem value="ts-webpack" label="TS webpack configuration">
-```
+<TSPatchViteRollupPlugin />
 
-```ts
-import { ClawjectWebpackPlugin } from 'clawject/webpack';
+### ts-patch, pure typescript (tsc)
 
-export default {
-  module: {
-    rules: [{
-      test: /\.ts$/,
-      loader: 'ts-loader',
-      options: {
-        compiler: 'ts-patch'
-      }
-    }]
-  },
-  plugins: [
-    new ClawjectWebpackPlugin()
-  ]
-};
-```
-
-```mdx-code-block
-</TabItem>
-
-<TabItem value="js-webpack" label="JS webpack configuration">
-```
-
-```ts
-const {ClawjectWebpackPlugin} = require('clawject/webpack');
-
-module.exports = {
-  module: {
-    rules: [{
-      test: /\.ts$/,
-      loader: 'ts-loader',
-      options: {
-        compiler: 'ttypescript'
-      }
-    }]
-  },
-  plugins: [
-    new ClawjectWebpackPlugin()
-  ]
-};
-```
-
-```mdx-code-block
-</TabItem>
-
-<TabItem value="tsconfig" label="tsconfig.json">
-```
+To make Clawject work with pure typescript (tsc), you need to define custom transformer in your tsconfig.json, and that's all:
 
 ```json
 {
   "compilerOptions": {
     "plugins": [
       {
-        "transform": "clawject/transformer"
+        "transform": "@clawject/di/transformer"
       }
     ]
   }
 }
 ```
 
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
+## Without ts-patch
+If you don't want to use ts-patch for some reason - you can utilize Clawject features without it.
 
-### Pure typescript with custom compiler (ttypescript) TODO
+### webpack, ts-loader
+
+import { WebpackTSLoader } from '@site/src/codeblocks/Setup';
+
+<WebpackTSLoader />

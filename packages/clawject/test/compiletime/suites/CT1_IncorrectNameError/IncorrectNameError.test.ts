@@ -11,10 +11,7 @@ describe('IncorrectNameError', () => {
 
   it.each`
     classMemberName
-    ${'clawject_context_metadata'}
-    ${'clawject_component_metadata'}
     ${'clawject_context_type'}
-    ${'clawject_configuration_init'}
     ${'clawject_compile_time_metadata'}
   `('should report IncorrectNameError for class member with name $classMemberName', ({ classMemberName }) => {
     //Given
@@ -24,14 +21,14 @@ describe('IncorrectNameError', () => {
     const expectedDiagnostics: DiagnosticsLight[] = [
       {
         messageText: `Incorrect name. '${classMemberName}' name is reserved for the di-container.`,
-        start: 86,
+        start: 90,
         file: {
           fileName: '/index.ts'
         },
         relatedInformation: [
           {
             messageText: '\'MyContext\' is declared here.',
-            start: 53,
+            start: 57,
             file: {
               fileName: '/index.ts'
             }

@@ -1,8 +1,0 @@
-{
-  "name": "clawject-vscode",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/clawject-vscode/src",
-  "projectType": "library",
-  "targets": {},
-  "tags": []
-}

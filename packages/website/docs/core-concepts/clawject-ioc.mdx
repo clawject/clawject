@@ -4,8 +4,8 @@ title: Clawject IoC Container
 
 An IoC container is a common characteristic of frameworks that implement IoC.
 
-In the Clawject, **CatContext** abstract class is a representation of the IoC container.
-The Clawject container is responsible for instantiating, configuring and assembling objects known as beans,
+In Clawject, **CatContext** abstract class is a representation of the single IoC container.
+The Clawject container is responsible for instantiating, configuring and assembling objects known as Beans,
 as well as managing their life cycles.
 
 Right now Clawject provides one way to manage IoC containers. This is **ContainerManager** interface.
@@ -13,7 +13,7 @@ Right now Clawject provides one way to manage IoC containers. This is **Containe
 Here is the way to initialize the container:
 
 ```ts
-import { ContainerManager, CatContext } from 'clawject';
+import { ContainerManager, CatContext } from '@clawject/di';
 
 class ApplicationContext extends CatContext {}
 
@@ -40,17 +40,21 @@ class ApplicationContext extends CatContext {
 }
 ```
 
-We're assigning a Bean call result to a class property to define a bean.
-Bean name is a property name.
+We're passing class constructor to the Bean function and assigning the result of function to the class property to define a bean;
+Bean name is a class property name.
 
-For a bean with the default singleton scope, Clawject first checks if a cached instance of the bean already exists,
+## Bean scopes
+
+You can read more about scopes more here [@Scope](/docs/api/scope.mdx).
+
+For a bean with the default **singleton scope**,
+Clawject first checks if instance of the bean already created,
 and only creates a new one if it doesn't.
-If we're using the prototype scope, the container returns a new bean instance for each bean instance request.
+If we're using the **prototype scope**, the container returns a new bean instance for each bean request.
 
-Let's see how we can define a bean with the prototype scope:
-
-In this example, we have two beans that require the ***Baz*** instance,
-for each of which the container creates a new instance of ***Baz*** class.
+Let's see how we can define a bean with the **prototype** scope.
+We have two beans that require the **Baz** instance,
+for each of which the container creates a new instance of a **Baz** class.
 
 ```ts
 class Baz {}
@@ -71,8 +75,11 @@ class ApplicationContext extends CatContext {
 ```
 
 ## Lazy Initialized Beans
+
+You can read more about lazy beans here [@Lazy](/docs/api/lazy.mdx).
+
 By default, the container creates and configures all singleton beans during initialization.
-To avoid this, we can use the ***lazy*** decorator with on the bean configuration level:
+To avoid this, we can use the **lazy** decorator with on the bean configuration level:
 
 **foo** bean will only be initialized when it's first requested, and not at startup.
 

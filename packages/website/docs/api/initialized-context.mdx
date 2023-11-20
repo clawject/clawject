@@ -1,6 +1,5 @@
 ---
 title: InitializedContext
-id: initialized-context
 ---
 
 InitializedContext is an object that is returned from `ContainerManager.init/getOrInit/get` methods.
@@ -12,7 +11,7 @@ You can use to access public beans in context, or to retrieve Map of all beans i
 Returns external bean that is defined in `ExternalBeans` interface by name.
 
 ```ts
-import { Bean, CatContext, ContainerManager } from 'clawject';
+import { Bean, CatContext, ContainerManager } from '@clawject/di';
 
 interface MyExternalBeans {
   foo: string;
@@ -32,7 +31,7 @@ console.log(myContext.getBean('foo')) // <-- Will print "fooValue"
 Returns `ExternalBeans`.
 
 ```ts
-import { Bean, CatContext, ContainerManager } from 'clawject';
+import { Bean, CatContext, ContainerManager } from '@clawject/di';
 
 interface MyExternalBeans {
   foo: string;
@@ -52,7 +51,7 @@ console.log(myContext.getBeans()) // <-- Will print "{ foo: 'fooValue' }"
 Returns `Map<string, unknown>` where `string` is bean name, and `unknown` is bean value.
 
 ```ts
-import { Bean, CatContext, ContainerManager } from 'clawject';
+import { Bean, CatContext, ContainerManager } from '@clawject/di';
 
 interface MyExternalBeans {
   foo: string;

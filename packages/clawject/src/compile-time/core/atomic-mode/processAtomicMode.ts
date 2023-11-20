@@ -15,7 +15,7 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
   }
 
   const shouldAddInternalImport = new Value(false);
-  InternalsAccessBuilder.setCurrentIdentifier(tsContext.factory.createUniqueName(CONSTANTS.libraryName));
+  InternalsAccessBuilder.setCurrentIdentifier(tsContext.factory.createUniqueName(CONSTANTS.libraryImportName));
 
   const visitor = (node: ts.Node): ts.Node => {
     if (!ts.isClassDeclaration(node)) {
