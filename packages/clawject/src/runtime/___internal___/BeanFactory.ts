@@ -66,19 +66,27 @@ export class BeanFactory {
 
     const useProxy = scope.useProxy?.() ?? true;
 
-    const bean = useProxy
-      ? this.getOrBuildBeanProxy(
+    const registerPreDestroyCallback = (beanInstance: any) => {
+      const componentMetadata = MetadataStorage.getComponentMetadataByClassInstance(beanInstance);
+      const hasLifecyclePreDestroy = componentMetadata !== null && componentMetadata.lifecycle.PRE_DESTROY.length > 0;
+
+      if (hasLifecyclePreDestroy) {
+        scope.registerDestructionCallback(scopedBeanName, this.getBeanDestructionCallback(beanInstance));
+      }
+    };
+
+    let bean: any;
+
+    if (useProxy) {
+      bean = this.getOrBuildBeanProxy(
         name,
         scopeName,
         () => scope.get(scopedBeanName, objectFactory),
-      )
-      : scope.get(scopedBeanName, objectFactory);
-
-    const componentMetadata = MetadataStorage.getComponentMetadataByClassInstance(bean);
-    const hasLifecyclePreDestroy = componentMetadata !== null && componentMetadata.lifecycle.PRE_DESTROY.length > 0;
-
-    if (hasLifecyclePreDestroy) {
-      scope.registerDestructionCallback(scopedBeanName, this.getBeanDestructionCallback(bean));
+        registerPreDestroyCallback,
+      );
+    } else {
+      bean = scope.get(scopedBeanName, objectFactory);
+      registerPreDestroyCallback(bean);
     }
 
     return bean;
@@ -88,6 +96,7 @@ export class BeanFactory {
     const beanConfig = this.getBeanConfig(name);
     const scope = InternalScopeRegister.getScope(beanConfig.scope ?? this.runtimeContextMetadata.scope);
 
+    //TODO check if there could be memory leakage
     this.proxyRegister.delete(name);
 
     const removedInstance = scope.remove(this.buildScopedBeanName(name));
@@ -126,7 +135,7 @@ export class BeanFactory {
     const elementFactory = this.factories[name];
 
     if (!elementFactory) {
-      throw ErrorBuilder.noElementFactoryFound(this.runtimeContextMetadata.contextName, name);
+      throw ErrorBuilder.noContextMemberFactoryFound(this.runtimeContextMetadata.contextName, name);
     }
 
     return elementFactory;
@@ -140,18 +149,25 @@ export class BeanFactory {
     return `${this.runtimeContextMetadata.id}_${name}`;
   }
 
-  private getOrBuildBeanProxy(name: string, scopeName: string, scopeBeanGetter: () => any): any {
+  private getOrBuildBeanProxy(
+    name: string,
+    scopeName: string,
+    scopeBeanGetter: () => any,
+    registerPreDestroyCallback: (beanInstance: any) => void
+  ): any {
     let proxy = this.proxyRegister.get(name);
 
     const assertNotPrimitiveAndConstruct = () => {
       const bean = scopeBeanGetter();
 
       if (Utils.isObject(bean)) {
+        registerPreDestroyCallback(bean);
+
         return bean;
       }
 
       const msg =
-        `Bean named "${bean}", with scope: "${scopeName}" - ` +
+        `Bean named "${name}", with scope: "${scopeName}" - ` +
         'contains primitive value which could not be wrapped in Proxy, ' +
         'ES standard allows only object proxies.' +
         'To solve this issue - you can wrap your primitive value in object.';

@@ -1,4 +1,4 @@
-import tsServer from 'typescript/lib/tsserverlibrary';
+import tsServer from 'typescript/lib/tsserverlibrary.js';
 
 export class LanguageServiceLogger {
   private static pluginInfo: tsServer.server.PluginCreateInfo | null = null;

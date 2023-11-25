@@ -385,3 +385,8 @@ ContainerManager.init(MyContext);
 ```
 
 **Solution:** Do not return primitive values from beans that are using scope that defines that object should be proxied.
+
+### NoContextMemberFactoryFoundError
+It can occur if you edited generated file and removed some context member factory.
+
+**Solution:** Do edit generated files, regenerate file.

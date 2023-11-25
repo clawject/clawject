@@ -7,6 +7,7 @@ import { BeanCandidateNotFoundError } from '../../compilation-context/messages/e
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanKind } from '../bean/BeanKind';
+import { DIType } from '../type-system/DIType';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
   const compilationContext = getCompilationContext();
@@ -118,14 +119,22 @@ function buildForCollectionOrArray(
 
   if (dependency.diType.isMapStringToAny) {
     allBeansWithoutCurrent.forEach(beanCandidate => {
-      if (dependency.diType.typeArguments[1].isCompatible(beanCandidate.diType)) {
-        matched.push(beanCandidate);
+      if (dependency.diType.isUnionOrIntersection) {
+        dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[1].isCompatible(beanCandidate.diType))
+        && matched.push(beanCandidate);
+      } else {
+        dependency.diType.typeArguments[1].isCompatible(beanCandidate.diType)
+        && matched.push(beanCandidate);
       }
     });
   } else {
     allBeansWithoutCurrent.forEach(beanCandidate => {
-      if (dependency.diType.typeArguments[0].isCompatible(beanCandidate.diType)) {
-        matched.push(beanCandidate);
+      if (dependency.diType.isUnionOrIntersection) {
+        dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[0].isCompatible(beanCandidate.diType))
+        && matched.push(beanCandidate);
+      } else {
+        dependency.diType.typeArguments[0].isCompatible(beanCandidate.diType)
+        && matched.push(beanCandidate);
       }
     });
   }

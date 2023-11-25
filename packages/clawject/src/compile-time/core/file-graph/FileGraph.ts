@@ -1,4 +1,6 @@
-import { Graph, alg } from 'graphlib';
+import graphlib from 'graphlib';
+
+const { Graph, alg } = graphlib;
 
 export class FileGraph {
   private static graph = new Graph();

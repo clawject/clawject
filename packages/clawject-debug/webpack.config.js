@@ -1,5 +1,6 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
+import {ClawjectTransformer} from '@clawject/di/transformer';
 
 export default {
   entry: './src/index.ts',
@@ -13,7 +14,12 @@ export default {
         test: /\.ts$/,
         loader: 'ts-loader',
         options: {
-          getCustomTransformers: (program)
+          configFile: 'tsconfig.webpack.tsloader.json',
+          getCustomTransformers: (program, getProgram) => ({
+            before: [
+              ClawjectTransformer(getProgram)
+            ]
+          })
         }
       },
       {

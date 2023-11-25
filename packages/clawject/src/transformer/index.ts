@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { getCompilationContext } from './getCompilationContext';
 import { verifyTSVersion } from './verifyTSVersion';
 import { processAtomicMode } from '../compile-time/core/atomic-mode/processAtomicMode';
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
@@ -9,6 +8,7 @@ import { DecoratorRules } from '../compile-time/core/decorator-processor/Decorat
 import { TransformerExtras } from 'ts-patch';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
 import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildErrorFormatter';
+import { getCompilationContext } from './getCompilationContext';
 
 /** @public */
 const transformer = (program: ts.Program, config: unknown, transformerExtras?: TransformerExtras): ts.TransformerFactory<ts.SourceFile> => {

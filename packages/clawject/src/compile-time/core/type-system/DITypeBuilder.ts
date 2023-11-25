@@ -1,6 +1,5 @@
 import ts, { ObjectFlags, TypeFlags } from 'typescript';
 import { DIType } from './DIType';
-import { compact, get } from 'lodash';
 import { parseFlags } from '../ts/flags/parseFlags';
 import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
@@ -8,6 +7,7 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { Bean } from '../bean/Bean';
 import { Component } from '../component/Component';
+import { compact, get } from 'lodash';
 
 /**
  * notes:

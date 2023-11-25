@@ -20,14 +20,14 @@ It allows you to use **Clawject** with any build tool that uses **typescript** c
 
 For detailed ts-patch configuration guide - please refer to [ts-patch documentation](https://github.com/nonara/ts-patch#readme).
 
-:::info
+:::tip
 You can also use **ttypescript** instead of **ts-patch**, but it's deprecated and not supports modern typescript versions
 [deprecation notice](https://github.com/cevek/ttypescript#deprecation-notice).
 :::
 
 ### ts-patch, webpack, ts-loader
 
-:::tip
+:::warning
 When using webpack with **ts-loader** - make sure **transpileOnly** mode is disabled.
 Basically, **transpileOnly** disables the ability to perform static type checking,
 which is required for **Clawject** to work.
@@ -52,9 +52,13 @@ import { TSPatchViteRollupPlugin } from '@site/src/codeblocks/Setup';
 
 ### ts-patch, pure typescript (tsc)
 
-To make Clawject work with pure typescript (tsc), you need to define custom transformer in your tsconfig.json, and that's all:
+To make Clawject work with pure typescript (tsc), you need to define custom transformer in your tsconfig.json, and that's all.
 
-```json
+:::tip About typescript watch mode
+Clawject will work pretty well in **native tsc watch mode** as well!
+:::
+
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "plugins": [

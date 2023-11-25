@@ -1,9 +1,5 @@
-import { ClawjectObjectStorage } from '@clawject/object-storage';
-
 export * from './runtime/decorators';
 export * from './runtime/errors';
-
-ClawjectObjectStorage.clear();
 
 export { ContainerManager, type ContextInit, type ContextInitConfig } from './runtime/ContainerManager';
 export type { InitializedContext } from './runtime/InitializedContext';

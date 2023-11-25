@@ -1,0 +1,67 @@
+---
+title: Configuration 🔮
+---
+
+Clawject using [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig) to load configuration from different sources.
+Example file names are:
+
+- `.clawjectrc`
+- `.clawjectrc.json`
+- `.clawjectrc.yaml`
+- `.clawjectrc.yml`
+- `.clawjectrc.js`
+- `.clawjectrc.ts`
+- `.clawjectrc.cjs`
+- `.config/clawjectrc`
+- `.config/clawjectrc.json`
+- `.config/clawjectrc.yaml`
+- `.config/clawjectrc.yml`
+- `.config/clawjectrc.js`
+- `.config/clawjectrc.ts`
+- `.config/clawjectrc.cjs`
+- `clawject.config.js`
+- `clawject.config.ts`
+- `clawject.config.cjs`
+
+Also, you can declare a `clawject` property in your `package.json` file to configure Clawject.
+
+:::note
+If you're using `@clawject/language-service` - most likely you'll need to restart typescript language service after changing configuration.
+:::
+
+## Configuration schema
+
+Configuration schema is:
+
+```typescript
+interface Config {
+  unsafeTSVersion?: boolean; // Default: false
+  features?: {
+    keepContextNames?: boolean; // Default: true
+    lazyBeans?: boolean; // Default: false
+  };
+}
+```
+
+### `unsafeTSVersion`
+
+Allows using TypeScript version not officially supported by this version of Clawject.
+
+By default, Clawject will check your TypeScript version to ensure it's compatible with the version used by Clawject.
+But if you want to disable this check, you can set `unsafeTSVersion` to `true`.
+
+Default value is `false`.
+
+### `features.keepContextNames`
+
+Keeps context class names in generated code, it can be useful for debugging purposes.
+
+Default value is `true`.
+
+### `features.lazyBeans`
+
+Container will instantiate all singleton beans in context during initialization if set to `true` — beans
+will be initialized only when they are requested.
+You can override the default behavior for each bean individually using [@Lazy](/docs/api/lazy.mdx).
+
+Default value is `false`.

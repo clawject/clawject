@@ -213,9 +213,11 @@ class MyContext extends CatContext {
 When your bean type is a class-type -
 Clawject will automatically resolve a class type including `implements` and `extends` clauses types.
 
-Note that only first level of `extends` and `implements` clauses will be resolved,
+:::info Note
+Only first level of `extends` and `implements` clauses will be resolved,
 so if your class extends another class, and that class extends another class, -
 only a first class type will be resolved.
+:::
 
 Let's take a look at the next example:
 
@@ -236,25 +238,6 @@ class MyContext extends CatContext {
     iFoo: IFoo, // <- "foo" will be injected, "Foo" explicitly implements "IFoo"
     abstractFoo: AbstractFoo, // <- "foo" will be injected, "Foo" explicitly extends "AbstractFoo"
     abstractBar: AbstractBar, // <- compilation error will be reported, no bean of type "AbstractBar" were found
-  ) {}
-}
-```
-
-If you don't want to resolve `implements` and `extends` types,
-you can specify a type of bean explicitly, or disable this feature globally.
-TODO link to configuration guide
-
-```ts
-interface IFoo {}
-class Foo implements IFoo {}
-
-class MyContext extends CatContext {
-  foo: IFoo = Bean(Foo);
-
-  @PostConstruct
-  postConstruct(
-    iFoo: IFoo, // <- "foo" will be injected by explicit type
-    foo: Foo, // <- compilation error will be reported, no bean of type "Foo" were found
   ) {}
 }
 ```

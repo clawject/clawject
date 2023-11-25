@@ -17,10 +17,6 @@ export const getContextStaticInitBlock = (node: ts.ClassDeclaration, configurati
   const runtimeContextMetadata = factory.createObjectLiteralExpression(
     [
       factory.createPropertyAssignment(
-        factory.createIdentifier('id'),
-        factory.createNumericLiteral(configuration.runtimeId)
-      ),
-      factory.createPropertyAssignment(
         factory.createIdentifier('contextName'),
         contextName
       ),

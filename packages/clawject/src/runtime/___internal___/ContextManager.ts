@@ -116,7 +116,7 @@ export class ContextManager {
     const elementFactory = builtContext.factories[name];
 
     if (!elementFactory) {
-      throw ErrorBuilder.noElementFactoryFound(contextMetadata.contextName, name);
+      throw ErrorBuilder.noContextMemberFactoryFound(contextMetadata.contextName, name);
     }
 
     return elementFactory;

@@ -8,7 +8,7 @@
     "unsafeTSVersion": {
       "type": "boolean",
       "default": false,
-      "title": "Allows to use TypeScript version that is not officially supported by this version of Clawject",
+      "title": "Allows using TypeScript version not officially supported by this version of Clawject.",
       "examples": [
         true,
         false
@@ -17,15 +17,6 @@
     "features": {
       "type": "object",
       "properties": {
-        "advancedClassTypeResolution": {
-          "type": "boolean",
-          "default": true,
-          "title": "Enables advanced type inference for property Beans, check TODO",
-          "examples": [
-            true,
-            false
-          ]
-        },
         "keepContextNames": {
           "type": "boolean",
           "default": true,
@@ -38,7 +29,7 @@
         "lazyBeans": {
           "type": "boolean",
           "default": false,
-          "title": "By default - container will instantiate all singleton beans in context during initialization, if this option is disabled - beans will be initialized only when they are requested. You can override default behavior for each bean individually",
+          "title": "Container will instantiate all singleton beans in context during initialization if set to `true` — beans will be initialized only when they are requested.",
           "examples": [
             true,
             false

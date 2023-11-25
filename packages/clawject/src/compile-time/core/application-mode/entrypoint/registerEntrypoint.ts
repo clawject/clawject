@@ -1,11 +1,11 @@
 import ts from 'typescript';
 import { unquoteString } from '../../utils/unquoteString';
-import { CONSTANTS } from '../../../../constants';
 import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 import { DITypeBuilder } from '../../type-system/DITypeBuilder';
 import { BaseTypesRepository } from '../../type-system/BaseTypesRepository';
 import { EntrypointRepository } from './EntrypointRepository';
 import { NotSupportedError } from '../../../compilation-context/messages/errors/NotSupportedError';
+import { CONSTANTS } from '../../../../constants';
 
 export const registerEntrypoint = (sourceFile: ts.SourceFile, tsContext: ts.TransformationContext): void => {
   const hasLibraryImport = sourceFile.statements.some(statement =>

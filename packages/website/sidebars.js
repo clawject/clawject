@@ -5,6 +5,7 @@ export default {
     'intro',
     'setup',
     'language-service',
+    'configuration',
     {
       type: 'category',
       label: 'Core Concepts',

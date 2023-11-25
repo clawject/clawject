@@ -6,6 +6,7 @@ import { CatContext } from '../CatContext';
 import { RuntimeContextMetadata } from './RuntimeContextMetadata';
 import { RuntimeComponentMetadata } from './RuntimeComponentMetadata';
 import { Utils } from '../___internal___/Utils';
+import { ContextIdStorage } from '../ContextIdStorage';
 
 export enum MetadataKind {
   CONTEXT = 'CONTEXT_METADATA',
@@ -44,8 +45,9 @@ export class MetadataStorage {
     return this.contextMetadata.get(clazz) ?? null;
   }
 
-  static setContextMetadata(clazz: ClassConstructor<CatContext>, metadata: RuntimeContextMetadata): void {
-    this.contextMetadata.set(clazz, metadata);
+  static setContextMetadata(clazz: ClassConstructor<CatContext>, metadata: Omit<RuntimeContextMetadata, 'id'>): void {
+    metadata['id'] = ContextIdStorage.getAndInc();
+    this.contextMetadata.set(clazz, metadata as RuntimeContextMetadata);
   }
 
   static getComponentMetadataByClassInstance(instance: any): RuntimeComponentMetadata | null {
