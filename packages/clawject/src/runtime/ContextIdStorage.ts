@@ -10,7 +10,7 @@ export class ContextIdStorage {
   }
 
   static getAndInc(): number {
-    const latestId = this.versionedIds.get(this.VERSION) ?? Number.MIN_SAFE_INTEGER;
+    const latestId = this.versionedIds.get(this.VERSION) ?? 0;
     this.versionedIds.set(this.VERSION, latestId + 1);
 
     return latestId;

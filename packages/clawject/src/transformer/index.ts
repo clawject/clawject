@@ -1,11 +1,11 @@
 import ts from 'typescript';
+import type { TransformerExtras } from 'ts-patch';
 import { verifyTSVersion } from './verifyTSVersion';
 import { processAtomicMode } from '../compile-time/core/atomic-mode/processAtomicMode';
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
 import { processApplicationMode } from '../compile-time/core/application-mode/processApplicationMode';
 import { cleanup, cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { DecoratorRules } from '../compile-time/core/decorator-processor/DecoratorRules';
-import { TransformerExtras } from 'ts-patch';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
 import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildErrorFormatter';
 import { getCompilationContext } from './getCompilationContext';
