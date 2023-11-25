@@ -1,4 +1,4 @@
-import { IDIConfigFull } from './IDIConfigFull';
+import { DIConfig } from './DIConfig';
 import { cosmiconfigSync } from 'cosmiconfig';
 import { TypeScriptLoader } from 'cosmiconfig-typescript-loader';
 import { Validator } from 'jsonschema';
@@ -8,18 +8,17 @@ import { LanguageService } from '../../lsp/LanguageService';
 import { merge } from 'lodash';
 
 export class ConfigLoader {
-  private static defaultConfig: IDIConfigFull = {
+  private static defaultConfig: DIConfig = {
     mode: 'atomic',
     unsafeTSVersion: false,
     features: {
-      advancedClassTypeResolution: true,
       keepContextNames: true,
     }
   };
-  static cachedConfig: IDIConfigFull | null = null;
+  static cachedConfig: DIConfig | null = null;
   static onConfigLoaded: ((configFilename: string) => void) | null = null;
 
-  static get(): IDIConfigFull {
+  static get(): DIConfig {
     if (this.cachedConfig !== null) {
       return this.cachedConfig;
     }
@@ -31,7 +30,7 @@ export class ConfigLoader {
     });
 
     const loaderResult = loader.search();
-    const config: Partial<IDIConfigFull | null> = loaderResult?.config ?? null;
+    const config: Partial<DIConfig | null> = loaderResult?.config ?? null;
 
     if (config === null) {
       this.cachedConfig = this.defaultConfig;
@@ -45,7 +44,7 @@ export class ConfigLoader {
     return this.cachedConfig!;
   }
 
-  static setConfig(config: Partial<IDIConfigFull>): void {
+  static setConfig(config: Partial<DIConfig>): void {
     const validator = new Validator();
 
     const validatorResult = validator.validate(config, schema, {

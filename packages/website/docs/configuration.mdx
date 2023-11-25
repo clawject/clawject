@@ -38,7 +38,6 @@ interface Config {
   unsafeTSVersion?: boolean; // Default: false
   features?: {
     keepContextNames?: boolean; // Default: true
-    lazyBeans?: boolean; // Default: false
   };
 }
 ```
@@ -57,11 +56,3 @@ Default value is `false`.
 Keeps context class names in generated code, it can be useful for debugging purposes.
 
 Default value is `true`.
-
-### `features.lazyBeans`
-
-Container will instantiate all singleton beans in context during initialization if set to `true` — beans
-will be initialized only when they are requested.
-You can override the default behavior for each bean individually using [@Lazy](/docs/api/lazy.mdx).
-
-Default value is `false`.

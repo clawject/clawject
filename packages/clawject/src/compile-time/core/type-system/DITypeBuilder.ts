@@ -66,10 +66,6 @@ export class DITypeBuilder {
   }
 
   static buildForClassBean(tsType: ts.Type, bean: Bean): DIType | null {
-    if (!ConfigLoader.get().features.advancedClassTypeResolution) {
-      return null;
-    }
-
     if (!this.isReferenceType(tsType)) {
       return null;
     }
