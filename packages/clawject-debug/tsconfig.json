@@ -19,15 +19,11 @@
       {
         "name": "@clawject/language-service",
         "transform": "@clawject/di/transformer"
-      },
-      {
-        "transform": "typia/lib/transform"
       }
     ]
   },
   "exclude": [
     "node_modules",
-    "dist",
-    "webpack.config.js"
+    "dist"
   ]
 }

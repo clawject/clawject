@@ -1,4 +1,4 @@
-import tsServer from 'typescript/lib/tsserverlibrary';
+import tsServer from 'typescript/lib/tsserverlibrary.js';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
 
 export class LanguageServiceReportBuilder {

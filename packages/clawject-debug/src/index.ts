@@ -1,25 +1,37 @@
-import { Bean, CatContext, PostConstruct } from '@clawject/di';
-import typia from 'typia';
+import { Bean, CatContext, ContainerManager, CustomScope, ObjectFactory, ObjectFactoryResult, PostConstruct, Scope, ScopeRegister } from '@clawject/di';
 
-interface A {
-  str: string | number;
-  num: number;
+class A {
 }
-
-const isFunction = typia.protobuf.message<bigint>();
 
 class MyContext extends CatContext {
-  @Bean
-  get number(): number {
-    return 123;
+    @Scope('custom') value = Bean(A);
+
+    @PostConstruct
+    postConstruct(
+      value: any
+    ) {
+      console.log(value);
+    }
+}
+
+class MyScope implements CustomScope {
+  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
+    console.log('name', name);
+    return objectFactory.getObject();
   }
 
-  @PostConstruct
-  postConstruct(
-    // data: string,
-    data2: number
-  ): void {
+  registerDestructionCallback(name: string, callback: () => void): void {
+  }
+
+  remove(name: string): ObjectFactoryResult | null {
+    return null;
+  }
+
+  useProxy(): boolean {
+    return false;
   }
 }
 
-console.log(123);
+ScopeRegister.registerScope('custom', new MyScope());
+
+ContainerManager.init(MyContext);

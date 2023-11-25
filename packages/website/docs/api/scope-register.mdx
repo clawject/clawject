@@ -13,20 +13,34 @@ See [@Scope](/docs/api/scope.mdx) and [Custom Scopes](/docs/advanced-concepts/cu
 
 This method allows you to register a new [Custom Scope](/docs/advanced-concepts/custom-scopes.mdx) and [use it](/docs/api/scope.mdx) for beans.
 
-Throw [DuplicateScopeError](/docs/errors.mdx#duplicatescopeerror) if the scope is already registered.
+Throws [DuplicateScopeError](/docs/errors.mdx#duplicatescopeerror) if the scope is already registered.
 
 ```ts
-import { Bean, CatContext, ContainerManager } from '@clawject/di';
+import { CustomScope, ScopeRegister } from '@clawject/di';
 
-interface MyExternalBeans {
-  foo: string;
-}
+class MyScope implements CustomScope { /* ... */ }
 
-class MyContext extends CatContext<MyExternalBeans> {
-  @Bean foo = 'fooValue';
-}
+ScopeRegister.registerScope('my-scope', MyScope);
+```
 
-const myContext = ContainerManager.init(MyContext);
+### `ScopeRegister.unregisterScope`
 
-console.log(myContext.getBean('foo')) // <-- Will print "fooValue"
+This method allows you to unregister scope by name.
+Returns `true` if scope by given name existed and has been removed, or `false` if the scope does not exist.
+
+```ts
+import { ScopeRegister } from '@clawject/di';
+
+ScopeRegister.unregisterScope('my-scope');
+```
+
+### `ScopeRegister.hasScope`
+
+Check whether the scope with the given name is registered.
+Returns `true` if scope by given name exists, or `false` if the scope does not exist.
+
+```ts
+import { ScopeRegister } from '@clawject/di';
+
+const hasScope = ScopeRegister.hasScope('my-scope');
 ```

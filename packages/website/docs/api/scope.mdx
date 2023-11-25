@@ -9,8 +9,8 @@ import TabItem from '@theme/TabItem';
 
 The Scope of Bean is a way to define when Bean will be created and how it is managed by container.
 
-Clawject provides `@Scope` decorator to define a scope and have 2 built-in scopes:
-`singleton` and `prototype`, default value is `singleton`.
+Clawject provides `@Scope` decorator to define a scope and have 3 built-in scopes:
+`singleton`, `dedicated` and `fresh`, default value is `singleton`.
 
 ## Singleton scope *(default)*
 
@@ -18,8 +18,6 @@ When we define a bean with the singleton scope, the container creates a single i
 all requests for that bean will return the same object, which is cached.
 Any modifications to the object will be reflected in all references to the bean.
 This scope is the default value if no other scope is specified.
-
-Let's use the singleton scope in the following example:
 
 ```mdx-code-block
 <Tabs>
@@ -114,11 +112,13 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-## Prototype scope
+## Dedicated scope
 
-A Bean with the prototype scope will return a different instance every time it is requested from the container.
+A Bean with the `dedicated` scope will return a different instance every time it is requested from the container.
 
-Let's use the prototype scope in the following example:
+:::warning
+Methods decorated with @PreDestroy will not be called for beans with `dedicated` scope.
+:::
 
 ```ts
 class Foo {
@@ -138,7 +138,7 @@ class Baz {
 }
 
 class MyContext extends CatContext {
-  @Scope("prototype")
+  @Scope("dedicated")
   foo = Bean(Foo);
 
   bar = Bean(Bar);
@@ -159,6 +159,54 @@ class MyContext extends CatContext {
 }
 ```
 
+## Fresh scope
+
+A Bean with the `fresh` scope will return a different instance every time it is used.
+When using `fresh` scope - **Clawject** will inject proxy instead of real instance (not like in `singleton` or `dedicated` scopes),
+So each property access or method call will create a new instance of the target bean.
+
+:::warning
+Methods decorated with @PreDestroy will not be called for beans with `fresh` scope.
+:::
+
+```ts
+class Foo {
+  name = 'foo';
+
+  setName(newName: string): void {
+    this.name = newName;
+    console.log(`New name is: ${this.name}`);
+  }
+}
+
+class MyContext extends CatContext {
+  @Scope("fresh")
+  foo = Bean(Foo);
+
+  @PostConstruct
+  postConstruct(foo: Foo, foo1: Foo) {
+    /**
+    * prints "foo", after that - instance could be collected by GC
+    * because Clawject is not storing reference to this object
+    * */
+    console.log(foo.name);
+    foo.setName(); // <- prints "New name is: foo"
+    /**
+    * prints "foo" again because a new instance was created
+    * when we've accessed property "name"
+    * */
+    console.log(foo.name);
+
+    /**
+    * prints "true" Because the same proxy-object is injected
+    * to save some memory
+    * */
+    console.log(foo === foo1);
+  }
+}
+```
+
+
 As you can see - Scopes is a basic concept, but it is very important to understand it.
 
 If you want to define your own scope, for example `HTTPRequestScope` - you can check out the [Custom Scopes](/docs/advanced-concepts/custom-scopes.mdx) section.
@@ -177,7 +225,7 @@ class Foo {
   }
 }
 
-@Scope('prototype')
+@Scope('dedicated')
 class MyContext extends CatContext {
   foo = Bean(Foo);
 
@@ -190,11 +238,11 @@ class MyContext extends CatContext {
 ```
 
 As we see, `foo` bean will be created twice,
-because it's requested 2 times and it inherits prototype scope from context.
+because it's requested 2 times and it inherits `dedicated` scope from context.
 
 ## Scope on Beans
 
-We can also put @Scope decorator over the bean declaration.
+We can also put `@Scope` decorator over the bean declaration.
 
 ```ts
 class Foo {
@@ -205,7 +253,7 @@ class Foo {
 }
 
 class MyContext extends CatContext {
-  @Scope('prototype') foo = Bean(Foo);
+  @Scope('dedicated') foo = Bean(Foo);
 
   @PostConstruct
   postConstruct(
@@ -237,7 +285,7 @@ class Bar {
   }
 }
 
-@Scope('prototype')
+@Scope('dedicated')
 class MyContext extends CatContext {
     foo = Bean(Foo);
     @Scope('singleton') bar = Bean(Bar);

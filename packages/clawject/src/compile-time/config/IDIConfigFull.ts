@@ -1,4 +1,4 @@
-export interface IDIConfig {
+export interface IDIConfigFull {
   mode: 'application' | 'atomic';
   unsafeTSVersion: boolean;
   features: {

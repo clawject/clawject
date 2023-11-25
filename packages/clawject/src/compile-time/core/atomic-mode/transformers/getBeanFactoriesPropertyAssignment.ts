@@ -1,8 +1,8 @@
 import { Configuration } from '../../configuration/Configuration';
 import ts, { factory } from 'typescript';
-import { compact } from 'lodash';
 import { getDependencyAccessExpression } from './getDependencyAccessExpression';
 import { BeanKind } from '../../bean/BeanKind';
+import { compact } from 'lodash';
 
 export const getBeanFactoriesPropertyAssignment = (context: Configuration): ts.PropertyAssignment => {
   const propertyAssignments = Array.from(context.beanRegister.elements)

@@ -1,10 +1,10 @@
 import { Configuration } from '../configuration/Configuration';
 import { CompilationConfigurationMetadata } from './models/CompilationConfigurationMetadata';
 import { CompilationMetadataKind } from './models/CompilationMetadata';
-import { COMPILATION_METADATA_TOKENS } from './constants';
 import { CONSTANTS } from '../../../constants';
 import { CompilationComponentMetadata } from './models/CompilationComponentMetadata';
 import { Component } from '../component/Component';
+import { COMPILATION_METADATA_TOKENS } from './constants';
 
 export class CompilationMetadataBuilder {
   static buildForConfiguration(configuration: Configuration): string {

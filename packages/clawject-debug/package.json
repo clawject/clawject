@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "run:upgradeClawject": "yarn upgrade clawject clawject-language-service && ts-patch install",
+    "run:upgradeClawject": "yarn upgrade clawject @clawject/language-service && ts-patch install",
     "run:tsc": "tsc",
     "run:tscw": "tsc -w",
     "run:tsc_debug": "cross-env CLAWJECT_DEBUG_MODE=true tsc",
@@ -12,29 +12,28 @@
     "run:webpack_hot": "webpack serve --config webpack.config.js --mode development",
     "run:webpack_prod": "webpack --config webpack.config.js --mode production",
     "run:language_service": "tsserver --logVerbosity verbose --traceToConsole",
-    "vite:run": "vite",
     "postinstall": "ts-patch install"
   },
   "dependencies": {
     "@clawject/di": "../../dist/packages/clawject",
-    "@clawject/language-service": "../../packages/language-service",
-    "typia": "^5.2.6"
+    "@clawject/language-service": "../../packages/language-service"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^11.1.5",
-    "@types/webpack": "^5.28.1",
+    "@types/webpack": "^5.28.5",
     "clean-webpack-plugin": "^4.0.0",
     "cross-env": "^7.0.3",
     "html-webpack-plugin": "^5.5.3",
-    "rollup-plugin-typescript2": "^0.36.0",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
     "ts-patch": "^3.0.2",
-    "ttypescript": "^1.5.15",
     "typescript": "^5.2.2",
-    "vite": "^5.0.0",
-    "webpack": "^5.87.0",
+    "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
+  },
+  "clawject": {
+    "features": {
+      "keepContextNames": false
+    }
   }
 }

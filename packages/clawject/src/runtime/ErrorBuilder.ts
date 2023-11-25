@@ -1,6 +1,6 @@
-import { GITHUB_REPO_LINK } from './constants';
 import { ClassConstructor } from './ClassConstructor';
 import { RuntimeErrors } from './errors';
+import { GITHUB_REPO_LINK } from './constants';
 
 export class ErrorBuilder {
   static beanNotFound(contextName: string | null, beanName: string): RuntimeErrors.BeanNotFoundError {
@@ -26,8 +26,8 @@ export class ErrorBuilder {
     return new RuntimeErrors.IllegalAccessError(`Illegal access to ${cause}, please check the documentation ${GITHUB_REPO_LINK}`);
   }
 
-  static noElementFactoryFound(contextName: string | null, name: string): Error {
-    return new Error(`No factory found for element '${name}' in context '${this.getContextName(contextName)}'`);
+  static noContextMemberFactoryFound(contextName: string | null, name: string): Error {
+    return new RuntimeErrors.NoContextMemberFactoryFoundError(`No context member factory found for member '${name}' in context '${this.getContextName(contextName)}'`);
   }
 
   static contextKeyToString(contextKey: any): string {

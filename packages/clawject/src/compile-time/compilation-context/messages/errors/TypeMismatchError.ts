@@ -4,8 +4,8 @@ import { MessageType } from '../MessageType';
 import { Configuration } from '../../../core/configuration/Configuration';
 import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
-import { compact } from 'lodash';
 import { Bean } from '../../../core/bean/Bean';
+import { compact } from 'lodash';
 
 class BeanTypeMismatch {
   constructor(

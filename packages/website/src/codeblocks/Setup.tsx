@@ -6,8 +6,8 @@ import CodeBlock from '@theme/CodeBlock';
 import { useFormattedCode } from '@site/src/codeblocks/useFormattedCode';
 
 export const AddDependency = () => {
-  const yarnAddCode = 'yarn add clawject';
-  const npmAddCode = 'npm install clawject';
+  const yarnAddCode = 'yarn add @clawject/di';
+  const npmAddCode = 'npm install @clawject/di';
 
   return (
     <Tabs>
@@ -130,14 +130,14 @@ export const WebpackTSLoader = () => {
           options: {
             getCustomTransformers: (program, getProgram) => ({
               before: [
-                new ClawjectTransformer(getProgram)
+                ClawjectTransformer(getProgram)
               ]
             })
           }
         }]
       },
       plugins: [
-        new ClawjectWebpackPlugin()
+        ClawjectWebpackPlugin()
       ]
     };
   `;

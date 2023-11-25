@@ -44,4 +44,9 @@ export namespace RuntimeErrors {
   export class NoClassMetadataFoundError extends Error {
     override name = 'NoClassMetadataFoundError' as const;
   }
+
+  /** @public */
+  export class NoContextMemberFactoryFoundError extends Error {
+    override name = 'NoContextMemberFactoryFoundError' as const;
+  }
 }

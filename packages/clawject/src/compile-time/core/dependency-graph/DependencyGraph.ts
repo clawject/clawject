@@ -1,9 +1,11 @@
-import { alg, Graph } from 'graphlib';
+import graphlib from 'graphlib';
 import { Bean } from '../bean/Bean';
 import { Configuration } from '../configuration/Configuration';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { mapFilter } from '../utils/mapFilter';
 import { analyzeGraph } from 'graph-cycles';
+
+const { Graph, alg } = graphlib;
 
 export class DependencyGraph {
   static graph = new Graph();

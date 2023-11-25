@@ -1,4 +1,4 @@
-import type tsServer from 'typescript/lib/tsserverlibrary';
+import type tsServer from 'typescript/lib/tsserverlibrary.js';
 import { getCompilationContext } from '../transformer/getCompilationContext';
 import { Compiler } from './Compiler';
 import { LanguageServiceLogger } from './LanguageServiceLogger';

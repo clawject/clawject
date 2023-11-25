@@ -20,27 +20,30 @@
     "./lsp": {
       "types": "./dist/types/lsp/index.d.ts",
       "require": "./dist/cjs/lsp/index.js",
-      "import": "./dist/esm/lsp/index.js",
-      "default": "./dist/esm/lsp/index.js"
+      "import": "./dist/cjs/lsp/index.js",
+      "default": "./dist/cjs/lsp/index.js"
     },
     "./webpack": {
       "types": "./dist/types/webpack/index.d.ts",
       "require": "./dist/cjs/webpack/index.js",
-      "import": "./dist/esm/webpack/index.js",
-      "default": "./dist/esm/webpack/index.js"
+      "import": "./dist/cjs/webpack/index.js",
+      "default": "./dist/cjs/webpack/index.js"
     },
     "./transformer": {
       "types": "./dist/types/transformer/index.d.ts",
       "require": "./dist/cjs/transformer/index.js",
-      "import": "./dist/esm/transformer/index.js",
-      "default": "./dist/esm/transformer/index.js"
+      "import": "./dist/cjs/transformer/index.js",
+      "default": "./dist/cjs/transformer/index.js"
     },
     "./transformer/metadata": {
       "types": "./dist/types/transformer/metadata.d.ts",
       "require": "./dist/cjs/transformer/metadata.js",
-      "import": "./dist/esm/transformer/metadata.js",
-      "default": "./dist/esm/transformer/metadata.js"
+      "import": "./dist/cjs/transformer/metadata.js",
+      "default": "./dist/cjs/transformer/metadata.js"
     }
+  },
+  "scripts": {
+    "rollup:rollup": "rollup -c --bundleConfigAsCjs"
   },
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
@@ -49,6 +52,7 @@
     "case": "^1.6.3",
     "chalk": "^4.1.2",
     "cosmiconfig": "^7.0.1",
+    "cosmiconfig-typescript-loader": "^5.0.0",
     "csv-parse": "^5.4.0",
     "graph-cycles": "^1.2.1",
     "graphlib": "^2.1.8",
@@ -59,13 +63,18 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.38.2",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
     "@types/graphlib": "^2.1.8",
-    "@types/lodash": "^4.14.182",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^17.0.42",
     "@types/semver": "^7.5.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
+    "rollup": "^4.5.2",
     "ts-patch": "^3.0.2",
     "typescript": "5.2.2",
     "webpack": "^5.88.2"

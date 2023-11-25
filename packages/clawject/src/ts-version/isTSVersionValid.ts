@@ -1,5 +1,5 @@
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
-import semver from 'semver/preload';
+import * as semver from 'semver';
 import { CONSTANTS } from '../constants';
 
 export const isTSVersionValid = (version: string): boolean => {

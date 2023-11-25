@@ -1,5 +1,5 @@
-import { ScopeValue } from '../decorators';
 import { LifecycleKind } from '../../compile-time/core/component-lifecycle/LifecycleKind';
+import { ScopeValue } from '../decorators';
 
 export interface RuntimeBeanMetadata {
   scope: ScopeValue | null;

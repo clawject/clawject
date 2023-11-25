@@ -1,4 +1,4 @@
-import tsServer, { DiagnosticCategory } from 'typescript/lib/tsserverlibrary';
+import tsServer, { DiagnosticCategory } from 'typescript/lib/tsserverlibrary.js';
 import { Compiler } from './Compiler';
 import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
 import { LanguageServiceCache } from './LanguageServiceCache';
