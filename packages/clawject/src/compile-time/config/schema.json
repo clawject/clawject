@@ -25,15 +25,6 @@
             true,
             false
           ]
-        },
-        "lazyBeans": {
-          "type": "boolean",
-          "default": false,
-          "title": "Container will instantiate all singleton beans in context during initialization if set to `true` — beans will be initialized only when they are requested.",
-          "examples": [
-            true,
-            false
-          ]
         }
       },
       "additionalProperties": false
