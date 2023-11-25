@@ -2,10 +2,11 @@ import ts, { factory } from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
+import { addDoNotEditCommentToStaticInitBlock } from './addDoNotEditCommentToStaticInitBlock';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
-  return factory.createClassStaticBlockDeclaration(factory.createBlock(
-    [factory.createExpressionStatement(factory.createCallExpression(
+  const utilsCall = addDoNotEditCommentToStaticInitBlock(
+    factory.createExpressionStatement(factory.createCallExpression(
       factory.createPropertyAccessExpression(
         InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
         factory.createIdentifier('defineComponentMetadata')
@@ -23,7 +24,11 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
           true
         ),
       ]
-    ))],
+    ))
+  );
+
+  return factory.createClassStaticBlockDeclaration(factory.createBlock(
+    [utilsCall],
     true
   ));
 };

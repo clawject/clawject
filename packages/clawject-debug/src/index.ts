@@ -1,17 +1,27 @@
-import { Bean, CatContext, ContainerManager, CustomScope, ObjectFactory, ObjectFactoryResult, PostConstruct, Scope, ScopeRegister } from '@clawject/di';
+import {
+  Bean,
+  CatContext,
+  ContainerManager,
+  CustomScope,
+  ObjectFactory,
+  ObjectFactoryResult,
+  PostConstruct,
+  Scope,
+  ScopeRegister
+} from '@clawject/di';
 
 class A {
 }
 
 class MyContext extends CatContext {
-    @Scope('custom') value = Bean(A);
+  @Scope('custom') value = Bean(A);
 
-    @PostConstruct
-    postConstruct(
-      value: any
-    ) {
-      console.log(value);
-    }
+  @PostConstruct
+  postConstruct(
+    value: any
+  ) {
+    console.log(value);
+  }
 }
 
 class MyScope implements CustomScope {

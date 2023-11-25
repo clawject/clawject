@@ -1,4 +1,4 @@
-import tsServer from 'typescript/lib/tsserverlibrary.js';
+import tsServer from 'typescript/lib/tsserverlibrary';
 import { ClawjectTransformer } from '../transformer';
 import { FileGraph } from '../compile-time/core/file-graph/FileGraph';
 import { cleanup } from '../compile-time/core/cleaner/cleanup';

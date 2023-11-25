@@ -5,6 +5,7 @@ import { ConfigLoader } from '../../../config/ConfigLoader';
 import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { getBeanFactoriesPropertyAssignment } from './getBeanFactoriesPropertyAssignment';
+import { addDoNotEditCommentToStaticInitBlock } from './addDoNotEditCommentToStaticInitBlock';
 
 export const getContextStaticInitBlock = (node: ts.ClassDeclaration, configuration: Configuration): ts.ClassStaticBlockDeclaration => {
   const contextName = ConfigLoader.get().features.keepContextNames && configuration.className ?
@@ -44,9 +45,8 @@ export const getContextStaticInitBlock = (node: ts.ClassDeclaration, configurati
     true
   );
 
-
-  return factory.createClassStaticBlockDeclaration(factory.createBlock(
-    [factory.createExpressionStatement(factory.createCallExpression(
+  const utilsCall = addDoNotEditCommentToStaticInitBlock(
+    factory.createExpressionStatement(factory.createCallExpression(
       factory.createPropertyAccessExpression(
         InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
         factory.createIdentifier('defineContextMetadata')
@@ -56,7 +56,11 @@ export const getContextStaticInitBlock = (node: ts.ClassDeclaration, configurati
         factory.createThis(),
         runtimeContextMetadata
       ]
-    ))],
+    ))
+  );
+
+  return factory.createClassStaticBlockDeclaration(factory.createBlock(
+    [utilsCall],
     true
   ));
 };
