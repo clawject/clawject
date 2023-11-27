@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { getBeanConfigObjectLiteral } from './getBeanConfigObjectLiteral';
 import { Configuration } from '../../configuration/Configuration';
 import { ConfigLoader } from '../../../config/ConfigLoader';
-import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
+import { LifecycleKind } from '../../../../runtime/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { getBeanFactoriesPropertyAssignment } from './getBeanFactoriesPropertyAssignment';
 import { addDoNotEditCommentToStaticInitBlock } from './addDoNotEditCommentToStaticInitBlock';
@@ -45,24 +45,22 @@ export const getContextStaticInitBlock = (node: ts.ClassDeclaration, configurati
     true
   );
 
-  const utilsCall = addDoNotEditCommentToStaticInitBlock(
-    factory.createExpressionStatement(factory.createCallExpression(
-      factory.createPropertyAccessExpression(
-        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
-        factory.createIdentifier('defineContextMetadata')
-      ),
-      undefined,
-      [
-        factory.createThis(),
-        runtimeContextMetadata
-      ]
-    ))
-  );
-
-  return factory.createClassStaticBlockDeclaration(factory.createBlock(
-    [utilsCall],
+  return addDoNotEditCommentToStaticInitBlock(factory.createClassStaticBlockDeclaration(factory.createBlock(
+    [
+      factory.createExpressionStatement(factory.createCallExpression(
+        factory.createPropertyAccessExpression(
+          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+          factory.createIdentifier('defineContextMetadata')
+        ),
+        undefined,
+        [
+          factory.createThis(),
+          runtimeContextMetadata
+        ]
+      ))
+    ],
     true
-  ));
+  )));
 };
 
 const getLifecycleConfigProperty = (context: Configuration): ts.ObjectLiteralExpression => {

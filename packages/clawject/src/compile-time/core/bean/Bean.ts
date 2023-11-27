@@ -5,7 +5,7 @@ import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { Dependency } from '../dependency/Dependency';
 import { Entity } from '../Entity';
-import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
+import { LifecycleKind } from '../../../runtime/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { WeakNodeHolder } from '../WeakNodeHolder';
 import { FileGraph } from '../file-graph/FileGraph';
