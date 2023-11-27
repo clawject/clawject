@@ -137,7 +137,7 @@ export const WebpackTSLoader = () => {
         }]
       },
       plugins: [
-        ClawjectWebpackPlugin()
+        new ClawjectWebpackPlugin()
       ]
     };
   `;

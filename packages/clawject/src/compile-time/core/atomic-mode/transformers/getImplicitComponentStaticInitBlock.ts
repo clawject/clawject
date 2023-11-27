@@ -1,36 +1,34 @@
 import ts, { factory } from 'typescript';
 import { Component } from '../../component/Component';
-import { LifecycleKind } from '../../component-lifecycle/LifecycleKind';
+import { LifecycleKind } from '../../../../runtime/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { addDoNotEditCommentToStaticInitBlock } from './addDoNotEditCommentToStaticInitBlock';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
-  const utilsCall = addDoNotEditCommentToStaticInitBlock(
-    factory.createExpressionStatement(factory.createCallExpression(
-      factory.createPropertyAccessExpression(
-        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
-        factory.createIdentifier('defineComponentMetadata')
-      ),
-      undefined,
-      [
-        factory.createThis(),
-        factory.createObjectLiteralExpression(
-          [
-            factory.createPropertyAssignment(
-              factory.createIdentifier('lifecycle'),
-              getLifecycleConfigProperty(component)
-            )
-          ],
-          true
+  return addDoNotEditCommentToStaticInitBlock(factory.createClassStaticBlockDeclaration(factory.createBlock(
+    [
+      factory.createExpressionStatement(factory.createCallExpression(
+        factory.createPropertyAccessExpression(
+          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+          factory.createIdentifier('defineComponentMetadata')
         ),
-      ]
-    ))
-  );
-
-  return factory.createClassStaticBlockDeclaration(factory.createBlock(
-    [utilsCall],
+        undefined,
+        [
+          factory.createThis(),
+          factory.createObjectLiteralExpression(
+            [
+              factory.createPropertyAssignment(
+                factory.createIdentifier('lifecycle'),
+                getLifecycleConfigProperty(component)
+              )
+            ],
+            true
+          ),
+        ]
+      ))
+    ],
     true
-  ));
+  )));
 };
 
 const getLifecycleConfigProperty = (component: Component): ts.ObjectLiteralExpression => {

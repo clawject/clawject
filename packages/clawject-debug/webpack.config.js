@@ -1,6 +1,7 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 import {ClawjectTransformer} from '@clawject/di/transformer';
+import {ClawjectWebpackPlugin} from '@clawject/di/webpack';
 
 export default {
   entry: './src/index.ts',
@@ -33,5 +34,6 @@ export default {
   plugins: [
     new HtmlWebpackPlugin(),
     new CleanWebpackPlugin(),
+    new ClawjectWebpackPlugin(),
   ]
 };

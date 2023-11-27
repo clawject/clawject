@@ -1,6 +1,6 @@
 import ts, { factory } from 'typescript';
 import { Component } from '../component/Component';
-import { LifecycleKind } from '../component-lifecycle/LifecycleKind';
+import { LifecycleKind } from '../../../runtime/LifecycleKind';
 import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
