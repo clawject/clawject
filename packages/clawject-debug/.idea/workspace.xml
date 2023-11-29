@@ -5,19 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/getBeanConditionExpressionValue.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/Condition.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Conditional.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.verdaccio/config.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.verdaccio/htpasswd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processLifecycleElement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processLifecycleElement.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getContextStaticInitBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getContextStaticInitBlock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getImplicitComponentStaticInitBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getImplicitComponentStaticInitBlock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/DisposableNodeHolder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/DisposableNodeHolder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/configuration/transformation/getConfigurationInitProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/configuration/transformation/getConfigurationInitProperty.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getDependencyAccessExpression.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getDependencyAccessExpression.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerLifecycleBean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerLifecycleBean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/component-lifecycle/ComponentLifecycle.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/component-lifecycle/ComponentLifecycle.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/component-lifecycle/LifecycleKind.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/LifecycleKind.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/BeanFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/BeanFactory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/metadata/MetadataTypes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/metadata/MetadataTypes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/codeblocks/Setup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/codeblocks/Setup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanClassConstructor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanClassConstructor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanFactoryArrowFunction.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanFactoryArrowFunction.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanFactoryMethod.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanFactoryMethod.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanValueExpression.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeanValueExpression.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorKind.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/DecoratorKind.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorArguments.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorArguments.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorCompatibility.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorCompatibility.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorParents.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorParents.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorTargets.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/decorator-processor/csv/DecoratorTargets.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/Dependency.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/Dependency.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +45,18 @@
     <setting file="file://$PROJECT_DIR$/node_modules/clawject/index.d.ts" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/node_modules/webpack/package.json" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/index.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="KubernetesApiProvider">{
+  &quot;contexts&quot;: [
+    {
+      &quot;name&quot;: &quot;arn:aws:eks:eu-west-2:986794016656:cluster/montrose2&quot;,
+      &quot;originalNamespace&quot;: &quot;jx&quot;
+    }
+  ],
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="KubernetesSettings">
+    <option name="contextName" value="arn:aws:eks:eu-west-2:986794016656:cluster/montrose2" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -88,7 +111,7 @@
       <recent name="$PROJECT_DIR$/static" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:webpack_hot">
+  <component name="RunManager" selected="npm.run:upgradeClawject">
     <configuration name="postinstall" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -141,10 +164,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:webpack_hot" />
-        <item itemvalue="npm.run:tsc" />
-        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.vite:run" />
+        <item itemvalue="npm.run:webpack_hot" />
+        <item itemvalue="npm.run:upgradeClawject" />
+        <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.postinstall" />
       </list>
     </recent_temporary>

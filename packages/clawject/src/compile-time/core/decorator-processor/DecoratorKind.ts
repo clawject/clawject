@@ -10,6 +10,7 @@ export enum DecoratorKind {
   Scope = 'Scope',
   Primary = 'Primary',
   Qualifier = 'Qualifier',
+  Conditional = 'Conditional',
   ComponentScan = 'ComponentScan',
   Import = 'Import',
 }

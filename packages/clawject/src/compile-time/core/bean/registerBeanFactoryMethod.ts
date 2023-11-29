@@ -11,6 +11,7 @@ import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getBeanQualifierValue } from './getBeanQualifierValue';
+import { getBeanConditionExpressionValue } from './getBeanConditionExpressionValue';
 
 export const registerBeanFactoryMethod = (
   configuration: Configuration,
@@ -50,6 +51,7 @@ export const registerBeanFactoryMethod = (
   bean.diType = DITypeBuilder.buildForClassBean(returnType, bean) ?? DITypeBuilder.build(returnType);
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
   bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
+  bean.conditionExpression.node = getBeanConditionExpressionValue(bean);
   bean.qualifier = getBeanQualifierValue(bean);
   configuration.beanRegister.register(bean);
 };

@@ -5,7 +5,7 @@ import { Bean } from '../../bean/Bean';
 
 export const getDependencyAccessExpression = (dependency: Dependency): ts.Expression | undefined => {
   const qualifiedBean = dependency.qualifiedBean;
-  const qualifiedBeans = dependency.qualifiedBeans;
+  const qualifiedBeans = dependency.qualifiedCollectionBeans;
 
   //If qualifiedBeans are not null - that means that it's a collection
   if (qualifiedBeans !== null) {

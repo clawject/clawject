@@ -17,7 +17,11 @@ export class DisposableNodeHolder<N extends ts.Node = ts.Node> {
     return this._node;
   }
 
-  public set node(node: N) {
+  public set node(node: N | null) {
+    if (node === null) {
+      return;
+    }
+
     this._node = node;
     this._hasBeenInitialized = true;
   }
@@ -30,8 +34,8 @@ export class DisposableNodeHolder<N extends ts.Node = ts.Node> {
     return node;
   }
 
-  public hasBeenInitialized(): boolean {
-    return this._hasBeenInitialized;
+  public isEmpty(): boolean {
+    return !this._hasBeenInitialized;
   }
 
   public clear(): void {

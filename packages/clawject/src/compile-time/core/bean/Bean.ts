@@ -35,6 +35,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   nestedProperty: string | null = null;
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
+  conditionExpression = new DisposableNodeHolder<ts.Expression>();
 
   constructor(values: Partial<Bean> = {}) {
     super();
