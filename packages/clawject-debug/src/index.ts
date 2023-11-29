@@ -10,8 +10,14 @@ import {
   ScopeRegister
 } from '@clawject/di';
 
-class MyContext extends CatContext {
-  @Bean str = 'abc';
+class A {
+  constructor(
+    data: string,
+    nul: null,
+    undef: undefined,
+    voi: void,
+  ) {
+  }
 }
 
 ContainerManager.init(MyContext);

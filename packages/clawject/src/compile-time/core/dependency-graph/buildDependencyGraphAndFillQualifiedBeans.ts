@@ -7,7 +7,6 @@ import { BeanCandidateNotFoundError } from '../../compilation-context/messages/e
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanKind } from '../bean/BeanKind';
-import { DIType } from '../type-system/DIType';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
   const compilationContext = getCompilationContext();
@@ -139,7 +138,7 @@ function buildForCollectionOrArray(
     });
   }
 
-  dependency.qualifiedBeans = matched;
+  dependency.qualifiedCollectionBeans = matched;
   DependencyGraph.addNodeWithEdges(bean, matched);
 }
 

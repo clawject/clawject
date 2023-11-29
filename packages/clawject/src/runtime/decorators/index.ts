@@ -8,6 +8,7 @@ export { Scope, ScopeValue, ScopeTarget } from './Scope';
 export { Embedded, EmbeddedTarget } from './Embedded';
 export { Primary, PrimaryTarget } from './Primary';
 export { Qualifier, QualifierTarget } from './Qualifier';
+// export { Conditional, ConditionalTarget } from './Conditional';
 // export { Configuration, ConfigurationTarget } from './Configuration';
 // export { Component, ComponentTarget } from './Component';
 // export { Autowired, AutowiredTarget } from './Autowired';

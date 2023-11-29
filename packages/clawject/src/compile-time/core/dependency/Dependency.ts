@@ -11,5 +11,5 @@ export class Dependency extends Entity<ts.ParameterDeclaration> {
   /**
    * For array, map, set or in application mode
    * */
-  qualifiedBeans: Bean[] | null = null;
+  qualifiedCollectionBeans: Bean[] | null = null;
 }

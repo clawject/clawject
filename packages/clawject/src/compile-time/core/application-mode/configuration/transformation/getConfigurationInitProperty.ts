@@ -70,7 +70,7 @@ export function getConfigurationInitProperty(configuration: Configuration): ts.C
         [
           factory.createNumericLiteral(dependency.runtimeId),
           factory.createArrayLiteralExpression(
-            dependency.qualifiedBeans?.map(it =>  factory.createStringLiteral(it.id)) ?? [],
+            dependency.qualifiedCollectionBeans?.map(it =>  factory.createStringLiteral(it.id)) ?? [],
             false
           )
         ],
