@@ -1,14 +1,11 @@
 import ts from 'typescript';
 import { Dependency } from './Dependency';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { Bean } from '../bean/Bean';
-import { Autowired } from '../autowired/Autowired';
-import { Component } from '../component/Component';
+import { DITypeBuilder } from '../type-system/DITypeBuilder';
 
-export const buildDependencyFromParameter = (parameter: ts.ParameterDeclaration, element: Bean | Component): Dependency => {
+export const buildDependencyFromParameter = (parameter: ts.ParameterDeclaration): Dependency => {
   const parameterType = getCompilationContext().typeChecker.getTypeAtLocation(parameter);
-  const diType = DITypeBuilder.buildForClassDependency(parameterType, element.genericSymbolLookupTable);
+  const diType = DITypeBuilder.build(parameterType);
 
   const dependency = new Dependency();
   dependency.parameterName = parameter.name.getText();

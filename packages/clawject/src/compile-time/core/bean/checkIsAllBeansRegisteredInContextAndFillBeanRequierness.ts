@@ -1,10 +1,10 @@
 import ts from 'typescript';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { MissingBeansDeclarationError } from '../../compilation-context/messages/errors/MissingBeansDeclarationError';
 import { TypeMismatchError } from '../../compilation-context/messages/errors/TypeMismatchError';
+import { DITypeBuilder } from '../type-system/DITypeBuilder';
 
 export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context: Configuration): void => {
   const compilationContext = getCompilationContext();

@@ -6,7 +6,7 @@ export const registerComponentConstructorDependencies = (component: Component) =
   const constructorDeclaration = component.node.members.find(ts.isConstructorDeclaration);
 
   constructorDeclaration?.parameters.forEach(parameter => {
-    const dependency = buildDependencyFromParameter(parameter, component);
+    const dependency = buildDependencyFromParameter(parameter);
 
     component.registerConstructorDependency(dependency);
   });

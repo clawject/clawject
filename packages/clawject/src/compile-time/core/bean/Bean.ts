@@ -7,7 +7,6 @@ import { Dependency } from '../dependency/Dependency';
 import { Entity } from '../Entity';
 import { LifecycleKind } from '../../../runtime/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
-import { WeakNodeHolder } from '../WeakNodeHolder';
 import { FileGraph } from '../file-graph/FileGraph';
 import * as Case from 'case';
 
@@ -25,8 +24,6 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   qualifier: string | null = null;
   declare diType: DIType;
   declare kind: BeanKind;
-  classDeclaration: WeakNodeHolder<ts.ClassDeclaration> | null = null;
-  genericSymbolLookupTable = new WeakMap<ts.Symbol, DIType>();
   lifecycle: LifecycleKind[] | null = null;
   public = false;
   primary = false;

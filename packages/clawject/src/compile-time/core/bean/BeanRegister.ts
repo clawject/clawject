@@ -23,10 +23,8 @@ export class BeanRegister extends AbstractElementRegister<Bean, BeanNode> {
       this.nodeToElement.set(bean.node, bean);
     }
 
-    const beanClassDeclarationFileName = bean.classDeclaration?.node.getSourceFile().fileName;
     bean.diType.declarations.map(it => {
       FileGraph.add(this.parent.fileName, it.fileName);
     });
-    beanClassDeclarationFileName && FileGraph.add(this.parent.fileName, beanClassDeclarationFileName);
   }
 }

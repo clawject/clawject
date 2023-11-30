@@ -1,13 +1,10 @@
-import ts, { ObjectFlags, TypeFlags } from 'typescript';
+import ts, { isThisTypeParameter, ObjectFlags, TypeFlags } from 'typescript';
 import { DIType } from './DIType';
 import { parseFlags } from '../ts/flags/parseFlags';
 import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { ConfigLoader } from '../../config/ConfigLoader';
-import { Bean } from '../bean/Bean';
-import { Component } from '../component/Component';
-import { compact, get } from 'lodash';
+import { get } from 'lodash';
 
 /**
  * notes:
@@ -16,103 +13,118 @@ import { compact, get } from 'lodash';
  * Type diagram https://user-images.githubusercontent.com/442988/78500144-86799400-775d-11ea-8e2b-52feeec6d39f.png
  * */
 
+class TypeWithTypeArguments {
+  constructor(
+    public typeSymbol: ts.Symbol | undefined,
+    public typeArguments: ts.Type[],
+  ) {}
+
+  equals(other: TypeWithTypeArguments): boolean {
+    return this.typeSymbol === other.typeSymbol &&
+      this.typeArguments.length === other.typeArguments.length &&
+      this.typeArguments.every((it, i) => it === other.typeArguments[i]);
+  }
+}
+
 export class DITypeBuilder {
-  private static emptyWeakMap = new WeakMap<any, any>();
-
-  static build(tsType: ts.Type): DIType {
-    return this._build(tsType, null, this.emptyWeakMap);
-  }
-
-  static buildForClassDependency(tsType: ts.Type, genericSymbolLookupTable: WeakMap<ts.Symbol, DIType>): DIType {
-    return this._build(tsType, null, genericSymbolLookupTable);
-  }
-
-  static buildForClassComponent(component: Component): DIType {
+  static build(type: ts.Type): DIType {
     const typeChecker = getCompilationContext().typeChecker;
-    const classType = typeChecker.getTypeAtLocation(component.node) as ts.InterfaceType;
+    const objectFlags = this.getObjectFlagsSet(type);
 
-    const typeParameters = classType.typeParameters ?? [];
+    if (objectFlags.size === 0) {
+      return this._build(type, null);
+    }
 
-    typeParameters.forEach((typeParameter) => {
-      const types = compact([
-        typeChecker.getDefaultFromTypeParameter(typeParameter),
-        typeChecker.getBaseConstraintOfType(typeParameter),
-      ]);
+    if (!objectFlags.has(ObjectFlags.Reference)) {
+      return this._build(type, null);
+    }
 
-      if (types.length === 0) {
-        const unknownType = this.unknown();
-        component.genericSymbolLookupTable.set(typeParameter.symbol, unknownType);
+    const baseType = type as ts.TypeReference;
+    const baseTypeArguments = typeChecker.getTypeArguments(baseType).filter(it => {
+      return !isThisTypeParameter(it);
+    });
+    const baseTypeSymbol = baseType.getSymbol();
+    const processedElements: TypeWithTypeArguments[] = [];
+    const stack: TypeWithTypeArguments[] = [
+      new TypeWithTypeArguments(baseTypeSymbol, baseTypeArguments as ts.Type[])
+    ];
 
+    while (stack.length > 0) {
+      const typeWithTypeArguments = stack.pop()!;
+      const {typeSymbol, typeArguments} = typeWithTypeArguments;
+      processedElements.push(typeWithTypeArguments);
+
+      if (!typeSymbol) {
+        //TODO handle missing symbols?
+        continue;
+      }
+
+      typeSymbol.getDeclarations()?.forEach((declaration, index) => {
+        //  || ts.isTypeAliasDeclaration(declaration)
+        if (ts.isClassDeclaration(declaration) || ts.isInterfaceDeclaration(declaration)) {
+          const typeArgumentsMap = new Map<ts.Symbol, ts.Type | null>();
+          declaration.typeParameters?.forEach((it, i) => {
+            typeArgumentsMap.set(it.symbol, typeArguments[i] ?? null);
+          });
+
+          const heritageClausesMembers = declaration.heritageClauses?.map(it => it.types).flat() ?? [];
+
+          heritageClausesMembers.forEach(member => {
+            if (!member.typeArguments) {
+              return;
+            }
+
+            const memberSymbol = typeChecker.getTypeAtLocation(member).getSymbol();
+            const memberTypeArguments = member.typeArguments.map(it => {
+              const type = typeChecker.getTypeAtLocation(it);
+              if (isThisTypeParameter(type)) {
+                return;
+              }
+
+              const symbol = type.getSymbol();
+
+              if (!symbol) {
+                return type;
+              }
+
+              let foundType = typeArgumentsMap.get(symbol);
+
+              if (!foundType) {
+                for (const declaration of symbol.getDeclarations() ?? []) {
+                  foundType = typeArgumentsMap.get(declaration.symbol);
+
+                  if (foundType) {
+                    break;
+                  }
+                }
+              }
+
+              return foundType ?? type;
+            }).filter(it => it !== undefined) as ts.Type[];
+
+            const typeWithTypeArguments = new TypeWithTypeArguments(memberSymbol, memberTypeArguments);
+
+            if (processedElements.some(it => it.equals(typeWithTypeArguments))) {
+              return;
+            } else {
+              stack.push(new TypeWithTypeArguments(memberSymbol, memberTypeArguments));
+            }
+          });
+        }
+      });
+    }
+
+    const diTypes = processedElements.map(it => {
+      if (!it.typeSymbol) {
         return;
       }
 
-      const diTypes = types.map((it) => this.build(it));
-      const diType = this.buildSyntheticIntersectionOrPlain(diTypes);
+      return it.typeSymbol.getDeclarations()?.map(declaration => {
+        return this._build(typeChecker.getTypeAtLocation(declaration), it.typeArguments);
+      });
+    }).filter(it => it !== undefined).flat() as DIType[];
 
-      component.genericSymbolLookupTable.set(typeParameter.symbol, diType);
-    });
-
-    const heritageClausesMembers = component.node.heritageClauses
-      ?.map(it => it.types).flat() ?? [];
-
-    const implementsClauseTypes = heritageClausesMembers.map(typeChecker.getTypeAtLocation);
-
-    const baseDIType = this._build(classType, typeParameters, component.genericSymbolLookupTable);
-    const clauseTypes = implementsClauseTypes.map(it =>
-      this._build(it, null, component.genericSymbolLookupTable)
-    );
-
-    return this.buildSyntheticIntersectionOrPlain([baseDIType, ...clauseTypes]);
-  }
-
-  static buildForClassBean(tsType: ts.Type, bean: Bean): DIType | null {
-    if (!this.isReferenceType(tsType)) {
-      return null;
-    }
-    const typeChecker = getCompilationContext().typeChecker;
-    const resolvedTypeArguments = Array.from(tsType.resolvedTypeArguments ?? []);
-    const targetTypeTypeArguments = Array.from(tsType.target.typeArguments ?? []);
-    const actualTypeArguments = targetTypeTypeArguments.map((_, index) =>
-      resolvedTypeArguments[index]
-    );
-    const genericSymbolToType = new Map<ts.Symbol, ts.Type>(
-      actualTypeArguments.map((it, index) => {
-        bean.genericSymbolLookupTable.set(targetTypeTypeArguments[index].symbol, this._build(it, null, this.emptyWeakMap));
-
-        return [targetTypeTypeArguments[index].symbol, it];
-      }),
-    );
-
-    const tsTypeSymbol = tsType.aliasSymbol ?? tsType.getSymbol();
-    if (tsTypeSymbol === undefined) {
-      return null;
-    }
-
-    const classDeclarations = tsTypeSymbol.getDeclarations()?.filter(ts.isClassDeclaration) ?? [];
-
-    if (classDeclarations.length !== 1) {
-      return null;
-    }
-
-    const classDeclaration = classDeclarations[0];
-    const heritageClausesMembers = classDeclaration.heritageClauses
-      ?.map(it => it.types).flat() ?? [];
-
-    const implementsClauseTypes = heritageClausesMembers.map(typeChecker.getTypeAtLocation);
-
-    const baseDIType = this._build(tsType, actualTypeArguments, this.emptyWeakMap);
-    const clauseTypes = implementsClauseTypes.map(it => {
-      if (!this.isReferenceType(it)) {
-        return this._build(it, null, this.emptyWeakMap);
-      }
-
-      const resolvedTypeArguments = Array.from(typeChecker.getTypeArguments(it))
-        .map(it => genericSymbolToType.get(it.symbol) ?? it);
-
-      return this._build(it, resolvedTypeArguments, this.emptyWeakMap);
-    });
-
-    return this.buildSyntheticIntersectionOrPlain([baseDIType, ...clauseTypes]);
+    return this.buildSyntheticIntersectionOrPlain(diTypes);
   }
 
   static buildSyntheticIntersectionOrPlain(diTypes: DIType[]): DIType {
@@ -147,22 +159,14 @@ export class DITypeBuilder {
     return diType;
   }
 
-  private static _build(tsType: ts.Type, resolvedTypeArguments: ts.Type[] | null, genericSymbolLookupTable: WeakMap<ts.Symbol, DIType>): DIType {
-    const typeSymbol = tsType.aliasSymbol ?? tsType.symbol;
-
-    const resolvedGenericType = genericSymbolLookupTable.get(typeSymbol);
-
-    if (resolvedGenericType) {
-      return resolvedGenericType;
-    }
-
+  private static _build(tsType: ts.Type, resolvedTypeArguments: ts.Type[] | null): DIType {
     const diType = new DIType();
 
     this.setTSFlags(diType, tsType);
     this.setTypeFlag(diType, tsType);
     this.trySetConstantValue(diType, tsType);
-    this.trySetTypeArguments(diType, tsType, resolvedTypeArguments, genericSymbolLookupTable);
-    this.setUnionOrIntersectionElements(diType, tsType, genericSymbolLookupTable);
+    this.trySetTypeArguments(diType, resolvedTypeArguments);
+    this.setUnionOrIntersectionElements(diType, tsType);
     this.trySetDeclarationInfo(diType, tsType);
 
     return diType;
@@ -172,12 +176,8 @@ export class DITypeBuilder {
     diType.tsTypeFlags = tsType.getFlags();
     diType.parsedTSTypeFlags = new Set(parseFlags(ts.TypeFlags, tsType.getFlags()));
 
-    const objectFlags = this.getObjectFlags(tsType);
-
-    if (objectFlags !== null) {
-      diType.tsObjectFlags = objectFlags;
-      diType.parsedTSObjectFlags = new Set(parseFlags(ts.ObjectFlags, objectFlags));
-    }
+    diType.tsObjectFlags = this.getObjectFlags(tsType);
+    diType.parsedTSObjectFlags = this.getObjectFlagsSet(tsType);
   }
 
   private static setTypeFlag(diType: DIType, tsType: ts.Type): void {
@@ -269,36 +269,13 @@ export class DITypeBuilder {
     }
   }
 
-  private static trySetTypeArguments(diType: DIType, tsType: ts.Type, resolvedTypeArguments: ts.Type[] | null, genericSymbolLookupTable: WeakMap<ts.Symbol, DIType>): void {
-    if (!diType.parsedTSObjectFlags.has(ts.ObjectFlags.Reference)) {
-      return;
-    }
-    const typeChecker = getCompilationContext().typeChecker;
-
-    const typedType = tsType as ts.TypeReference;
-
-    const typeArguments = resolvedTypeArguments ?? Array.from(typeChecker.getTypeArguments(typedType));
-    const baseTypeArgumentsLength = typeChecker.getTypeArguments(typedType.target).length;
-
-    //All this stuff needed when a class implements or extends something - it's adding last type argument as this type
-    // class A<T> {}
-    // class B extends A<string, this <-- ts will add it for some purpose, we need to get rid of it> {}
-    if (typeArguments.length === baseTypeArgumentsLength + 1) {
-      const lastTypeArgument = typeArguments[typeArguments.length - 1];
-
-      if (lastTypeArgument.isTypeParameter() && lastTypeArgument.isThisType) {
-        typeArguments.pop();
-      }
-    }
-
-    typeArguments.forEach(it => {
-      const typeArgument = this._build(it, null, genericSymbolLookupTable);
-
-      diType.typeArguments.push(typeArgument);
+  private static trySetTypeArguments(diType: DIType, resolvedTypeArguments: ts.Type[] | null): void {
+    resolvedTypeArguments?.forEach(it => {
+      diType.typeArguments.push(this.build(it));
     });
   }
 
-  private static setUnionOrIntersectionElements(diType: DIType, tsType: ts.Type, genericSymbolLookupTable: WeakMap<ts.Symbol, DIType>): void {
+  private static setUnionOrIntersectionElements(diType: DIType, tsType: ts.Type): void {
     if (!diType.isUnionOrIntersection) {
       return;
     }
@@ -306,7 +283,13 @@ export class DITypeBuilder {
     const types = (tsType as ts.UnionOrIntersectionType).types ?? [];
 
     types.forEach(it => {
-      const type = this._build(it, null, genericSymbolLookupTable);
+      const typeArguments = this.isReferenceType(it)
+        ? getCompilationContext().typeChecker.getTypeArguments(it)
+        : null;
+      const type = this._build(
+        it,
+        typeArguments as ts.Type[] | null
+      );
 
       diType.unionOrIntersectionTypes.push(type);
     });
@@ -363,8 +346,18 @@ export class DITypeBuilder {
     });
   }
 
-  private static getObjectFlags(tsType: ts.Type): ts.ObjectFlags | null {
+  static getObjectFlags(tsType: ts.Type): ts.ObjectFlags | null {
     return tsType.flags & ts.TypeFlags.Object ? (tsType as ts.ObjectType).objectFlags : null;
+  }
+
+  static getObjectFlagsSet(tsType: ts.Type): Set<ts.ObjectFlags> {
+    const objectFlags = this.getObjectFlags(tsType);
+
+    if (objectFlags === null) {
+      return new Set();
+    }
+
+    return new Set(parseFlags(ts.ObjectFlags, objectFlags));
   }
 
   private static isTupleType(type: ts.Type): boolean {
