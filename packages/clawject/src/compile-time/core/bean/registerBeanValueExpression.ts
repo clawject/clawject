@@ -1,5 +1,4 @@
 import ts, { GetAccessorDeclaration } from 'typescript';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
@@ -10,6 +9,7 @@ import { extractDecoratorMetadata } from '../decorator-processor/extractDecorato
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getBeanQualifierValue } from './getBeanQualifierValue';
 import { getBeanConditionExpressionValue } from './getBeanConditionExpressionValue';
+import { DITypeBuilder } from '../type-system/DITypeBuilder';
 
 export const registerBeanValueExpression = (
   configuration: Configuration,
@@ -25,7 +25,7 @@ export const registerBeanValueExpression = (
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
   });
 
-  bean.diType = DITypeBuilder.buildForClassBean(type, bean) ?? DITypeBuilder.build(type);
+  bean.diType = DITypeBuilder.build(type);
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
   bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
   bean.conditionExpression.node = getBeanConditionExpressionValue(bean);

@@ -143,11 +143,6 @@ export class DIType {
       return true;
     }
 
-    // Test, which is faster - generate ids or run comparison
-    // if (this.id === to.id) {
-    //     return true;
-    // }
-
     //If both are primitive types, we can stop here
     if (this.isPrimitive && (to.isPrimitive || to.isLiteral)) {
       return TypeCompatibilityMatrix.isCompatible(this.typeFlag, to.typeFlag);
@@ -170,8 +165,14 @@ export class DIType {
       return false;
     }
 
-    if (to.isIntersection) {
-      return to.unionOrIntersectionTypes.some(it => this.isCompatible(it));
+    if (this.isIntersection && to.isIntersection) {
+      return this.unionOrIntersectionTypes.every(it => {
+        return to.unionOrIntersectionTypes.some(toIt => it.isCompatible(toIt));
+      });
+    }
+
+    if (this.isIntersection) {
+      return this.unionOrIntersectionTypes.every(it => it.isCompatible(to));
     }
 
     if (this.isUnion && to.isIntersection) {
@@ -184,10 +185,8 @@ export class DIType {
       return this.unionOrIntersectionTypes.some(it => it.isCompatible(to));
     }
 
-    if (this.isIntersection && to.isIntersection) {
-      return this.unionOrIntersectionTypes.every(it => {
-        return to.unionOrIntersectionTypes.some(toIt => it.isCompatible(toIt));
-      });
+    if (to.isIntersection) {
+      return to.unionOrIntersectionTypes.some(it => this.isCompatible(it));
     }
 
     if (this.isTuple && to.isTuple) {

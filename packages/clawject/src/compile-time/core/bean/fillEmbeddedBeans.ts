@@ -1,4 +1,3 @@
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Bean } from './Bean';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
@@ -12,6 +11,7 @@ import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { BeanKind } from './BeanKind';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { DIType } from '../type-system/DIType';
+import { DITypeBuilder } from '../type-system/DITypeBuilder';
 
 export const fillEmbeddedBeans = (
   configuration: Configuration,

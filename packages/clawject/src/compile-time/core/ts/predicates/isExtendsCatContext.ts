@@ -1,7 +1,7 @@
 import ts from 'typescript';
-import { DITypeBuilder } from '../../type-system/DITypeBuilder';
 import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 import { BaseTypesRepository } from '../../type-system/BaseTypesRepository';
+import { DITypeBuilder } from '../../type-system/DITypeBuilder';
 
 export const isExtendsCatContext = (node: ts.Node): node is ts.ClassDeclaration => {
   if (!ts.isClassDeclaration(node)) {

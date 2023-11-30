@@ -1,6 +1,5 @@
 import ts from 'typescript';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
@@ -9,6 +8,7 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { LifecycleKind } from '../../../runtime/LifecycleKind';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
+import { DITypeBuilder } from '../type-system/DITypeBuilder';
 
 export const registerLifecycleBean = (
   configuration: Configuration,

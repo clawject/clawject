@@ -7,7 +7,7 @@ export const registerBeanDependenciesFromParameters = (
   parameters: ts.NodeArray<ts.ParameterDeclaration>,
 ): void => {
   parameters.forEach(parameter => {
-    const dependency = buildDependencyFromParameter(parameter, bean);
+    const dependency = buildDependencyFromParameter(parameter);
 
     bean.registerDependency(dependency);
   });

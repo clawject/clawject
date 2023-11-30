@@ -1,7 +1,6 @@
 import ts from 'typescript';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
@@ -12,6 +11,7 @@ import { extractDecoratorMetadata } from '../decorator-processor/extractDecorato
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getBeanQualifierValue } from './getBeanQualifierValue';
 import { getBeanConditionExpressionValue } from './getBeanConditionExpressionValue';
+import { DITypeBuilder } from '../type-system/DITypeBuilder';
 
 export const registerBeanFactoryMethod = (
   configuration: Configuration,
@@ -48,7 +48,7 @@ export const registerBeanFactoryMethod = (
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
   });
 
-  bean.diType = DITypeBuilder.buildForClassBean(returnType, bean) ?? DITypeBuilder.build(returnType);
+  bean.diType = DITypeBuilder.build(returnType);
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
   bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
   bean.conditionExpression.node = getBeanConditionExpressionValue(bean);

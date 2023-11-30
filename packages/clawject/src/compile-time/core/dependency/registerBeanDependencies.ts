@@ -11,7 +11,7 @@ export const registerBeanDependencies = (configuration: Configuration) => {
   configuration.beanRegister.elements.forEach(bean => {
     switch (bean.kind) {
     case BeanKind.CLASS_CONSTRUCTOR:
-      registerClassConstructorBeanDependencies(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
+      registerClassConstructorBeanDependencies(bean as Bean<ClassPropertyWithCallExpressionInitializer>, configuration);
       break;
 
     case BeanKind.FACTORY_METHOD:
