@@ -95,12 +95,10 @@ class Service {
     {
       provide: InjectionTokens.CustomerCache,
       useClass: CacheImpl,
-      multi: true
     },
     {
       provide: InjectionTokens.StoreCache,
       useClass: CacheImpl,
-      multi: true
     },
  ]
 })
