@@ -27,6 +27,8 @@ export const AddDependency = () => {
 
 export const TSPatchWebpackTSLoader = () => {
   const webpackCode = `
+    import { ClawjectWebpackPlugin } from '@clawject/di/webpack';
+
     export default {
       module: {
         rules: [{
@@ -39,7 +41,10 @@ export const TSPatchWebpackTSLoader = () => {
             compiler: 'ts-patch/compiler'
           }
         }]
-      }
+      },
+      plugins: [
+        new ClawjectWebpackPlugin()
+      ]
     };
   `;
   const tsconfigCode = `

@@ -11,9 +11,9 @@ Sometimes you need to inject an array or collection of beans into another bean,
 for example, when you need to inject listeners into a publisher, or caches into a cache manager.
 
 Clawject has some reserved types for arrays and collections:
-  - array: `ReadonlyArray<any> | Array<any> | readonly any[] | any[]`
-  - set: `ReadonlySet<any> | Set<any>`
-  - map: `ReadonlyMap<string, any> | Map<string, any>`
+  - array: `ReadonlyArray<T> | Array<T> | readonly T[] | T[]`
+  - set: `ReadonlySet<T> | Set<T>`
+  - map: `ReadonlyMap<string, T> | Map<string, T>`
 
 Note that all arrays and collections that are injected are non-singletons, so mutating one of them will not affect other beans.
 

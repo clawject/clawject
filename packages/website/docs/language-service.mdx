@@ -5,10 +5,11 @@ title: Language Service ✨
 The Clawject Language Service provides code editors (VSCode, WebStorm, etc.) with a way to get errors
 and navigation inside Beans, Contexts, etc.
 
-[Clawject package](https://www.npmjs.com/package/@clawject/di) provide language service,
+[Clawject package](https://www.npmjs.com/package/@clawject/di) provides language service plugin,
 but it can't be used directly because TypeScript not allows using language services that are not package itself,
 so `@clawject/language-service` package have `@clawject/di` as a peer-dependency and re-exporting its language service,
-so you shouldn't worry about versions compatibility, `@clawject/language-service` will always have single version.
+so you shouldn't worry about versions compatibility, `@clawject/language-service` will always have single version
+and just re-use `@clawject/di` language service.
 
 ## Installation
 
