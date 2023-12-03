@@ -1,7 +1,7 @@
 import { DITypeFlag } from './DITypeFlag';
 import { get } from 'lodash';
 
-export class TypeCompatibilityMatrix {
+export class PrimitiveTypeCompatibilityMatrix {
   static [DITypeFlag.ANY]: Set<DITypeFlag> = new Set(Object.values(DITypeFlag).filter(it => typeof it === 'number') as any);
   static [DITypeFlag.UNKNOWN]: Set<DITypeFlag> = this[DITypeFlag.ANY];
   static [DITypeFlag.NEVER]: Set<DITypeFlag> = new Set([]);
@@ -20,10 +20,6 @@ export class TypeCompatibilityMatrix {
   static [DITypeFlag.BIGINT_LITERAL]: Set<DITypeFlag> = new Set([]);
 
   static isCompatible(from: DITypeFlag, to: DITypeFlag): boolean {
-    if (from === DITypeFlag.UNSUPPORTED || to === DITypeFlag.UNSUPPORTED) {
-      return false;
-    }
-
     if (from === to) {
       return true;
     }
@@ -32,8 +28,6 @@ export class TypeCompatibilityMatrix {
       return false;
     }
 
-    const compatibleValues = get(this, from, new Set<DITypeFlag>());
-
-    return compatibleValues.has(to) ?? false;
+    return get(this, from, new Set<DITypeFlag>()).has(to);
   }
 }

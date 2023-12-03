@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { DeclarationInfo } from './DeclarationInfo';
-import { TypeCompatibilityMatrix } from './TypeCompatibilityMatrix';
+import { PrimitiveTypeCompatibilityMatrix } from './PrimitiveTypeCompatibilityMatrix';
 import { DITypeFlag } from './DITypeFlag';
 import { escape } from 'lodash';
 import { BaseTypesRepository } from './BaseTypesRepository';
@@ -135,7 +135,8 @@ export class DIType {
   }
 
   isCompatible(to: DIType): boolean {
-    if (this.typeFlag === DITypeFlag.UNSUPPORTED || to.typeFlag === DITypeFlag.UNSUPPORTED) {
+    //If any of the types is unresolvable, we can't check compatibility
+    if (this.typeFlag < DITypeFlag.ANONYMOUS || to.typeFlag < DITypeFlag.ANONYMOUS) {
       return false;
     }
 
@@ -145,10 +146,10 @@ export class DIType {
 
     //If both are primitive types, we can stop here
     if (this.isPrimitive && (to.isPrimitive || to.isLiteral)) {
-      return TypeCompatibilityMatrix.isCompatible(this.typeFlag, to.typeFlag);
+      return PrimitiveTypeCompatibilityMatrix.isCompatible(this.typeFlag, to.typeFlag);
     }
 
-    //If this is literal type, and other, as well, we can stop here
+    //If `this` is a literal type, and `to`, as well, we can stop here
     if (this.isLiteral && this.typeFlag === to.typeFlag && this.constantValue !== undefined) {
       if (this.typeFlag === DITypeFlag.BIGINT_LITERAL) {
         const thisValue = this.constantValue as ts.PseudoBigInt;

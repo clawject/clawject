@@ -5,6 +5,7 @@ import { DITypeFlag } from './DITypeFlag';
 import { DeclarationInfo } from './DeclarationInfo';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { get } from 'lodash';
+import { isNotEmpty } from '../utils/isNotEmpty';
 
 /**
  * notes:
@@ -27,15 +28,21 @@ class TypeWithTypeArguments {
 }
 
 export class DITypeBuilder {
-  static build(type: ts.Type): DIType {
+  static build(tsType: ts.Type): DIType {
+    let type = tsType;
     const typeChecker = getCompilationContext().typeChecker;
     const objectFlags = this.getObjectFlagsSet(type);
+    const typeFlags = new Set(parseFlags(ts.TypeFlags, type.getFlags()));
+
+    if (typeFlags.has(ts.TypeFlags.TypeParameter) && typeFlags.has(ts.TypeFlags.IncludesMissingType)) {
+      type = typeChecker.getBaseConstraintOfType(type) ?? type;
+    }
 
     if (objectFlags.size === 0) {
       return this._build(type, null);
     }
 
-    if (!objectFlags.has(ObjectFlags.Reference)) {
+    if (!objectFlags.has(ObjectFlags.Reference) && !objectFlags.has(ObjectFlags.ClassOrInterface)) {
       return this._build(type, null);
     }
 
@@ -55,8 +62,7 @@ export class DITypeBuilder {
       processedElements.push(typeWithTypeArguments);
 
       if (!typeSymbol) {
-        //TODO handle missing symbols?
-        continue;
+        return this.unknown();
       }
 
       typeSymbol.getDeclarations()?.forEach((declaration, index) => {
@@ -70,12 +76,8 @@ export class DITypeBuilder {
           const heritageClausesMembers = declaration.heritageClauses?.map(it => it.types).flat() ?? [];
 
           heritageClausesMembers.forEach(member => {
-            if (!member.typeArguments) {
-              return;
-            }
-
             const memberSymbol = typeChecker.getTypeAtLocation(member).getSymbol();
-            const memberTypeArguments = member.typeArguments.map(it => {
+            const memberTypeArguments = member.typeArguments?.map(it => {
               const type = typeChecker.getTypeAtLocation(it);
               if (isThisTypeParameter(type)) {
                 return;
@@ -100,7 +102,7 @@ export class DITypeBuilder {
               }
 
               return foundType ?? type;
-            }).filter(it => it !== undefined) as ts.Type[];
+            }).filter(isNotEmpty) ?? [];
 
             const typeWithTypeArguments = new TypeWithTypeArguments(memberSymbol, memberTypeArguments);
 
