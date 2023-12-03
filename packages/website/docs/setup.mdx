@@ -8,9 +8,13 @@ title: Setup 🛠️
 
 ## Installation
 
-import { AddDependency } from '@site/src/docs-components/Setup';
+import { AddDependency } from '../src/docs-components/Setup';
 
 <AddDependency />
+
+:::tip
+Do not forget to [install language service plugin](./language-service.mdx) to get support for **Clawject** features right in your code editor!
+:::
 
 ## ts-patch
 *Patches typescript to allow custom transformers (plugins) during build.*
@@ -35,7 +39,7 @@ Also, if you're using **Babel** - please make sure that it's applied **after** t
 [ts-loader#transpileOnly](https://github.com/TypeStrong/ts-loader#transpileonly)
 :::
 
-import { TSPatchWebpackTSLoader } from '@site/src/docs-components/Setup';
+import { TSPatchWebpackTSLoader } from '../src/docs-components/Setup';
 
 <TSPatchWebpackTSLoader />
 
@@ -46,7 +50,7 @@ Currently **Vite** or **rollup-plugin-typescript2** not correctly utilizes ts-pa
 it's ignoring compilation errors produced by Clawject, so it could lead to runtime errors.
 :::
 
-import { TSPatchViteRollupPlugin } from '@site/src/docs-components/Setup';
+import { TSPatchViteRollupPlugin } from '../src/docs-components/Setup';
 
 <TSPatchViteRollupPlugin />
 
@@ -75,6 +79,6 @@ If you don't want to use ts-patch for some reason - you can utilize Clawject fea
 
 ### webpack, ts-loader
 
-import { WebpackTSLoader } from '@site/src/docs-components/Setup';
+import { WebpackTSLoader } from '../src/docs-components/Setup';
 
 <WebpackTSLoader />
