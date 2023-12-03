@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../website/src/docs-components/Intro.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../website/static/img/spring.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Scope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Scope.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/api/bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/api/bean.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/docs/intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/intro.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/css/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/css/custom.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../website/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

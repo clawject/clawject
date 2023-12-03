@@ -1,6 +1,21 @@
 {
   "name": "@clawject/di",
   "version": "SHOULD_BE_REPLACED_BY_THE_BUILD_SCRIPT",
+  "keywords": [
+    "dependency-injection",
+    "framework",
+    "javascript-framework",
+    "typescript-framework",
+    "di",
+    "ioc",
+    "inversion-of-control",
+    "typescript",
+    "ts",
+    "webpack",
+    "rollup",
+    "lsp",
+    "language-server"
+  ],
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "./dist/types/index.d.ts",

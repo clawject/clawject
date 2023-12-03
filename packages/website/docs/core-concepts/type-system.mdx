@@ -257,14 +257,12 @@ class ApplicationContext extends CatContext {
 
 When type is a class or interface type -
 Clawject will automatically resolve a chain of type inheritance together with generics.
-
-Let's take a look at the next example:
+So, if you have class `CacheImpl<T>` that implements `ICache<T>` interface, and `ICahce<T>` is extends `IReadOnlyCache<T>` interface,
+Clawject will treat `CacheImpl<T>` as an intersection of `CacheImpl<T>`, `ICache<T>` and `IReadOnlyCache<T>`.
 
 ```ts
-import { Bean, CatContext } from '@clawject/di';
-
 import { Customer } from './customer';
-import { Store } from './customer';
+import { Store } from './store';
 
 interface IReadOnlyCache<V> {
   get(key: string): V | null;
