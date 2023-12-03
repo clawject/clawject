@@ -33,8 +33,8 @@ class ApplicationContext extends CatContext {
   service = Bean(Service)
 
   @PostConstruct
-  init() {
-    this.service.start();
+  init(service: Service) {
+    service.start();
   }
 }
 
