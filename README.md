@@ -1,6 +1,4 @@
-# Clawject <img alt="logo" height="30" src="https://clawject.org/img/favicon.svg"/>
-
-<hr />
+# Clawject
 
 ![npm_version](https://img.shields.io/npm/v/%40clawject/di?style=flat-square&color=ff7aa7)
 ![license](https://img.shields.io/npm/l/%40clawject%2Fdi?style=flat-square)
