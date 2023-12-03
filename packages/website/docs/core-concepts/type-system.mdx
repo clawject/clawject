@@ -197,93 +197,116 @@ class MyContext extends CatContext {
 ## Generic types
 Clawject has first-class support for generic types:
 
-```mdx-code-block
-<Tabs>
-<TabItem value="string-generic" label="String generic">
-```
-
 ```ts
-interface WithGeneric<T> {
-  value: T;
-}
+import {Bean, CatContext} from '@clawject/di';
 
-class MyContext extends CatContext {
-  @Bean withStringGeneric: WithGeneric<string> = {value: 'foo'};
-
-  @PostConstruct
-  postConstruct(
-    value: WithGeneric<string>,
+class Foo<T> {
+  constructor(
+    private data: T
   ) {}
 }
+
+class ApplicationContext extends CatContext {
+  @Bean stringData = 'meow';
+  @Bean numberData = 42;
+
+  /* `stringData` bean will be injected for constructor parameter `data` */
+  fooWithString = Bean(Foo<string>);
+
+  /* `numberData` bean will be injected for constructor parameter `data` */
+  fooWithNumber = Bean(Foo<number>);
+}
 ```
 
-```mdx-code-block
-</TabItem>
+:::tip
+- If a generic type has a default value, it will be used as a fallback type.
+- If a generic type has `extends` constraint - it will be used as a fallback type.
+- If you're not specifying a generic type explicitly, and it doesn't have default value or `extends` constraint - it will be treated as `unknown` type.
+:::
 
-<TabItem value="string-literal-generic" label="String literal generic">
-```
+Let's take a look at the next example to better understand how generic types are resolved when they are not specified explicitly:
 
 ```ts
-interface WithGeneric<T> {
-  value: T;
+class Foo<T> {
+  constructor(data: T) {}
 }
 
-class MyContext extends CatContext {
-  @Bean withStringGeneric: WithGeneric<'string_literal'> = {value: 'string_literal'};
+class Bar<T = string> {
+  constructor(data: T) {}
+}
 
-  @PostConstruct
-  postConstruct(
-    value: WithGeneric<'string_literal'>,
-  ) {}
+class Baz {}
+class Quux<T extends Baz> {
+  constructor(data: T) {}
+}
+
+class ApplicationContext extends CatContext {
+  /* The type of parameter `data` will be `unknown` */
+  foo = Bean(Foo)
+
+  /* The type of parameter `data` will be `string` */
+  bar = Bean(Bar)
+
+  baz = Bean(Baz)
+  /* The type of parameter `data` will be `Baz` */
+  quux = Bean(Quux)
 }
 ```
 
-```mdx-code-block
-</TabItem>
+## Classes and Interfaces inheritance
 
-<TabItem value="string-literal-generic-string" label="String literal generic with base string">
-```
+When type is a class or interface type -
+Clawject will automatically resolve a chain of type inheritance together with generics.
+
+Let's take a look at the next example:
 
 ```ts
-interface WithGeneric<T> {
-  value: T;
+import { Bean, CatContext } from '@clawject/di';
+
+import { Customer } from './customer';
+import { Store } from './customer';
+
+interface IReadOnlyCache<V> {
+  get(key: string): V | null;
 }
 
-class MyContext extends CatContext {
-  @Bean withStringGeneric: WithGeneric<'string_literal'> = {value: 'string_literal'};
+interface ICache<V> extends IReadOnlyCache<V> {
+  set(key: string, value: V): void;
+  clear(): void;
+}
 
-  @PostConstruct
-  postConstruct(
-    value: WithGeneric<string>,
+class CacheImpl<V> implements ICache<V> {
+  /* ... */
+}
+
+class CustomerService {
+  constructor(
+    /* Clawject injects "customerCache" bean just by interface with a generic type */
+    private cache: IReadOnlyCache<Customer>
   ) {}
 }
-```
 
-```mdx-code-block
-</TabItem>
-
-<TabItem value="string-literal-generic-any" label="String literal generic with any">
-```
-
-```ts
-interface WithGeneric<T> {
-  value: T;
-}
-
-class MyContext extends CatContext {
-  @Bean withStringGeneric: WithGeneric<'string_literal'> = {value: 'string_literal'};
-
-  @PostConstruct
-  postConstruct(
-    // "withStringGeneric" will be injected, because 'string_literal' is compatible with any
-    value: WithGeneric<any>,
+class StoreService {
+  constructor(
+    /* Clawject injects "storeCache" bean just by interface with a generic type */
+    private cache: ICache<Store>
   ) {}
 }
-```
 
-```mdx-code-block
-</TabItem>
-</Tabs>
+class CacheManager {
+  constructor(
+    /* Clawject injects array of all found beans with type ICache (customerCache, storeCache) */
+    private caches: ICache<any>[]
+  ) {}
+}
+
+class ApplicationContext extends CatContext {
+  customerCache = Bean(CacheImpl<Customer>);
+  storeCache = Bean(CacheImpl<Store>);
+  customerService = Bean(CustomerService);
+  storeService = Bean(StoreService);
+  cacheManager = Bean(CacheManager);
+}
 ```
 
 ## Intersection types

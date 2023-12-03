@@ -1,20 +1,12 @@
-import {Bean, CatContext, ContainerManager, PostConstruct} from '@clawject/di';
+import {Bean, CatContext} from '@clawject/di';
 
-interface InterfaceThatExtends {}
-interface InterfaceThatExtends2 extends InterfaceThatExtends {}
-
-type Test = { a: string };
-
-class ApplicationContext extends CatContext {
-  @Bean interfaceThatExtends2: InterfaceThatExtends2 = {};
-  @Bean interfaceThatExtends: InterfaceThatExtends = {};
-
-  @PostConstruct
-  init(
-    aaa: string,
-  ) {
-    console.log('init');
-  }
+class Bar<T = string> {
+  constructor(data: T) {}
 }
 
-ContainerManager.init(ApplicationContext);
+class ApplicationContext extends CatContext {
+  @Bean str = '';
+
+  /* The type of parameter `data` will be `string` */
+  bar = Bean(Bar);
+}

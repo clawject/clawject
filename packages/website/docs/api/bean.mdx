@@ -188,8 +188,13 @@ The next two examples are equivalent:
 ```
 
 ```ts
+class Foo {}
+
 class MyContext extends CatContext {
-  @Bean foo = 'fooValue'; // <- type of Bean will be "string"
+  @Bean propertyBean = new Foo();
+  @Bean factoryMethodBean() { return new Foo(); }
+  @Bean arrowFunctionBean = () => new Foo();
+  functionBean = Bean(Foo);
 }
 ```
 
@@ -201,7 +206,10 @@ class MyContext extends CatContext {
 
 ```ts
 class MyContext extends CatContext {
-  @Bean foo: string = 'fooValue'; // <- type of Bean will be "string"
+  @Bean propertyBean: Foo = new Foo();
+  @Bean factoryMethodBean(): Foo { return new Foo(); }
+  @Bean arrowFunctionBean = (): Foo => new Foo();
+  functionBean = Bean<Foo>(Foo);
 }
 ```
 
@@ -210,34 +218,40 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-When your bean type is a class-type -
-Clawject will automatically resolve a class type including `implements` and `extends` clauses types.
+### Bean type narrowing
 
-:::info Note
-Only first level of `extends` and `implements` clauses will be resolved,
-so if your class extends another class, and that class extends another class, -
-only a first class type will be resolved.
-:::
+If you want to narrow bean type - you can use `as` operator or specify a bean type explicitly.
 
-Let's take a look at the next example:
+In this example we will narrow a bean type from `FooBar & IFoo & IBar` to `IFoo`:
 
 ```ts
-class AbstractBar {}
-class AbstractFoo extends AbstractBar {}
+import { Bean, CatContext, PostConstruct } from '@clawject/di';
 
-interface IFoo {}
+interface IFoo {
+  foo: string;
+}
 
-class Foo extends AbstractFoo implements IFoo {}
+interface IBar {
+  bar: string;
+}
 
-class MyContext extends CatContext {
-  foo = Bean(Foo);
+class FooBar implements IFoo, IBar {
+  foo = 'foo';
+  bar = 'bar';
+}
+
+class ApplicationContext extends CatContext {
+  /* The type of bean is IFoo now */
+  fooBar = Bean<IFoo>(FooBar);
 
   @PostConstruct
-  postConstruct(
-    foo: Foo, // <- "foo" will be injected
-    iFoo: IFoo, // <- "foo" will be injected, "Foo" explicitly implements "IFoo"
-    abstractFoo: AbstractFoo, // <- "foo" will be injected, "Foo" explicitly extends "AbstractFoo"
-    abstractBar: AbstractBar, // <- compilation error will be reported, no bean of type "AbstractBar" were found
+  init(
+    /* fooBar bean will be injected */
+    foo: IFoo,
+    /* Compilation error here because no beans found with type IBar */
+    bar: IBar,
+    /* Compilation error here because no beans found with type FooBar */
+    fooBar: FooBar,
   ) {}
 }
 ```
