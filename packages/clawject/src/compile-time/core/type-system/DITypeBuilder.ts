@@ -35,7 +35,7 @@ export class DITypeBuilder {
     const typeFlags = new Set(parseFlags(ts.TypeFlags, type.getFlags()));
 
     if (typeFlags.has(ts.TypeFlags.TypeParameter) && typeFlags.has(ts.TypeFlags.IncludesMissingType)) {
-      type = typeChecker.getBaseConstraintOfType(type) ?? type;
+      type = typeChecker.getDefaultFromTypeParameter(type) ?? typeChecker.getBaseConstraintOfType(type) ?? type;
     }
 
     if (objectFlags.size === 0) {

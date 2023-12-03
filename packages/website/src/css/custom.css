@@ -10,6 +10,12 @@
   --ifm-link-hover-color: #538ce9;
 
   --ifm-code-font-size: 83%;
+
+  --ifm-tabs-padding-horizontal: 1rem;
+  --ifm-tabs-padding-vertical: 0.3rem;
+
+  --ifm-tabs-color-active: var(--ifm-color-primary-light);
+  --ifm-tabs-color-active-border: var(--ifm-tabs-color-active);
 }
 
 /* You can override the default Infima variables here. */
