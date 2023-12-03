@@ -3,7 +3,7 @@ import React from 'react';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import { useFormattedCode } from '@site/src/codeblocks/useFormattedCode';
+import { useFormattedCode } from '@site/src/docs-components/useFormattedCode';
 
 export const AddDependency = () => {
   const yarnAddCode = 'yarn add @clawject/di';

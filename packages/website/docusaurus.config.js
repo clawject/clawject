@@ -18,19 +18,19 @@ const config = {
   baseUrl: '/',
 
   plugins: [
-    () => ({
-      name: 'shopify-worker-plugin',
-      configureWebpack() {
-        return {
-          output: {
-            globalObject: 'self',
-          },
-          plugins: [
-            new (require('@shopify/web-worker/webpack').WebWorkerPlugin)(),
-          ]
-        };
-      }
-    }),
+    // () => ({
+    //   name: 'shopify-worker-plugin',
+    //   configureWebpack() {
+    //     return {
+    //       output: {
+    //         globalObject: 'self',
+    //       },
+    //       plugins: [
+    //         new (require('@shopify/web-worker/webpack').WebWorkerPlugin)(),
+    //       ]
+    //     };
+    //   }
+    // }),
   ],
 
   trailingSlash: undefined,
@@ -82,7 +82,7 @@ const config = {
         hideOnScroll: true,
         logo: {
           alt: 'Clawject logo',
-          src: 'img/logo.svg',
+          src: 'img/favicon.svg',
         },
         items: [
           {

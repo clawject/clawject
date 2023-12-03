@@ -1,4 +1,5 @@
 export enum DITypeFlag {
+  UNRESOLVABLE = -3,
   UNSUPPORTED = -2,
   ANONYMOUS = -1,
 

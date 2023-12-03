@@ -1,48 +1,20 @@
-import {
-  Bean,
-  CatContext,
-  ContainerManager,
-  CustomScope,
-  ObjectFactory,
-  ObjectFactoryResult,
-  PostConstruct,
-  Scope,
-  ScopeRegister
-} from '@clawject/di';
+import {Bean, CatContext, ContainerManager, PostConstruct} from '@clawject/di';
 
-interface Interface<T> extends ParentParent<T> {
-  b: T;
-}
+interface InterfaceThatExtends {}
+interface InterfaceThatExtends2 extends InterfaceThatExtends {}
 
-class ParentParent<T> implements Interface<T> {
-  b: T = 1 as any;
-}
+type Test = { a: string };
 
-class ClassParent<T, NULL = null> extends ParentParent<T> implements Interface<T> {
-  constructor(
-    data: T,
-    nul: NULL,
-    undef: undefined,
-    voi: void,
-  ) {
-    super();
-  }
-}
-
-class Base<DATA, NULL = null> extends ClassParent<DATA, NULL> implements Interface<DATA>  {
-  override b = 1 as any;
-}
-
-class MyContext extends CatContext {
-  @Bean str = '';
-  base = Bean(Base<string>);
+class ApplicationContext extends CatContext {
+  @Bean interfaceThatExtends2: InterfaceThatExtends2 = {};
+  @Bean interfaceThatExtends: InterfaceThatExtends = {};
 
   @PostConstruct
-  postConstruct(
-    sssssss: Map<string, any>,
-  ): void {
-    console.log('postConstruct');
+  init(
+    aaa: string,
+  ) {
+    console.log('init');
   }
 }
 
-ContainerManager.init(MyContext);
+ContainerManager.init(ApplicationContext);

@@ -8,7 +8,7 @@ title: Setup 🛠️
 
 ## Installation
 
-import { AddDependency } from '@site/src/codeblocks/Setup';
+import { AddDependency } from '@site/src/docs-components/Setup';
 
 <AddDependency />
 
@@ -35,7 +35,7 @@ Also, if you're using **Babel** - please make sure that it's applied **after** t
 [ts-loader#transpileOnly](https://github.com/TypeStrong/ts-loader#transpileonly)
 :::
 
-import { TSPatchWebpackTSLoader } from '@site/src/codeblocks/Setup';
+import { TSPatchWebpackTSLoader } from '@site/src/docs-components/Setup';
 
 <TSPatchWebpackTSLoader />
 
@@ -46,7 +46,7 @@ Currently **Vite** or **rollup-plugin-typescript2** not correctly utilizes ts-pa
 it's ignoring compilation errors produced by Clawject, so it could lead to runtime errors.
 :::
 
-import { TSPatchViteRollupPlugin } from '@site/src/codeblocks/Setup';
+import { TSPatchViteRollupPlugin } from '@site/src/docs-components/Setup';
 
 <TSPatchViteRollupPlugin />
 
@@ -75,6 +75,6 @@ If you don't want to use ts-patch for some reason - you can utilize Clawject fea
 
 ### webpack, ts-loader
 
-import { WebpackTSLoader } from '@site/src/codeblocks/Setup';
+import { WebpackTSLoader } from '@site/src/docs-components/Setup';
 
 <WebpackTSLoader />

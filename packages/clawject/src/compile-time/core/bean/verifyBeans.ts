@@ -13,6 +13,7 @@ import { NotStaticallyKnownError } from '../../compilation-context/messages/erro
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
+  [DITypeFlag.UNRESOLVABLE, 'unresolvable'],
   [DITypeFlag.UNSUPPORTED, 'unsupported'],
   [DITypeFlag.ANONYMOUS, 'anonymous'],
   [DITypeFlag.NEVER, 'never'],

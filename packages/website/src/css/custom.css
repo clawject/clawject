@@ -8,6 +8,8 @@
   --ifm-color-primary-lightest: #ffb1d9;
 
   --ifm-link-hover-color: #538ce9;
+
+  --ifm-code-font-size: 83%;
 }
 
 /* You can override the default Infima variables here. */

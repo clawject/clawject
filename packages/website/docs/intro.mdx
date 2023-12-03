@@ -3,27 +3,77 @@ title: Introduction
 slug: /
 ---
 
-Clawject is TypeScript Dependency Injection framework that's here to make your coding life a breeze.
-No more wrestling with injection tokens and drowning in boilerplate code.
-With Clawject, you can simply focus on writing clean classes, defining interfaces, and managing types,
-while the framework takes care of the rest.
-Say goodbye to the headaches and hello to a smoother TypeScript development journey with Clawject!
-🎉
+Clawject is TypeScript Dependency Injection framework that's here to make your coding life easier.
+Forget about **injection tokens**, **providers** and a huge number of **decorators on and in your business classes**.
 
-```ts title="main.ts"
-import { Bean, CatContext } from '@clawject/di';
+Clawject maintains dependency resolution, instantiation, instances injection,
+objects' lifecycle, cyclic-dependency detection and more for you.
 
-interface IFoo {}
-class Foo implements IFoo { /* ... */ }
+Use typescript interfaces, generics, type hierarchies and let Clawject do messy work for you.
 
-class Bar {
+### Don't do this to inject interface implementation
+```ts
+/* connection.ts */
+interface Connection {/* ... */}
+class ConnectionImpl implements Connection {/* ... */}
+const connection = new ConnectionImpl()
+
+/* index.ts */
+import { connection } from './connection';
+
+@Module({
+  providers: [
+    {
+      provide: 'CONNECTION',
+      useValue: connection,
+    },
+  ],
+})
+export class AppModule {}
+
+```
+
+```ts
+import { Bean, CatContext, ContainerManager } from '@clawject/di';
+
+interface IReadOnlyCache<V> {
+  get(key: string): V | null;
+}
+interface ICache<V> extends IReadOnlyCache<V> {
+  set(key: string, value: V): void;
+  clear(): void;
+}
+
+class InMemoryCache<V> implements ICache<V> {
+  /* ... */
+}
+
+class CustomerService {
   constructor(
-    private foo: IFoo // <-- Clawject will automatically inject implementation of IFoo interface
+    /* Clawject injects "customerCache" bean just by interface with a generic type */
+    private cache: IReadOnlyCache<Customer>
+  ) {}
+}
+class StoreService {
+  constructor(
+    /* Clawject injects "storeCache" bean just by interface with a generic type */
+    private cache: ICache<Store>
+  ) {}
+}
+class CacheManager {
+  constructor(
+    /* Clawject injects array of all found beans with type ICache (customerCache, storeCache) */
+    private caches: ICache<any>[]
   ) {}
 }
 
 class ApplicationContext extends CatContext {
-  fooBean = Bean(Foo);
-  barBean = Bean(Bar);
+  customerCache = Bean(InMemoryCache<Customer>)
+  storeCache = Bean(InMemoryCache<Store>)
+  customerService = Bean(CustomerService)
+  storeService = Bean(StoreService)
+  cacheManager = Bean(CacheManager)
 }
+
+ContainerManager.init(ApplicationContext)
 ```

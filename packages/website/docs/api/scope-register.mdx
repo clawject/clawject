@@ -31,7 +31,7 @@ Returns `true` if scope by given name existed and has been removed, or `false` i
 ```ts
 import { ScopeRegister } from '@clawject/di';
 
-ScopeRegister.unregisterScope('my-scope');
+const hasBeenRegistered = ScopeRegister.unregisterScope('my-scope');
 ```
 
 ### `ScopeRegister.hasScope`
