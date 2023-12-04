@@ -21,6 +21,7 @@
     "@monaco-editor/react": "^4.5.1",
     "@shopify/web-worker": "^6.0.5",
     "@typescript/vfs": "^1.4.0",
+    "classnames": "^2.3.2",
     "clsx": "^1.2.1",
     "monaco-editor": "^0.40.0",
     "prettier": "^3.1.0",
@@ -29,6 +30,7 @@
     "react-async": "^10.0.1",
     "react-async-hook": "^4.0.0",
     "react-dom": "^18.2.0",
+    "react-type-animation": "^3.2.0",
     "runtimeTS": "npm:typescript@^4.9.5",
     "styled-components": "^6.0.3"
   },

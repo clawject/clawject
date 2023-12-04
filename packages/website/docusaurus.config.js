@@ -7,9 +7,9 @@ const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Clawject: DI made easy',
+  title: 'Clawject | DI made easy',
   tagline: 'TypeScript DI made easy',
-  favicon: 'img/favicon.svg',
+  favicon: 'img/logo.svg',
 
   // Set the production url of your site here
   url: 'https://clawject.org',
@@ -82,7 +82,7 @@ const config = {
         hideOnScroll: true,
         logo: {
           alt: 'Clawject logo',
-          src: 'img/favicon.svg',
+          src: 'img/logo.svg',
         },
         items: [
           {
@@ -98,8 +98,8 @@ const config = {
           // },
           {
             href: 'https://github.com/clawject/clawject',
-            label: 'GitHub',
             position: 'right',
+            className: 'header-github-link',
           },
         ],
       },
@@ -148,11 +148,7 @@ const config = {
         darkTheme: darkTheme,
         additionalLanguages: ['typescript', 'javascript', 'json', 'bash'],
         magicComments: [
-          {
-            className: 'theme-code-block-highlighted-line',
-            line: 'highlight-next-line',
-            block: {start: 'highlight-start', end: 'highlight-end'},
-          },
+
         ],
       },
 

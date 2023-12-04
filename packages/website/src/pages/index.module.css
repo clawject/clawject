@@ -1,4 +1,46 @@
-.homepageHeader {
-  height: 60vh;
+.hero {
+  display: flex;
+  justify-content: center;
+  gap: 10rem;
+}
 
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media screen and (max-width: 996px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .contentContainer {
+    align-items: center;
+  }
+}
+
+.logoContainer {
+  position: relative;
+  width: 128px;
+}
+
+.logoBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /*background: linear-gradient(-45deg, var(--logo-bg-gradien-start) 50%, var(--logo-bg-gradien-end) 50%);*/
+  background: linear-gradient(125deg, rgba(241, 69, 132, 0.7) 31%, rgba(0, 212, 255, 0.7) 77%);
+  filter: blur(50px);
+}
+
+.logo {
+  position: relative;
+  width: 128px;
 }
