@@ -54,7 +54,6 @@ class Service {
       provide: InjectionTokens.CustomerCache,
       useClass: CacheImpl,
     },
-
     {
       provide: InjectionTokens.StoreCache,
       useClass: CacheImpl,
