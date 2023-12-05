@@ -141,39 +141,18 @@ class MyContext extends CatContext {
 
 Bean type is a type of value that bean will provide as a dependency for other beans.
 
-There are a few restrictions on bean value types: `undefined`, `void`, `null`, `never` or union type.
+There are a few restrictions on bean value types: `symbol`, `undefined`, `void`, `null`, `never` and `union` type.
 If you specify an invalid bean type, you will get compile-time error.
-Let's take a look at invalid bean types:
-
-```mdx-code-block
-<Tabs>
-<TabItem value="undefined-void-null-never" label="undefined, void, null, never">
-```
 
 ```ts
 class MyContext extends CatContext {
-  @Bean foo: undefined = undefined;
-  @Bean bar: void = undefined;
-  @Bean baz: null = null;
-  @Bean quux(): never { throw new Error('never'); }
+  @Bean symb = Symbol();
+  @Bean undef: undefined = undefined;
+  @Bean void: void = undefined;
+  @Bean nul: null = null;
+  @Bean never(): never { throw new Error('never'); }
+  @Bean union: string | number = 'union';
 }
-```
-
-```mdx-code-block
-</TabItem>
-
-<TabItem value="union-type" label="union">
-```
-
-```ts
-class MyContext extends CatContext {
-  @Bean foo: string | number = 'string';
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
 ```
 
 ## Specifying Bean type

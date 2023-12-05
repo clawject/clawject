@@ -8,13 +8,16 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "plugins": [
+      {
+        "transform": "@clawject/di/transformer"
+      }
+    ]
   },
   "include": [
     "helpers",
     "suites/**/*.test.ts"
-  ],
-  "exclude": [
-    "suites/**/fs/**/*"
   ]
 }

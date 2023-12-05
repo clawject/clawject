@@ -21,6 +21,7 @@ const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNDEFINED, 'undefined'],
   [DITypeFlag.NULL, 'null'],
   [DITypeFlag.UNION, 'union'],
+  [DITypeFlag.SYMBOL, 'symbol'],
 ]);
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.AbstractKeyword, 'abstract'],

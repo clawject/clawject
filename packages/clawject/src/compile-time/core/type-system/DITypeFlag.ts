@@ -15,6 +15,7 @@ export enum DITypeFlag {
   BOOLEAN,
   ENUM,
   BIGINT,
+  SYMBOL,
 
   //LITERALS
   STRING_LITERAL,
@@ -24,7 +25,8 @@ export enum DITypeFlag {
   BIGINT_LITERAL,
 
   //COMPLEX
-  OBJECT,
+  UNIQUE_SYMBOL,
+  TYPE_REFERENCE, //class, interface, type alias is not supported for now
   UNION,
   INTERSECTION,
   TUPLE,

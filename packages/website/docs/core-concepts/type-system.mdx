@@ -68,7 +68,7 @@ class MyContext extends CatContext {
 ```
 
 ## Primitive types
-Clawject supports all base types from TypeScript:
+Clawject supports all primitive types from TypeScript:
  - `any | unknown`
  - `void | undefined`
  - `null`
@@ -77,9 +77,14 @@ Clawject supports all base types from TypeScript:
  - `boolean`
  - `enum`
  - `bigint`
- - `Symbol`
+ - `symbol`
+ - `unique symbol`
 
-Also - Clawject supports literal types, literal types are compatible with base types:
+:::tip
+Check [Bean Types](../api/bean.mdx#bean-types) section for not supported bean types.
+:::
+
+Also - Clawject supports literal (const) types, literal types are compatible with base types:
  - string literal: `'string_literal'`
  - number literal: `123`
  - boolean literal: `true` or `false`
@@ -115,7 +120,7 @@ class MyContext extends CatContext {
 ```mdx-code-block
 </TabItem>
 
-<TabItem value="compact-type" label="Compact type declaration">
+<TabItem value="const-type" label="Type declaration with const">
 ```
 
 ```ts
@@ -372,5 +377,31 @@ class MyContext extends CatContext {
   postConstruct(
     dep0: IFoo | IBar, // <- "bar" will be injected here, because it was registered as a bean before 'foo'
   ) {}
+}
+```
+
+## Type aliases
+
+From the typescript point of view -
+type aliases are just a wrapper sugar around base types like `string`, `number`, `interface`, etc.
+So type aliases will be treated as a set base types.
+
+Example:
+
+```ts
+interface Foo {}
+interface Bar {}
+
+type Baz = Foo & Bar;
+
+class MyContext extends CatContext {
+  /* Type of Bean resolved to `Foo` */
+  @Bean foo: Foo = {};
+  /* Type of Bean resolved to `Bar` */
+  @Bean bar: Bar = {};
+  /* Type of Bean resolved to `Foo & Bar` */
+  @Bean baz: Baz = {};
+  /* Type is identical to `baz` Bean */
+  @Bean fooAndBar: Foo & Bar = {};
 }
 ```
