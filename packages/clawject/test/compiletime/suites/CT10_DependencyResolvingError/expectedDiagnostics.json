@@ -16,8 +16,8 @@
     ]
   },
   {
-    "messageText": "Can not resolve dependency. Try to use bean factory-method instead.",
-    "start": 112,
+    "messageText": "Can not resolve dependency. Can not resolve Bean signature, try to use factory-method Bean instead.",
+    "start": 103,
     "file": {
       "fileName": "/index.ts"
     },
@@ -32,8 +32,8 @@
     ]
   },
   {
-    "messageText": "Can not resolve dependency. Try to use bean factory-method instead.",
-    "start": 128,
+    "messageText": "Can not resolve dependency. Can not resolve Bean signature, try to use factory-method Bean instead.",
+    "start": 119,
     "file": {
       "fileName": "/index.ts"
     },

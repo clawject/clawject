@@ -34,7 +34,7 @@ export class DIType {
   }
 
   get isPrimitive(): boolean {
-    return this.typeFlag >= DITypeFlag.ANY && this.typeFlag <= DITypeFlag.BIGINT;
+    return this.typeFlag >= DITypeFlag.ANY && this.typeFlag <= DITypeFlag.SYMBOL;
   }
 
   get isVoidUndefinedPlainUnionIntersection(): boolean {
@@ -53,8 +53,12 @@ export class DIType {
     return this.typeFlag >= DITypeFlag.STRING_LITERAL && this.typeFlag <= DITypeFlag.BIGINT_LITERAL;
   }
 
-  get isObject(): boolean {
-    return this.typeFlag === DITypeFlag.OBJECT;
+  get isUniqueSymbol(): boolean {
+    return this.typeFlag === DITypeFlag.UNIQUE_SYMBOL;
+  }
+
+  get isTypeReferenceOrUniqueSymbol(): boolean {
+    return this.typeFlag === DITypeFlag.TYPE_REFERENCE || this.isUniqueSymbol;
   }
 
   get isUnion(): boolean {
@@ -145,7 +149,7 @@ export class DIType {
     }
 
     //If both are primitive types, we can stop here
-    if (this.isPrimitive && (to.isPrimitive || to.isLiteral)) {
+    if (this.isPrimitive && (to.isPrimitive || to.isLiteral || to.isUniqueSymbol)) {
       return PrimitiveTypeCompatibilityMatrix.isCompatible(this.typeFlag, to.typeFlag);
     }
 
@@ -200,8 +204,8 @@ export class DIType {
       });
     }
 
-    //Objects
-    if (this.isObject) {
+    //Objects-UniqueSymbols
+    if (this.isTypeReferenceOrUniqueSymbol) {
       if (this.declarations.length === 0) {
         return false;
       }

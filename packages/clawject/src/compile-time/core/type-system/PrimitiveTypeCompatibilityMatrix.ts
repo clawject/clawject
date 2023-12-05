@@ -13,6 +13,7 @@ export class PrimitiveTypeCompatibilityMatrix {
   static [DITypeFlag.BOOLEAN]: Set<DITypeFlag> = new Set([DITypeFlag.BOOLEAN_LITERAL]);
   static [DITypeFlag.ENUM]: Set<DITypeFlag> = new Set([DITypeFlag.ENUM_LITERAL]);
   static [DITypeFlag.BIGINT]: Set<DITypeFlag> = new Set([DITypeFlag.BIGINT_LITERAL]);
+  static [DITypeFlag.SYMBOL]: Set<DITypeFlag> = new Set([DITypeFlag.SYMBOL, DITypeFlag.UNIQUE_SYMBOL]);
   static [DITypeFlag.STRING_LITERAL]: Set<DITypeFlag> = new Set([]);
   static [DITypeFlag.NUMBER_LITERAL]: Set<DITypeFlag> = new Set([]);
   static [DITypeFlag.BOOLEAN_LITERAL]: Set<DITypeFlag> = new Set([]);

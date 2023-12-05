@@ -38,6 +38,15 @@ export class DITypeBuilder {
       type = typeChecker.getDefaultFromTypeParameter(type) ?? typeChecker.getBaseConstraintOfType(type) ?? type;
     }
 
+    //TODO maybe handle type alliases in the future
+    // const isAlias = type.aliasSymbol !== undefined;
+    //
+    // if (isAlias) {
+    //   const resolvedTypeArguments = type.aliasTypeArguments ?? [];
+    //
+    //   return this._build(type, resolvedTypeArguments as ts.Type[]);
+    // }
+
     if (objectFlags.size === 0) {
       return this._build(type, null);
     }
@@ -221,6 +230,12 @@ export class DITypeBuilder {
     case diType.parsedTSTypeFlags.has(TypeFlags.BigInt) && !diType.parsedTSTypeFlags.has(TypeFlags.BigIntLiteral):
       diType.typeFlag = DITypeFlag.BIGINT;
       break;
+    case diType.parsedTSTypeFlags.has(TypeFlags.UniqueESSymbol):
+      diType.typeFlag = DITypeFlag.UNIQUE_SYMBOL;
+      break;
+    case diType.parsedTSTypeFlags.has(TypeFlags.ESSymbol):
+      diType.typeFlag = DITypeFlag.SYMBOL;
+      break;
     case diType.parsedTSTypeFlags.has(TypeFlags.StringLiteral) && !diType.parsedTSTypeFlags.has(TypeFlags.EnumLike):
       diType.typeFlag = DITypeFlag.STRING_LITERAL;
       break;
@@ -242,7 +257,7 @@ export class DITypeBuilder {
       break;
 
     case diType.parsedTSTypeFlags.has(TypeFlags.Object):
-      diType.typeFlag = DITypeFlag.OBJECT;
+      diType.typeFlag = DITypeFlag.TYPE_REFERENCE;
       break;
     case diType.parsedTSTypeFlags.has(TypeFlags.Union):
       diType.typeFlag = DITypeFlag.UNION;
@@ -298,7 +313,7 @@ export class DITypeBuilder {
   }
 
   private static trySetDeclarationInfo(diType: DIType, tsType: ts.Type): void {
-    if (!diType.isObject) {
+    if (!diType.isTypeReferenceOrUniqueSymbol) {
       return;
     }
 
