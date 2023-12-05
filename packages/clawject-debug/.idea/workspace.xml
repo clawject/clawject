@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/test/runtime/jest.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/runtime/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/runtime/suites/BaseTest.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/runtime/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/runtime/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/verifyBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DIType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DIType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeFlag.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeFlag.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/PrimitiveTypeCompatibilityMatrix.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/PrimitiveTypeCompatibilityMatrix.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/constants/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT10_DependencyResolvingError/expectedDiagnostics.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/suites/CT10_DependencyResolvingError/expectedDiagnostics.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/api/bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/api/bean.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" afterDir="false" />
-    </list>
+    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
