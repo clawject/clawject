@@ -47,7 +47,6 @@ export default function Home(): JSX.Element {
             <img className={classNames(styles.logo)} src="/img/logo.svg" alt="Clawject" />
           </div>
         </div>
-
       </main>
     </Layout>
   );

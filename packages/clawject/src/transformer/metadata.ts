@@ -11,7 +11,7 @@ import { CompileTimeElement } from '../compile-time/core/compilation-metadata/Co
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
   const compilationContext = getCompilationContext();
 
-  return context => sourceFile => {
+  return context => (sourceFile): ts.SourceFile => {
     compilationContext.assignProgram(program);
 
     const fileConfigurations = (ConfigurationRepository.fileNameToConfigurations.get(sourceFile.fileName) ?? [])
@@ -90,7 +90,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
       return ts.visitEachChild(updatedClassDeclaration, visitor, context);
     };
 
-    return ts.visitNode(sourceFile, visitor);
+    return ts.visitNode(sourceFile, visitor) as ts.SourceFile;
   };
 };
 
