@@ -50,9 +50,9 @@ You can read more about scopes more here [@Scope](/docs/api/scope.mdx).
 For a bean with the default **singleton scope**,
 Clawject first checks if instance of the bean already created,
 and only creates a new one if it doesn't.
-If we're using the **dedicated scope**, the container returns a new bean instance for each bean request.
+If we're using the **transient scope**, the container returns a new bean instance for each bean request.
 
-Let's see how we can define a bean with the **dedicated** scope.
+Let's see how we can define a bean with the **transient** scope.
 We have two beans that require the **Baz** instance,
 for each of which the container creates a new instance of a **Baz** class.
 
@@ -69,7 +69,7 @@ class ApplicationContext extends CatContext {
   foo = Bean(Foo)
   bar = Bean(Bar)
 
-  @Scope('dedicated')
+  @Scope('transient')
   baz = Bean(Baz)
 }
 ```

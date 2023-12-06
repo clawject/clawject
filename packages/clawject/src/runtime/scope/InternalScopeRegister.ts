@@ -2,13 +2,13 @@ import { CustomScope } from './CustomScope';
 import { SingletonScope } from './SingletonScope';
 import { FreshScope } from './FreshScope';
 import { RuntimeErrors } from '../errors';
-import { DedicatedScope } from './DedicatedScope';
+import { TransientScope } from './TransientScope';
 
 export class InternalScopeRegister {
   private static scopes = new Map<string, CustomScope>([
     ['singleton', new SingletonScope()],
     ['fresh', new FreshScope()],
-    ['dedicated', new DedicatedScope()],
+    ['transient', new TransientScope()],
   ]);
 
   static registerScope(name: string, scope: CustomScope): void {

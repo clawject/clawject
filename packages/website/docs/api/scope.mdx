@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 The Scope of Bean is a way to define when Bean will be created and how it is managed by container.
 
 Clawject provides `@Scope` decorator to define a scope and have 3 built-in scopes:
-`singleton`, `dedicated` and `fresh`, default value is `singleton`.
+`singleton`, `transient` and `fresh`, default value is `singleton`.
 
 ## Singleton scope *(default)*
 
@@ -112,12 +112,12 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-## Dedicated scope
+## Transient scope
 
-A Bean with the `dedicated` scope will return a different instance every time it is requested from the container.
+A Bean with the `transient` scope will return a different instance every time it is requested from the container.
 
 :::warning
-Methods decorated with @PreDestroy will not be called for beans with `dedicated` scope.
+Methods decorated with @PreDestroy will not be called for beans with `transient` scope.
 :::
 
 ```ts
@@ -138,7 +138,7 @@ class Baz {
 }
 
 class MyContext extends CatContext {
-  @Scope("dedicated")
+  @Scope("transient")
   foo = Bean(Foo);
 
   bar = Bean(Bar);
@@ -162,7 +162,7 @@ class MyContext extends CatContext {
 ## Fresh scope
 
 A Bean with the `fresh` scope will return a different instance every time it is used.
-When using `fresh` scope - **Clawject** will inject proxy instead of real instance (not like in `singleton` or `dedicated` scopes),
+When using `fresh` scope - **Clawject** will inject proxy instead of real instance (not like in `singleton` or `transient` scopes),
 So each property access or method call will create a new instance of the target bean.
 
 :::warning
@@ -225,7 +225,7 @@ class Foo {
   }
 }
 
-@Scope('dedicated')
+@Scope('transient')
 class MyContext extends CatContext {
   foo = Bean(Foo);
 
@@ -238,7 +238,7 @@ class MyContext extends CatContext {
 ```
 
 As we see, `foo` bean will be created twice,
-because it's requested 2 times and it inherits `dedicated` scope from context.
+because it's requested 2 times and it inherits `transient` scope from context.
 
 ## Scope on Beans
 
@@ -253,7 +253,7 @@ class Foo {
 }
 
 class MyContext extends CatContext {
-  @Scope('dedicated') foo = Bean(Foo);
+  @Scope('transient') foo = Bean(Foo);
 
   @PostConstruct
   postConstruct(
@@ -285,7 +285,7 @@ class Bar {
   }
 }
 
-@Scope('dedicated')
+@Scope('transient')
 class MyContext extends CatContext {
     foo = Bean(Foo);
     @Scope('singleton') bar = Bean(Bar);

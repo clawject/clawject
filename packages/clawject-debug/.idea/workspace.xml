@@ -7,7 +7,17 @@
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processAtomicMode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/processAtomicMode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Scope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/decorators/Scope.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/CustomScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/CustomScope.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/DedicatedScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/TransientScope.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/InternalScopeRegister.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/InternalScopeRegister.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/metadata.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/metadata.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/advanced-concepts/custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/advanced-concepts/custom-scopes.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/api/scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +86,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.sourceCode.TypeScript",
+    "settings.editor.selected.configurable": "settings.typescriptcompiler",
     "ts.external.directory.path": "/Users/art/IdeaProjects/clawject/packages/clawject-debug/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }

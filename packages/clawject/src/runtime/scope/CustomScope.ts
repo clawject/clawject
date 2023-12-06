@@ -31,7 +31,7 @@ export interface CustomScope {
    * callback for the specified object, if any.
    * It does, however, <i>not</i>
    * need to <i>execute</i> a registered destruction callback in this case,
-   * since the object will be destroyed by the caller (if appropriate).
+   * since the caller will destroy the object (if appropriate).
    *
    * <b>Note: This is an optional operation.</b>
    *
@@ -76,7 +76,7 @@ export interface CustomScope {
   /**
    * Indicates whether a proxy should be injected or the raw object.
    *
-   * In default scopes (singleton, dedicated) `false` value is returned from this method,
+   * In default scopes (singleton, transient) `false` value is returned from this method,
    * but if you want to implement your own scope (for example - http-request scope),
    * most likely you will need to return `true` from this method.
    *

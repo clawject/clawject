@@ -43,7 +43,7 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
     return ts.visitEachChild(transformedNode, visitor, tsContext);
   };
 
-  const transformedFile = ts.visitNode(sourceFile, visitor);
+  const transformedFile = ts.visitNode(sourceFile, visitor) as ts.SourceFile;
 
   const updatedStatements = Array.from(transformedFile.statements);
 
