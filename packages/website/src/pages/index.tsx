@@ -34,7 +34,7 @@ export default function Home(): JSX.Element {
           <div className={styles.contentContainer}>
             <h1 className={classNames('hero__title')}>Clawject</h1>
             <p className="hero__subtitle">TypeScript powered DI framework</p>
-            <TypeAnimation sequence={WORDS} speed={30} repeat={Infinity} className="hero__subtitle" />
+            <TypeAnimation sequence={WORDS} speed={30} repeat={Infinity} className={styles.typeAnimation} />
             <Link to="/docs">
               <button className="button button--primary button--outline button--lg">
                   Get Started
