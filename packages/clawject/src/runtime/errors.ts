@@ -2,6 +2,13 @@
 export namespace RuntimeErrors {
   /** @public */
   export class NoInitializedContextFoundError extends Error {
+    constructor(
+      message: string,
+      public readonly contextKey: any
+    ) {
+      super(message);
+    }
+
     override name = 'NoInitializedContextFoundError' as const;
   }
 

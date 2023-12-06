@@ -1,5 +1,4 @@
 import { MetadataStorage } from '../metadata/MetadataStorage';
-import { ClassConstructor } from '../ClassConstructor';
 import { ContextManager } from './ContextManager';
 
 type BeanNameDescriptor = [name: string, nested?: string, fullName?: string];
@@ -29,25 +28,6 @@ export class Utils {
     return new Map(
       names.map(name => [name[2] ?? name[0], this.bean(name, instance)])
     );
-  }
-
-  public static isObject(value: any): boolean {
-    const type = typeof value;
-    return value !== null && (type === 'object' || type === 'function');
-  }
-
-  public static getConstructorFromInstance(element: any): ClassConstructor<any> | null {
-    if (!element) {
-      return null;
-    }
-
-    const objectPrototype = Object.getPrototypeOf(element);
-
-    if (!objectPrototype) {
-      return null;
-    }
-
-    return objectPrototype.constructor;
   }
 
   public static defineContextMetadata(classConstructor: any, metadata: any): void {

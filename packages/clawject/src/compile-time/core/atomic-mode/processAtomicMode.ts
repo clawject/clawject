@@ -6,7 +6,7 @@ import { processCatContext } from './processCatContext';
 import { processImplicitComponents } from './processImplicitComponents';
 import { getDecoratorVerificationErrors } from './getDecoratorVerificationErrors';
 import { CONSTANTS } from '../../../constants';
-import { Value } from '../Value';
+import { Value } from '../../../runtime/Value';
 
 export const processAtomicMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files

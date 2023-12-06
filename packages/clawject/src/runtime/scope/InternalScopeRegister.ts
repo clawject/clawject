@@ -24,20 +24,20 @@ export class InternalScopeRegister {
   }
 
   static getScope(name: string): CustomScope {
-    this.assureRegistered(name);
-
-    return this.scopes.get(name)!;
+    return this.assureRegistered(name);
   }
 
   static hasScope(name: string): boolean {
     return this.scopes.has(name);
   }
 
-  static assureRegistered(name: string): void | never {
+  static assureRegistered(name: string): CustomScope | never {
     const scope = this.scopes.get(name);
 
     if (!scope) {
       throw new RuntimeErrors.ScopeIsNotRegisteredError(`Scope with name ${name} is not registered.`);
     }
+
+    return scope;
   }
 }
