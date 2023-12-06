@@ -67,6 +67,7 @@ export interface ContainerManager {
    *
    * @param context - The context class constructor that should be cleared.
    * @param key - Optional key for clearing a specific context.
+   * @throws RuntimeErrors.NoInitializedContextFoundError If the context was not initialized.
    */
   destroy(context: ClassConstructor<CatContext<any>>, key?: any): void;
 }

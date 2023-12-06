@@ -13,7 +13,8 @@ export default {
     // 'transformer/metadata': 'src/transformer/metadata.ts',
   },
   external: [
-    /node_modules/
+    /node_modules/,
+    '@clawject/object-storage'
   ],
   output: {
     dir: 'dist/dist/esm',

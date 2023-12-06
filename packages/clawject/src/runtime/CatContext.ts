@@ -1,5 +1,8 @@
-import { ErrorBuilder } from './ErrorBuilder';
 import { ContextManager } from './___internal___/ContextManager';
+
+
+/* @public */
+const CONTEXT_TYPE_SYMBOL = Symbol('clawject_context_type');
 
 /**
  * Class that represents the IoC container.
@@ -18,6 +21,11 @@ import { ContextManager } from './___internal___/ContextManager';
  * @public
  */
 export abstract class CatContext<T extends object = {}, C = undefined> {
+  constructor() {
+    //Tricky hack to give an ability to access config in class properties without needed to pass it as a constructor arg
+    ContextManager.assignConfigDuringInstantiation(this);
+  }
+
   /**
    * Returns config object
    * that was passed in context initialization stage via {@link ContainerManager#init} or {@link ContainerManager#getOrInit}.
@@ -30,11 +38,8 @@ export abstract class CatContext<T extends object = {}, C = undefined> {
 
   /**
    * Needed to save type reference for {@link ContainerManager ContainerManagers} {@link ContainerManager#init init}/{@link ContainerManager#get get}/{@link ContainerManager#getOrInit getOrInit} methods.
-   * Accessing this property will always throw an error.
    *
-   * @throws RuntimeErrors.IllegalAccessError if you'll try to access this property.
+   * This property does not exist in runtime, and needed only for type checking.
    * */
-  protected get clawject_context_type(): T {
-    throw ErrorBuilder.illegalAccess('CatContext.clawject_context_type');
-  }
+  declare protected [CONTEXT_TYPE_SYMBOL]: T & void;
 }

@@ -1,25 +1,25 @@
 import { Bean, CatContext, ContainerManager } from '@clawject/di';
 
-const symProperty = Symbol('symProperty');
-const symFactoryMethod = Symbol('symFactoryMethod');
-const symFactoryArrowFunction = Symbol('symFactoryArrowFunction');
-const sym = Symbol('sym');
-const constUniqueSymbol = Symbol.for('uniqueSymbol');
+describe('BaseInjection', () => {
+  const symProperty = Symbol('symProperty');
+  const symFactoryMethod = Symbol('symFactoryMethod');
+  const symFactoryArrowFunction = Symbol('symFactoryArrowFunction');
+  const sym = Symbol('sym');
+  const constUniqueSymbol = Symbol.for('uniqueSymbol');
 
-class Foo {}
-class Bar {
-  constructor(
-    public str: string,
-    public num: number,
-    public bigInt: bigint,
-    public foo: Foo,
-    public sym: symbol,
-    public uniqueSymbol: typeof constUniqueSymbol,
-  ) {}
-}
+  class Foo {}
+  class Bar {
+    constructor(
+      public str: string,
+      public num: number,
+      public bigInt: bigint,
+      public foo: Foo,
+      public sym: symbol,
+      public uniqueSymbol: typeof constUniqueSymbol,
+    ) {}
+  }
 
-describe('Base', () => {
-  it('base', () => {
+  it('test', () => {
     //Given
     class ApplicationContext extends CatContext {
       @Bean strProperty = 'strProperty';

@@ -10,7 +10,7 @@ import { isLifecycleArrowFunctionBean } from '../ts/predicates/isLifecycleArrowF
 import { getImplicitComponentStaticInitBlock } from './transformers/getImplicitComponentStaticInitBlock';
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
 import { isNameReserved } from '../utils/isNameReserved';
-import { Value } from '../Value';
+import { Value } from '../../../runtime/Value';
 
 export function processImplicitComponents(
   node: ts.ClassDeclaration,

@@ -1,24 +1,20 @@
-import {Bean, CatContext, PostConstruct} from '@clawject/di';
+import {Bean, CatContext, ContainerManager, PostConstruct} from '@clawject/di';
 
-const constUniqueSymbol = Symbol.for('sym');
-
-class Foo {}
-class Bar {
-  constructor(
-    public str: string,
-    public num: number,
-    public bigInt: bigint,
-    public foo: Foo,
-    public sym: symbol,
-    public uniqueSymbol: typeof constUniqueSymbol,
-  ) {}
+interface Config {
+  data: string;
 }
 
-class ApplicationContext extends CatContext {
-  @PostConstruct
-  postConstruct(
-    b: Record<string, any>,
-  ) {
-    console.log('postConstruct');
-  }
+class ApplicationContext extends CatContext<{ configDataValue: string }, Config> {
+  @Bean configDataValue = this.config.data;
 }
+
+const config: Config = {
+  data: 'dataValue'
+};
+
+const initializedContext = ContainerManager.init(
+  ApplicationContext,
+  {config}
+);
+
+console.log(initializedContext.getBean('configDataValue'));

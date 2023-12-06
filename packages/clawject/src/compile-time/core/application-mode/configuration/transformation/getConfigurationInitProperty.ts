@@ -1,6 +1,5 @@
 import { Configuration } from '../../../configuration/Configuration';
 import ts, { factory } from 'typescript';
-import { InstanceRuntimeElement } from '../../../../../runtime/runtime-elements/InstanceRuntimeElement';
 import { InternalElementKind, InternalsAccessBuilder } from '../../../internals-access/InternalsAccessBuilder';
 
 /**

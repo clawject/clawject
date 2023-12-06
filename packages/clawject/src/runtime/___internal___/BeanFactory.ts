@@ -3,11 +3,11 @@ import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ObjectFactoryImpl } from '../object-factory/ObjectFactoryImpl';
 import { Callback } from '../types/Callback';
 import { LifecycleKind } from '../LifecycleKind';
-import { Utils } from './Utils';
 import { RuntimeErrors } from '../errors';
 import { RuntimeBeanMetadata } from '../metadata/MetadataTypes';
-import { RuntimeContextMetadata, RuntimeContextFactoriesMetadata } from '../metadata/RuntimeContextMetadata';
+import { RuntimeContextFactoriesMetadata, RuntimeContextMetadata } from '../metadata/RuntimeContextMetadata';
 import { MetadataStorage } from '../metadata/MetadataStorage';
+import { InternalUtils } from '../InternalUtils';
 
 export class BeanFactory {
   private proxyRegister = new Map<string, any>();
@@ -15,7 +15,8 @@ export class BeanFactory {
   constructor(
     private runtimeContextMetadata: RuntimeContextMetadata,
     private factories: RuntimeContextFactoriesMetadata,
-  ) {}
+  ) {
+  }
 
   public getPublicBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);
@@ -160,7 +161,7 @@ export class BeanFactory {
     const assertNotPrimitiveAndConstruct = () => {
       const bean = scopeBeanGetter();
 
-      if (Utils.isObject(bean)) {
+      if (InternalUtils.isObject(bean)) {
         registerPreDestroyCallback(bean);
 
         return bean;

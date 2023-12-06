@@ -1,18 +1,12 @@
-import { ClawjectObjectStorage } from '@clawject/object-storage';
+import { InternalUtils } from './InternalUtils';
+import { Value } from './Value';
 
 export class ContextIdStorage {
-  private static STORAGE_KEY = 'context_id_storage';
-  private static VERSION = 0;
-  private static versionedIds: Map<number, number>;
-
-  static {
-    this.versionedIds = ClawjectObjectStorage.getOrSetIfNotPresent(this.STORAGE_KEY, new Map<number, number>());
-  }
+  private static lastId: Value<number> = InternalUtils.createVersionedStorageOrGetIfExisted('context_id_storage', 0, new Value(0));
 
   static getAndInc(): number {
-    const latestId = this.versionedIds.get(this.VERSION) ?? 0;
-    this.versionedIds.set(this.VERSION, latestId + 1);
+    this.lastId.value = this.lastId.value + 1;
 
-    return latestId;
+    return this.lastId.value;
   }
 }

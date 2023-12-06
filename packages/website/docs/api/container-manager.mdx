@@ -70,6 +70,8 @@ const myContext = ContainerManager.init(MyContext, { config: externalConfigurati
 ### `ContainerManager.get`
 Get method is used to retrieve `InitializedContext` object if context it was initialized.
 
+Throw [NoInitializedContextFoundError](../errors.mdx#noinitializedcontextfounderror) if context was not initialized.
+
 #### Get initialized context
 
 ```ts
@@ -103,13 +105,7 @@ import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext { /* ... */ }
 
-const myKey = new Symbol('my-context');
-
-try {
-    ContainerManager.get(MyContext, { key: myKey });
-} catch (error) {
-    console.log(error.message); // <-- Will print "Context 'MyContext' with key 'Symbol(my-context)' is not initialized"
-}
+ContainerManager.get(MyContext); // throws NoInitializedContextFoundError
 ```
 
 ### `ContainerManager.getOrInit`
@@ -134,7 +130,7 @@ console.log(initializedContext1 === initializedContext2); // <-- Will print "tru
 ### `ContainerManager.destroy`
 This method destroys already initialized context.
 
-If the initialized context was not found, logs warning to the console.
+Throw [NoInitializedContextFoundError](../errors.mdx#noinitializedcontextfounderror) if context was not initialized.
 
 #### Destroying initialized context
 
@@ -154,5 +150,5 @@ import { ContainerManager, CatContext } from '@clawject/di';
 
 class MyContext extends CatContext {}
 
-ContainerManager.destroy(MyContext); // <-- Will print warn "Context 'MyContext' not found when trying to destroy it"
+ContainerManager.destroy(MyContext); // throws NoInitializedContextFoundError
 ```

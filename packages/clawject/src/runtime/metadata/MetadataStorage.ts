@@ -1,45 +1,25 @@
-import { ClawjectObjectStorage } from '@clawject/object-storage';
-
 import { ClassConstructor } from '../ClassConstructor';
 import { CatContext } from '../CatContext';
 
 import { RuntimeContextMetadata } from './RuntimeContextMetadata';
 import { RuntimeComponentMetadata } from './RuntimeComponentMetadata';
-import { Utils } from '../___internal___/Utils';
 import { ContextIdStorage } from '../ContextIdStorage';
+import { InternalUtils } from '../InternalUtils';
 
 export enum MetadataKind {
   CONTEXT = 'CONTEXT_METADATA',
   COMPONENT = 'COMPONENT_METADATA',
 }
 
-interface MetadataStorageType {
-  [MetadataKind.CONTEXT]: WeakMap<ClassConstructor<CatContext>, RuntimeContextMetadata>;
-  [MetadataKind.COMPONENT]: WeakMap<ClassConstructor<any>, RuntimeComponentMetadata>;
+class MetadataStorageState {
+  [MetadataKind.CONTEXT] = new WeakMap<ClassConstructor<CatContext>, RuntimeContextMetadata>();
+  [MetadataKind.COMPONENT] = new WeakMap<ClassConstructor<any>, RuntimeComponentMetadata>();
 }
 
 export class MetadataStorage {
-  private static STORAGE_KEY = 'metadata_storage';
-  private static VERSION = 0;
-
-  private static contextMetadata: MetadataStorageType[MetadataKind.CONTEXT];
-  private static componentMetadata: MetadataStorageType[MetadataKind.COMPONENT];
-
-  static {
-    const metadataStorages: Map<number, MetadataStorageType> = ClawjectObjectStorage.getOrSetIfNotPresent(this.STORAGE_KEY, new Map());
-    let metadataStorage = metadataStorages.get(this.VERSION);
-
-    if (!metadataStorage) {
-      metadataStorage = {
-        [MetadataKind.CONTEXT]: new WeakMap(),
-        [MetadataKind.COMPONENT]: new WeakMap(),
-      };
-      metadataStorages.set(this.VERSION, metadataStorage);
-    }
-
-    this.contextMetadata = metadataStorage[MetadataKind.CONTEXT];
-    this.componentMetadata = metadataStorage[MetadataKind.COMPONENT];
-  }
+  private static storage = InternalUtils.createVersionedStorageOrGetIfExisted('metadata_storage', 0, new MetadataStorageState());
+  private static contextMetadata = this.storage[MetadataKind.CONTEXT];
+  private static componentMetadata = this.storage[MetadataKind.COMPONENT];
 
   static getContextMetadata(clazz: ClassConstructor<CatContext>): RuntimeContextMetadata | null {
     return this.contextMetadata.get(clazz) ?? null;
@@ -51,7 +31,7 @@ export class MetadataStorage {
   }
 
   static getComponentMetadataByClassInstance(instance: any): RuntimeComponentMetadata | null {
-    const instanceConstructor = Utils.getConstructorFromInstance(instance);
+    const instanceConstructor = InternalUtils.getConstructorFromInstance(instance);
 
     if (instanceConstructor === null) {
       return null;

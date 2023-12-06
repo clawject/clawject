@@ -5,11 +5,22 @@ import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ClassConstructor } from '../ClassConstructor';
 import { BuiltContext, RuntimeContextMetadata } from '../metadata/RuntimeContextMetadata';
 import { MetadataStorage } from '../metadata/MetadataStorage';
+import { InternalUtils } from '../InternalUtils';
+
+class ContextManagerStore {
+  contextPool = new Map<ClassConstructor<CatContext>, Map<any, BuiltContext>>();
+  configPool = new Map<CatContext, any>();
+  beanFactories = new Map<CatContext, BeanFactory>();
+
+  configToAssignDuringContextInstantiation: any = undefined;
+}
 
 export class ContextManager {
-  static contextPool = new Map<ClassConstructor<CatContext>, Map<any, BuiltContext>>();
-  static configPool = new Map<CatContext, any>();
-  static beanFactories = new Map<CatContext, BeanFactory>();
+  private static storage = InternalUtils.createVersionedStorageOrGetIfExisted('context_manager_storage', 0, new ContextManagerStore());
+
+  static assignConfigDuringInstantiation(instance: any): void {
+    this.storage.configPool.set(instance, this.storage.configToAssignDuringContextInstantiation);
+  }
 
   static instantiateContext(contextConstructor: ClassConstructor<CatContext>, key: any, config: any): CatContext {
     const contextMetadata = this.getContextMetadataOrThrow(contextConstructor);
@@ -17,20 +28,27 @@ export class ContextManager {
     Object.values(contextMetadata.beans)
       .forEach(it => InternalScopeRegister.assureRegistered(it.scope ?? contextMetadata.scope));
 
-    const builtContext = contextMetadata.contextBuilder();
+    this.storage.configToAssignDuringContextInstantiation = config;
+    let builtContext: BuiltContext;
+
+    try {
+      builtContext = contextMetadata.contextBuilder();
+    } finally {
+      this.storage.configToAssignDuringContextInstantiation = undefined;
+    }
+
     const beanFactory = new BeanFactory(
       contextMetadata,
       builtContext.factories,
     );
 
-    const contexts = this.contextPool.get(contextConstructor) ?? new Map();
-    if (!this.contextPool.has(contextConstructor)) {
-      this.contextPool.set(contextConstructor, contexts);
+    const contexts = this.storage.contextPool.get(contextConstructor) ?? new Map();
+    if (!this.storage.contextPool.has(contextConstructor)) {
+      this.storage.contextPool.set(contextConstructor, contexts);
     }
 
     contexts.set(key, builtContext);
-    this.configPool.set(builtContext.instance, config);
-    this.beanFactories.set(builtContext.instance, beanFactory);
+    this.storage.beanFactories.set(builtContext.instance, beanFactory);
 
     this.postConstruct(contextMetadata, builtContext);
 
@@ -40,26 +58,26 @@ export class ContextManager {
   static disposeContext(contextConstructor: ClassConstructor<CatContext>, key: any): void {
     const contextMetadata = this.getContextMetadataOrThrow(contextConstructor);
 
-    const builtContext = this.contextPool.get(contextConstructor)?.get(key);
+    const builtContext = this.storage.contextPool.get(contextConstructor)?.get(key);
 
     if (!builtContext) {
       console.warn(`Context '${contextMetadata.contextName}' not found when trying to destroy it, key: `, key);
       return;
     }
 
-    this.contextPool.delete(key);
-    this.configPool.delete(builtContext.instance);
-    this.beanFactories.delete(builtContext.instance);
+    this.storage.contextPool.delete(key);
+    this.storage.configPool.delete(builtContext.instance);
+    this.storage.beanFactories.delete(builtContext.instance);
 
     this.preDestroy(contextMetadata, builtContext);
   }
 
   static getConfigForInstance(instance: CatContext<any, any>): any {
-    return this.configPool.get(instance);
+    return this.storage.configPool.get(instance);
   }
 
   static getBeanFactoryOrThrow(instance: CatContext): BeanFactory {
-    const beanFactory = this.beanFactories.get(instance);
+    const beanFactory = this.storage.beanFactories.get(instance);
 
     if (!beanFactory) {
       throw ErrorBuilder.usageWithoutConfiguredDI();
@@ -79,7 +97,7 @@ export class ContextManager {
   }
 
   public static getPrivateBeanFromFactory(beanName: string, instance: CatContext<any, any>): any {
-    const beanFactory = this.beanFactories.get(instance);
+    const beanFactory = this.storage.beanFactories.get(instance);
 
     if (!beanFactory) {
       throw ErrorBuilder.usageWithoutConfiguredDI();
@@ -94,7 +112,7 @@ export class ContextManager {
       const beanScope = beanConfig.scope ?? contextMetadata.scope;
 
       if (!isBeanLazy && beanScope === 'singleton') {
-        this.beanFactories.get(builtContext.instance)?.getBean(beanName);
+        this.storage.beanFactories.get(builtContext.instance)?.getBean(beanName);
       }
     });
     contextMetadata.lifecycle.POST_CONSTRUCT?.forEach((methodName) => {
@@ -104,7 +122,7 @@ export class ContextManager {
 
   private static preDestroy(contextMetadata: RuntimeContextMetadata, builtContext: BuiltContext): void {
     Object.keys(contextMetadata.beans).forEach(beanName => {
-      this.beanFactories.get(builtContext.instance)?.destroyBean(beanName);
+      this.storage.beanFactories.get(builtContext.instance)?.destroyBean(beanName);
     });
 
     contextMetadata.lifecycle.PRE_DESTROY?.forEach((methodName) => {

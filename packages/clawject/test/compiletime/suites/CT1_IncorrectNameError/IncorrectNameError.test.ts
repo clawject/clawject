@@ -11,7 +11,6 @@ describe('IncorrectNameError', () => {
 
   it.each`
     classMemberName
-    ${'clawject_context_type'}
     ${'clawject_compile_time_metadata'}
   `('should report IncorrectNameError for class member with name $classMemberName', ({ classMemberName }) => {
     //Given

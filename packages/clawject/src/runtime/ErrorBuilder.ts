@@ -15,7 +15,7 @@ export class ErrorBuilder {
   }
 
   static noInitializedContextFoundError(contextName: string | null, contextKey: any): RuntimeErrors.NoInitializedContextFoundError {
-    return new RuntimeErrors.NoInitializedContextFoundError(`Context '${this.getContextName(contextName)}' and key ${this.contextKeyToString(contextKey)} was not initialized`);
+    return new RuntimeErrors.NoInitializedContextFoundError(`Context '${this.getContextName(contextName)}' was not initialized, initialization key is attached to this error object`, contextKey);
   }
 
   static usageWithoutConfiguredDI(cause: string = 'DI'): RuntimeErrors.UsageWithoutConfiguredDIError {
@@ -28,39 +28,6 @@ export class ErrorBuilder {
 
   static noContextMemberFactoryFound(contextName: string | null, name: string): Error {
     return new RuntimeErrors.NoContextMemberFactoryFoundError(`No context member factory found for member '${name}' in context '${this.getContextName(contextName)}'`);
-  }
-
-  static contextKeyToString(contextKey: any): string {
-    if (contextKey === undefined) {
-      return 'undefined\'';
-    }
-
-    if (contextKey === null) {
-      return '\'null\'';
-    }
-
-    let stringifiedKey: string;
-
-    try {
-      stringifiedKey = JSON.stringify(contextKey);
-    } catch (e) {
-      try {
-        stringifiedKey = `${contextKey}`;
-      } catch (e) {
-        stringifiedKey = '\'NOT_SERIALIZABLE_KEY\'';
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (global.Symbol && typeof contextKey === 'symbol') {
-          if ((contextKey as Symbol).description) {
-            stringifiedKey = `'Symbol(${(contextKey as Symbol).description})'`;
-          } else {
-            stringifiedKey = '\'SYMBOL_WITHOUT_DESCRIPTION\'';
-          }
-        }
-      }
-    }
-
-    return stringifiedKey;
   }
 
   private static getContextName(contextName: string | null): string {
