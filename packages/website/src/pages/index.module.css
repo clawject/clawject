@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
 }
 
 @media screen and (max-width: 996px) {
@@ -24,10 +25,14 @@
 }
 
 .typeAnimation {
-  font-size: 1.5rem;
-  font-weight: 400;
+  font-size: 2.5rem;
+  font-weight: 900;
   color: var(--ifm-hero-text-color);
   margin-bottom: 1.5rem;
+
+  background: -webkit-linear-gradient(left, var(--logo-bg-gradien-start), var(--logo-bg-gradien-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .logoContainer {
@@ -50,4 +55,8 @@
 .logo {
   position: relative;
   width: 128px;
+}
+
+.button {
+  display: inline-block;
 }
