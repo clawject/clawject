@@ -11,14 +11,10 @@ const WORDS = [
   'External',
   'Lightweight',
   'Adaptive',
-  'EasyToUse',
-  'Visionary',
-  'Forward-looking',
+  'Easy-to-use',
   'Resourceful',
   'Far-sighted',
   'Well-prepared',
-  'Forward-planning',
-  'Prophetic',
   'Sagacious',
   'Innovative',
 ].map(it => [it, 2000]).flat();
@@ -35,7 +31,7 @@ export default function Home(): JSX.Element {
             <h1 className={classNames('hero__title')}>Clawject</h1>
             <p className="hero__subtitle">TypeScript powered DI framework</p>
             <TypeAnimation sequence={WORDS} speed={30} repeat={Infinity} className={styles.typeAnimation} />
-            <Link to="/docs">
+            <Link className={styles.button} to="/docs">
               <button className="button button--primary button--outline button--lg">
                   Get Started
               </button>
