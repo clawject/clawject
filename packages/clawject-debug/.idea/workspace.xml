@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/src/pages/index.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.tsx" afterDir="false" />
     </list>

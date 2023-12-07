@@ -17,7 +17,7 @@ const WORDS = [
   'Well-prepared',
   'Sagacious',
   'Innovative',
-].map(it => [it, 2000]).flat();
+].map(it => [it, 3500]).flat();
 
 export default function Home(): JSX.Element {
   return (
@@ -30,11 +30,9 @@ export default function Home(): JSX.Element {
           <div className={styles.contentContainer}>
             <h1 className={classNames('hero__title')}>Clawject</h1>
             <p className="hero__subtitle">TypeScript powered DI framework</p>
-            <TypeAnimation sequence={WORDS} speed={30} repeat={Infinity} className={styles.typeAnimation} />
-            <Link className={styles.button} to="/docs">
-              <button className="button button--primary button--outline button--lg">
+            <TypeAnimation preRenderFirstString sequence={WORDS} speed={10} repeat={Infinity} className={styles.typeAnimation} />
+            <Link className={classNames('button button--primary button--outline button--lg')} to="/docs">
                   Get Started
-              </button>
             </Link>
           </div>
 
