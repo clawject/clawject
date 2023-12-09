@@ -4,10 +4,14 @@ interface Foo {foo: string}
 type Bar = Foo & {bar: string};
 
 class ApplicationContext extends CatContext {
-  /* Type of Bean resolved to `Foo` */
-  @Bean foo: Foo = {foo: ''};
-  /* Type of Bean resolved to `Foo` */
-  @Bean bar: Bar = {foo: '', bar: ''};
+  @Bean test: [string, number] = ['test', 1];
+
+  @PostConstruct
+  postConstruct(
+    a: [string, any],
+  ): void {
+
+  }
 }
 
 ContainerManager.init(ApplicationContext);

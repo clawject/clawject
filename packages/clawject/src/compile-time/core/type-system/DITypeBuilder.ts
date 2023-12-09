@@ -51,6 +51,10 @@ export class DITypeBuilder {
       return this._build(type, null);
     }
 
+    if (this.isTupleType(type)) {
+      return this._build(type, typeChecker.getTypeArguments(type as ts.TypeReference) as ts.Type[]);
+    }
+
     if (!objectFlags.has(ObjectFlags.Reference) && !objectFlags.has(ObjectFlags.ClassOrInterface)) {
       return this._build(type, null);
     }
