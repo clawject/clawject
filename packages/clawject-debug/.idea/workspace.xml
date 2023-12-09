@@ -6,24 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getContextStaticInitBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getContextStaticInitBlock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getDependencyAccessExpression.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getDependencyAccessExpression.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getImplicitComponentStaticInitBlock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/atomic-mode/transformers/getImplicitComponentStaticInitBlock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/registerBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/internals-access/InternalsAccessBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/internals-access/InternalsAccessBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/CatContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/CatContext.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/ContainerManagerImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/ContainerManagerImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/InitializedContextImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/InitializedContextImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___TypeReferenceTable___.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___TypeReferenceTable___.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/ApplicationManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/ApplicationManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/BeanFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/BeanFactory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/ContextManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/ContextManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/Utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/___ClawjectInternalRuntimeUtils___.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/___internal___/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/advanced-concepts/custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/advanced-concepts/custom-scopes.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/DITypeBuilder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

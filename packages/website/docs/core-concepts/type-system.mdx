@@ -377,6 +377,23 @@ class MyContext extends CatContext {
 }
 ```
 
+## Tuple types
+
+Clawject has support for tuple types.
+
+Tuple types are treated as a *nominal types*:
+
+```ts
+class MyContext extends CatContext {
+  @Bean tuple: [string, number] = ['foo', 42];
+
+  @PostConstruct
+  postConstruct(
+    dep0: [string, number], // <- "tuple" bean will be injected here
+  ) {}
+}
+```
+
 ## Type aliases
 
 From the typescript point of view -
