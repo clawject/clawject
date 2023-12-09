@@ -1,4 +1,4 @@
-import { ClassConstructor } from '../ClassConstructor';
+import { ClassConstructor } from './ClassConstructor';
 
 export class ApplicationManager {
   private static configurationInstances = new Map<ClassConstructor<any>, any>();

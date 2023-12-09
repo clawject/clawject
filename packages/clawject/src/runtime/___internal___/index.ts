@@ -1,8 +1,8 @@
-import { ContextManager as _ContextManager } from './ContextManager';
-import { ApplicationManager as _ApplicationManager } from './ApplicationManager';
-import { Utils as _Utils } from './Utils';
+import { ___ClawjectInternalRuntimeUtils___ as utils } from './___ClawjectInternalRuntimeUtils___';
 
-//Any type-cast needed to build the correct api via api-extractor
-/** @public */ export const ContextManager: any = _ContextManager;
-// /** @public */ export const ApplicationManager: any = _ApplicationManager;
-/** @public */ export const Utils: any = _Utils;
+/**
+ * @internal It's a part of API used by clawject internally,
+ * do not rely on it in your code because it may and will be changed without notice.
+ * @public
+ */
+export const ___ClawjectInternalRuntimeUtils___: any = utils;

@@ -1,6 +1,6 @@
 import { InitializedContext } from './InitializedContext';
 import { CatContext } from './CatContext';
-import { ContextManager } from './___internal___';
+import { ContextManager } from './ContextManager';
 
 export class InitializedContextImpl implements InitializedContext<any> {
   constructor(

@@ -149,7 +149,7 @@ class MyContext extends CatContext {
 
 ## Object types
 Because Clawject is using nominal typing — it's relying on at type declaration name and place,
-so it's not possible to use anonymous types, but it's possible to use named types like `class`, `interface` or `type`:
+so it's not possible to use anonymous types or type aliases with non-named members [Type aliases](#type-aliases), but it's possible to use named types like `class` or `interface`:
 
 ```mdx-code-block
 <Tabs>
@@ -159,18 +159,15 @@ so it's not possible to use anonymous types, but it's possible to use named type
 ```ts
 class Foo {}
 interface Bar {}
-type Baz = {};
 
 class MyContext extends CatContext {
   @Bean foo: Foo = new Foo();
   @Bean bar: Bar = {};
-  @Bean baz: Baz = {};
 
   @PostConstruct
   postConstruct(
     dep0: Foo, // <- foo bean will be injected here
     dep1: Bar, // <- bar bean will be injected here
-    dep2: Baz, // <- baz bean will be injected here
   ) {}
 }
 ```
@@ -383,8 +380,8 @@ class MyContext extends CatContext {
 ## Type aliases
 
 From the typescript point of view -
-type aliases are just a wrapper sugar around base types like `string`, `number`, `interface`, etc.
-So type aliases will be treated as a set base types.
+type aliases are just a named wrapper around base types like `string`, `number`, etc.
+So type aliases will be treated as a set of base types.
 
 Example:
 
@@ -403,5 +400,19 @@ class MyContext extends CatContext {
   @Bean baz: Baz = {};
   /* Type is identical to `baz` Bean */
   @Bean fooAndBar: Foo & Bar = {};
+}
+```
+
+If type alias has anonymous members - these members will not be taken into account:
+
+```ts
+interface Foo {foo: string}
+type Bar = Foo & {bar: string};
+
+class MyContext extends CatContext {
+  /* Type of Bean resolved to `Foo` */
+  @Bean foo: Foo = {foo: ''};
+  /* Type of Bean resolved to `Foo` */
+  @Bean bar: Bar = {foo: '', bar: ''};
 }
 ```

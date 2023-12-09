@@ -9,7 +9,7 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
     [
       factory.createExpressionStatement(factory.createCallExpression(
         factory.createPropertyAccessExpression(
-          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ClawjectInternalRuntimeUtils),
           factory.createIdentifier('defineComponentMetadata')
         ),
         undefined,
