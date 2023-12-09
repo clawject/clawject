@@ -4,7 +4,7 @@ import { CONSTANTS } from '../../../constants';
 
 export enum InternalElementKind {
   ApplicationManager = 'ApplicationManager',
-  Utils = 'Utils',
+  ClawjectInternalRuntimeUtils = '___ClawjectInternalRuntimeUtils___',
 }
 
 export class InternalsAccessBuilder {

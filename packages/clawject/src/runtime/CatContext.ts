@@ -1,4 +1,4 @@
-import { ContextManager } from './___internal___/ContextManager';
+import { ContextManager } from './ContextManager';
 
 
 /* @public */

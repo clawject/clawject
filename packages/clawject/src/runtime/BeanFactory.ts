@@ -1,13 +1,13 @@
-import { ErrorBuilder } from '../ErrorBuilder';
-import { InternalScopeRegister } from '../scope/InternalScopeRegister';
-import { ObjectFactoryImpl } from '../object-factory/ObjectFactoryImpl';
-import { Callback } from '../types/Callback';
-import { LifecycleKind } from '../LifecycleKind';
-import { RuntimeErrors } from '../errors';
-import { RuntimeBeanMetadata } from '../metadata/MetadataTypes';
-import { RuntimeContextFactoriesMetadata, RuntimeContextMetadata } from '../metadata/RuntimeContextMetadata';
-import { MetadataStorage } from '../metadata/MetadataStorage';
-import { InternalUtils } from '../InternalUtils';
+import { ErrorBuilder } from './ErrorBuilder';
+import { InternalScopeRegister } from './scope/InternalScopeRegister';
+import { ObjectFactoryImpl } from './object-factory/ObjectFactoryImpl';
+import { Callback } from './types/Callback';
+import { LifecycleKind } from './LifecycleKind';
+import { RuntimeErrors } from './errors';
+import { RuntimeBeanMetadata } from './metadata/MetadataTypes';
+import { RuntimeContextFactoriesMetadata, RuntimeContextMetadata } from './metadata/RuntimeContextMetadata';
+import { MetadataStorage } from './metadata/MetadataStorage';
+import { InternalUtils } from './InternalUtils';
 
 export class BeanFactory {
   private proxyRegister = new Map<string, any>();

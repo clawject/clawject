@@ -23,7 +23,7 @@ export const getDependencyAccessExpression = (dependency: Dependency): ts.Expres
 
     return factory.createCallExpression(
       factory.createPropertyAccessExpression(
-        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ClawjectInternalRuntimeUtils),
         factory.createIdentifier(builderMethodName)
       ),
       undefined,
@@ -44,7 +44,7 @@ export const getDependencyAccessExpression = (dependency: Dependency): ts.Expres
   if (qualifiedBean !== null) {
     return factory.createCallExpression(
       factory.createPropertyAccessExpression(
-        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+        InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ClawjectInternalRuntimeUtils),
         factory.createIdentifier('bean')
       ),
       undefined,

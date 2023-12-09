@@ -17,6 +17,7 @@ import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 
+//TODO Consider resolve type of class element, and based on type resolve bean kind, also make less bean kinds
 export function registerBeans(configuration: Configuration): void {
   configuration.node.members.forEach((classElement) => {
     if (isBeanFactoryMethod(classElement)) {

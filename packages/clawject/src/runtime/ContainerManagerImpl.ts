@@ -4,7 +4,7 @@ import { InitializedContext } from './InitializedContext';
 import { ContainerManager, ContextInit, ContextInitConfig } from './ContainerManager';
 import { ErrorBuilder } from './ErrorBuilder';
 import { ClassConstructor } from './ClassConstructor';
-import { ContextManager } from './___internal___/ContextManager';
+import { ContextManager } from './ContextManager';
 import { InternalUtils } from './InternalUtils';
 
 type InstancesType = Map<ClassConstructor<CatContext<any>>, Map<any, InitializedContext<any>>>;

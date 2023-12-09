@@ -3,11 +3,10 @@
 import { CatContext } from './CatContext';
 
 /**
- * This is a <b>internal</b> interface, it's not used in any other parts of this library api.
- *
- * Please <b>do not use </b> this interface in your own code because <b>it could and will be changed</b> in the future.
+ * @internal It's a part of API used by clawject internally,
+ * do not rely on it in your code because it may and will be changed without notice.
  * @public
- * */
+ */
 export interface ___TypeReferenceTable___ {
   Array: ReadonlyArray<any> | Array<any> | readonly any[] | any[];
   Set: ReadonlySet<any> | Set<any>;

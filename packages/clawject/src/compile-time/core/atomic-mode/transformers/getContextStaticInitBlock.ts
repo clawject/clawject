@@ -49,7 +49,7 @@ export const getContextStaticInitBlock = (node: ts.ClassDeclaration, configurati
     [
       factory.createExpressionStatement(factory.createCallExpression(
         factory.createPropertyAccessExpression(
-          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.Utils),
+          InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ClawjectInternalRuntimeUtils),
           factory.createIdentifier('defineContextMetadata')
         ),
         undefined,

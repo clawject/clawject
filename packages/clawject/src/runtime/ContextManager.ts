@@ -1,11 +1,11 @@
-import { CatContext } from '../CatContext';
-import { ErrorBuilder } from '../ErrorBuilder';
+import { CatContext } from './CatContext';
+import { ErrorBuilder } from './ErrorBuilder';
 import { BeanFactory } from './BeanFactory';
-import { InternalScopeRegister } from '../scope/InternalScopeRegister';
-import { ClassConstructor } from '../ClassConstructor';
-import { BuiltContext, RuntimeContextMetadata } from '../metadata/RuntimeContextMetadata';
-import { MetadataStorage } from '../metadata/MetadataStorage';
-import { InternalUtils } from '../InternalUtils';
+import { InternalScopeRegister } from './scope/InternalScopeRegister';
+import { ClassConstructor } from './ClassConstructor';
+import { BuiltContext, RuntimeContextMetadata } from './metadata/RuntimeContextMetadata';
+import { MetadataStorage } from './metadata/MetadataStorage';
+import { InternalUtils } from './InternalUtils';
 
 class ContextManagerStore {
   contextPool = new Map<ClassConstructor<CatContext>, Map<any, BuiltContext>>();

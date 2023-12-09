@@ -1,9 +1,9 @@
 import { MetadataStorage } from '../metadata/MetadataStorage';
-import { ContextManager } from './ContextManager';
+import { ContextManager } from '../ContextManager';
 
 type BeanNameDescriptor = [name: string, nested?: string, fullName?: string];
 
-export class Utils {
+export class ___ClawjectInternalRuntimeUtils___ {
   public static bean(names: BeanNameDescriptor, instance: any): any {
     const [name, nested] = names;
 
