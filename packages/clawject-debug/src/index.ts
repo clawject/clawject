@@ -1,17 +1,8 @@
 import {Bean, CatContext, ContainerManager, PostConstruct} from '@clawject/di';
-
-interface Foo {foo: string}
-type Bar = Foo & {bar: string};
+import {TestClass} from './TestClass';
 
 class ApplicationContext extends CatContext {
-  @Bean test: [string, number] = ['test', 1];
-
-  @PostConstruct
-  postConstruct(
-    a: [string, any],
-  ): void {
-
-  }
+  testClass = Bean(TestClass);
 }
 
 ContainerManager.init(ApplicationContext);

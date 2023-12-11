@@ -36,15 +36,15 @@ export class ComponentRepository {
     this.componentIdToComponent.clear();
   }
 
-  static clearByFileName(fileName: string): void {
-    const configurations = this.fileNameToComponents.get(fileName) ?? [];
+  static clearByContextualFileName(fileName: string): void {
+    const components = this.fileNameToComponents.get(fileName) ?? [];
 
     this.fileNameToComponents.delete(fileName);
     this.fileNameToLastComponentCounter.delete(fileName);
-    configurations.forEach(configuration => {
-      this.componentIdToComponent.delete(configuration.id);
+    components.forEach(component => {
+      this.componentIdToComponent.delete(component.id);
 
-      //TODO clear from dep graph
+      //TODO clear from dep graph in application mode
       // DependencyGraph.clearByConfiguration(configuration);
     });
   }

@@ -20,8 +20,13 @@ const MESSAGES_WITHOUT_CONTEXT_DETAILS = [
 ];
 
 export class DiagnosticsBuilder {
-  static getAllDiagnostics(): ts.Diagnostic[] {
-    return getCompilationContext().messages.map(it => this.getFormattedDiagnostics(it));
+  static getDiagnostics(fileName?: string): ts.Diagnostic[] {
+    const messages = fileName ?
+      getCompilationContext().getMessages(fileName)
+      : getCompilationContext().getAllMessages();
+
+    return messages
+      .map(it => this.getFormattedDiagnostics(it));
   }
 
   private static getFormattedDiagnostics(message: AbstractCompilationMessage): ts.Diagnostic {

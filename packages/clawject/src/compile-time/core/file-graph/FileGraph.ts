@@ -18,9 +18,9 @@ export class FileGraph {
     const allEdges = new Set([fileNames].flat());
 
     [fileNames].flat().forEach(fileName => {
-      stronglyConnectedComponents.forEach(stronglyConnectedComponentList => {
-        if (stronglyConnectedComponentList.has(fileName)) {
-          stronglyConnectedComponentList.forEach(it => allEdges.add(it));
+      stronglyConnectedComponents.forEach(stronglyConnectedComponentSet => {
+        if (stronglyConnectedComponentSet.has(fileName)) {
+          stronglyConnectedComponentSet.forEach(it => allEdges.add(it));
         }
       });
     });

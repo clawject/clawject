@@ -40,8 +40,12 @@ export class LanguageService {
 
     Compiler.ensureCompiled();
 
-    const diagnostics = LanguageServiceCache.semanticDiagnosticsCache.get(fileName)
-      ?? LanguageServiceReportBuilder.buildSemanticDiagnostics(fileName);
+    let diagnostics = LanguageServiceCache.getByFileName(fileName);
+
+    if (diagnostics.length === 0) {
+      diagnostics = LanguageServiceReportBuilder.buildSemanticDiagnostics(fileName);
+    }
+
     LanguageServiceCache.semanticDiagnosticsCache.set(fileName, diagnostics);
 
     return [

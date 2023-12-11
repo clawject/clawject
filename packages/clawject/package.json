@@ -57,9 +57,6 @@
       "default": "./dist/cjs/transformer/metadata.js"
     }
   },
-  "scripts": {
-    "rollup:rollup": "rollup -c --bundleConfigAsCjs"
-  },
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
   "dependencies": {

@@ -5,8 +5,7 @@ import { AbstractCompilationMessage } from './messages/AbstractCompilationMessag
 export class CompilationContext {
   areErrorsHandled = false;
   languageServiceMode = false;
-  currentlyProcessedFile: string | null = null;
-  private _messages: AbstractCompilationMessage[] = [];
+  private _contextualFileName: string | null = null;
   private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
   private _program: ts.Program | null = null;
@@ -23,42 +22,49 @@ export class CompilationContext {
     return this.program.getTypeChecker();
   }
 
-  get messages(): AbstractCompilationMessage[] {
-    return this._messages;
+  get contextualFileName(): string {
+    if (!this._contextualFileName) {
+      throw new Error('Current file is not assigned in compilation context, it is an internal error, please report it on github https://github.com/clawject/clawject/issues/new.');
+    }
+
+    return this._contextualFileName;
+  }
+
+  getAllMessages(): AbstractCompilationMessage[] {
+    return Array.from(this.pathToMessages.values()).flat();
+  }
+
+  getMessages(fileName: string): AbstractCompilationMessage[] {
+    return this.pathToMessages.get(fileName) ?? [];
   }
 
   get errors(): AbstractCompilationMessage[] {
-    return this._messages.filter(it => it.type === MessageType.ERROR);
+    return Array.from(this.pathToMessages.values()).flat()
+      .filter(it => it.type === MessageType.ERROR);
   }
 
   assignProgram(program: ts.Program | null): void {
     this._program = program;
   }
 
-  assignCurrentlyProcessedFileName(fileName: string | null): void {
-    this.currentlyProcessedFile = fileName;
+  assignContextualFileName(fileName: string | null): void {
+    this._contextualFileName = fileName;
   }
 
   report(message: AbstractCompilationMessage): void {
-    this._messages.push(message);
-
-    const messagesByPath = this.pathToMessages.get(message.place.filePath) ?? [];
+    const messagesByPath = this.pathToMessages.get(message.contextualFileName) ?? [];
     messagesByPath.push(message);
-    this.pathToMessages.set(message.place.filePath, messagesByPath);
+
+    if (!this.pathToMessages.has(message.contextualFileName)) {
+      this.pathToMessages.set(message.contextualFileName, messagesByPath);
+    }
   }
 
-  clearMessagesByFileName(fileName: string): void {
-    this._messages = this._messages.filter(it => it.place.filePath !== fileName);
+  clearByFileName(fileName: string): void {
     this.pathToMessages.delete(fileName);
   }
 
-  clearByProcessingFileName(fileName: string): void {
-    this._messages = this._messages
-      .filter(it => it.createdDuringProcessingFileFileName !== fileName);
-  }
-
   clear(): void {
-    this._messages = [];
-    this.pathToMessages = new Map<string, AbstractCompilationMessage[]>();
+    this.pathToMessages.clear();
   }
 }

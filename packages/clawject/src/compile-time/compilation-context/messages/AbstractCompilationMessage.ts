@@ -20,7 +20,7 @@ export abstract class AbstractCompilationMessage {
   public readonly place: NodeDetails;
   public readonly relatedConfigurationMetadata: IRelatedConfigurationMetadata | null;
 
-  createdDuringProcessingFileFileName: string;
+  contextualFileName: string;
 
   public constructor(
     public readonly details: string | null,
@@ -30,13 +30,7 @@ export abstract class AbstractCompilationMessage {
     this.place = getNodeDetails(place);
     this.relatedConfigurationMetadata = this.getRelatedConfigurationMetadata(relatedConfiguration);
 
-    const currentlyTransformingFile = getCompilationContext().currentlyProcessedFile;
-
-    if (currentlyTransformingFile === null) {
-      throw new Error('Currently transforming file is not assigned');
-    }
-
-    this.createdDuringProcessingFileFileName = currentlyTransformingFile;
+    this.contextualFileName = getCompilationContext().contextualFileName;
   }
 
   private getRelatedConfigurationMetadata(relatedConfiguration: Configuration | null): IRelatedConfigurationMetadata | null {

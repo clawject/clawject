@@ -25,11 +25,8 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
 
   return context => sourceFile => {
     compilationContext.assignProgram(program);
-    compilationContext.currentlyProcessedFile = sourceFile.fileName;
-
-    if (!compilationContext.languageServiceMode) {
-      cleanup(sourceFile.fileName);
-    }
+    compilationContext.assignContextualFileName(sourceFile.fileName);
+    cleanup(sourceFile.fileName);
 
     DecoratorRules.init();
 
@@ -49,7 +46,7 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
       const addDiagnostics = transformerExtras?.addDiagnostic;
 
       if (addDiagnostics) {
-        const semanticDiagnostics = DiagnosticsBuilder.getAllDiagnostics();
+        const semanticDiagnostics = DiagnosticsBuilder.getDiagnostics(sourceFile.fileName);
 
         semanticDiagnostics.forEach(it => {
           transformerExtras?.addDiagnostic(it);
@@ -68,7 +65,7 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
       }
     }
 
-    compilationContext.assignCurrentlyProcessedFileName(null);
+    compilationContext.assignContextualFileName(null);
 
     return transformedSourceFile;
   };
