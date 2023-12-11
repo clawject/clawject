@@ -14,7 +14,6 @@ export class Component extends Entity<ts.ClassDeclaration> {
 
   explicitDeclaration = false;
   qualifier: string | null = null;
-  genericSymbolLookupTable = new WeakMap<ts.Symbol, DIType>();
 
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();

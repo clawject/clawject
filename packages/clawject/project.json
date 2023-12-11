@@ -68,16 +68,6 @@
           "codeCoverage": true
         }
       }
-    },
-    "test2": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "packages/clawject",
-        "commands": [
-          "ts-node test/generateCases.ts"
-        ],
-        "parallel": false
-      }
     }
   },
   "tags": []
