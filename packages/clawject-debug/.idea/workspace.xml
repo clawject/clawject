@@ -5,26 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Interface.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/test/runtime/suites/InitializedContext.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestClass.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestClass.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/jest.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/CompilationContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/CompilationContext.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/AbstractCompilationMessage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/AbstractCompilationMessage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/cleaner/cleanup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/cleaner/cleanup.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/component/Component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/component/Component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/component/ComponentRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/component/ComponentRepository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/file-graph/FileGraph.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/file-graph/FileGraph.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceCache.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceCache.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceReportBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/lsp/LanguageServiceReportBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/test/runtime/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/runtime/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/CatContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/CatContext.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/metadata.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/metadata.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +101,7 @@
       <recent name="$PROJECT_DIR$/static" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:languageService">
+  <component name="RunManager" selected="npm.run:tsc">
     <configuration name="run:languageService" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -168,10 +154,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:webpack_hot" />
-        <item itemvalue="npm.run:upgradeClawject" />
-        <item itemvalue="npm.run:tscw" />
         <item itemvalue="npm.run:tsc" />
+        <item itemvalue="npm.run:upgradeClawject" />
+        <item itemvalue="npm.run:webpack_hot" />
+        <item itemvalue="npm.run:tscw" />
         <item itemvalue="npm.run:languageService" />
       </list>
     </recent_temporary>

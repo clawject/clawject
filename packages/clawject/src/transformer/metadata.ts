@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts, { factory } from 'typescript';
 import { getCompilationContext } from './getCompilationContext';
 import { ConfigurationRepository } from '../compile-time/core/configuration/ConfigurationRepository';
 import { CompilationMetadataBuilder } from '../compile-time/core/compilation-metadata/CompilationMetadataBuilder';
@@ -12,6 +12,8 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
   const compilationContext = getCompilationContext();
 
   return context => (sourceFile): ts.SourceFile => {
+
+
     compilationContext.assignProgram(program);
 
     const fileConfigurations = (ConfigurationRepository.fileNameToConfigurations.get(sourceFile.fileName) ?? [])
