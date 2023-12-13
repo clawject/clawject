@@ -1,8 +1,11 @@
-import {Bean, CatContext, ContainerManager, PostConstruct} from '@clawject/di';
-import {TestClass} from './TestClass';
+import {A, B} from './Interface';
+import {ClassConstructor} from '@clawject/di';
 
-class ApplicationContext extends CatContext {
-  testClass = Bean(TestClass);
+function a<T>(arg: ClassConstructor<T>): T {
+  return arg as any;
 }
 
-ContainerManager.init(ApplicationContext);
+export class ApplicationContext {
+  aaaa = a(A);
+  bbbb = a(B);
+}

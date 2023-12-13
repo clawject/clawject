@@ -1,7 +1,5 @@
 export class TestClass {
-  constructor(
-    private symbol: Symbol
-  ) {
+  constructor() {
     console.log('Hi');
   }
 }

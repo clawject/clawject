@@ -22,7 +22,7 @@ const CONTEXT_TYPE_SYMBOL = Symbol('clawject_context_type');
  */
 export abstract class CatContext<T extends object = {}, C = undefined> {
   constructor() {
-    //Tricky hack to give an ability to access config in class properties without needed to pass it as a constructor arg
+    //Hack to give an ability to access config in class properties without needed to pass it as a constructor arg
     ContextManager.assignConfigDuringInstantiation(this);
   }
 
