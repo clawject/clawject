@@ -3,7 +3,7 @@ import { CatContext } from '../CatContext';
 
 export interface RuntimeContextMetadata {
   id: number;
-  contextName: string;
+  className: string;
   lifecycle: RuntimeLifecycleMetadata;
   beans: Record<string, RuntimeBeanMetadata>;
   lazy: boolean;

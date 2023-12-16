@@ -7,6 +7,7 @@ export type { ClassConstructor } from './runtime/ClassConstructor';
 export { ScopeRegister } from './runtime/ScopeRegister';
 
 export { CatContext } from './runtime/CatContext';
+export { Imports } from './runtime/Imports';
 
 export type { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/ObjectFactory';
 
@@ -19,4 +20,3 @@ export { ___TypeReferenceTable___ } from './runtime/___TypeReferenceTable___';
 // export { Configuration } from './external/Configuration';
 // export { Autowired } from './external/Autowired';
 // export { Component } from './external/Component';
-// export { runClawjectApplication } from './external/runClawjectApplication';

@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { AutowiredRegister } from '../autowired/AutowiredRegister';
 import { Dependency } from '../dependency/Dependency';
 import { ComponentLifecycleRegister } from '../component-lifecycle/ComponentLifecycleRegister';
 import { Entity } from '../Entity';
@@ -18,7 +17,6 @@ export class Component extends Entity<ts.ClassDeclaration> {
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
-  autowiredRegister = new AutowiredRegister(this);
   lifecycleRegister = new ComponentLifecycleRegister(this);
 
   constructorDependencies = new Set<Dependency>();

@@ -1,11 +1,18 @@
-import {A, B} from './Interface';
-import {ClassConstructor} from '@clawject/di';
+import {Bean, ClawjectApplication, Configuration, Imports} from '@clawject/di';
 
-function a<T>(arg: ClassConstructor<T>): T {
-  return arg as any;
+@Configuration
+export class _3<T> {
+  @Bean data(dep: T): T {}
 }
 
-export class ApplicationContext {
-  aaaa = a(A);
-  bbbb = a(B);
+@Configuration
+export class _2<T> {
+  @Imports imports = {_3: _3<T>};
+}
+
+@ClawjectApplication
+export class _1 {
+  @Imports imports = {_2: _2<string>};
+
+  @Bean root = 42;
 }

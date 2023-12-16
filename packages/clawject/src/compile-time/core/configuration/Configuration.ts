@@ -1,10 +1,10 @@
 import ts from 'typescript';
 import { DIType } from '../type-system/DIType';
-import { AutowiredRegister } from '../autowired/AutowiredRegister';
 import { BeanRegister } from '../bean/BeanRegister';
 import { Entity } from '../Entity';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { FileGraph } from '../file-graph/FileGraph';
+import { ImportRegister } from '../import/ImportRegister';
 
 export class Configuration extends Entity<ts.ClassDeclaration> {
   declare id: string;
@@ -13,7 +13,7 @@ export class Configuration extends Entity<ts.ClassDeclaration> {
   className: string | null = null;
   diType: DIType | null = null;
 
-  autowiredRegister = new AutowiredRegister(this);
+  importRegister = new ImportRegister(this);
   beanRegister = new BeanRegister(this);
 
   scopeExpression = new DisposableNodeHolder<ts.Expression>();

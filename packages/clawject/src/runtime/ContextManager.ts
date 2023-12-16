@@ -61,7 +61,7 @@ export class ContextManager {
     const builtContext = this.storage.contextPool.get(contextConstructor)?.get(key);
 
     if (!builtContext) {
-      console.warn(`Context '${contextMetadata.contextName}' not found when trying to destroy it, key: `, key);
+      console.warn(`Context '${contextMetadata.className}' not found when trying to destroy it, key: `, key);
       return;
     }
 
@@ -134,7 +134,7 @@ export class ContextManager {
     const elementFactory = builtContext.factories[name];
 
     if (!elementFactory) {
-      throw ErrorBuilder.noContextMemberFactoryFound(contextMetadata.contextName, name);
+      throw ErrorBuilder.noContextMemberFactoryFound(contextMetadata.className, name);
     }
 
     return elementFactory;

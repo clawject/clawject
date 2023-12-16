@@ -1,7 +1,6 @@
 import { Configuration } from '../configuration/Configuration';
 import { Bean, BeanNode } from './Bean';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
-import { FileGraph } from '../file-graph/FileGraph';
 
 export class BeanRegister extends AbstractElementRegister<Bean, BeanNode> {
   constructor(
@@ -22,9 +21,5 @@ export class BeanRegister extends AbstractElementRegister<Bean, BeanNode> {
     if (bean.nestedProperty === null) {
       this.nodeToElement.set(bean.node, bean);
     }
-
-    bean.diType.declarations.map(it => {
-      FileGraph.add(this.parent.fileName, it.fileName);
-    });
   }
 }

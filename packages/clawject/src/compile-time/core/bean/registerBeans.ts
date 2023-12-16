@@ -16,6 +16,8 @@ import { extractDecoratorMetadata } from '../decorator-processor/extractDecorato
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
+import { ConfigLoader } from '../../config/ConfigLoader';
+import { fillBeanTypes } from './fillBeanTypes';
 
 //TODO Consider resolve type of class element, and based on type resolve bean kind, also make less bean kinds
 export function registerBeans(configuration: Configuration): void {
@@ -53,6 +55,10 @@ export function registerBeans(configuration: Configuration): void {
       return;
     }
   });
+
+  if (ConfigLoader.get().mode === 'atomic') {
+    fillBeanTypes(configuration);
+  }
 
   fillEmbeddedBeans(configuration);
   verifyBeans(configuration);

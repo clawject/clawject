@@ -22,7 +22,7 @@ export class BeanFactory {
     const beanConfig = this.getBeanConfig(name);
 
     if (!beanConfig.public) {
-      console.warn(`Bean ${name} is not defined in Context's interface. This Bean will not be checked for type matching with Context's interface at compile-time. Context: ${this.runtimeContextMetadata.contextName}`);
+      console.warn(`Bean ${name} is not defined in Context's interface. This Bean will not be checked for type matching with Context's interface at compile-time. Context: ${this.runtimeContextMetadata.className}`);
     }
 
     return this.getBean(name);
@@ -126,7 +126,7 @@ export class BeanFactory {
     const beanConfig = this.runtimeContextMetadata.beans[name];
 
     if (!beanConfig) {
-      throw ErrorBuilder.beanNotFound(this.runtimeContextMetadata.contextName, name);
+      throw ErrorBuilder.beanNotFound(this.runtimeContextMetadata.className, name);
     }
 
     return beanConfig;
@@ -136,7 +136,7 @@ export class BeanFactory {
     const elementFactory = this.factories[name];
 
     if (!elementFactory) {
-      throw ErrorBuilder.noContextMemberFactoryFound(this.runtimeContextMetadata.contextName, name);
+      throw ErrorBuilder.noContextMemberFactoryFound(this.runtimeContextMetadata.className, name);
     }
 
     return elementFactory;

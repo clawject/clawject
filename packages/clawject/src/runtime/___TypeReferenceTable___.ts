@@ -1,5 +1,3 @@
-// import type { runClawjectApplication } from './runClawjectApplication';
-
 import { CatContext } from './CatContext';
 
 /**
@@ -14,5 +12,4 @@ export interface ___TypeReferenceTable___ {
   MapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
   CatContext: CatContext<any, any>;
   Promise: Promise<any> | PromiseLike<any>;
-  // runClawjectApplication: runClawjectApplication;
 }

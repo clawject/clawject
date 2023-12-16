@@ -5,7 +5,7 @@ import { DITypeBuilder } from './DITypeBuilder';
 import { ___TypeReferenceTable___ } from '../../../runtime/___TypeReferenceTable___';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
-type BaseTypes = Record<keyof ___TypeReferenceTable___, DIType> & { runClawjectApplication: DIType };
+type BaseTypes = Record<keyof ___TypeReferenceTable___, DIType>;
 
 export class BaseTypesRepository {
   private static baseTypes: BaseTypes | null = null;
@@ -48,8 +48,6 @@ export class BaseTypesRepository {
       MapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
       CatContext: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['CatContext'])),
       Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
-      runClawjectApplication: DITypeBuilder.any(),
-      // runClawjectApplication: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['runClawjectApplication'])),
     };
   }
 
