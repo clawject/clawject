@@ -12,7 +12,8 @@ export enum DecoratorKind {
   Qualifier = 'Qualifier',
   Conditional = 'Conditional',
   ComponentScan = 'ComponentScan',
-  Import = 'Import',
+  Imports = 'Imports',
+  ClawjectApplication = 'ClawjectApplication',
 }
 
 export const DecoratorKinds = new Set(Object.values(DecoratorKind));

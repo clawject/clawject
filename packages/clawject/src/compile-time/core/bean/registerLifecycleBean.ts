@@ -41,10 +41,11 @@ export const registerLifecycleBean = (
 
   const bean = new Bean({
     classMemberName: classElement.name.getText(),
-    diType: DITypeBuilder.any(),
     node: classElement,
     kind: ts.isMethodDeclaration(classElement) ? BeanKind.LIFECYCLE_METHOD : BeanKind.LIFECYCLE_ARROW_FUNCTION,
     lifecycle: Array.from(lifecycles),
   });
+
+  bean.registerType(DITypeBuilder.any());
   configuration.beanRegister.register(bean);
 };

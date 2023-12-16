@@ -18,11 +18,11 @@ export type BeanNode = ts.MethodDeclaration
   | ts.GetAccessorDeclaration;
 
 export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
-  declare id: string; //Set by Context or Configuration during registration
+  declare id: string;
   declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
   declare classMemberName: string;
   qualifier: string | null = null;
-  declare diType: DIType;
+  private _diType: DIType | null = null;
   declare kind: BeanKind;
   lifecycle: LifecycleKind[] | null = null;
   public = false;
@@ -44,6 +44,21 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
     this.dependencies.add(dependency);
     dependency.diType.declarationFileNames.forEach(it => {
       FileGraph.add(this.parentConfiguration.fileName, it);
+    });
+  }
+
+  get diType(): DIType {
+    if (this._diType === null) {
+      throw new Error('DIType for bean is not set.');
+    }
+
+    return this._diType;
+  }
+
+  registerType(diType: DIType): void {
+    this._diType = diType;
+    diType.declarations.map(it => {
+      FileGraph.add(this.parentConfiguration.fileName, it.fileName);
     });
   }
 

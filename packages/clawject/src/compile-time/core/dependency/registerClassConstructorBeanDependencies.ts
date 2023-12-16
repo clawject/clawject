@@ -13,8 +13,7 @@ export const registerClassConstructorBeanDependencies = (bean: Bean<ClassPropert
 
   const compilationContext = getCompilationContext();
   const typeChecker = compilationContext.typeChecker;
-  let firstArgument: ts.Expression = unwrapExpressionFromRoundBrackets(classElement.initializer).arguments[0];
-  firstArgument && (firstArgument = unwrapExpressionFromRoundBrackets(firstArgument));
+  const firstArgument: ts.Expression = unwrapExpressionFromRoundBrackets(classElement.initializer).arguments[0];
 
   if (!firstArgument) {
     //DO not report error, because assuming it's reported on Bean registration stage (registerBeanClassConstructor.ts)

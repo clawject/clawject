@@ -1,59 +1,38 @@
 import ts from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
-import { getDecorators } from '../ts/utils/getDecorators';
-import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
-import { processConfigurationClass } from './configuration/processConfigurationClass';
-import { processComponent } from '../component/processComponent';
-import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
-import { registerEntrypoint } from './entrypoint/registerEntrypoint';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
-import { DecoratorKind } from '../decorator-processor/DecoratorKind';
+import { Value } from '../../../runtime/Value';
+import { CONSTANTS } from '../../../constants/index';
+import { processClassDeclaration } from './processClassDeclaration';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
-  let shouldAddImports = false;
+  //Skipping declaration files
+  if (sourceFile.isDeclarationFile) {
+    return sourceFile;
+  }
 
-  //TODO create function that will register entrypoint and verify all classes for not allowed and members
-  registerEntrypoint(sourceFile, tsContext);
+  const shouldAddInternalImport = new Value(false);
+  InternalsAccessBuilder.setCurrentIdentifier(tsContext.factory.createUniqueName(CONSTANTS.libraryImportName));
 
-  //Processing only top level statements
-  //TODO inspect nested statements for not allowed decorators
-  const updatedStatements = sourceFile.statements.map(statement => {
-    if (!ts.isClassDeclaration(statement)) {
-      return statement;
+  const visitor = (node: ts.Node): ts.Node => {
+    if (ts.isClassDeclaration(node)) {
+      return processClassDeclaration(node);
     }
 
-    const classDecorators = getDecorators(statement);
+    return ts.visitEachChild(node, visitor, tsContext);
+  };
 
-    const isComponent = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Component));
-    const isConfiguration = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Configuration));
+  const transformedFile = ts.visitNode(sourceFile, visitor) as ts.SourceFile;
 
-    if (isComponent && isConfiguration) {
-      compilationContext.report(new NotSupportedError(
-        //TODO use stereotype names instead of @Component
-        'Class cannot be both @Component and @Configuration',
-        statement,
-        null,
-      ));
-      return statement;
-    }
+  const updatedStatements = Array.from(transformedFile.statements);
 
-    if (isConfiguration) {
-      shouldAddImports = true;
-      return processConfigurationClass(statement);
-    }
-
-    if (isComponent) {
-      shouldAddImports = true;
-      processComponent(statement);
-    }
-
-    return statement;
-  });
-
-  if (shouldAddImports) {
+  if (shouldAddInternalImport.value) {
     updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
   }
 
+  if (compilationContext.languageServiceMode) {
+    return sourceFile;
+  }
 
   return ts.factory.updateSourceFile(
     sourceFile,

@@ -139,6 +139,10 @@ export class DIType {
   }
 
   isCompatible(to: DIType): boolean {
+    if (this === to) {
+      return true;
+    }
+
     //If any of the types is unresolvable, we can't check compatibility
     if (this.typeFlag < DITypeFlag.ANONYMOUS || to.typeFlag < DITypeFlag.ANONYMOUS) {
       return false;

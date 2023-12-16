@@ -1,4 +1,4 @@
-import { CompileTimeElement } from '../compilation-metadata/CompileTimeElement';
+import { CompileTimeElement } from '../declaration-metadata/CompileTimeElement';
 
 const reservedNames = new Set<string>(
   [

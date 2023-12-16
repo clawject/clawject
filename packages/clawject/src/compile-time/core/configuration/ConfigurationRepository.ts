@@ -7,6 +7,7 @@ export class ConfigurationRepository {
   static fileNameToLastConfigurationCounter = new Map<string, number>();
   static fileNameToConfigurations = new Map<string, Configuration[]>();
   static configurationIdToConfiguration = new Map<string, Configuration>();
+  static nodeToConfiguration = new WeakMap<ts.ClassDeclaration, Configuration>();
 
   static register(classDeclaration: ts.ClassDeclaration): Configuration {
     const sourceFile = classDeclaration.getSourceFile();
@@ -26,6 +27,7 @@ export class ConfigurationRepository {
     configurations.push(configuration);
 
     this.configurationIdToConfiguration.set(configuration.id, configuration);
+    this.nodeToConfiguration.set(classDeclaration, configuration);
 
     return configuration;
   }

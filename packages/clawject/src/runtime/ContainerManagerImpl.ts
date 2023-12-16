@@ -35,7 +35,7 @@ export class ContainerManagerImpl implements ContainerManager {
       return initializedContext;
     }
 
-    throw ErrorBuilder.noInitializedContextFoundError(ContextManager.getContextMetadataOrThrow(context).contextName, key);
+    throw ErrorBuilder.noInitializedContextFoundError(ContextManager.getContextMetadataOrThrow(context).className, key);
   }
 
   getOrInit<T extends {}>(context: ClassConstructor<CatContext<T>>, init?: ContextInit): InitializedContext<T>;
@@ -54,7 +54,7 @@ export class ContainerManagerImpl implements ContainerManager {
     const initializedContext = this.getCachedInitializedContext(context, key);
 
     if (!initializedContext) {
-      throw ErrorBuilder.noInitializedContextFoundError(ContextManager.getContextMetadataOrThrow(context).contextName, key);
+      throw ErrorBuilder.noInitializedContextFoundError(ContextManager.getContextMetadataOrThrow(context).className, key);
     }
 
     ContextManager.disposeContext(context, key);

@@ -11,6 +11,7 @@ import { BeanKind } from './BeanKind';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
+import { ConfigLoader } from '../../config/ConfigLoader';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNRESOLVABLE, 'unresolvable'],
@@ -36,7 +37,11 @@ export const verifyBeans = (configuration: Configuration): void => {
   verifyNameUniqueness(beans);
 
   beans.forEach(bean => {
-    verifyBeanType(bean);
+    if (ConfigLoader.get().mode === 'atomic') {
+      //For app mode type verification will be later
+      verifyBeanType(bean);
+    }
+
     verifyName(bean);
     verifyModifiers(bean);
     verifyBeanInitializers(bean);
