@@ -5,15 +5,6 @@
   "additionalProperties": false,
   "type": "object",
   "properties": {
-    "mode": {
-      "type": "string",
-      "default": "atomic",
-      "title": "Mode of code clawject",
-      "enum": [
-        "atomic",
-        "application"
-      ]
-    },
     "unsafeTSVersion": {
       "type": "boolean",
       "default": false,

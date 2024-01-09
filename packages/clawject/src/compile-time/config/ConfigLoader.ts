@@ -9,7 +9,7 @@ import { merge } from 'lodash';
 
 export class ConfigLoader {
   private static defaultConfig: DIConfig = {
-    mode: 'application',
+    mode: 'atomic',
     unsafeTSVersion: false,
     features: {
       keepContextNames: true,
