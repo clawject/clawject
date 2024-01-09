@@ -14,6 +14,7 @@ export enum DecoratorKind {
   ComponentScan = 'ComponentScan',
   Imports = 'Imports',
   ClawjectApplication = 'ClawjectApplication',
+  Internal = 'Internal',
 }
 
 export const DecoratorKinds = new Set(Object.values(DecoratorKind));

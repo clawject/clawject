@@ -1,18 +1,29 @@
-import {Bean, ClawjectApplication, Configuration, Imports} from '@clawject/di';
+import {Bean, ClawjectApplication, Configuration, Import, Internal} from '@clawject/di';
 
 @Configuration
-export class _3<T> {
-  @Bean data(dep: T): T {}
-}
-
-@Configuration
+@Internal
 export class _2<T> {
-  @Imports imports = {_3: _3<T>};
+  @Bean data(dep: T): T {
+    return 'data' as any;
+  }
+
+  static storage = new Map<any, typeof _2<any>>();
+
+  static forEntity<T>(entity: T): typeof _2<T> {
+    let stored = _2.storage.get(entity);
+
+    if (!stored) {
+      stored = Configuration.copy(_2<T>);
+      _2.storage.set(entity, stored);
+    }
+
+    return stored;
+  }
 }
 
 @ClawjectApplication
 export class _1 {
-  @Imports imports = {_2: _2<string>};
+  imports = Import(_2.forEntity(''));
 
-  @Bean root = 42;
+  @Bean root = 42 as const;
 }

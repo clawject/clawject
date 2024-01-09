@@ -10,6 +10,7 @@ export { Primary, PrimaryTarget } from './Primary';
 export { Qualifier, QualifierTarget } from './Qualifier';
 export { Configuration, ConfigurationTarget } from './Configuration';
 export { ClawjectApplication, ClawjectApplicationTarget } from './ClawjectApplication';
+export { Internal, InternalTarget } from './Internal';
 // export { Conditional, ConditionalTarget } from './Conditional';
 // export { Component, ComponentTarget } from './Component';
 // export { Autowired, AutowiredTarget } from './Autowired';

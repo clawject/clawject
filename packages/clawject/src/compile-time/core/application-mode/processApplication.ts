@@ -42,30 +42,33 @@ function getBeanTypes(application: Application, rootConfiguration: Configuration
     const importElement = configuration.importRegister.getByNode(propertyDeclaration);
 
     if (importElement) {
-      const symbolType = typeChecker.getTypeOfSymbol(symbol);
-      const properties = symbolType.getProperties();
+      const resolvedConfiguration = importElement.resolvedConfiguration;
 
-      properties.forEach(property => {
-        const relatedConfiguration  = importElement.resolvedConfigurations.get(property.name);
+      if (resolvedConfiguration === null) {
+        //TODO report compilation error
+        throw new Error('Imported member must be a configuration');
+      }
 
-        if (relatedConfiguration === undefined) {
-          //TODO report compilation error
-          throw new Error('Imported member must be a configuration');
-        }
+      const typeOfProperty = typeChecker.getTypeAtLocation(propertyDeclaration);
+      const properties = typeOfProperty.getProperties();
+      const constructorProperty = properties.find(it => it.getName() === 'constructor');
 
-        const typeOfProperty = typeChecker.getTypeOfSymbol(property);
-        const constructSignatures = typeOfProperty.getConstructSignatures();
+      if (!constructorProperty) {
+        //TODO report compilation error
+        throw new Error('Imported member must have a constructor property');
+      }
 
-        if (constructSignatures.length !== 1) {
-          //TODO report compilation error
-          throw new Error('Imported member must have exactly one constructor');
-        }
+      const constructSignatures = typeChecker.getTypeOfSymbol(constructorProperty).getConstructSignatures();
 
-        const constructSignature = constructSignatures[0];
+      if (constructSignatures.length !== 1) {
+        //TODO report compilation error
+        throw new Error('Imported member must have exactly one constructor');
+      }
 
-        constructSignature.getReturnType().getProperties().forEach(property => {
-          stack.push([relatedConfiguration, property]);
-        });
+      const constructSignature = constructSignatures[0];
+
+      constructSignature.getReturnType().getProperties().forEach(property => {
+        stack.push([resolvedConfiguration, property]);
       });
     }
 

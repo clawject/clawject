@@ -7,8 +7,7 @@ export class Import extends Entity<PropertyDeclaration> {
   declare parentConfiguration: Configuration;
   declare classMemberName: string;
 
-  //objectPropertyName to Configuration
-  resolvedConfigurations = new Map<string, Configuration>();
+  resolvedConfiguration: Configuration | null = null;
 
   constructor(values: Partial<Import> = {}) {
     super();

@@ -1,9 +1,30 @@
 import ts from 'typescript';
 import { ClassPropertyWithExpressionInitializer } from '../types';
-import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
-import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
+import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
+import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
 
 export const isImportClassProperty = (node: ts.Node): node is ClassPropertyWithExpressionInitializer =>
-  extractDecoratorMetadata(node, DecoratorKind.Imports) !== null
-  && ts.isPropertyDeclaration(node)
-  && node.initializer !== undefined;
+  ts.isPropertyDeclaration(node) && hasImportCallExpression(node);
+
+
+function hasImportCallExpression(node: ts.PropertyDeclaration): boolean {
+  let initializer = node.initializer;
+
+  if (!initializer) {
+    return false;
+  }
+
+  initializer = unwrapExpressionFromRoundBrackets(initializer);
+
+  if (!ts.isCallExpression(initializer)) {
+    return false;
+  }
+
+  const nodeSourceDescriptors = getNodeSourceDescriptor(initializer.expression);
+
+  if (nodeSourceDescriptors === null) {
+    return false;
+  }
+
+  return nodeSourceDescriptors.every(it => it.isLibraryNode && it.originalName === 'Import');
+}

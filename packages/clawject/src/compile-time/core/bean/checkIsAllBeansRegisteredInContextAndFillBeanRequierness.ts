@@ -26,7 +26,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
 
   const typeChecker = compilationContext.typeChecker;
   const type = typeChecker.getTypeAtLocation(typeArgNode);
-  const diType = DITypeBuilder.buildOrCached(type);
+  const diType = DITypeBuilder.build(type);
 
   context.registerDIType(diType);
   const typeProperties = type.getProperties();
@@ -43,7 +43,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
   typeProperties.forEach((property) => {
     const propertyName = property.getName();
     const propertyType = typeChecker.getTypeOfSymbolAtLocation(property, typeArgNode);
-    const propertyDIType = DITypeBuilder.buildOrCached(propertyType);
+    const propertyDIType = DITypeBuilder.build(propertyType);
     const bean = beans.get(propertyName);
 
     if (!bean) {

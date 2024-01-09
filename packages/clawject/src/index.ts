@@ -7,7 +7,7 @@ export type { ClassConstructor } from './runtime/ClassConstructor';
 export { ScopeRegister } from './runtime/ScopeRegister';
 
 export { CatContext } from './runtime/CatContext';
-export { Imports } from './runtime/Imports';
+export { Import, ImportedConfiguration } from './runtime/Import';
 
 export type { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/ObjectFactory';
 

@@ -16,65 +16,65 @@ export const registerImports = (configuration: Configuration): void => {
 export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration): void {
   const typeChecker = getCompilationContext().typeChecker;
   const importType = typeChecker.getTypeAtLocation(member);
-  const importMembers = importType.getProperties();
+  const properties = importType.getProperties();
+  const constructor = properties.find(it => it.getName() === 'constructor');
 
-  if (importType.isIndexType()) {
+  if (!constructor) {
     //TODO report compilation error
-    throw new Error('Imports type cannot be an index type');
+    throw new Error('Import must have a constructor property');
   }
 
-  importMembers.forEach(importMember => {
-    const typeOfMember = typeChecker.getTypeOfSymbolAtLocation(importMember, member);
-    const constructSignatures = typeOfMember.getConstructSignatures();
+  const constructorType = typeChecker.getTypeOfSymbol(constructor);
+  const constructSignatures = constructorType.getConstructSignatures();
 
-    if (constructSignatures.length === 0) {
-      //TODO report compilation error
-      throw new Error('Import member must be a class declaration');
-    }
+  if (constructSignatures.length === 0) {
+    //TODO report compilation error
+    throw new Error('Import member must be a class declaration');
+  }
 
-    if (constructSignatures.length !== 1) {
-      //TODO report compilation error
-      throw new Error('Import member must have exactly one constructor');
-    }
+  if (constructSignatures.length !== 1) {
+    //TODO report compilation error
+    throw new Error('Import member must have exactly one constructor');
+  }
 
-    const constructSignature = constructSignatures[0];
 
-    const importMemberSymbol = constructSignature.getReturnType().getSymbol();
+  const constructSignature = constructSignatures[0];
 
-    if (!importMemberSymbol) {
-      //TODO report compilation error about can not resolve configuration
-      throw new Error('Import member must have a symbol');
-    }
+  const importMemberSymbol = constructSignature.getReturnType().getSymbol();
 
-    const importMemberDeclarations = importMemberSymbol.getDeclarations() ?? [];
+  if (!importMemberSymbol) {
+    //TODO report compilation error about can not resolve configuration
+    throw new Error('Import member must have a symbol');
+  }
 
-    if (importMemberDeclarations.length === 0) {
-      //TODO report compilation error
-      throw new Error('Import member must have at least one declaration');
-    }
+  const importMemberDeclarations = importMemberSymbol.getDeclarations() ?? [];
 
-    const importMemberClassDeclarations = importMemberDeclarations.filter(ts.isClassDeclaration);
+  if (importMemberDeclarations.length === 0) {
+    //TODO report compilation error
+    throw new Error('Import member must have at least one declaration');
+  }
 
-    if (importMemberClassDeclarations.length === 0) {
-      //TODO report compilation error
-      throw new Error('Import member must have one class declaration');
-    }
+  const importMemberClassDeclarations = importMemberDeclarations.filter(ts.isClassDeclaration);
 
-    if (importMemberClassDeclarations.length !== 1) {
-      //TODO report compilation error
-      throw new Error('Import member must have exactly one class declaration');
-    }
+  if (importMemberClassDeclarations.length === 0) {
+    //TODO report compilation error
+    throw new Error('Import member must have one class declaration');
+  }
 
-    const importMemberClassDeclaration = importMemberClassDeclarations[0];
+  if (importMemberClassDeclarations.length !== 1) {
+    //TODO report compilation error
+    throw new Error('Import member must have exactly one class declaration');
+  }
 
-    const processedConfigurationClass = processConfigurationOrApplicationClass(importMemberClassDeclaration);
+  const importMemberClassDeclaration = importMemberClassDeclarations[0];
 
-    const imp = new Import({
-      classMemberName: member.name?.getText() ?? '',
-      node: member,
-    });
+  const processedConfigurationClass = processConfigurationOrApplicationClass(importMemberClassDeclaration);
 
-    configuration.importRegister.register(imp);
-    imp.resolvedConfigurations.set(importMember.name, processedConfigurationClass);
+  const imp = new Import({
+    classMemberName: member.name?.getText() ?? '',
+    node: member,
+    resolvedConfiguration: processedConfigurationClass
   });
+
+  configuration.importRegister.register(imp);
 }

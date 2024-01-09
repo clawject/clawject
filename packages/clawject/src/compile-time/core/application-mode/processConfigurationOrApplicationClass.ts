@@ -11,8 +11,13 @@ import { ConfigurationDeclarationMetadata } from '../declaration-metadata/Config
 import { registerBeanFromDeclarationMetadata } from '../bean/registerBeanFromDeclarationMetadata';
 
 export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration): Configuration => {
-  const configurationDecoratorMetadata =
-    extractDecoratorMetadata(node, DecoratorKind.Configuration);
+  const registeredConfiguration = ConfigurationRepository.nodeToConfiguration.get(node);
+
+  if (registeredConfiguration) {
+    return registeredConfiguration;
+  }
+
+  const configurationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Configuration);
   const clawjectApplicationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.ClawjectApplication);
 
   if (configurationDecoratorMetadata !== null || clawjectApplicationDecoratorMetadata !== null) {

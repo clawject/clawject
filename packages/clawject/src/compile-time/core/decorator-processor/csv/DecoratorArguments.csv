@@ -1,3 +1,3 @@
-Autowired,Bean,PreDestroy,Component,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,ComponentScan,Imports,Conditional,ClawjectApplication
-0,0,0,0,0,0,"0,1",0,1,0,1,1,0,1,0
-no,no,no,no,no,no,no,no,no,no,yes,yes,no,no,no
+Autowired,Bean,PreDestroy,Component,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,ComponentScan,Imports,Conditional,ClawjectApplication,Internal
+0,0,0,0,0,0,"0,1",0,1,0,1,1,0,1,0,"0,1"
+no,no,no,no,no,no,no,no,no,no,yes,yes,no,no,no,yes
