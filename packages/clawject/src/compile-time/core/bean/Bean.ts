@@ -33,6 +33,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
   conditionExpression = new DisposableNodeHolder<ts.Expression>();
+  async = false;
 
   constructor(values: Partial<Bean> = {}) {
     super();

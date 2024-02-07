@@ -1,36 +1,19 @@
-import {
-  Bean,
-  ClawjectApplication,
-  ClawjectFactory, Configuration,
-  CustomScope, Embedded, Import,
-  ObjectFactory,
-  ObjectFactoryResult,
-  PostConstruct,
-  PreDestroy, Scope, ScopeRegister
-} from '@clawject/di';
+import {Bean, ClawjectApplication, ClawjectFactory, Configuration, Embedded, PostConstruct, Scope} from '@clawject/di';
+
+const AnyClassImport = import('./AsyncClass');
 
 interface A {
-  data: string;
-  datanum: number;
-}
-
-class S {
+    data: string;
+    data2: number;
 }
 
 @ClawjectApplication
 export class _1 {
-  s2 = Bean(S);
-
-  @Bean str = '';
+  @Bean str = Promise.resolve('test');
 
   @PostConstruct
-  postConstruct(aData: string, s: S, s1: S): void {
-    console.log(s === s1);
-  }
-
-  @PreDestroy
-  preDestroy(data: string): void {
-    console.trace('PreDestroy', data);
+  init(test: string): void {
+    console.log('init,', test);
   }
 }
 

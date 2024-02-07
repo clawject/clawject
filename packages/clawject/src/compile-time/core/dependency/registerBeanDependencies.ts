@@ -6,6 +6,8 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { Dependency } from './Dependency';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
+import { DIType } from '../type-system/DIType';
+import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 
 export const registerBeanDependencies = (configuration: Configuration) => {
   configuration.beanRegister.elements.forEach(bean => {
@@ -24,7 +26,17 @@ export const registerBeanDependencies = (configuration: Configuration) => {
 
 function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
   const typeChecker = getCompilationContext().typeChecker;
-  const beanType = typeChecker.getTypeAtLocation(bean.node);
+  const beanType = DITypeBuilder.getTSTypeWithoutPromiseWrapper(typeChecker.getTypeAtLocation(bean.node));
+
+  if (!beanType) {
+    getCompilationContext().report(new TypeQualifyError(
+      null,
+      bean.node,
+      bean.parentConfiguration,
+    ));
+    return;
+  }
+
   const constructorProperty = beanType.getProperty('constructor');
 
   if (!constructorProperty) {

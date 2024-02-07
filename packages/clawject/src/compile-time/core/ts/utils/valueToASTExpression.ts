@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { isArray, isObject } from 'lodash';
 import { createBoolean } from './createBoolean';
 
-export const valueToAST = (value: any): ts.Expression => {
+export const valueToASTExpression = (value: any): ts.Expression => {
   if (typeof value === 'string') {
     return factory.createStringLiteral(value);
   }
@@ -29,7 +29,7 @@ export const valueToAST = (value: any): ts.Expression => {
 
   if (isArray(value)) {
     const elements = value.map((value) => {
-      return valueToAST(value);
+      return valueToASTExpression(value);
     });
 
     return factory.createArrayLiteralExpression(elements, true);
@@ -39,7 +39,7 @@ export const valueToAST = (value: any): ts.Expression => {
     const values = Object.entries(value).map(([key, value]) => {
       return factory.createPropertyAssignment(
         factory.createIdentifier(key),
-        valueToAST(value)
+        valueToASTExpression(value)
       );
     });
 

@@ -72,12 +72,12 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
     }, {} as Record<string, ts.ClassElement>);
 
     //Registering imports
-    Object.keys(typedMetadata.imports).forEach((importElementName) => {
-      const classElementNode = classMemberNamesToNode[importElementName] as ts.ClassElement | undefined;
+    typedMetadata.imports.forEach(it => {
+      const classElementNode = classMemberNamesToNode[it.classPropertyName] as ts.ClassElement | undefined;
 
       if (classElementNode === undefined) {
         getCompilationContext().report(new CorruptedMetadataError(
-          `No class member declared in metadata found ${importElementName}.`,
+          `No class member declared in metadata found ${it.classPropertyName}.`,
           node,
           parentConfiguration,
         ));
@@ -97,19 +97,19 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
     });
 
     //Registering beans
-    Object.entries(typedMetadata.beans).forEach(([beanElementName, beanDeclarationMetadata]) => {
-      const classElementNode = classMemberNamesToNode[beanElementName] as ts.ClassElement | undefined;
+    typedMetadata.beans.forEach(beanDeclarationMetadata => {
+      const classElementNode = classMemberNamesToNode[beanDeclarationMetadata.classPropertyName] as ts.ClassElement | undefined;
 
       if (classElementNode === undefined) {
         getCompilationContext().report(new CorruptedMetadataError(
-          `No class member declared in metadata found ${beanElementName}.`,
+          `No class member declared in metadata found ${beanDeclarationMetadata.classPropertyName}.`,
           node,
           parentConfiguration,
         ));
         return;
       }
 
-      registerBeanFromDeclarationMetadata(configuration, classElementNode, beanElementName, beanDeclarationMetadata);
+      registerBeanFromDeclarationMetadata(configuration, classElementNode, beanDeclarationMetadata);
     });
   }
 

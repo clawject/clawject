@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { DeclarationInfo } from './DeclarationInfo';
 import { PrimitiveTypeCompatibilityMatrix } from './PrimitiveTypeCompatibilityMatrix';
 import { DITypeFlag } from './DITypeFlag';
-import { escape } from 'lodash';
+import { escape, isArray } from 'lodash';
 import { BaseTypesRepository } from './BaseTypesRepository';
 
 export class DIType {
@@ -101,6 +101,10 @@ export class DIType {
     return BaseTypesRepository.getBaseTypes().MapStringToAny.isCompatible(this);
   }
 
+  get isPromise(): boolean {
+    return BaseTypesRepository.getBaseTypes().Promise.isCompatible(this);
+  }
+
   get isOptionalUndefined(): boolean {
     return this.isUnion && this.unionOrIntersectionTypes.some(it => it.isVoidUndefinedPlainUnionIntersection);
   }
@@ -145,6 +149,43 @@ export class DIType {
     this.declarations.push(declaration);
     this.declarations.sort((a, b) => a.compareTo(b));
   }
+
+  isCompatibleToPossiblePromise(to: DIType): boolean {
+    if (to.isPromise) {
+      const toTypes = to.isUnionOrIntersection ? to.unionOrIntersectionTypes.map(it => it.typeArguments[0]) : [to.typeArguments[0]];
+
+      return toTypes.every(it => this.isCompatible(it));
+    }
+
+    return this.isCompatible(to);
+  }
+
+  // isCompatible(to: DIType): boolean {
+  //   if (this.isPromise && to.isPromise) {
+  //     const thisTypes = this.unionOrIntersectionTypes.map(it => it.typeArguments[0]);
+  //     const toTypes = to.unionOrIntersectionTypes.map(it => it.typeArguments[0]);
+  //
+  //     if (thisTypes.length !== toTypes.length) {
+  //       return false;
+  //     }
+  //
+  //     return thisTypes.every((it, index) => it.isCompatible(toTypes[index]));
+  //   }
+  //
+  //   if (this.isPromise && !to.isPromise) {
+  //     const thisTypes = this.unionOrIntersectionTypes.map(it => it.typeArguments[0]);
+  //
+  //     return thisTypes.every(it => it.isCompatible(to));
+  //   }
+  //
+  //   if (!this.isPromise && to.isPromise) {
+  //     const toTypes = to.unionOrIntersectionTypes.map(it => it.typeArguments[0]);
+  //
+  //     return toTypes.every(it => this.isCompatible(it));
+  //   }
+  //
+  //   return this.isCompatible(to);
+  // }
 
   isCompatible(to: DIType): boolean {
     //If any of the types is unresolvable, we can't check compatibility

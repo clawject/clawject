@@ -13,13 +13,13 @@ export const processClassDeclaration = (node: ts.ClassDeclaration, shouldAddInte
   const configurationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Configuration);
   const clawjectApplicationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.ClawjectApplication);
 
-  let transformed = node;
+  let transformed: ts.Node = node;
 
   if (configurationDecoratorMetadata !== null || clawjectApplicationDecoratorMetadata !== null) {
     const configuration = processConfigurationOrApplicationClass(node, null, null);
 
     if (configuration === null) {
-      return processImplicitComponents(node, shouldAddInternalImport);
+      return node;
     }
 
     shouldAddInternalImport.value = true;
@@ -34,7 +34,9 @@ export const processClassDeclaration = (node: ts.ClassDeclaration, shouldAddInte
       return node;
     }
 
-    transformed = transformConfigurationOrApplicationClass(transformed, configuration, application);
+    transformed = transformConfigurationOrApplicationClass(transformed as ts.ClassDeclaration, configuration, application);
+  } else {
+    transformed = processImplicitComponents(node, shouldAddInternalImport);
   }
 
   return transformed;

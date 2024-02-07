@@ -28,6 +28,17 @@ class TypeWithTypeArguments {
 }
 
 export class DITypeBuilder {
+  static getTSTypeWithoutPromiseWrapper(tsType: ts.Type): ts.Type | null {
+    const typeChecker = getCompilationContext().typeChecker;
+    const diType = this.build(tsType);
+
+    if (diType.isPromise) {
+      return typeChecker.getTypeArguments(tsType as ts.TypeReference)[0] ?? null;
+    }
+
+    return tsType;
+  }
+
   static build(tsType: ts.Type): DIType {
     let type = tsType;
     const typeChecker = getCompilationContext().typeChecker;

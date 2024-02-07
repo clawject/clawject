@@ -37,18 +37,25 @@ export const fillEmbeddedBeans = (
 
     const typeChecker = compilationContext.typeChecker;
     const rootBeanNode = rootBean.node;
-    let type: ts.Type | undefined = undefined;
+    let type: ts.Type | null = typeChecker.getTypeAtLocation(rootBeanNode);
 
-    if (ts.isMethodDeclaration(rootBeanNode)) {
-      const signature = typeChecker.getSignatureFromDeclaration(rootBeanNode);
-      signature && (type = typeChecker.getReturnTypeOfSignature(signature));
-    } else if (isPropertyWithArrowFunction(rootBeanNode)) {
-      const signature = typeChecker.getSignatureFromDeclaration(
-        unwrapExpressionFromRoundBrackets((rootBean as Bean<ClassPropertyWithArrowFunctionInitializer>).node.initializer)
-      );
-      signature && (type = typeChecker.getReturnTypeOfSignature(signature));
-    } else {
-      type = typeChecker.getTypeAtLocation(rootBeanNode);
+    if (rootBean.kind === BeanKind.FACTORY_METHOD || rootBean.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
+      const callSignatures = typeChecker.getTypeAtLocation(rootBeanNode).getCallSignatures();
+
+      if (callSignatures.length !== 1) {
+        compilationContext.report(new TypeQualifyError(
+          `Could not resolve bean function signature. Bean must have exactly one call signature, found ${callSignatures.length} signatures.`,
+          rootBeanNode,
+          configuration,
+        ));
+        return;
+      }
+      const callSignature = callSignatures[0];
+      type = typeChecker.getReturnTypeOfSignature(callSignature);
+    }
+
+    if (type) {
+      type = DITypeBuilder.getTSTypeWithoutPromiseWrapper(type);
     }
 
     const typeSymbol = type?.getSymbol();

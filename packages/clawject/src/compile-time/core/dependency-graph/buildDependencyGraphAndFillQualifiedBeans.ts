@@ -29,10 +29,9 @@ export const buildDependencyGraphAndFillQualifiedBeans = (configurationOrApplica
       }
       if (dependency.diType.isArray || dependency.diType.isSet || dependency.diType.isMapStringToAny) {
         buildForCollectionOrArray(bean, allBeansWithoutCurrentAndWithoutExternalInternalBeans, dependency, dependencyGraph, configurationOrApplication);
-        return;
+      } else {
+        buildForBaseType(bean, allBeansWithoutCurrentAndWithoutExternalInternalBeans, dependency, missingDependencies, dependencyGraph, configurationOrApplication);
       }
-
-      buildForBaseType(bean, allBeansWithoutCurrentAndWithoutExternalInternalBeans, dependency, missingDependencies, dependencyGraph, configurationOrApplication);
     });
 
     if (missingDependencies.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
@@ -58,7 +57,7 @@ function buildForBaseType(
   configurationOrApplication.registerResolvedDependency(bean, resolvedDependency);
 
   const matchedByType = allBeansWithoutCurrent
-    .filter(it => dependency.diType.isCompatible(it.diType));
+    .filter(it => dependency.diType.isCompatibleToPossiblePromise(it.diType));
 
   if (matchedByType.length === 1) {
     resolvedDependency.qualifiedBean = matchedByType[0];
@@ -118,7 +117,7 @@ function buildForCollectionOrArray(
   configurationOrApplication.registerResolvedDependency(bean, resolvedDependency);
 
   const otherCollectionsMatchedByNameAndType = allBeansWithoutCurrent.filter(it =>
-    it.fullName === dependency.parameterName && dependency.diType.isCompatible(it.diType),
+    it.fullName === dependency.parameterName && dependency.diType.isCompatibleToPossiblePromise(it.diType),
   );
 
   //If matched my name and type - just taking specific bean that returns collection
@@ -133,20 +132,20 @@ function buildForCollectionOrArray(
   if (dependency.diType.isMapStringToAny) {
     allBeansWithoutCurrent.forEach(beanCandidate => {
       if (dependency.diType.isUnionOrIntersection) {
-        dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[1].isCompatible(beanCandidate.diType))
+        dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[1].isCompatibleToPossiblePromise(beanCandidate.diType))
         && matched.push(beanCandidate);
       } else {
-        dependency.diType.typeArguments[1].isCompatible(beanCandidate.diType)
+        dependency.diType.typeArguments[1].isCompatibleToPossiblePromise(beanCandidate.diType)
         && matched.push(beanCandidate);
       }
     });
   } else {
     allBeansWithoutCurrent.forEach(beanCandidate => {
       if (dependency.diType.isUnionOrIntersection) {
-        dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[0].isCompatible(beanCandidate.diType))
+        dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[0].isCompatibleToPossiblePromise(beanCandidate.diType))
         && matched.push(beanCandidate);
       } else {
-        dependency.diType.typeArguments[0].isCompatible(beanCandidate.diType)
+        dependency.diType.typeArguments[0].isCompatibleToPossiblePromise(beanCandidate.diType)
         && matched.push(beanCandidate);
       }
     });

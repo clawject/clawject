@@ -16,11 +16,11 @@ export const fillBeanTypes = (configuration: Configuration) => {
       const callSignatures = beanType.getCallSignatures();
 
       if (callSignatures.length !== 1) {
-        compilationContext.report(new TypeQualifyError(
+        `        compilationContext.report(new TypeQualifyError(
           'Could not resolve bean function signature. Bean must have exactly one call signature, found ${callSignatures.length} signatures.',
           bean.node,
           configuration,
-        ));
+        ));`;
         return;
       }
 
@@ -33,7 +33,17 @@ export const fillBeanTypes = (configuration: Configuration) => {
 
     if (bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
       const typedBeanNode = bean.node as ClassPropertyWithCallExpressionInitializer;
-      const beanType = typeChecker.getTypeAtLocation(typedBeanNode);
+      const beanType = DITypeBuilder.getTSTypeWithoutPromiseWrapper(typeChecker.getTypeAtLocation(typedBeanNode));
+
+      if (!beanType) {
+        compilationContext.report(new TypeQualifyError(
+          'Could not resolve bean type.',
+          typedBeanNode,
+          configuration,
+        ));
+        return;
+      }
+
       const factoryProperty = beanType.getProperty('factory');
 
       if (!factoryProperty) {
