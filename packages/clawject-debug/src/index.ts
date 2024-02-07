@@ -1,4 +1,14 @@
-import {Bean, ClawjectApplication, ClawjectFactory, Configuration, Embedded, PostConstruct, Scope} from '@clawject/di';
+import {
+  Bean,
+  ClawjectApplication,
+  ClawjectFactory,
+  Configuration,
+  Embedded,
+  Import,
+  PostConstruct,
+  Scope
+} from '@clawject/di';
+import {type AsyncClass} from './AsyncClass';
 
 const AnyClassImport = import('./AsyncClass');
 
@@ -7,9 +17,14 @@ interface A {
     data2: number;
 }
 
+@Configuration
+class TestConfig {
+  @Bean str = '';
+}
+
 @ClawjectApplication
 export class _1 {
-  @Bean str = Promise.resolve('test');
+  testConfig = Import(Promise.resolve(TestConfig));
 
   @PostConstruct
   init(test: string): void {
