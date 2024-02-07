@@ -56,7 +56,7 @@ export class ConfigurationRepository {
     configurations.forEach(configuration => {
       this.configurationIdToConfiguration.delete(configuration.id);
 
-      DependencyGraph.clearByConfiguration(configuration);
+      DependencyGraph.global.clearByConfiguration(configuration);
     });
   }
 

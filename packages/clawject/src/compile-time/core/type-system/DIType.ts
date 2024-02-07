@@ -37,6 +37,14 @@ export class DIType {
     return this.typeFlag >= DITypeFlag.ANY && this.typeFlag <= DITypeFlag.SYMBOL;
   }
 
+  get isEmptyValue(): boolean {
+    if (this.isUnionOrIntersection) {
+      return this.unionOrIntersectionTypes.every(it => it.isEmptyValue);
+    }
+
+    return this.typeFlag === DITypeFlag.UNDEFINED || this.typeFlag === DITypeFlag.VOID || this.typeFlag === DITypeFlag.NULL;
+  }
+
   get isVoidUndefinedPlainUnionIntersection(): boolean {
     if (this.typeFlag === DITypeFlag.UNDEFINED || this.typeFlag === DITypeFlag.VOID) {
       return true;
@@ -139,10 +147,6 @@ export class DIType {
   }
 
   isCompatible(to: DIType): boolean {
-    if (this === to) {
-      return true;
-    }
-
     //If any of the types is unresolvable, we can't check compatibility
     if (this.typeFlag < DITypeFlag.ANONYMOUS || to.typeFlag < DITypeFlag.ANONYMOUS) {
       return false;

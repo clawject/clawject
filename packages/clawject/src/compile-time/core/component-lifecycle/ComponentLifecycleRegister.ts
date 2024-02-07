@@ -1,8 +1,9 @@
+import ts from 'typescript';
 import { Component } from '../component/Component';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
 import { ComponentLifecycle } from './ComponentLifecycle';
 
-export class ComponentLifecycleRegister extends AbstractElementRegister<ComponentLifecycle> {
+export class ComponentLifecycleRegister extends AbstractElementRegister<ComponentLifecycle, ts.Node> {
   constructor(
     public parent: Component,
   ) {

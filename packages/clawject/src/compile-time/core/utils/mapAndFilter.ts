@@ -1,4 +1,4 @@
-export const mapFilter = <T, U, S extends U>(
+export const mapAndFilter = <T, U, S extends U>(
   array: T[],
   mapfn: (value: T, index: number, array: T[]) => U,
   filterFn: (value: U, index: number, array: U[]) => value is S

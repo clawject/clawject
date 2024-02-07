@@ -3,7 +3,6 @@ import { MessageType } from '../MessageType';
 import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
-import { Configuration } from '../../../core/configuration/Configuration';
 import { Bean } from '../../../core/bean/Bean';
 import { BeanKind } from '../../../core/bean/BeanKind';
 
@@ -19,12 +18,11 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
   constructor(
     details: string | null,
     place: ts.Node,
-    relatedConfiguration: Configuration | null,
     relatedBean: Bean,
     candidatesByName: Bean[],
     candidatesByType: Bean[],
   ) {
-    super(details, place, relatedConfiguration);
+    super(details, place, relatedBean.parentConfiguration);
 
     this.candidatesByName = candidatesByName.map(it => this.getNodeDetails(it));
     this.candidatesByType = candidatesByType.map(it => this.getNodeDetails(it));

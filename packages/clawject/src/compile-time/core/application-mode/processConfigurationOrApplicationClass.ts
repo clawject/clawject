@@ -9,8 +9,14 @@ import { DeclarationMetadataParser } from '../declaration-metadata/DeclarationMe
 import { DeclarationMetadataKind } from '../declaration-metadata/DeclarationMetadata';
 import { ConfigurationDeclarationMetadata } from '../declaration-metadata/ConfigurationDeclarationMetadata';
 import { registerBeanFromDeclarationMetadata } from '../bean/registerBeanFromDeclarationMetadata';
+import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { ApplicationDeclarationMetadata } from '../declaration-metadata/ApplicationDeclarationMetadata';
+import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
+import { CorruptedMetadataError } from '../../compilation-context/messages/errors/CorruptedMetadataError';
+import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
 
-export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration): Configuration => {
+export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration, parentImportNode: ts.Node | null, parentConfiguration: Configuration | null): Configuration | null => {
   const registeredConfiguration = ConfigurationRepository.nodeToConfiguration.get(node);
 
   if (registeredConfiguration) {
@@ -20,72 +26,94 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
   const configurationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Configuration);
   const clawjectApplicationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.ClawjectApplication);
 
-  if (configurationDecoratorMetadata !== null || clawjectApplicationDecoratorMetadata !== null) {
-    const configuration = ConfigurationRepository.register(node);
-
-    registerImports(configuration);
-    registerBeans(configuration);
-
-    return configuration;
-  }
-
-  const compilationMetadata = DeclarationMetadataParser.parse(node);
-
-  if (compilationMetadata === null) {
-    //TODO report compilation error
-    throw new Error('Configuration class must have a metadata');
-  }
-
-  if (compilationMetadata.kind !== DeclarationMetadataKind.CONFIGURATION) {
-    //TODO report compilation error
-    throw new Error('Configuration class must have a configuration metadata');
-  }
-
-  const typedMetadata = compilationMetadata as ConfigurationDeclarationMetadata;
   const configuration = ConfigurationRepository.register(node);
 
-  const classMemberNamesToNode = node.members.reduce((acc, member) => {
-    if (member.name !== undefined) {
-      acc[member.name.getText()] = member;
+  if (configurationDecoratorMetadata !== null || clawjectApplicationDecoratorMetadata !== null) {
+    registerImports(configuration);
+    registerBeans(configuration);
+  } else {
+    //This branch is for imported configurations
+    const compilationMetadata = DeclarationMetadataParser.parse(node);
+
+    if (compilationMetadata === null) {
+      return null;
     }
 
-    return acc;
-  }, {} as Record<string, ts.ClassElement>);
-
-  //Registering imports
-  Object.keys(typedMetadata.imports).forEach((importElementName) => {
-    const node = classMemberNamesToNode[importElementName];
-
-    if (node === undefined) {
-      //TODO report compilation error
-      throw new Error('Import element must have a node');
+    if (parentImportNode !== null) {
+      getCompilationContext().report(new NotSupportedError(
+        'Only configuration and application classes can be imported in this context.',
+        parentImportNode,
+        parentConfiguration,
+      ));
+      return null;
     }
 
-    if (!ts.isPropertyDeclaration(node)) {
-      //TODO report compilation error
-      throw new Error('Import element must be a property declaration');
+    if (compilationMetadata instanceof AbstractCompilationMessage) {
+      getCompilationContext().report(compilationMetadata);
+      return null;
     }
 
-    registerImportForClassElementNode(configuration, node);
-  });
-
-  //Registering beans
-  Object.entries(typedMetadata.beans).forEach(([beanElementName, beanDeclarationMetadata]) => {
-    const node = classMemberNamesToNode[beanElementName];
-
-    if (node === undefined) {
-      //TODO report compilation error
-      throw new Error('Bean element must have a node');
+    if (compilationMetadata.kind !== DeclarationMetadataKind.CONFIGURATION && compilationMetadata.kind !== DeclarationMetadataKind.APPLICATION) {
+      getCompilationContext().report(new NotSupportedError(
+        'Only configuration and application classes are supported here.',
+        parentImportNode ?? node,
+        parentConfiguration,
+      ));
+      return null;
     }
 
-    if (!ts.isPropertyDeclaration(node)) {
-      //TODO report compilation error
-      throw new Error('Bean element must be a property declaration');
-    }
+    const typedMetadata = compilationMetadata as ConfigurationDeclarationMetadata | ApplicationDeclarationMetadata;
+    const classMemberNamesToNode = node.members.reduce((acc, member) => {
+      if (member.name !== undefined) {
+        acc[member.name.getText()] = member;
+      }
 
-    registerBeanFromDeclarationMetadata(configuration, node, beanElementName, beanDeclarationMetadata);
-  });
+      return acc;
+    }, {} as Record<string, ts.ClassElement>);
 
+    //Registering imports
+    Object.keys(typedMetadata.imports).forEach((importElementName) => {
+      const classElementNode = classMemberNamesToNode[importElementName] as ts.ClassElement | undefined;
+
+      if (classElementNode === undefined) {
+        getCompilationContext().report(new CorruptedMetadataError(
+          `No class member declared in metadata found ${importElementName}.`,
+          node,
+          parentConfiguration,
+        ));
+        return;
+      }
+
+      if (!ts.isPropertyDeclaration(classElementNode)) {
+        getCompilationContext().report(new CorruptedMetadataError(
+          'Import element declared in metadata must be a property declaration.',
+          classElementNode,
+          parentConfiguration,
+        ));
+        return;
+      }
+
+      registerImportForClassElementNode(configuration, classElementNode);
+    });
+
+    //Registering beans
+    Object.entries(typedMetadata.beans).forEach(([beanElementName, beanDeclarationMetadata]) => {
+      const classElementNode = classMemberNamesToNode[beanElementName] as ts.ClassElement | undefined;
+
+      if (classElementNode === undefined) {
+        getCompilationContext().report(new CorruptedMetadataError(
+          `No class member declared in metadata found ${beanElementName}.`,
+          node,
+          parentConfiguration,
+        ));
+        return;
+      }
+
+      registerBeanFromDeclarationMetadata(configuration, classElementNode, beanElementName, beanDeclarationMetadata);
+    });
+  }
+
+  registerBeanDependencies(configuration);
 
   return configuration;
 };

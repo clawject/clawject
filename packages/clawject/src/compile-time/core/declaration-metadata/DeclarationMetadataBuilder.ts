@@ -2,11 +2,20 @@ import ts, { factory } from 'typescript';
 import { DeclarationMetadataKind } from './DeclarationMetadata';
 import { CompileTimeElement } from './CompileTimeElement';
 import { Configuration } from '../configuration/Configuration';
+import { Application } from '../application/Application';
 
 export class DeclarationMetadataBuilder {
-  private static METADATA_VERSION = '1';
+  private static METADATA_VERSION = 1;
 
   static buildForConfiguration(configuration: Configuration): ts.PropertyDeclaration {
+    return this.buildForConfigurationOrApplication(DeclarationMetadataKind.CONFIGURATION, configuration);
+  }
+
+  static buildForApplication(application: Application): ts.PropertyDeclaration {
+    return this.buildForConfigurationOrApplication(DeclarationMetadataKind.APPLICATION, application.rootConfiguration);
+  }
+
+  private static buildForConfigurationOrApplication(metadataKind: DeclarationMetadataKind, configuration: Configuration): ts.PropertyDeclaration {
     const beans = Array.from(configuration.beanRegister.elements).map(bean =>
       factory.createPropertySignature(
         undefined,
@@ -35,7 +44,7 @@ export class DeclarationMetadataBuilder {
             undefined,
             factory.createIdentifier('kind'),
             undefined,
-            factory.createLiteralTypeNode(factory.createStringLiteral(bean.kind)),
+            factory.createLiteralTypeNode(factory.createNumericLiteral(bean.kind)),
           ),
           factory.createPropertySignature(
             undefined,
@@ -59,34 +68,31 @@ export class DeclarationMetadataBuilder {
       [],
       factory.createPrivateIdentifier(CompileTimeElement.COMPILE_TIME_METADATA),
       undefined,
-      factory.createIntersectionTypeNode([
-        factory.createTypeLiteralNode([
-          factory.createPropertySignature(
-            undefined,
-            factory.createIdentifier('kind'),
-            undefined,
-            factory.createLiteralTypeNode(factory.createStringLiteral(DeclarationMetadataKind.CONFIGURATION))
-          ),
-          factory.createPropertySignature(
-            undefined,
-            factory.createIdentifier('version'),
-            undefined,
-            factory.createLiteralTypeNode(factory.createNumericLiteral(this.METADATA_VERSION))
-          ),
-          factory.createPropertySignature(
-            undefined,
-            factory.createIdentifier('beans'),
-            undefined,
-            factory.createTypeLiteralNode(beans)
-          ),
-          factory.createPropertySignature(
-            undefined,
-            factory.createIdentifier('imports'),
-            undefined,
-            factory.createTypeLiteralNode(imports)
-          )
-        ]),
-        factory.createKeywordTypeNode(ts.SyntaxKind.NeverKeyword)
+      factory.createTypeLiteralNode([
+        factory.createPropertySignature(
+          undefined,
+          factory.createIdentifier('kind'),
+          undefined,
+          factory.createLiteralTypeNode(factory.createNumericLiteral(metadataKind))
+        ),
+        factory.createPropertySignature(
+          undefined,
+          factory.createIdentifier('version'),
+          undefined,
+          factory.createLiteralTypeNode(factory.createNumericLiteral(this.METADATA_VERSION))
+        ),
+        factory.createPropertySignature(
+          undefined,
+          factory.createIdentifier('beans'),
+          undefined,
+          factory.createTypeLiteralNode(beans)
+        ),
+        factory.createPropertySignature(
+          undefined,
+          factory.createIdentifier('imports'),
+          undefined,
+          factory.createTypeLiteralNode(imports)
+        )
       ]),
       undefined
     );

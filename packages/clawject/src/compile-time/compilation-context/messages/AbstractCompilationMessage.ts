@@ -4,6 +4,7 @@ import { MessageCode } from './MessageCode';
 import { MessageType } from './MessageType';
 import { getNodeDetails, NodeDetails } from '../../core/ts/utils/getNodeDetails';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { Application } from '../../core/application/Application';
 
 export interface IRelatedConfigurationMetadata {
   name: string;
@@ -26,6 +27,7 @@ export abstract class AbstractCompilationMessage {
     public readonly details: string | null,
     place: ts.Node,
     relatedConfiguration: Configuration | null,
+    application: Application | null = null,
   ) {
     this.place = getNodeDetails(place);
     this.relatedConfigurationMetadata = this.getRelatedConfigurationMetadata(relatedConfiguration);

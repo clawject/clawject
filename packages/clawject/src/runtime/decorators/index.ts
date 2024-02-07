@@ -1,6 +1,6 @@
 export type { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
-export { Bean, type BeanTarget, type BeanWithClassConstructor, type BeanWithClassConstructorExplicitType } from './Bean';
+export { Bean, type BeanTarget, type BeanWithConstructor, type BeanConstructorFactory } from './Bean';
 export { PreDestroy, PreDestroyTarget } from './PreDestroy';
 export { PostConstruct, PostConstructTarget } from './PostConstruct';
 export { Lazy, LazyTarget } from './Lazy';

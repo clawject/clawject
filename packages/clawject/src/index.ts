@@ -14,9 +14,6 @@ export type { ObjectFactory, ObjectFactoryResult } from './runtime/object-factor
 export { CustomScope } from './runtime/scope/CustomScope';
 // export { Condition } from './runtime/Condition';
 
-export { ___TypeReferenceTable___ } from './runtime/___TypeReferenceTable___';
+export { ClawjectFactory } from './runtime/application/ClawjectFactory';
 
-//Application mode only
-// export { Configuration } from './external/Configuration';
-// export { Autowired } from './external/Autowired';
-// export { Component } from './external/Component';
+export { ___TypeReferenceTable___ } from './runtime/___TypeReferenceTable___';

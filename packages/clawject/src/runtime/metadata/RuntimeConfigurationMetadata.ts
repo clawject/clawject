@@ -1,9 +1,9 @@
-import { RuntimeBeanMetadata, RuntimeLifecycleMetadata } from './MetadataTypes';
+import { RuntimeBeanMetadata, RuntimeImportMetadata, RuntimeLifecycleMetadata } from './MetadataTypes';
 
 export interface RuntimeConfigurationMetadata {
-  id: number;
   className: string;
   lifecycle: RuntimeLifecycleMetadata;
+  imports: RuntimeImportMetadata[];
   beans: Record<string, RuntimeBeanMetadata>;
   lazy: boolean;
   scope: string;

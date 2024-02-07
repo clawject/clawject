@@ -2,6 +2,7 @@ import ts from 'typescript';
 import { getCompilationContext } from './getCompilationContext';
 import { ConfigurationRepository } from '../compile-time/core/configuration/ConfigurationRepository';
 import { DeclarationMetadataBuilder } from '../compile-time/core/declaration-metadata/DeclarationMetadataBuilder';
+import { ApplicationRepository } from '../compile-time/core/application/ApplicationRepository';
 
 /** @public */
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
@@ -10,8 +11,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
   return context => (sourceFile): ts.SourceFile => {
     compilationContext.assignProgram(program);
 
-    //TODO check also for application
-    if (!ConfigurationRepository.fileNameToConfigurations.has(sourceFile.fileName)) {
+    if (!ConfigurationRepository.fileNameToConfigurations.has(sourceFile.fileName) && !ApplicationRepository.fileNameToApplications.has(sourceFile.fileName)) {
       return sourceFile;
     }
 
@@ -25,8 +25,18 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
       if (ts.isClassDeclaration(node)) {
         const configuration = ConfigurationRepository.nodeToConfiguration
           .get(node.original as ts.ClassDeclaration);
+        const application = ApplicationRepository.nodeToApplication.get(node.original as ts.ClassDeclaration);
 
-        if (configuration) {
+        let metadata: ts.PropertyDeclaration | null = null;
+
+        //Order is important because application is also a configuration
+        if (application) {
+          metadata = DeclarationMetadataBuilder.buildForApplication(application);
+        } else if (configuration) {
+          metadata = DeclarationMetadataBuilder.buildForConfiguration(configuration);
+        }
+
+        if (metadata) {
           transformedNode = ts.factory.updateClassDeclaration(
             node,
             node.modifiers,
@@ -35,7 +45,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
             node.heritageClauses,
             [
               ...node.members,
-              DeclarationMetadataBuilder.buildForConfiguration(configuration),
+              metadata,
             ]
           );
         }

@@ -14,14 +14,6 @@ export default {
       {
         test: /\.ts$/,
         loader: 'ts-loader',
-        options: {
-          configFile: 'tsconfig.webpack.tsloader.json',
-          getCustomTransformers: (program, getProgram) => ({
-            before: [
-              ClawjectTransformer(getProgram)
-            ]
-          })
-        }
       },
       {
         test: /\.m?js$/,

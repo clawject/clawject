@@ -5,10 +5,15 @@ import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 /** @public */
 export type BeanTarget = PropertyDecorator & MethodDecorator;
 /** @public */
-export type BeanWithClassConstructorExplicitType = <T>(classConstructor: ClassConstructor<T>) => () => T;
-/** @public */
-export type BeanWithClassConstructor = <T, A extends any[], C extends ClassConstructor<T, A>>(classConstructor: C) =>
-  (...args: ConstructorParameters<C>) => InstanceType<C>;
+export type BeanWithConstructor = <C extends ClassConstructor<any>>(classConstructor: C) => BeanConstructorFactory<InstanceType<C>, C>;
+export type BeanWithConstructorExplicitType = <T, C extends ClassConstructor<T>>(classConstructor: C) => BeanConstructorFactory<T, C>;
+/**
+ * @public
+ * */
+export interface BeanConstructorFactory<T, C extends ClassConstructor<T>> {
+  constructor: C;
+  factory: (...args: ConstructorParameters<C>) => T;
+}
 /**
  * Indicates that a method/property produces/contains a bean to be managed by the Clawject container.
  *
@@ -16,6 +21,13 @@ export type BeanWithClassConstructor = <T, A extends any[], C extends ClassConst
  *
  * @public
  */
-export const Bean: DecoratorWithoutArguments<BeanTarget> & BeanWithClassConstructor & BeanWithClassConstructorExplicitType = () => {
+export const Bean: DecoratorWithoutArguments<BeanTarget> & BeanWithConstructor & BeanWithConstructorExplicitType = (...args: any[]): any => {
+  if (args.length === 1 && typeof args[0] === 'function') {
+    return {
+      constructor: args[0],
+      factory: (...constructorArgs: any[]) => new args[0](...constructorArgs)
+    };
+  }
+
   throw ErrorBuilder.usageWithoutConfiguredDI('@Bean');
 };

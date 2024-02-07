@@ -28,7 +28,7 @@ export const fillEmbeddedBeans = (
 
     if (rootBean.kind === BeanKind.CLASS_CONSTRUCTOR) {
       compilationContext.report(new NotSupportedError(
-        '@Embedded decorator is not supported for class constructor beans.',
+        '@Embedded decorator is not allowed for class constructor beans.',
         rootBean.node,
         configuration,
       ));
@@ -91,13 +91,13 @@ export const fillEmbeddedBeans = (
 
       const bean = new Bean({
         classMemberName: rootBean.classMemberName,
-        diType: intersectionType,
         node: rootBean.node,
         kind: rootBean.kind,
         nestedProperty: name,
         public: false,
         primary: rootBean.primary,
       });
+      bean.registerType(intersectionType);
       configuration.beanRegister.register(bean);
     });
   });

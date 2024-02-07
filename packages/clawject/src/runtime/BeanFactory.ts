@@ -158,7 +158,7 @@ export class BeanFactory {
   ): any {
     let proxy = this.proxyRegister.get(name);
 
-    const assertNotPrimitiveAndConstruct = () => {
+    const assertNotPrimitiveAndConstruct = (): any => {
       const bean = scopeBeanGetter();
 
       if (InternalUtils.isObject(bean)) {

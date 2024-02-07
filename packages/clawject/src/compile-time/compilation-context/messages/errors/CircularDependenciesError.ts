@@ -4,7 +4,6 @@ import { MessageType } from '../MessageType';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { Bean } from '../../../core/bean/Bean';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
-import { Configuration } from '../../../core/configuration/Configuration';
 
 class CycleMember {
   constructor(
@@ -21,10 +20,9 @@ export class CircularDependenciesError extends AbstractCompilationMessage {
 
   constructor(
     place: ts.Node,
-    relatedConfiguration: Configuration | null,
     cycleMembers: Bean[],
   ) {
-    super(null, place, relatedConfiguration);
+    super(null, place, null);
 
     this.cycleMembers = cycleMembers
       .map(bean => new CycleMember(

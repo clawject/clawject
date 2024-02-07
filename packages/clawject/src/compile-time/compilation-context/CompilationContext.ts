@@ -60,7 +60,7 @@ export class CompilationContext {
     }
   }
 
-  clearByFileName(fileName: string): void {
+  clearMessagesByFileName(fileName: string): void {
     this.pathToMessages.delete(fileName);
   }
 

@@ -1,29 +1,39 @@
-import {Bean, ClawjectApplication, Configuration, Import, Internal} from '@clawject/di';
+import {
+  Bean,
+  ClawjectApplication,
+  ClawjectFactory, Configuration,
+  CustomScope, Embedded, Import,
+  ObjectFactory,
+  ObjectFactoryResult,
+  PostConstruct,
+  PreDestroy, Scope, ScopeRegister
+} from '@clawject/di';
 
-@Configuration
-@Internal
-export class _2<T> {
-  @Bean data(dep: T): T {
-    return 'data' as any;
-  }
+interface A {
+  data: string;
+  datanum: number;
+}
 
-  static storage = new Map<any, typeof _2<any>>();
-
-  static forEntity<T>(entity: T): typeof _2<T> {
-    let stored = _2.storage.get(entity);
-
-    if (!stored) {
-      stored = Configuration.copy(_2<T>);
-      _2.storage.set(entity, stored);
-    }
-
-    return stored;
-  }
+class S {
 }
 
 @ClawjectApplication
 export class _1 {
-  imports = Import(_2.forEntity(''));
+  s2 = Bean(S);
 
-  @Bean root = 42 as const;
+  @Bean str = '';
+
+  @PostConstruct
+  postConstruct(aData: string, s: S, s1: S): void {
+    console.log(s === s1);
+  }
+
+  @PreDestroy
+  preDestroy(data: string): void {
+    console.trace('PreDestroy', data);
+  }
 }
+
+const claw = await ClawjectFactory.createApplicationContext(_1);
+
+await claw.destroy();

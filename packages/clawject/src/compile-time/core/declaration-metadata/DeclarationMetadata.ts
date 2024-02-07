@@ -4,6 +4,6 @@ export interface DeclarationMetadata {
 }
 
 export enum DeclarationMetadataKind {
-  CONFIGURATION = 'configuration',
-  APPLICATION = 'application',
+  CONFIGURATION = 1,
+  APPLICATION = 2,
 }

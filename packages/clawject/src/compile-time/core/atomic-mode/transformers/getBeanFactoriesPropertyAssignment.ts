@@ -4,13 +4,15 @@ import { getDependencyAccessExpression } from './getDependencyAccessExpression';
 import { BeanKind } from '../../bean/BeanKind';
 import { compact } from 'lodash';
 
-export const getBeanFactoriesPropertyAssignment = (context: Configuration): ts.PropertyAssignment => {
-  const propertyAssignments = Array.from(context.beanRegister.elements)
+export const getBeanFactoriesPropertyAssignment = (configuration: Configuration): ts.PropertyAssignment => {
+  const propertyAssignments = Array.from(configuration.beanRegister.elements)
     //Skipping Embedded beans
     .filter(it => it.nestedProperty === null)
     .map(bean => {
-      const dependencyValueExpressions = compact(Array.from(bean.dependencies)
-        .map(it => getDependencyAccessExpression(it)));
+      const resolvedDependencies = configuration.resolvedBeanDependencies.get(bean) ?? [];
+      const dependencyValueExpressions = compact(
+        resolvedDependencies.map(it => getDependencyAccessExpression(it))
+      );
 
       let elementAccessExpression: ts.Expression = factory.createPropertyAccessExpression(
         factory.createIdentifier('instance'),

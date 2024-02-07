@@ -4,6 +4,8 @@ import { Import } from './Import';
 import ts from 'typescript';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { processConfigurationOrApplicationClass } from '../application-mode/processConfigurationOrApplicationClass';
+import { ConfigurationImportError } from '../../compilation-context/messages/errors/ConfigurationImportError';
+import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 
 export const registerImports = (configuration: Configuration): void => {
   configuration.node.members.forEach(member => {
@@ -20,21 +22,33 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   const constructor = properties.find(it => it.getName() === 'constructor');
 
   if (!constructor) {
-    //TODO report compilation error
-    throw new Error('Import must have a constructor property');
+    getCompilationContext().report(new ConfigurationImportError(
+      'Import must have a constructor property.',
+      member,
+      configuration,
+    ));
+    return;
   }
 
   const constructorType = typeChecker.getTypeOfSymbol(constructor);
   const constructSignatures = constructorType.getConstructSignatures();
 
   if (constructSignatures.length === 0) {
-    //TODO report compilation error
-    throw new Error('Import member must be a class declaration');
+    getCompilationContext().report(new ConfigurationImportError(
+      'No imported class construct signatures found.',
+      member,
+      configuration,
+    ));
+    return;
   }
 
   if (constructSignatures.length !== 1) {
-    //TODO report compilation error
-    throw new Error('Import member must have exactly one constructor');
+    getCompilationContext().report(new ConfigurationImportError(
+      'Imported class mush have only 1 construct signature.',
+      member,
+      configuration,
+    ));
+    return;
   }
 
 
@@ -43,32 +57,58 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   const importMemberSymbol = constructSignature.getReturnType().getSymbol();
 
   if (!importMemberSymbol) {
-    //TODO report compilation error about can not resolve configuration
-    throw new Error('Import member must have a symbol');
+    getCompilationContext().report(new ConfigurationImportError(
+      'Could not resolve import symbol.',
+      member,
+      configuration,
+    ));
+    return;
   }
 
   const importMemberDeclarations = importMemberSymbol.getDeclarations() ?? [];
 
   if (importMemberDeclarations.length === 0) {
-    //TODO report compilation error
-    throw new Error('Import member must have at least one declaration');
+    getCompilationContext().report(new ConfigurationImportError(
+      'No import signatures found.',
+      member,
+      configuration,
+    ));
+    return;
   }
 
   const importMemberClassDeclarations = importMemberDeclarations.filter(ts.isClassDeclaration);
 
   if (importMemberClassDeclarations.length === 0) {
-    //TODO report compilation error
-    throw new Error('Import member must have one class declaration');
+    getCompilationContext().report(new ConfigurationImportError(
+      'No imported class construct signatures found.',
+      member,
+      configuration,
+    ));
+    return;
   }
 
   if (importMemberClassDeclarations.length !== 1) {
-    //TODO report compilation error
-    throw new Error('Import member must have exactly one class declaration');
+    getCompilationContext().report(new ConfigurationImportError(
+      'Imported class mush have only 1 construct signature.',
+      member,
+      configuration,
+    ));
+    return;
   }
 
   const importMemberClassDeclaration = importMemberClassDeclarations[0];
 
-  const processedConfigurationClass = processConfigurationOrApplicationClass(importMemberClassDeclaration);
+  const processedConfigurationClass = processConfigurationOrApplicationClass(importMemberClassDeclaration, member, configuration);
+
+  if (processedConfigurationClass === null) {
+    getCompilationContext().report(new NotSupportedError(
+      'Only configuration and application classes can be imported in this context.',
+      member,
+      configuration,
+    ));
+
+    return;
+  }
 
   const imp = new Import({
     classMemberName: member.name?.getText() ?? '',

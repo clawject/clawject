@@ -30,8 +30,12 @@ export class InternalUtils {
     return objectPrototype.constructor;
   }
 
-  static isObject(value: any): boolean {
+  static isObject(value: any): value is object | Function {
     const type = typeof value;
     return value !== null && (type === 'object' || type === 'function');
+  }
+
+  static capitalizeFirstLetter(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 }

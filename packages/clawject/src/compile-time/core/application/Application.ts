@@ -1,64 +1,77 @@
-import { alg, Graph } from 'graphlib';
 import { Configuration } from '../configuration/Configuration';
-import { analyzeGraph } from 'graph-cycles';
-import { mapFilter } from '../utils/mapFilter';
-import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { Entity } from '../Entity';
 import ts from 'typescript';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { GenericError } from '../../compilation-context/messages/errors/GenericError';
+import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { Bean } from '../bean/Bean';
-import { DIType } from '../type-system/DIType';
-import { Dependency } from '../dependency/Dependency';
-import { FileGraph } from '../file-graph/FileGraph';
-
-export class ApplicationBean {
-  dependencies = new Set<Dependency>();
-  diType: DIType | null = null;
-
-  constructor(
-    public readonly bean: Bean,
-  ) {}
-
-  registerDependency(dependency: Dependency): void {
-    this.dependencies.add(dependency);
-    dependency.diType.declarationFileNames.forEach(it => {
-      FileGraph.add(this.bean.parentConfiguration.fileName, it);
-    });
-  }
-}
+import { ResolvedDependency } from '../dependency/ResolvedDependency';
 
 export class Application extends Entity<ts.ClassDeclaration> {
-  declare id: string;
-  declare fileName: string;
-  className: string | null = null;
-  rootConfiguration: Configuration | null = null;
-
-  beans: ApplicationBean[] = [];
-
-  configurationsGraph = new Graph();
-
-  addConfigurationToGraph(node: Configuration, edges: Configuration[]) {
-    edges.forEach(edge => this.configurationsGraph.setEdge(node.id, edge.id));
+  constructor(
+    public readonly rootConfiguration: Configuration
+  ) {
+    super();
   }
 
-  getConfigurationsCycle(): Configuration[][] {
-    if (alg.isAcyclic(this.configurationsGraph)) {
-      return [];
+  declare id: string;
+  declare fileName: string;
+  dependencyGraph = new DependencyGraph();
+
+  resolvedBeanDependencies = new Map<Bean, ResolvedDependency[]>();
+  registerResolvedDependency(bean: Bean, resolvedDependency: ResolvedDependency): void {
+    const resolvedDependencies = this.resolvedBeanDependencies.get(bean);
+    if (!resolvedDependencies) {
+      this.resolvedBeanDependencies.set(bean, [resolvedDependency]);
+    } else {
+      resolvedDependencies.push(resolvedDependency);
     }
+  }
 
-    const { cycles } = analyzeGraph(
-      this.configurationsGraph.nodes().map(node => {
-        const nodeEdges = (this.configurationsGraph.outEdges(node) ?? []).map(it => it.w);
+  private _beans: Set<Bean> | null = null;
+  get beans(): Set<Bean> {
+    if (this._beans === null) {
+      const beans = new Set<Bean>();
+      this._beans = beans;
 
-        return [node, nodeEdges];
-      })
-    );
+      this.forEachConfiguration(configuration => {
+        configuration.beanRegister.elements.forEach(bean => {
+          beans.add(bean);
+        });
+      });
+      return beans;
+    } else {
+      return this._beans;
+    }
+  }
 
-    return cycles.map(idsList => {
-      return mapFilter(
-        idsList,
-        it => ConfigurationRepository.configurationIdToConfiguration.get(it) ?? null,
-        (it): it is Configuration => it !== null,
-      );
-    });
+  forEachConfiguration(callback: (configuration: Configuration) => void): void {
+    const visited = new Set<Configuration>();
+    const stack: Configuration[] = [this.rootConfiguration];
+
+    while (stack.length > 0) {
+      const configuration = stack.pop()!;
+      visited.add(configuration);
+      const elements = Array.from(configuration.importRegister.elements);
+
+      for (let i = elements.length - 1; i >= 0; i--) {
+        const resolvedConfiguration = elements[i].resolvedConfiguration;
+
+        if (resolvedConfiguration === null) {
+          getCompilationContext().report(new GenericError(
+            'No resolved configuration found in import.',
+            this.node,
+            null,
+          ));
+          return;
+        }
+
+        if (!visited.has(resolvedConfiguration)) {
+          stack.push(resolvedConfiguration);
+        }
+      }
+
+      callback(configuration);
+    }
   }
 }

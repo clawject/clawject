@@ -1,7 +1,6 @@
 import { Configuration } from '../configuration/Configuration';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
 import { Import } from './Import';
-import { ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../ts/types';
 import { PropertyDeclaration } from 'typescript';
 
 export class ImportRegister extends AbstractElementRegister<Import, PropertyDeclaration> {

@@ -1,27 +1,15 @@
 import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { CircularDependenciesError } from '../../compilation-context/messages/errors/CircularDependenciesError';
-import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
-export const reportAboutCircularDependencies = (
-  context: Configuration
-) => {
+export const reportAboutCircularDependencies = (dependencyGraph: DependencyGraph) => {
   const compilationContext = getCompilationContext();
-  const cycle = DependencyGraph.getCycle();
+  const cycles = dependencyGraph.getCycle();
 
-  cycle.forEach((cycles, currentContext) => {
-    if (context !== currentContext) {
-      return;
-    }
-
-    cycles.forEach(cycle => {
-      const targetBean = cycle[0];
-
-      compilationContext.report(new CircularDependenciesError(
-        targetBean.node.name,
-        context,
-        cycle
-      ));
-    });
+  cycles.forEach((cycle) => {
+    compilationContext.report(new CircularDependenciesError(
+      cycle[0].node.name,
+      cycle
+    ));
   });
 };

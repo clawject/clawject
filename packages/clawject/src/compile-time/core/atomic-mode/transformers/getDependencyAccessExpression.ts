@@ -1,21 +1,23 @@
-import { Dependency } from '../../dependency/Dependency';
 import ts, { factory } from 'typescript';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { Bean } from '../../bean/Bean';
+import { ResolvedDependency } from '../../dependency/ResolvedDependency';
+import { isNotEmpty } from '../../utils/isNotEmpty';
 
-export const getDependencyAccessExpression = (dependency: Dependency): ts.Expression | undefined => {
-  const qualifiedBean = dependency.qualifiedBean;
-  const qualifiedBeans = dependency.qualifiedCollectionBeans;
+//This function should be used only in atomic mode because of Dependency type casting
+export const getDependencyAccessExpression = (resolvedDependency: ResolvedDependency): ts.Expression | undefined => {
+  const qualifiedBean = resolvedDependency.qualifiedBean as Bean | null;
+  const qualifiedBeans = resolvedDependency.qualifiedCollectionBeans as Bean[] | null;
 
   //If qualifiedBeans are not null - that means that it's a collection
   if (qualifiedBeans !== null) {
     let builderMethodName: string;
 
-    if (dependency.diType.isArray) {
+    if (resolvedDependency.dependency.diType.isArray) {
       builderMethodName = 'beanArray';
-    } else if (dependency.diType.isSet) {
+    } else if (resolvedDependency.dependency.diType.isSet) {
       builderMethodName = 'beanSet';
-    } else if (dependency.diType.isMapStringToAny) {
+    } else if (resolvedDependency.dependency.diType.isMapStringToAny) {
       builderMethodName = 'beanMap';
     } else {
       throw Error('Unknown collection type met while building dependency access expression');
@@ -57,11 +59,11 @@ export const getDependencyAccessExpression = (dependency: Dependency): ts.Expres
     );
   }
 
-  if (dependency.diType.isOptionalUndefined || dependency.diType.isVoidUndefinedPlainUnionIntersection) {
+  if (resolvedDependency.dependency.diType.isOptionalUndefined || resolvedDependency.dependency.diType.isVoidUndefinedPlainUnionIntersection) {
     return factory.createIdentifier('undefined');
   }
 
-  if (dependency.diType.isOptionalNull || dependency.diType.isNull) {
+  if (resolvedDependency.dependency.diType.isOptionalNull || resolvedDependency.dependency.diType.isNull) {
     return factory.createNull();
   }
 
@@ -77,7 +79,7 @@ function createBeanExpressionsArray(qualifiedBean: Bean): ts.Expression[] {
       classMemberName,
       factory.createStringLiteral(qualifiedBean.nestedProperty),
       factory.createStringLiteral(qualifiedBean.fullName)
-    ];
+    ].filter(isNotEmpty);
   }
 
   return [classMemberName];

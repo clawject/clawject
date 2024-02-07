@@ -1,7 +1,7 @@
 import { ClassConstructor } from './ClassConstructor';
 
 /** @public */
-export function Import<T, A extends any[], C extends ClassConstructor<T, A>>(configurationClass: C): ImportedConfiguration<C> {
+export function Import<C extends ClassConstructor<any>>(configurationClass: C): ImportedConfiguration<C> {
   return {
     constructor: configurationClass
   };

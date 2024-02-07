@@ -24,7 +24,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   qualifier: string | null = null;
   private _diType: DIType | null = null;
   declare kind: BeanKind;
-  lifecycle: LifecycleKind[] | null = null;
+  lifecycle: LifecycleKind[] = [];
   public = false;
   primary = false;
   dependencies = new Set<Dependency>();

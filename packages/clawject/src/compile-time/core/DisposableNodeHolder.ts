@@ -34,6 +34,14 @@ export class DisposableNodeHolder<N extends ts.Node = ts.Node> {
     return node;
   }
 
+  public getAndDisposeSafe(): N | null {
+    if (!this._hasBeenInitialized) {
+      return null;
+    }
+
+    return this.getAndDispose();
+  }
+
   public isEmpty(): boolean {
     return !this._hasBeenInitialized;
   }

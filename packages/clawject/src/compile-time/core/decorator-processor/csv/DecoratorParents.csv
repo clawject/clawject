@@ -1,5 +1,6 @@
 ,Autowired,Bean,PreDestroy,Component,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,ComponentScan,Imports,Conditional,ClawjectApplication,Internal
 CatContextClass,no,yes,yes,no,no,yes,yes,yes,yes,yes,yes,no,no,yes,no,no
 ConfigurationClass,no,yes,yes,no,no,yes,yes,yes,yes,yes,yes,no,yes,yes,no,yes
-ComponentClass,yes,no,yes,no,no,no,no,yes,no,no,no,no,no,no,no,no
+ApplicationClass,no,yes,yes,no,no,yes,yes,yes,yes,yes,yes,no,yes,yes,no,yes
 AnyClass,no,no,yes,no,no,no,no,yes,no,no,no,no,no,no,no,no
+ComponentClass,yes,no,yes,no,no,no,no,yes,no,no,no,no,no,no,no,no

@@ -1,32 +1,32 @@
-export enum BeanKind {
+export const enum BeanKind {
   /**
    * @Bean factoryMethod() {}
    * */
-  FACTORY_METHOD = 'FACTORY_METHOD',
+  FACTORY_METHOD = 1,
 
   /**
    * classConstructor = Bean(ClassConstructor)
    * */
-  CLASS_CONSTRUCTOR = 'CLASS_CONSTRUCTOR',
+  CLASS_CONSTRUCTOR = 2,
 
   /**
    * @Bean factoryArrowFunction = (): any => {}
    * */
-  FACTORY_ARROW_FUNCTION = 'FACTORY_ARROW_FUNCTION',
+  FACTORY_ARROW_FUNCTION = 3,
 
   /**
    * @Bean valueExpression = 'someValue'
    * @Bean get valueExpression(): number { return 123 }
    * */
-  VALUE_EXPRESSION = 'VALUE_EXPRESSION',
+  VALUE_EXPRESSION = 4,
 
   /**
    * @PostConstruct @PreDestroy lifecycleMethod(): any {}
    * */
-  LIFECYCLE_METHOD = 'LIFECYCLE_METHOD',
+  LIFECYCLE_METHOD = 5,
 
   /**
    * @PostConstruct @PreDestroy lifecycleArrowFunction = (): any => {}
    * */
-  LIFECYCLE_ARROW_FUNCTION = 'LIFECYCLE_ARROW_FUNCTION',
+  LIFECYCLE_ARROW_FUNCTION = 6,
 }

@@ -3,12 +3,12 @@ import { ObjectFactory, ObjectFactoryResult } from '../object-factory/ObjectFact
 import { Callback } from '../types/Callback';
 
 export class SingletonScope implements CustomScope {
-  private instances = new Map<string, ObjectFactoryResult>();
+  private scopedObjects = new Map<string, ObjectFactoryResult>();
   private destructionCallbacks = new Map<string, Callback>();
 
   get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
-    const instance = this.instances.get(name) ?? objectFactory.getObject();
-    this.instances.set(name, instance);
+    const instance = this.scopedObjects.get(name) ?? objectFactory.getObject();
+    this.scopedObjects.set(name, instance);
 
     return instance;
   }
@@ -18,9 +18,9 @@ export class SingletonScope implements CustomScope {
   }
 
   remove(name: string): ObjectFactoryResult | null {
-    const instance = this.instances.get(name) ?? null;
+    const instance = this.scopedObjects.get(name) ?? null;
 
-    this.instances.delete(name);
+    this.scopedObjects.delete(name);
     this.destructionCallbacks.delete(name);
 
     return instance;

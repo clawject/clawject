@@ -4,9 +4,9 @@ import { CompilationContext } from '../../compilation-context/CompilationContext
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
 import { processCatContext } from './processCatContext';
 import { processImplicitComponents } from './processImplicitComponents';
-import { getDecoratorVerificationErrors } from './getDecoratorVerificationErrors';
 import { CONSTANTS } from '../../../constants';
 import { Value } from '../../../runtime/Value';
+import { getDecoratorVerificationErrors } from '../decorator-processor/getDecoratorVerificationErrors';
 
 export const processAtomicMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
@@ -37,7 +37,7 @@ export const processAtomicMode = (compilationContext: CompilationContext, tsCont
       shouldAddInternalImport.value = true;
       transformedNode = processCatContext(node, compilationContext);
     } else {
-      transformedNode = processImplicitComponents(node, compilationContext, shouldAddInternalImport);
+      transformedNode = processImplicitComponents(node, shouldAddInternalImport);
     }
 
     return ts.visitEachChild(transformedNode, visitor, tsContext);

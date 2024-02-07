@@ -1,6 +1,7 @@
 import ts from 'typescript';
-import { unquoteString } from '../utils/unquoteString';
 import { Application } from './Application';
+import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
+import { Configuration } from '../configuration/Configuration';
 
 export class ApplicationRepository {
   static fileNameToLastApplicationCounter = new Map<string, number>();
@@ -8,18 +9,14 @@ export class ApplicationRepository {
   static applicationIdToApplication = new Map<string, Application>();
   static nodeToApplication = new WeakMap<ts.ClassDeclaration, Application>();
 
-  static register(classDeclaration: ts.ClassDeclaration): Application {
+  static register(classDeclaration: ts.ClassDeclaration, rootConfiguration: Configuration): Application {
     const sourceFile = classDeclaration.getSourceFile();
 
-    const application = new Application();
+    const application = new Application(rootConfiguration);
 
     application.id = this.buildId(classDeclaration);
     application.fileName = classDeclaration.getSourceFile().fileName;
     application.node = classDeclaration;
-
-    if (classDeclaration.name !== undefined) {
-      application.className = unquoteString(classDeclaration.name.getText());
-    }
 
     const applications = this.fileNameToApplications.get(sourceFile.fileName) ?? [];
     this.fileNameToApplications.set(sourceFile.fileName, applications);
@@ -44,6 +41,13 @@ export class ApplicationRepository {
     this.fileNameToLastApplicationCounter.delete(fileName);
     applications.forEach(application => {
       this.applicationIdToApplication.delete(application.id);
+
+      const configurationsFileNames = new Set<string>();
+      application.forEachConfiguration(configuration => {
+        configurationsFileNames.add(configuration.fileName);
+      });
+
+      configurationsFileNames.forEach(it => ConfigurationRepository.clearByFileName(it));
     });
   }
 

@@ -188,7 +188,7 @@ class MyContext extends CatContext {
   @Bean propertyBean: Foo = new Foo();
   @Bean factoryMethodBean(): Foo { return new Foo(); }
   @Bean arrowFunctionBean = (): Foo => new Foo();
-  functionBean = Bean<Foo>(Foo);
+  functionBean = Bean<Foo, typeof Foo>(Foo);
 }
 ```
 
@@ -198,8 +198,6 @@ class MyContext extends CatContext {
 ```
 
 ### Bean type narrowing
-
-If you want to narrow bean type - you can use `as` operator or specify a bean type explicitly.
 
 In this example we will narrow a bean type from `FooBar & IFoo & IBar` to `IFoo`:
 
@@ -221,7 +219,7 @@ class FooBar implements IFoo, IBar {
 
 class ApplicationContext extends CatContext {
   /* The type of bean is IFoo now */
-  fooBar = Bean<IFoo>(FooBar);
+  fooBar = Bean<IFoo, typeof FooBar>(FooBar);
 
   @PostConstruct
   init(

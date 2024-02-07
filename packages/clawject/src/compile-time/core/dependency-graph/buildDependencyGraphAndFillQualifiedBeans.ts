@@ -7,26 +7,32 @@ import { BeanCandidateNotFoundError } from '../../compilation-context/messages/e
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanKind } from '../bean/BeanKind';
+import { ResolvedDependency } from '../dependency/ResolvedDependency';
+import { Application } from '../application/Application';
 
-export const buildDependencyGraphAndFillQualifiedBeans = (context: Configuration) => {
+export const buildDependencyGraphAndFillQualifiedBeans = (configurationOrApplication: Configuration | Application, beans: Bean[], dependencyGraph: DependencyGraph) => {
   const compilationContext = getCompilationContext();
-  const contextBeans = context.beanRegister.elements;
 
-  contextBeans.forEach(bean => {
-    const allBeansWithoutCurrent = Array.from(contextBeans)
-      .filter(it => it !== bean);
+  beans.forEach(bean => {
+    //TODO check for external and internal beans
+    const allBeansWithoutCurrentAndWithoutExternalInternalBeans = beans
+      .filter(it => {
+        return it !== bean;
+      });
     const missingDependencies: Dependency[] = [];
 
     bean.dependencies.forEach(dependency => {
-      if (dependency.diType.isVoidUndefinedPlainUnionIntersection || dependency.diType.isNull) {
+      if (dependency.diType.isEmptyValue) {
+        const resolvedDependency = new ResolvedDependency(bean, dependency);
+        configurationOrApplication.registerResolvedDependency(bean, resolvedDependency);
+        return;
+      }
+      if (dependency.diType.isArray || dependency.diType.isSet || dependency.diType.isMapStringToAny) {
+        buildForCollectionOrArray(bean, allBeansWithoutCurrentAndWithoutExternalInternalBeans, dependency, dependencyGraph, configurationOrApplication);
         return;
       }
 
-      if (dependency.diType.isArray || dependency.diType.isSet || dependency.diType.isMapStringToAny) {
-        buildForCollectionOrArray(bean, allBeansWithoutCurrent, dependency);
-      } else {
-        buildForBaseType(bean, allBeansWithoutCurrent, dependency, context, missingDependencies);
-      }
+      buildForBaseType(bean, allBeansWithoutCurrentAndWithoutExternalInternalBeans, dependency, missingDependencies, dependencyGraph, configurationOrApplication);
     });
 
     if (missingDependencies.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
@@ -44,15 +50,19 @@ function buildForBaseType(
   bean: Bean,
   allBeansWithoutCurrent: Bean[],
   dependency: Dependency,
-  configuration: Configuration,
-  missingDependencies: Dependency[]
+  missingDependencies: Dependency[],
+  dependencyGraph: DependencyGraph,
+  configurationOrApplication: Configuration | Application,
 ): void {
+  const resolvedDependency = new ResolvedDependency(bean, dependency);
+  configurationOrApplication.registerResolvedDependency(bean, resolvedDependency);
+
   const matchedByType = allBeansWithoutCurrent
     .filter(it => dependency.diType.isCompatible(it.diType));
 
   if (matchedByType.length === 1) {
-    dependency.qualifiedBean = matchedByType[0];
-    DependencyGraph.addNodeWithEdges(bean, matchedByType);
+    resolvedDependency.qualifiedBean = matchedByType[0];
+    dependencyGraph.addNodeWithEdges(bean, matchedByType);
     return;
   }
 
@@ -62,8 +72,8 @@ function buildForBaseType(
     });
 
   if (matchedByTypeAndName.length === 1) {
-    dependency.qualifiedBean = matchedByTypeAndName[0];
-    DependencyGraph.addNodeWithEdges(bean, matchedByType);
+    resolvedDependency.qualifiedBean = matchedByTypeAndName[0];
+    dependencyGraph.addNodeWithEdges(bean, matchedByType);
     return;
   }
 
@@ -71,8 +81,8 @@ function buildForBaseType(
     .filter(it => it.primary);
 
   if (matchedByTypeAndPrimary.length === 1) {
-    dependency.qualifiedBean = matchedByTypeAndPrimary[0];
-    DependencyGraph.addNodeWithEdges(bean, matchedByTypeAndPrimary);
+    resolvedDependency.qualifiedBean = matchedByTypeAndPrimary[0];
+    dependencyGraph.addNodeWithEdges(bean, matchedByTypeAndPrimary);
     return;
   }
 
@@ -80,7 +90,6 @@ function buildForBaseType(
     const error = new BeanCandidateNotFoundError(
       `Found ${matchedByTypeAndPrimary.length} Primary injection candidates.`,
       dependency.node,
-      configuration,
       bean,
       [],
       matchedByTypeAndPrimary,
@@ -95,22 +104,27 @@ function buildForBaseType(
     return;
   }
 
-  reportPossibleCandidates(bean, dependency, allBeansWithoutCurrent, configuration, missingDependencies);
+  reportPossibleCandidates(bean, dependency, allBeansWithoutCurrent, missingDependencies);
 }
 
 function buildForCollectionOrArray(
   bean: Bean,
   allBeansWithoutCurrent: Bean[],
   dependency: Dependency,
+  dependencyGraph: DependencyGraph,
+  configurationOrApplication: Configuration | Application,
 ): void {
+  const resolvedDependency = new ResolvedDependency(bean, dependency);
+  configurationOrApplication.registerResolvedDependency(bean, resolvedDependency);
+
   const otherCollectionsMatchedByNameAndType = allBeansWithoutCurrent.filter(it =>
     it.fullName === dependency.parameterName && dependency.diType.isCompatible(it.diType),
   );
 
   //If matched my name and type - just taking specific bean that returns collection
   if (otherCollectionsMatchedByNameAndType.length === 1) {
-    dependency.qualifiedBean = otherCollectionsMatchedByNameAndType[0];
-    DependencyGraph.addNodeWithEdges(bean, otherCollectionsMatchedByNameAndType);
+    resolvedDependency.qualifiedBean = otherCollectionsMatchedByNameAndType[0];
+    dependencyGraph.addNodeWithEdges(bean, otherCollectionsMatchedByNameAndType);
     return;
   }
 
@@ -138,15 +152,14 @@ function buildForCollectionOrArray(
     });
   }
 
-  dependency.qualifiedCollectionBeans = matched;
-  DependencyGraph.addNodeWithEdges(bean, matched);
+  resolvedDependency.qualifiedCollectionBeans = matched;
+  dependencyGraph.addNodeWithEdges(bean, matched);
 }
 
 function reportPossibleCandidates(
   bean: Bean,
   dependency: Dependency,
   allBeansWithoutCurrent: Bean[],
-  configuration: Configuration,
   missingDependencies: Dependency[]
 ): void {
   const compilationContext = getCompilationContext();
@@ -158,7 +171,6 @@ function reportPossibleCandidates(
   compilationContext.report(new BeanCandidateNotFoundError(
     `Found ${byName.length + byType.length} injection candidates.`,
     dependency.node,
-    configuration,
     bean,
     byName,
     byType,

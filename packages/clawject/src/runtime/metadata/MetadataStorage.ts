@@ -6,6 +6,7 @@ import { RuntimeComponentMetadata } from './RuntimeComponentMetadata';
 import { ContextIdStorage } from '../ContextIdStorage';
 import { InternalUtils } from '../InternalUtils';
 import { RuntimeConfigurationMetadata } from './RuntimeConfigurationMetadata';
+import { RuntimeApplicationMetadata } from './RuntimeApplicationMetadata';
 
 export enum MetadataKind {
   CONTEXT = 'CONTEXT_METADATA',
@@ -18,7 +19,7 @@ class MetadataStorageState {
   [MetadataKind.CONTEXT] = new WeakMap<ClassConstructor<CatContext>, RuntimeContextMetadata>();
   [MetadataKind.COMPONENT] = new WeakMap<ClassConstructor<any>, RuntimeComponentMetadata>();
   [MetadataKind.CONFIGURATION_METADATA] = new WeakMap<ClassConstructor<any>, RuntimeConfigurationMetadata>();
-  [MetadataKind.APPLICATION_METADATA] = new WeakMap<ClassConstructor<any>, any>();
+  [MetadataKind.APPLICATION_METADATA] = new WeakMap<ClassConstructor<any>, RuntimeApplicationMetadata>();
 }
 
 export class MetadataStorage {
@@ -63,11 +64,11 @@ export class MetadataStorage {
     this.configurationMetadata.set(clazz, metadata);
   }
 
-  static getApplicationMetadata(clazz: ClassConstructor<any>): any | null {
+  static getApplicationMetadata(clazz: ClassConstructor<any>): RuntimeApplicationMetadata | null {
     return this.applicationMetadata.get(clazz) ?? null;
   }
 
-  static setApplicationMetadata(clazz: ClassConstructor<any>, metadata: any): void {
+  static setApplicationMetadata(clazz: ClassConstructor<any>, metadata: RuntimeApplicationMetadata): void {
     this.applicationMetadata.set(clazz, metadata);
   }
 }

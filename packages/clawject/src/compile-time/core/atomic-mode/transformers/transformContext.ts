@@ -1,5 +1,4 @@
 import ts, { factory } from 'typescript';
-import { transformBeanClassConstructor } from './transformBeanClassConstructor';
 import { transformBeanFactoryMethod } from './transformBeanFactoryMethod';
 import { transformArrowFunctionOrExpressionBean } from './transformArrowFunctionOrExpressionBean';
 import { Configuration } from '../../configuration/Configuration';
@@ -23,8 +22,6 @@ export const transformContext = (node: ts.ClassDeclaration, configuration: Confi
       return transformBeanFactoryMethod(bean as Bean<ts.MethodDeclaration>);
 
     case BeanKind.CLASS_CONSTRUCTOR:
-      return transformBeanClassConstructor(bean as Bean<ClassPropertyWithCallExpressionInitializer>);
-
     case BeanKind.FACTORY_ARROW_FUNCTION:
     case BeanKind.LIFECYCLE_ARROW_FUNCTION:
     case BeanKind.VALUE_EXPRESSION:

@@ -1,5 +1,4 @@
 import ts, { factory } from 'typescript';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { isLifecycleMethodBean } from '../ts/predicates/isLifecycleMethodBean';
 import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { getDecorators } from '../ts/utils/getDecorators';
@@ -11,10 +10,10 @@ import { getImplicitComponentStaticInitBlock } from './transformers/getImplicitC
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
 import { isNameReserved } from '../utils/isNameReserved';
 import { Value } from '../../../runtime/Value';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export function processImplicitComponents(
   node: ts.ClassDeclaration,
-  compilationContext: CompilationContext,
   shouldAddImports: Value<boolean>
 ): ts.Node {
   let component: Component | null = null;
@@ -31,11 +30,10 @@ export function processImplicitComponents(
       shouldAddImports.value = true;
     }
 
-
     component = component ?? ComponentRepository.register(node, false);
 
     if (isNameReserved(it.name?.getText() ?? '')) {
-      compilationContext.report(new IncorrectNameError(
+      getCompilationContext().report(new IncorrectNameError(
         `'${it.name?.getText() ?? ''}' name is reserved for the di-container.`,
         it,
         null,
@@ -52,7 +50,7 @@ export function processImplicitComponents(
     return it;
   });
 
-  if (component === null || compilationContext.languageServiceMode) {
+  if (component === null || getCompilationContext().languageServiceMode) {
     return node;
   }
 

@@ -11,11 +11,12 @@ import { transformContext } from './transformers/transformContext';
 import { isNameReserved } from '../utils/isNameReserved';
 import { getConfigurationLazyExpressionValue } from './transformers/getConfigurationLazyExpressionValue';
 import { getConfigurationScopeExpressionValue } from './transformers/getConfigurationScopeExpressionValue';
+import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 
 export function processCatContext(node: ts.ClassDeclaration, compilationContext: CompilationContext): ts.Node {
-  const context = ConfigurationRepository.register(node);
-  context.lazyExpression.node = getConfigurationLazyExpressionValue(context);
-  context.scopeExpression.node = getConfigurationScopeExpressionValue(context);
+  const configuration = ConfigurationRepository.register(node);
+  configuration.lazyExpression.node = getConfigurationLazyExpressionValue(configuration);
+  configuration.scopeExpression.node = getConfigurationScopeExpressionValue(configuration);
 
   const restrictedClassMembersByName = node.members
     .filter(it => isNameReserved(it.name?.getText() ?? ''));
@@ -25,22 +26,22 @@ export function processCatContext(node: ts.ClassDeclaration, compilationContext:
       compilationContext.report(new IncorrectNameError(
         `'${it.name?.getText()}' name is reserved for the di-container.`,
         it,
-        context,
+        configuration,
       ));
     });
     return node;
   }
 
   //Processing beans
-  registerBeans(context);
-  checkIsAllBeansRegisteredInContextAndFillBeanRequierness(context);
-  registerBeanDependencies(context);
-  buildDependencyGraphAndFillQualifiedBeans(context);
-  reportAboutCircularDependencies(context);
+  registerBeans(configuration);
+  checkIsAllBeansRegisteredInContextAndFillBeanRequierness(configuration);
+  registerBeanDependencies(configuration);
+  buildDependencyGraphAndFillQualifiedBeans(configuration, Array.from(configuration.beanRegister.elements), DependencyGraph.global);
+  reportAboutCircularDependencies(DependencyGraph.global);
 
   if (compilationContext.languageServiceMode) {
     return node;
   }
 
-  return transformContext(node, context);
+  return transformContext(node, configuration);
 }

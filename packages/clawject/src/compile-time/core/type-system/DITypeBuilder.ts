@@ -28,23 +28,7 @@ class TypeWithTypeArguments {
 }
 
 export class DITypeBuilder {
-  private static cache = new WeakMap<ts.Type, DIType>();
-
   static build(tsType: ts.Type): DIType {
-    const cached = this.cache.get(tsType);
-
-    if (cached) {
-      return cached;
-    }
-
-    const diType = this.buildWithoutCache(tsType);
-
-    this.cache.set(tsType, diType);
-
-    return diType;
-  }
-
-  private static buildWithoutCache(tsType: ts.Type): DIType {
     let type = tsType;
     const typeChecker = getCompilationContext().typeChecker;
     const objectFlags = this.getObjectFlagsSet(type);

@@ -47,6 +47,8 @@ export class BaseTypesRepository {
       Map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
       MapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
       CatContext: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['CatContext'])),
+      Import: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Import'])),
+      BeanConstructor: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructor'])),
       Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
     };
   }

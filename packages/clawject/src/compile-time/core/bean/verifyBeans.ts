@@ -34,21 +34,20 @@ const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
 export const verifyBeans = (configuration: Configuration): void => {
   const beans = configuration.beanRegister.elements;
 
-  verifyNameUniqueness(beans);
+  if (ConfigLoader.get().mode === 'atomic') {
+    // Only verify uniqueness in atomic mode, in application mode it is verified in processApplication function
+    verifyBeanNameUniqueness(beans);
+  }
 
   beans.forEach(bean => {
-    if (ConfigLoader.get().mode === 'atomic') {
-      //For app mode type verification will be later
-      verifyBeanType(bean);
-    }
-
+    verifyBeanType(bean);
     verifyName(bean);
     verifyModifiers(bean);
     verifyBeanInitializers(bean);
   });
 };
 
-function verifyNameUniqueness(beans: Set<Bean>): void {
+export function verifyBeanNameUniqueness(beans: Set<Bean>): void {
   const nameToBeans = new Map<string, Bean[]>();
 
   beans.forEach(bean => {
@@ -74,7 +73,7 @@ function verifyNameUniqueness(beans: Set<Bean>): void {
   });
 }
 
-function verifyBeanType(bean: Bean): void {
+export function verifyBeanType(bean: Bean): void {
   const parentConfiguration = bean.parentConfiguration;
   const compilationContext = getCompilationContext();
 

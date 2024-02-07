@@ -2,9 +2,11 @@ import ts, { factory, SyntaxKind } from 'typescript';
 import { DeclarationMetadata } from './DeclarationMetadata';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { CompileTimeElement } from './CompileTimeElement';
+import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
+import { CorruptedMetadataError } from '../../compilation-context/messages/errors/CorruptedMetadataError';
 
 export class DeclarationMetadataParser {
-  static parse(classDeclaration: ts.ClassDeclaration): DeclarationMetadata | null {
+  static parse(classDeclaration: ts.ClassDeclaration): DeclarationMetadata | AbstractCompilationMessage | null {
     const typeChecker = getCompilationContext().typeChecker;
     const type = typeChecker.getTypeAtLocation(classDeclaration);
 
@@ -22,21 +24,22 @@ export class DeclarationMetadataParser {
     }
 
     if (declarations.length > 1) {
-      //TODO report compilation error
-      throw new Error('Compile time metadata must have exactly one declaration');
+      return new CorruptedMetadataError(
+        `Compiled metadata must have exactly one declaration, but found ${declarations.length}.`,
+        classDeclaration,
+        null,
+      );
     }
 
     const metadataDeclaration = declarations[0];
     const declarationTypeNode = (metadataDeclaration as ts.PropertyDeclaration).type;
 
-    if (!declarationTypeNode) {
-      //TODO report compilation error
-      throw new Error('Compile time metadata must have a type');
-    }
-
-    if (!ts.isTypeLiteralNode(declarationTypeNode)) {
-      //TODO report compilation error
-      throw new Error('Broken compile time metadata type');
+    if (!declarationTypeNode || !ts.isTypeLiteralNode(declarationTypeNode)) {
+      return new CorruptedMetadataError(
+        'Compiled metadata property must have type literal node.',
+        classDeclaration,
+        null,
+      );
     }
 
     return this.parseTypeNode(declarationTypeNode);
@@ -74,13 +77,19 @@ export class DeclarationMetadataParser {
       case ts.SyntaxKind.NumericLiteral:
         return Number(typedNode.literal.text);
       default:
-        //TODO report compilation error
-        throw new Error(`Could not parse metadata literal type node, kind: ${typedNode.kind}`);
+        return new CorruptedMetadataError(
+          `Could not parse metadata literal type node, kind: ${typedNode.literal.kind}`,
+          typedNode.literal,
+          null,
+        );
       }
     }
     default:
-      //TODO report compilation error
-      throw new Error(`Could not parse metadata type node, kind: ${node.kind}`);
+      return new CorruptedMetadataError(
+        `Could not parse metadata literal type node, kind: ${node.kind}`,
+        node,
+        null,
+      );
     }
   }
 }
