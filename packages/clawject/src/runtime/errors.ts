@@ -56,4 +56,10 @@ export namespace RuntimeErrors {
   export class NoContextMemberFactoryFoundError extends Error {
     override name = 'NoContextMemberFactoryFoundError' as const;
   }
+
+  //TODO document
+  /** @public */
+  export class IllegalArgumentError extends Error {
+    override name = 'IllegalArgumentError' as const;
+  }
 }

@@ -1,6 +1,7 @@
 import { ClassConstructor } from '../ClassConstructor';
 import { ErrorBuilder } from '../ErrorBuilder';
 import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
+import { RuntimeErrors } from '../errors';
 
 /** @public */
 export type BeanTarget = PropertyDecorator & MethodDecorator;
@@ -38,6 +39,10 @@ export const Bean: DecoratorWithoutArguments<BeanTarget> & BeanWithConstructor &
         factory: (...constructorArgs: any[]) => new constructor(...constructorArgs)
       };
     });
+  }
+
+  if (args.length === 1) {
+    throw new RuntimeErrors.IllegalArgumentError('Argument must be a class constructor or a promise of a class constructor');
   }
 
   throw ErrorBuilder.usageWithoutConfiguredDI('@Bean');

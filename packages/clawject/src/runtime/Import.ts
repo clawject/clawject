@@ -1,4 +1,5 @@
 import { ClassConstructor } from './ClassConstructor';
+import { RuntimeErrors } from './errors';
 
 /** @public */
 export function Import<C extends ClassConstructor<any>>(configurationClass: C): ImportedConfiguration<C>
@@ -12,9 +13,13 @@ export function Import<C extends ClassConstructor<any>>(configurationClass: C | 
     });
   }
 
-  return {
-    constructor: configurationClass
-  };
+  if (typeof configurationClass === 'function') {
+    return {
+      constructor: configurationClass
+    };
+  }
+
+  throw new RuntimeErrors.IllegalArgumentError('Argument must be a class constructor or a promise of a class constructor');
 }
 
 /** @public */
