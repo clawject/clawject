@@ -5,14 +5,8 @@ import { RuntimeErrors } from '../errors';
 
 /** @public */
 export type BeanTarget = PropertyDecorator & MethodDecorator;
+
 /** @public */
-export type BeanWithConstructor = <C extends ClassConstructor<any>>(classConstructor: C) => BeanConstructorFactory<InstanceType<C>, C>;
-export type BeanWithConstructorAsync = <C extends ClassConstructor<any>>(classConstructor: Promise<C> | PromiseLike<C>) => Promise<BeanConstructorFactory<InstanceType<C>, C>>;
-export type BeanWithConstructorExplicitType = <T, C extends ClassConstructor<T>>(classConstructor: C) => BeanConstructorFactory<T, C>;
-export type BeanWithConstructorExplicitTypeAsync = <T, C extends ClassConstructor<T>>(classConstructor: Promise<C> | PromiseLike<C>) => Promise<BeanConstructorFactory<T, C>>;
-/**
- * @public
- * */
 export interface BeanConstructorFactory<T, C extends ClassConstructor<T>> {
   constructor: C;
   factory: (...args: ConstructorParameters<C>) => T;
@@ -24,7 +18,13 @@ export interface BeanConstructorFactory<T, C extends ClassConstructor<T>> {
  *
  * @public
  */
-export const Bean: DecoratorWithoutArguments<BeanTarget> & BeanWithConstructor & BeanWithConstructorAsync & BeanWithConstructorExplicitType & BeanWithConstructorExplicitTypeAsync = (...args: any[]): any => {
+export const Bean: {
+  <C extends ClassConstructor<any>>(classConstructor: C): BeanConstructorFactory<InstanceType<C>, C>;
+  <C extends ClassConstructor<any>>(classConstructor: Promise<C> | PromiseLike<C>): Promise<BeanConstructorFactory<InstanceType<C>, C>>;
+
+  <T, C extends ClassConstructor<T>>(classConstructor: C): BeanConstructorFactory<T, C>;
+  <T, C extends ClassConstructor<T>>(classConstructor: Promise<C> | PromiseLike<C>): Promise<BeanConstructorFactory<T, C>>;
+} & DecoratorWithoutArguments<BeanTarget> = (...args: any[]): any => {
   if (args.length === 1 && typeof args[0] === 'function') {
     return {
       constructor: args[0],

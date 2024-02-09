@@ -22,7 +22,6 @@ export abstract class Condition {
   }
 
   or(other: Condition): Condition {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const instance = this;
 
     return new class extends Condition {

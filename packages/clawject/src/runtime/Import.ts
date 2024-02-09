@@ -2,9 +2,12 @@ import { ClassConstructor } from './ClassConstructor';
 import { RuntimeErrors } from './errors';
 
 /** @public */
-export function Import<C extends ClassConstructor<any>>(configurationClass: C): ImportedConfiguration<C>
-export function Import<C extends ClassConstructor<any>>(configurationClass: Promise<C>): Promise<ImportedConfiguration<C>>
-export function Import<C extends ClassConstructor<any>>(configurationClass: C | Promise<C>): ImportedConfiguration<C> | Promise<ImportedConfiguration<C>> {
+export interface Import {
+  <C extends ClassConstructor<any>>(configurationClass: C): ImportedConfiguration<C>
+  <C extends ClassConstructor<any>>(configurationClass: Promise<C>): Promise<ImportedConfiguration<C>>
+}
+/** @public */
+export const Import: Import = (configurationClass: any): any => {
   if (configurationClass instanceof Promise) {
     return configurationClass.then((resolvedConfigurationClass) => {
       return {
@@ -20,7 +23,7 @@ export function Import<C extends ClassConstructor<any>>(configurationClass: C | 
   }
 
   throw new RuntimeErrors.IllegalArgumentError('Argument must be a class constructor or a promise of a class constructor');
-}
+};
 
 /** @public */
 export interface ImportedConfiguration<C extends ClassConstructor<any>> {

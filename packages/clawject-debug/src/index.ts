@@ -8,27 +8,23 @@ import {
   PostConstruct,
   Scope
 } from '@clawject/di';
-import {type AsyncClass} from './AsyncClass';
-
-const AnyClassImport = import('./AsyncClass');
-
-interface A {
-    data: string;
-    data2: number;
-}
 
 @Configuration
 class TestConfig {
-  @Bean str = '';
+  @Bean str = new Promise<string>(resolve => {
+    setTimeout(() => resolve('Hello'), 2500);
+  });
 }
 
 @ClawjectApplication
 export class _1 {
-  testConfig = Import(Promise.resolve(TestConfig));
+  importedTestConfiguration = Import(new Promise<typeof TestConfig>(resolve => {
+    setTimeout(() => resolve(TestConfig), 2500);
+  }));
 
   @PostConstruct
-  init(test: string): void {
-    console.log('init,', test);
+  init(str: string): void {
+    console.log('init,', str);
   }
 }
 

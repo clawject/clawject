@@ -10,6 +10,8 @@ import { RuntimeErrors } from '../errors';
 import { BeanKind } from '../../compile-time/core/bean/BeanKind';
 import { ClassConstructor } from '../ClassConstructor';
 import { ApplicationBeanDependency } from './ApplicationBeanDependency';
+import { ApplicationConfiguration } from './ApplicationConfiguration';
+import { MaybeAsync } from './MaybeAsync';
 
 export class ApplicationBean {
   private proxy: any | null = null;
@@ -27,21 +29,20 @@ export class ApplicationBean {
 
   constructor(
     public readonly id: number,
-    public readonly parentConfigurationIndex: number,
+    public readonly parentConfiguration: ApplicationConfiguration,
     public readonly beanClassProperty: string,
     public readonly beanMetadata: RuntimeBeanMetadata,
-    public readonly parentConfigurationMetadata: RuntimeConfigurationMetadata,
     public readonly dependencies: ApplicationBeanDependency[] | null,
     public readonly classConstructor: ClassConstructor<any> | null
   ) {
-    this.name = `${parentConfigurationIndex}_${id}`;
+    this.name = `${parentConfiguration.index}_${id}`;
   }
 
   init(objectFactory: ObjectFactoryImpl): void {
     this._objectFactory = objectFactory;
   }
 
-  getValue(): ObjectFactoryResult {
+  getValue(): MaybeAsync<ObjectFactoryResult> {
     if (this._objectFactory === null) {
       //TODO runtime error
       throw new Error('Object factory not initialized');
@@ -58,11 +59,11 @@ export class ApplicationBean {
   }
 
   get lazy(): boolean {
-    return this.beanMetadata.lazy ?? this.parentConfigurationMetadata.lazy;
+    return this.beanMetadata.lazy ?? this.parentConfiguration.metadata.lazy;
   }
 
   get scopeName(): string {
-    return this.beanMetadata.scope ?? this.parentConfigurationMetadata.scope;
+    return this.beanMetadata.scope ?? this.parentConfiguration.metadata.scope;
   }
 
   get isLifecycleFunction(): boolean {

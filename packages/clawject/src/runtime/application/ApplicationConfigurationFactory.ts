@@ -1,84 +1,62 @@
 import { ClassConstructor } from '../ClassConstructor';
 import { ImportedConfiguration } from '../Import';
-import { RuntimeConfigurationMetadata } from '../metadata/RuntimeConfigurationMetadata';
-import { MetadataStorage } from '../metadata/MetadataStorage';
+import { ApplicationConfiguration } from './ApplicationConfiguration';
+import { MaybeAsync } from './MaybeAsync';
+import { isPromise } from './isPromise';
 
 export class ApplicationConfigurationFactory {
-  instanceToConfigurationClass = new Map<any, ClassConstructor<any>>();
-  configurationClassToInstance = new Map<ClassConstructor<any>, any>();
-  configurationInstances: any[] = [];
+  private applicationConfigurations: ApplicationConfiguration[] = [];
 
-  init(applicationClass: ClassConstructor<any>): void {
+  async init(applicationClass: ClassConstructor<any>): Promise<void> {
     const visited = new Set<ClassConstructor<any>>();
-    const stack: [applicationClass: ClassConstructor<any>, configurationMetadata: RuntimeConfigurationMetadata][] = [[applicationClass, this.getConfigurationMetadataUnsafe(applicationClass)]];
+    const firstApplicationConfiguration = new ApplicationConfiguration(applicationClass);
+    const stack = [firstApplicationConfiguration];
 
     while (stack.length > 0) {
       const current = stack.pop()!;
-      const [applicationClass, configurationMetadata] = current;
-      let instance = this.configurationClassToInstance.get(applicationClass);
 
-      if (!instance) {
-        instance = new applicationClass();
-        this.configurationClassToInstance.set(applicationClass, instance);
-        this.instanceToConfigurationClass.set(instance, applicationClass);
-      }
+      const applicationClass = current.classConstructor;
+      const configurationMetadata = current.metadata;
+      const instance = current.instance;
+
       visited.add(applicationClass);
+      this.applicationConfigurations.push(current);
 
       const elements = configurationMetadata.imports.map(it => it.classPropertyName);
+      const importedConfigurationClasses: MaybeAsync<ClassConstructor<any>>[] = [];
 
       for (let i = elements.length - 1; i >= 0; i--) {
         const importPropertyName = elements[i];
-        const importedConfiguration = instance[importPropertyName] as ImportedConfiguration<any>;
+        const importedConfiguration = instance[importPropertyName] as MaybeAsync<ImportedConfiguration<any>>;
+        let importedConfigurationConstructor: MaybeAsync<ClassConstructor<any>>;
 
-        if (!visited.has(importedConfiguration.constructor)) {
-          stack.push(
-            [importedConfiguration.constructor, this.getConfigurationMetadataUnsafe(importedConfiguration.constructor)]
-          );
+        if (isPromise(importedConfiguration)) {
+          importedConfigurationConstructor = importedConfiguration
+            .then((importedConfiguration) => importedConfiguration.constructor);
+        } else {
+          importedConfigurationConstructor = importedConfiguration.constructor;
         }
+
+        importedConfigurationClasses.push(importedConfigurationConstructor);
       }
 
-      this.configurationInstances.push(instance);
+      const configurationClasses = await Promise.all(importedConfigurationClasses);
+
+      configurationClasses.forEach((configurationClass) => {
+        if (!visited.has(configurationClass)) {
+          stack.push(new ApplicationConfiguration(configurationClass));
+        }
+      });
     }
-  }
 
-  public forEachConfiguration(callback: (instance: any, metadata: RuntimeConfigurationMetadata, index: number) => void): void {
-    this.configurationInstances.forEach((instance, index) => {
-      const metadata = this.getConfigurationMetadataByInstanceUnsafe(instance);
-
-      callback(instance, metadata, index);
+    this.applicationConfigurations.forEach((applicationConfiguration, index) => {
+      applicationConfiguration.init(index);
     });
   }
 
-  public getConfigurationMetadataByInstanceUnsafe(instance: any): RuntimeConfigurationMetadata {
-    const clazz = this.instanceToConfigurationClass.get(instance);
-
-    if (clazz === undefined) {
-      //TODO runtime error
-      throw new Error('No configuration class found');
-    }
-
-    return this.getConfigurationMetadataUnsafe(clazz);
-  }
-
-  public getConfigurationInstanceByIndexUnsafe(index: number): any {
-    const instance = this.configurationInstances[index];
-
-    if (!instance) {
-      //TODO runtime error
-      throw new Error('No configuration instance found');
-    }
-
-    return instance;
-  }
-
-  private getConfigurationMetadataUnsafe(clazz: ClassConstructor<any>): RuntimeConfigurationMetadata {
-    const metadata = MetadataStorage.getApplicationMetadata(clazz) ?? MetadataStorage.getConfigurationMetadata(clazz);
-
-    if (metadata === null) {
-      //TODO runtime error
-      throw new Error('No configuration metadata found');
-    }
-
-    return metadata;
+  public mapConfigurations<T>(callback: (applicationConfiguration: ApplicationConfiguration) => T): T[] {
+    return this.applicationConfigurations.map((applicationConfiguration) => {
+      return callback(applicationConfiguration);
+    });
   }
 }

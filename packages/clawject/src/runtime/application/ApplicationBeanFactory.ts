@@ -10,9 +10,11 @@ import { MetadataStorage } from '../metadata/MetadataStorage';
 import { ClassConstructor } from '../ClassConstructor';
 import { ApplicationBeanDependency } from './ApplicationBeanDependency';
 import { ApplicationBeanFinder } from './ApplicationBeanFinder';
+import { MaybeAsync } from './MaybeAsync';
+import { isPromise } from './isPromise';
 
 export class ApplicationBeanFactory {
-  applicationBeans = new Set<ApplicationBean>();
+  applicationBeans: ApplicationBean[] = [];
   configurationIndexToBeanClassPropertyToApplicationBean = new Map<number, Map<string, ApplicationBean>>();
   applicationBeanFinder = new ApplicationBeanFinder(this.configurationIndexToBeanClassPropertyToApplicationBean);
 
@@ -20,30 +22,32 @@ export class ApplicationBeanFactory {
     private readonly applicationConfigurationFactory: ApplicationConfigurationFactory,
   ) {}
 
-  init(applicationMetadata: RuntimeApplicationMetadata): void {
-    this.createApplicationBeans(applicationMetadata);
-    this.initBeans();
+  async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
+    await this.createApplicationBeans(applicationMetadata);
+    await this.initBeans();
   }
 
-  postInit(): void {
-    const lifecycleBeans = new Set<ApplicationBean>();
+  async postInit(): Promise<void> {
+    const lifecycleBeans: ApplicationBean[] = [];
 
-    this.applicationBeans.forEach((applicationBean) => {
+    const regular = this.applicationBeans.map(async(applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
-        lifecycleBeans.add(applicationBean);
+        lifecycleBeans.push(applicationBean);
         return;
       }
 
       if (applicationBean.scopeName === 'singleton' && !applicationBean.lazy) {
-        applicationBean.getValue();
+        await applicationBean.getValue();
       }
     });
 
-    lifecycleBeans.forEach((applicationBean) => {
-      if (applicationBean.parentConfigurationMetadata.lifecycle[LifecycleKind.POST_CONSTRUCT].includes(applicationBean.beanClassProperty)) {
-        applicationBean.objectFactory.getObject();
+    const lifecycle = lifecycleBeans.map(async (applicationBean) => {
+      if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.POST_CONSTRUCT].includes(applicationBean.beanClassProperty)) {
+        await applicationBean.objectFactory.getObject();
       }
     });
+
+    await Promise.all([...regular, ...lifecycle]);
   }
 
   destroy(): void {
@@ -61,15 +65,15 @@ export class ApplicationBeanFactory {
     });
 
     lifecycleBeans.forEach((applicationBean) => {
-      if (applicationBean.parentConfigurationMetadata.lifecycle[LifecycleKind.PRE_DESTROY].includes(applicationBean.beanClassProperty)) {
+      if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.PRE_DESTROY].includes(applicationBean.beanClassProperty)) {
         applicationBean.objectFactory.getObject();
       }
     });
   }
 
-  private createApplicationBeans(applicationMetadata: RuntimeApplicationMetadata): void {
-    this.applicationConfigurationFactory.forEachConfiguration((instance, metadata, configurationIndex) => {
-      const beanDependenciesMetadataByConfiguration = applicationMetadata.beanDependenciesMetadata[configurationIndex];
+  private async createApplicationBeans(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
+    const resultPromise = this.applicationConfigurationFactory.mapConfigurations(async (applicationConfiguration) => {
+      const beanDependenciesMetadataByConfiguration = applicationMetadata.beanDependenciesMetadata[applicationConfiguration.index];
 
       if (!beanDependenciesMetadataByConfiguration) {
         //TODO runtime error
@@ -77,7 +81,7 @@ export class ApplicationBeanFactory {
       }
 
       const configurationIndexToBeanClassPropertyToApplicationBean = new Map<string, ApplicationBean>();
-      this.configurationIndexToBeanClassPropertyToApplicationBean.set(configurationIndex, configurationIndexToBeanClassPropertyToApplicationBean);
+      this.configurationIndexToBeanClassPropertyToApplicationBean.set(applicationConfiguration.index, configurationIndexToBeanClassPropertyToApplicationBean);
 
       const beanNameToDependenciesMetadata = new Map<string, ApplicationBeanDependency[]>(Object.values(
         beanDependenciesMetadataByConfiguration.map(it => {
@@ -88,43 +92,55 @@ export class ApplicationBeanFactory {
         }),
       ));
 
-      Object.keys(metadata.beans).forEach((beanClassProperty) => {
-        const beanMetadata = metadata.beans[beanClassProperty];
-        if (!beanMetadata) {
-          //TODO runtime error
-          throw new Error('No bean metadata found');
-        }
-
+      const initPromises = Object.entries(applicationConfiguration.metadata.beans).map(async ([beanClassProperty, beanMetadata]) => {
         const beanDependenciesMetadata = beanNameToDependenciesMetadata.get(beanClassProperty) ?? null;
-        const configurationInstance = this.applicationConfigurationFactory.getConfigurationInstanceByIndexUnsafe(configurationIndex);
         let beanClassConstructor: ClassConstructor<any> | null = null;
 
         if (beanMetadata.kind === BeanKind.CLASS_CONSTRUCTOR) {
-          beanClassConstructor = (configurationInstance[beanClassProperty] as BeanConstructorFactory<any, any>).constructor;
+          const classProperty = applicationConfiguration.instance[beanClassProperty] as MaybeAsync<BeanConstructorFactory<any, any>>;
+
+          if (isPromise(classProperty)) {
+            const resolvedClassProperty = await classProperty;
+            beanClassConstructor = resolvedClassProperty.constructor;
+          } else {
+            beanClassConstructor = classProperty.constructor;
+          }
         }
 
         const applicationBean = new ApplicationBean(
           BeanIdProvider.getAndInc(),
-          configurationIndex,
+          applicationConfiguration,
           beanClassProperty,
           beanMetadata,
-          metadata,
           beanDependenciesMetadata,
           beanClassConstructor,
         );
         configurationIndexToBeanClassPropertyToApplicationBean.set(beanClassProperty, applicationBean);
-        this.applicationBeans.add(applicationBean);
+        this.applicationBeans.push(applicationBean);
       });
+
+      await Promise.all(initPromises);
     });
+
+    await Promise.all(resultPromise);
   }
 
-  private initBeans(): void {
-    this.applicationBeans.forEach((applicationBean) => {
+  private async initBeans(): Promise<void> {
+    await Promise.all(this.applicationBeans.map((applicationBean) => {
       const factory = this.getBeanFactoryFunction(applicationBean);
 
       const objectFactory = new ObjectFactoryImpl(() => {
         const dependencies = applicationBean.dependencies?.map(it => it.getValue()) ?? [];
-        const instantiatedBean = factory(...dependencies);
+
+        let instantiatedBean: any;
+
+        if (dependencies.some(isPromise)) {
+          instantiatedBean = Promise.all(dependencies).then((resolvedDependencies) => {
+            return factory(...resolvedDependencies);
+          });
+        } else {
+          instantiatedBean = factory(...dependencies);
+        }
 
         if (!applicationBean.isLifecycleFunction) {
           this.registerDestructionCallback(applicationBean, instantiatedBean);
@@ -136,11 +152,11 @@ export class ApplicationBeanFactory {
       });
 
       applicationBean.init(objectFactory);
-    });
+    }));
   }
 
   private getBeanFactoryFunction(applicationBean: ApplicationBean): (...args: any[]) => any {
-    const configurationInstance = this.applicationConfigurationFactory.getConfigurationInstanceByIndexUnsafe(applicationBean.parentConfigurationIndex);
+    const configurationInstance = applicationBean.parentConfiguration.instance;
 
     switch (applicationBean.beanMetadata.kind) {
     case BeanKind.FACTORY_METHOD:

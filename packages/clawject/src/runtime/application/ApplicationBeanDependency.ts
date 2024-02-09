@@ -1,6 +1,7 @@
 import { ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata } from '../metadata/RuntimeApplicationMetadata';
 import { InternalUtils } from '../InternalUtils';
 import { ApplicationBeanFinder } from './ApplicationBeanFinder';
+import { ObjectFactoryResult } from '../object-factory/ObjectFactory';
 
 export class ApplicationBeanDependency {
   private static emptyToken = Symbol();
@@ -12,7 +13,7 @@ export class ApplicationBeanDependency {
 
   private _cachedValue: any = ApplicationBeanDependency.emptyToken;
 
-  getValue(): any {
+  async getValue(): Promise<any> {
     if (this._cachedValue !== ApplicationBeanDependency.emptyToken) {
       return this._cachedValue;
     }
@@ -21,15 +22,15 @@ export class ApplicationBeanDependency {
 
     switch (this.metadata.kind) {
     case 'plain':
-      value = this.getPlainValue(this.metadata as ApplicationBeanDependencyPlainMetadata);
+      value = await this.getPlainValue(this.metadata as ApplicationBeanDependencyPlainMetadata);
       break;
     case 'value':
-      value = this.getValueValue(this.metadata as ApplicationBeanDependencyValueMetadata);
+      value = await this.getValueValue(this.metadata as ApplicationBeanDependencyValueMetadata);
       break;
     case 'set':
     case 'map':
     case 'array':
-      value = this.getCollectionValue(this.metadata as ApplicationBeanDependencyCollectionMetadata);
+      value = await this.getCollectionValue(this.metadata as ApplicationBeanDependencyCollectionMetadata);
       break;
     }
 
@@ -38,34 +39,35 @@ export class ApplicationBeanDependency {
     return value;
   }
 
-  private getPlainValue(metadata: ApplicationBeanDependencyPlainMetadata): any {
+  private async getPlainValue(metadata: ApplicationBeanDependencyPlainMetadata): Promise<any> {
     const bean = this.applicationBeanFinder.find(metadata.configurationIndex, metadata.classPropertyName);
+    const beanValue = await bean.getValue();
 
     if (metadata.nestedProperty) {
-      return bean.getValue()[metadata.nestedProperty];
+      return beanValue[metadata.nestedProperty];
     }
 
-    return bean.getValue();
+    return beanValue;
   }
 
   private getValueValue(metadata: ApplicationBeanDependencyValueMetadata): any {
     return metadata.value;
   }
 
-  private getCollectionValue(metadata: ApplicationBeanDependencyCollectionMetadata): any {
+  private async getCollectionValue(metadata: ApplicationBeanDependencyCollectionMetadata): Promise<any> {
     const applicationBeans = metadata.metadata.map((it) => {
       return this.applicationBeanFinder.find(it.configurationIndex, it.classPropertyName);
     });
 
     if (metadata.kind === 'array') {
-      return applicationBeans.map(it => it.getValue());
+      return Promise.all(applicationBeans.map(it => it.getValue()));
     }
 
     if (metadata.kind === 'set') {
-      return new Set(applicationBeans.map(it => it.getValue()));
+      return new Set(await Promise.all(applicationBeans.map(it => it.getValue())));
     }
 
-    return new Map(applicationBeans.map((it, index) => {
+    const mapEntries: [string, ObjectFactoryResult][] = await Promise.all(applicationBeans.map(async(it, index) => {
       let name = metadata.metadata[index].classPropertyName;
       const nestedProperty = metadata.metadata[index].nestedProperty;
 
@@ -76,8 +78,10 @@ export class ApplicationBeanDependency {
       }
 
       return [
-        name, it.getValue()
+        name, await it.getValue()
       ];
     }));
+
+    return new Map(mapEntries);
   }
 }

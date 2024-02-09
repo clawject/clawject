@@ -19,12 +19,12 @@ export class ClawjectContainer {
       throw new Error('No application metadata found');
     }
 
-    this.applicationConfigurationFactory.init(this.applicationClass);
-    this.applicationBeanFactory.init(applicationMetadata);
+    await this.applicationConfigurationFactory.init(this.applicationClass);
+    await this.applicationBeanFactory.init(applicationMetadata);
   }
 
   async postInit(): Promise<void> {
-    this.applicationBeanFactory.postInit();
+    await this.applicationBeanFactory.postInit();
   }
 
   async destroy(): Promise<void> {
