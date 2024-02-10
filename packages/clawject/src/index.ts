@@ -8,6 +8,7 @@ export { ScopeRegister } from './runtime/ScopeRegister';
 
 export { CatContext } from './runtime/CatContext';
 export { Import, ImportedConfiguration } from './runtime/Import';
+export { ExportBeans, ExportedBeans } from './runtime/ExportBeans';
 
 export type { ObjectFactory, ObjectFactoryResult } from './runtime/object-factory/ObjectFactory';
 

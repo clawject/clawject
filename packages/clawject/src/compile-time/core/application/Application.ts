@@ -5,7 +5,7 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { GenericError } from '../../compilation-context/messages/errors/GenericError';
 import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { Bean } from '../bean/Bean';
-import { ResolvedDependency } from '../dependency/ResolvedDependency';
+import { MaybeResolvedDependency } from '../dependency-resolver/MaybeResolvedDependency';
 
 export class Application extends Entity<ts.ClassDeclaration> {
   constructor(
@@ -18,8 +18,8 @@ export class Application extends Entity<ts.ClassDeclaration> {
   declare fileName: string;
   dependencyGraph = new DependencyGraph();
 
-  resolvedBeanDependencies = new Map<Bean, ResolvedDependency[]>();
-  registerResolvedDependency(bean: Bean, resolvedDependency: ResolvedDependency): void {
+  resolvedBeanDependencies = new Map<Bean, MaybeResolvedDependency[]>();
+  registerResolvedDependency(bean: Bean, resolvedDependency: MaybeResolvedDependency): void {
     const resolvedDependencies = this.resolvedBeanDependencies.get(bean);
     if (!resolvedDependencies) {
       this.resolvedBeanDependencies.set(bean, [resolvedDependency]);
@@ -45,12 +45,27 @@ export class Application extends Entity<ts.ClassDeclaration> {
     }
   }
 
-  forEachConfiguration(callback: (configuration: Configuration) => void): void {
+  exportedBeans = new Map<string, MaybeResolvedDependency>();
+
+  private configurationToIndex = new Map<Configuration, number>();
+  getConfigurationIndexUnsafe(configuration: Configuration): number {
+    const index = this.configurationToIndex.get(configuration);
+
+    if (index === undefined) {
+      throw new Error('No index found for configuration.');
+    }
+
+    return index;
+  }
+
+  forEachConfiguration(callback: (configuration: Configuration, configurationIndex: number) => void): void {
+    let lastConfigurationIndex = 0;
     const visited = new Set<Configuration>();
     const stack: Configuration[] = [this.rootConfiguration];
 
     while (stack.length > 0) {
       const configuration = stack.pop()!;
+      this.configurationToIndex.set(configuration, lastConfigurationIndex++);
       visited.add(configuration);
       const elements = Array.from(configuration.importRegister.elements);
 
@@ -71,7 +86,7 @@ export class Application extends Entity<ts.ClassDeclaration> {
         }
       }
 
-      callback(configuration);
+      callback(configuration, this.configurationToIndex.get(configuration)!);
     }
   }
 }

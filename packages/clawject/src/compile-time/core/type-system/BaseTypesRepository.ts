@@ -5,7 +5,16 @@ import { DITypeBuilder } from './DITypeBuilder';
 import { ___TypeReferenceTable___ } from '../../../runtime/___TypeReferenceTable___';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
-type BaseTypes = Record<keyof ___TypeReferenceTable___, DIType>;
+type BaseTypes = {
+  Array: DIType;
+  Set: DIType;
+  Map: DIType;
+  MapStringToAny: DIType;
+  CatContext: DIType;
+  ImportedConfiguration: DIType;
+  BeanConstructor: DIType;
+  Promise: DIType;
+}
 
 export class BaseTypesRepository {
   private static baseTypes: BaseTypes | null = null;
@@ -47,7 +56,7 @@ export class BaseTypesRepository {
       Map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
       MapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
       CatContext: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['CatContext'])),
-      Import: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Import'])),
+      ImportedConfiguration: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
       BeanConstructor: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructor'])),
       Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
     };

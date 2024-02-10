@@ -7,6 +7,7 @@ export interface RuntimeBeanMetadata {
   public: boolean;
   lazy: boolean | null;
   kind: BeanKind;
+  qualifiedName: string;
 }
 
 export interface RuntimeImportMetadata {

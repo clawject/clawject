@@ -3,7 +3,7 @@ import { ClassConstructor } from '../ClassConstructor';
 import { ClawjectContainer } from './ClawjectContainer';
 
 export class ClawjectFactory {
-  static async createApplicationContext(clawjectApplication: ClassConstructor<any>): Promise<ClawjectApplicationContext> {
+  static async createApplicationContext<T extends ClassConstructor<any>>(clawjectApplication: T): Promise<ClawjectApplicationContext<T>> {
     const container = new ClawjectContainer(clawjectApplication);
 
     await container.init();

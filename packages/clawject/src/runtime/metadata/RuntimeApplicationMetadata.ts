@@ -2,6 +2,12 @@ import { RuntimeConfigurationMetadata } from './RuntimeConfigurationMetadata';
 
 export interface RuntimeApplicationMetadata extends RuntimeConfigurationMetadata {
   beanDependenciesMetadata: ApplicationBeanDependenciesMetadata[][];
+  exportedBeansMetadata: ExportedBeanMetadata[];
+}
+
+export interface ExportedBeanMetadata {
+  qualifiedName: string;
+  metadata: ApplicationBeanDependencyMetadata;
 }
 
 export interface ApplicationBeanDependenciesMetadata {
@@ -9,8 +15,10 @@ export interface ApplicationBeanDependenciesMetadata {
   dependencies: ApplicationBeanDependencyMetadata[];
 }
 
+export type ApplicationBeanDependencyMetadataKind = 'plain' | 'value' | 'set' | 'map' | 'array';
+
 export interface ApplicationBeanDependencyMetadata {
-  kind: 'plain' | 'value' | 'set' | 'map' | 'array';
+  kind: ApplicationBeanDependencyMetadataKind;
 }
 
 export interface ApplicationBeanDependencyPlainMetadata extends ApplicationBeanDependencyMetadata {

@@ -55,7 +55,7 @@ export const fillEmbeddedBeans = (
     }
 
     if (type) {
-      type = DITypeBuilder.getTSTypeWithoutPromiseWrapper(type);
+      type = DITypeBuilder.getAwaitedType(type);
     }
 
     const typeSymbol = type?.getSymbol();

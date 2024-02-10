@@ -95,7 +95,7 @@ export class DiagnosticsBuilder {
 
       relatedInformation.push(...candidatesByType, ...candidatesByName);
 
-      if (message.beanKind === BeanKind.CLASS_CONSTRUCTOR) {
+      if (message.beanKind === BeanKind.CLASS_CONSTRUCTOR && message.beanDeclarationNodeDetails !== null) {
         relatedInformation.push({
           messageText: `'${message.beanDeclarationNodeDetails.declarationName}' is declared here.`,
           start: message.beanDeclarationNodeDetails.startOffset,

@@ -2,7 +2,7 @@ import { ClassConstructor } from '../ClassConstructor';
 import { ImportedConfiguration } from '../Import';
 import { ApplicationConfiguration } from './ApplicationConfiguration';
 import { MaybeAsync } from './MaybeAsync';
-import { isPromise } from './isPromise';
+import { isPromise } from './utils/isPromise';
 
 export class ApplicationConfigurationFactory {
   private applicationConfigurations: ApplicationConfiguration[] = [];

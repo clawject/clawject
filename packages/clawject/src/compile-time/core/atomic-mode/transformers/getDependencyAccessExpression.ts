@@ -1,11 +1,11 @@
 import ts, { factory } from 'typescript';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { Bean } from '../../bean/Bean';
-import { ResolvedDependency } from '../../dependency/ResolvedDependency';
+import { MaybeResolvedDependency } from '../../dependency-resolver/MaybeResolvedDependency';
 import { isNotEmpty } from '../../utils/isNotEmpty';
 
 //This function should be used only in atomic mode because of Dependency type casting
-export const getDependencyAccessExpression = (resolvedDependency: ResolvedDependency): ts.Expression | undefined => {
+export const getDependencyAccessExpression = (resolvedDependency: MaybeResolvedDependency): ts.Expression | undefined => {
   const qualifiedBean = resolvedDependency.qualifiedBean as Bean | null;
   const qualifiedBeans = resolvedDependency.qualifiedCollectionBeans as Bean[] | null;
 

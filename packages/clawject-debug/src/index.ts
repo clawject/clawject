@@ -1,33 +1,18 @@
-import {
-  Bean,
-  ClawjectApplication,
-  ClawjectFactory,
-  Configuration,
-  Embedded,
-  Import,
-  PostConstruct,
-  Scope
-} from '@clawject/di';
-
-@Configuration
-class TestConfig {
-  @Bean str = new Promise<string>(resolve => {
-    setTimeout(() => resolve('Hello'), 2500);
-  });
-}
+import {Bean, ClawjectApplication, ClawjectFactory, ExportBeans, Qualifier} from '@clawject/di';
 
 @ClawjectApplication
 export class _1 {
-  importedTestConfiguration = Import(new Promise<typeof TestConfig>(resolve => {
-    setTimeout(() => resolve(TestConfig), 2500);
-  }));
+  @Bean @Qualifier('Test') asd = new Map<string, number>([['a', 1]]);
 
-  @PostConstruct
-  init(str: string): void {
-    console.log('init,', str);
-  }
+  @Bean number = 1 as const;
+
+  exported = ExportBeans<{ Test: 1 }>();
 }
 
 const claw = await ClawjectFactory.createApplicationContext(_1);
+
+const beans = await claw.getExportedBeans();
+
+console.log(beans);
 
 await claw.destroy();

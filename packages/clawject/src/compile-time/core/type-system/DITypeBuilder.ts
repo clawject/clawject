@@ -28,15 +28,18 @@ class TypeWithTypeArguments {
 }
 
 export class DITypeBuilder {
-  static getTSTypeWithoutPromiseWrapper(tsType: ts.Type): ts.Type | null {
+  static getAwaitedType(tsType: ts.Type): ts.Type | null {
     const typeChecker = getCompilationContext().typeChecker;
-    const diType = this.build(tsType);
+    return typeChecker.getAwaitedType(tsType) ?? null;
 
-    if (diType.isPromise) {
-      return typeChecker.getTypeArguments(tsType as ts.TypeReference)[0] ?? null;
-    }
-
-    return tsType;
+    // Use this code if ts compiler will remove support for getAwaitedType
+    // const diType = this.build(tsType);
+    //
+    // if (diType.isPromise) {
+    //   return typeChecker.getTypeArguments(tsType as ts.TypeReference)[0] ?? null;
+    // }
+    //
+    // return tsType;
   }
 
   static build(tsType: ts.Type): DIType {

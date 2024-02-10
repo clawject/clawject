@@ -4,39 +4,22 @@ import { ApplicationBeanFinder } from './ApplicationBeanFinder';
 import { ObjectFactoryResult } from '../object-factory/ObjectFactory';
 
 export class ApplicationBeanDependency {
-  private static emptyToken = Symbol();
-
   constructor(
     public readonly metadata: ApplicationBeanDependencyMetadata,
     private applicationBeanFinder: ApplicationBeanFinder
   ) {}
 
-  private _cachedValue: any = ApplicationBeanDependency.emptyToken;
-
-  async getValue(): Promise<any> {
-    if (this._cachedValue !== ApplicationBeanDependency.emptyToken) {
-      return this._cachedValue;
-    }
-
-    let value: any;
-
+  getValue(): Promise<any> {
     switch (this.metadata.kind) {
     case 'plain':
-      value = await this.getPlainValue(this.metadata as ApplicationBeanDependencyPlainMetadata);
-      break;
+      return this.getPlainValue(this.metadata as ApplicationBeanDependencyPlainMetadata);
     case 'value':
-      value = await this.getValueValue(this.metadata as ApplicationBeanDependencyValueMetadata);
-      break;
+      return this.getValueValue(this.metadata as ApplicationBeanDependencyValueMetadata);
     case 'set':
     case 'map':
     case 'array':
-      value = await this.getCollectionValue(this.metadata as ApplicationBeanDependencyCollectionMetadata);
-      break;
+      return this.getCollectionValue(this.metadata as ApplicationBeanDependencyCollectionMetadata);
     }
-
-    this._cachedValue = value;
-
-    return value;
   }
 
   private async getPlainValue(metadata: ApplicationBeanDependencyPlainMetadata): Promise<any> {
@@ -67,7 +50,7 @@ export class ApplicationBeanDependency {
       return new Set(await Promise.all(applicationBeans.map(it => it.getValue())));
     }
 
-    const mapEntries: [string, ObjectFactoryResult][] = await Promise.all(applicationBeans.map(async(it, index) => {
+    const mapEntries: [string, ObjectFactoryResult][] = await Promise.all(applicationBeans.map(async (it, index) => {
       let name = metadata.metadata[index].classPropertyName;
       const nestedProperty = metadata.metadata[index].nestedProperty;
 

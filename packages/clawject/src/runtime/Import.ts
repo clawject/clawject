@@ -2,12 +2,10 @@ import { ClassConstructor } from './ClassConstructor';
 import { RuntimeErrors } from './errors';
 
 /** @public */
-export interface Import {
+export const Import: {
   <C extends ClassConstructor<any>>(configurationClass: C): ImportedConfiguration<C>
   <C extends ClassConstructor<any>>(configurationClass: Promise<C>): Promise<ImportedConfiguration<C>>
-}
-/** @public */
-export const Import: Import = (configurationClass: any): any => {
+} = (configurationClass: any): any => {
   if (configurationClass instanceof Promise) {
     return configurationClass.then((resolvedConfigurationClass) => {
       return {
@@ -28,4 +26,5 @@ export const Import: Import = (configurationClass: any): any => {
 /** @public */
 export interface ImportedConfiguration<C extends ClassConstructor<any>> {
   constructor: C;
+  ___clawject_internal_token___: never;
 }

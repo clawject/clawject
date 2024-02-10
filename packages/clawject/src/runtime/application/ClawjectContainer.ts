@@ -30,4 +30,12 @@ export class ClawjectContainer {
   async destroy(): Promise<void> {
     this.applicationBeanFactory.destroy();
   }
+
+  getExportedBean(beanName: string): Promise<any> {
+    return this.applicationBeanFactory.getExportedBean(beanName);
+  }
+
+  getExportedBeans(): Promise<Record<string, any>> {
+    return this.applicationBeanFactory.getExportedBeans();
+  }
 }

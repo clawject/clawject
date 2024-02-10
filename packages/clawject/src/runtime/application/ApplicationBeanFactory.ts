@@ -11,9 +11,12 @@ import { ClassConstructor } from '../ClassConstructor';
 import { ApplicationBeanDependency } from './ApplicationBeanDependency';
 import { ApplicationBeanFinder } from './ApplicationBeanFinder';
 import { MaybeAsync } from './MaybeAsync';
-import { isPromise } from './isPromise';
+import { isPromise } from './utils/isPromise';
+import { EMPTY_TOKEN, getSafeFromMap } from './utils/getSafeFromMap';
 
 export class ApplicationBeanFactory {
+  qualifiedBeanNameToApplicationBean = new Map<string, ApplicationBean>();
+  exportedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
   applicationBeans: ApplicationBean[] = [];
   configurationIndexToBeanClassPropertyToApplicationBean = new Map<number, Map<string, ApplicationBean>>();
   applicationBeanFinder = new ApplicationBeanFinder(this.configurationIndexToBeanClassPropertyToApplicationBean);
@@ -24,13 +27,14 @@ export class ApplicationBeanFactory {
 
   async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
     await this.createApplicationBeans(applicationMetadata);
+    this.fillExportedBeans(applicationMetadata);
     await this.initBeans();
   }
 
   async postInit(): Promise<void> {
     const lifecycleBeans: ApplicationBean[] = [];
 
-    const regular = this.applicationBeans.map(async(applicationBean) => {
+    const regular = this.applicationBeans.map(async (applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
         lifecycleBeans.push(applicationBean);
         return;
@@ -69,6 +73,25 @@ export class ApplicationBeanFactory {
         applicationBean.objectFactory.getObject();
       }
     });
+  }
+
+  getExportedBean(beanName: string): Promise<any> {
+    const exportedBean = getSafeFromMap(this.exportedBeanNameToApplicationBeanDependency, beanName);
+
+    if (exportedBean === EMPTY_TOKEN) {
+      //TODO runtime error
+      throw new Error(`No exported bean found for name: ${beanName}`);
+    }
+
+    return exportedBean.getValue();
+  }
+
+  getExportedBeans(): Promise<Record<string, any>> {
+    const data =  Promise.all(
+      Array.from(this.exportedBeanNameToApplicationBeanDependency.entries()).map(async ([beanName, exportedBean]) => [beanName, await exportedBean.getValue()] as const),
+    );
+
+    return data.then((entries) => Object.fromEntries(entries));
   }
 
   private async createApplicationBeans(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
@@ -117,12 +140,19 @@ export class ApplicationBeanFactory {
         );
         configurationIndexToBeanClassPropertyToApplicationBean.set(beanClassProperty, applicationBean);
         this.applicationBeans.push(applicationBean);
+        this.qualifiedBeanNameToApplicationBean.set(applicationBean.beanMetadata.qualifiedName, applicationBean);
       });
 
       await Promise.all(initPromises);
     });
 
     await Promise.all(resultPromise);
+  }
+
+  private fillExportedBeans(applicationMetadata: RuntimeApplicationMetadata): void {
+    applicationMetadata.exportedBeansMetadata.forEach((exportedBeanMetadata) => {
+      this.exportedBeanNameToApplicationBeanDependency.set(exportedBeanMetadata.qualifiedName, new ApplicationBeanDependency(exportedBeanMetadata.metadata, this.applicationBeanFinder));
+    });
   }
 
   private async initBeans(): Promise<void> {

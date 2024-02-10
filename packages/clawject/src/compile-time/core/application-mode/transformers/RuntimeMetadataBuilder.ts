@@ -4,10 +4,11 @@ import { Import } from '../../import/Import';
 import { RuntimeConfigurationMetadata } from '../../../../runtime/metadata/RuntimeConfigurationMetadata';
 import { LifecycleKind } from '../../../../runtime/LifecycleKind';
 import { filterAndMap } from '../../utils/filterAndMap';
-import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, RuntimeApplicationMetadata } from '../../../../runtime/metadata/RuntimeApplicationMetadata';
+import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExportedBeanMetadata, RuntimeApplicationMetadata } from '../../../../runtime/metadata/RuntimeApplicationMetadata';
 import { Application } from '../../application/Application';
 import { compact } from 'lodash';
 import { RuntimeBeanMetadata } from '../../../../runtime/metadata/MetadataTypes';
+import { MaybeResolvedDependency } from '../../dependency-resolver/MaybeResolvedDependency';
 
 export class RuntimeMetadataBuilder {
 
@@ -34,7 +35,8 @@ export class RuntimeMetadataBuilder {
           scope: bean.scopeExpression.getAndDisposeSafe() as any,
           public: bean.public,
           lazy: bean.lazyExpression.getAndDisposeSafe() as any,
-          kind: bean.kind
+          kind: bean.kind,
+          qualifiedName: bean.fullName,
         };
 
         return acc;
@@ -45,13 +47,7 @@ export class RuntimeMetadataBuilder {
   }
 
   private static application(configurationMetadata: RuntimeConfigurationMetadata, application: Application): RuntimeApplicationMetadata {
-    let lastConfigurationIndex = 0;
-    const configurationToIndex = new Map<Configuration, number>();
     const beanDependenciesMetadata: ApplicationBeanDependenciesMetadata[][] = [];
-
-    application.forEachConfiguration((configuration) => {
-      configurationToIndex.set(configuration, lastConfigurationIndex++);
-    });
 
     application.forEachConfiguration((configuration) => {
       const beanDependencies: ApplicationBeanDependenciesMetadata[] = [];
@@ -60,86 +56,7 @@ export class RuntimeMetadataBuilder {
         const resolvedDependencies = application.resolvedBeanDependencies.get(bean) ?? [];
 
         const beanDependencyMetadata: (ApplicationBeanDependencyMetadata | null)[] = resolvedDependencies.map((resolvedDependency) => {
-          let kind: ApplicationBeanDependencyMetadata['kind'];
-          if (resolvedDependency.dependency.diType.isSet) {
-            kind = 'set';
-          } else if (resolvedDependency.dependency.diType.isMap) {
-            kind = 'map';
-          } else if (resolvedDependency.dependency.diType.isArray) {
-            kind = 'array';
-          } else if (resolvedDependency.dependency.diType.isEmptyValue || resolvedDependency.qualifiedBean === null && resolvedDependency.qualifiedCollectionBeans === null) {
-            kind = 'value';
-          } else {
-            kind = 'plain';
-          }
-
-          switch (kind) {
-          case 'plain': {
-            const qualifiedBean = resolvedDependency.qualifiedBean;
-
-            if (!qualifiedBean) {
-              return null;
-            }
-
-            const parentConfigurationIndex = configurationToIndex.get(qualifiedBean.parentConfiguration);
-            if (parentConfigurationIndex === undefined) {
-              return null;
-            }
-
-            const metadata: ApplicationBeanDependencyPlainMetadata = {
-              kind,
-              configurationIndex: parentConfigurationIndex,
-              classPropertyName: qualifiedBean.classMemberName,
-              nestedProperty: qualifiedBean.nestedProperty,
-            };
-
-            return metadata;
-          }
-          case 'set':
-          case 'array':
-          case 'map': {
-            const qualifiedCollectionBeans = resolvedDependency.qualifiedCollectionBeans;
-
-            if (!qualifiedCollectionBeans) {
-              return null;
-            }
-
-            const metadata: ApplicationBeanDependencyCollectionMetadata = {
-              kind,
-              metadata: compact(qualifiedCollectionBeans.map((qualifiedBean) => {
-                const parentConfigurationIndex = configurationToIndex.get(qualifiedBean.parentConfiguration);
-
-                if (parentConfigurationIndex === undefined) {
-                  return null;
-                }
-
-                const metadata: ApplicationBeanDependencyCollectionMetadata['metadata'][0] = {
-                  configurationIndex: parentConfigurationIndex,
-                  classPropertyName: qualifiedBean.classMemberName,
-                  nestedProperty: qualifiedBean.nestedProperty,
-                };
-
-                return metadata;
-              })),
-            };
-
-            return metadata;
-          }
-
-          case 'value': {
-            let value: any = null;
-
-            if (resolvedDependency.dependency.diType.isVoidUndefinedPlainUnionIntersection) {
-              value = undefined;
-            }
-
-            const metadata: ApplicationBeanDependencyValueMetadata = {
-              kind,
-              value,
-            };
-            return metadata;
-          }
-          }
+          return this.getDependencyMetadata(application, resolvedDependency);
         });
 
         beanDependencies.push({
@@ -151,9 +68,111 @@ export class RuntimeMetadataBuilder {
       beanDependenciesMetadata.push(beanDependencies);
     });
 
+    const exportedBeansMetadata: ExportedBeanMetadata[] = [];
+    application.exportedBeans.forEach((maybeResolvedDependency, name) => {
+      const metadata = this.getDependencyMetadata(application, maybeResolvedDependency);
+
+      if (metadata !== null) {
+        exportedBeansMetadata.push({
+          qualifiedName: name,
+          metadata,
+        });
+      }
+    });
+
     return {
       ...configurationMetadata,
       beanDependenciesMetadata,
+      exportedBeansMetadata,
+    };
+  }
+
+  private static getDependencyMetadata(application: Application, maybeResolvedDependency: MaybeResolvedDependency): ApplicationBeanDependencyMetadata | null {
+    let kind: ApplicationBeanDependencyMetadata['kind'];
+    if (maybeResolvedDependency.dependency.diType.isSet) {
+      kind = 'set';
+    } else if (maybeResolvedDependency.dependency.diType.isMap) {
+      kind = 'map';
+    } else if (maybeResolvedDependency.dependency.diType.isArray) {
+      kind = 'array';
+    } else if (maybeResolvedDependency.dependency.diType.isEmptyValue || maybeResolvedDependency.qualifiedBean === null && maybeResolvedDependency.qualifiedCollectionBeans === null) {
+      kind = 'value';
+    } else {
+      kind = 'plain';
+    }
+
+    switch (kind) {
+    case 'plain':
+      return this.getForPlainMetadata(application, maybeResolvedDependency);
+    case 'set':
+    case 'array':
+    case 'map': {
+      const qualifiedCollectionBeans = maybeResolvedDependency.qualifiedCollectionBeans;
+      const qualifiedBean = maybeResolvedDependency.qualifiedBean;
+
+      if (!qualifiedCollectionBeans) {
+        if (qualifiedBean) {
+          return this.getForPlainMetadata(application, maybeResolvedDependency);
+        }
+
+        return null;
+      }
+
+      const metadata: ApplicationBeanDependencyCollectionMetadata = {
+        kind,
+        metadata: compact(qualifiedCollectionBeans.map((qualifiedBean) => {
+          const parentConfigurationIndex = application.getConfigurationIndexUnsafe(qualifiedBean.parentConfiguration);
+
+          if (parentConfigurationIndex === undefined) {
+            return null;
+          }
+
+          const metadata: ApplicationBeanDependencyCollectionMetadata['metadata'][0] = {
+            configurationIndex: parentConfigurationIndex,
+            classPropertyName: qualifiedBean.classMemberName,
+            nestedProperty: qualifiedBean.nestedProperty,
+          };
+
+          return metadata;
+        })),
+      };
+
+      return metadata;
+    }
+
+    case 'value': {
+      let value: any = null;
+
+      if (maybeResolvedDependency.dependency.diType.isVoidUndefinedPlainUnionIntersection) {
+        value = undefined;
+      }
+
+      const metadata: ApplicationBeanDependencyValueMetadata = {
+        kind,
+        value,
+      };
+      return metadata;
+    }
+    }
+  }
+
+  private static getForPlainMetadata(application: Application, maybeResolvedDependency: MaybeResolvedDependency): ApplicationBeanDependencyPlainMetadata | null {
+    const qualifiedBean = maybeResolvedDependency.qualifiedBean;
+
+    if (!qualifiedBean) {
+      return null;
+    }
+
+    const parentConfigurationIndex = application.getConfigurationIndexUnsafe(qualifiedBean.parentConfiguration);
+    if (parentConfigurationIndex === undefined) {
+      return null;
+    }
+
+    return {
+      kind: 'plain',
+      configurationIndex: parentConfigurationIndex,
+      classPropertyName: qualifiedBean.classMemberName,
+      nestedProperty: qualifiedBean.nestedProperty,
     };
   }
 }

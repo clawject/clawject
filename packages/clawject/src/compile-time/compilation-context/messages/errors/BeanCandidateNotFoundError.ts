@@ -5,6 +5,8 @@ import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetai
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { Bean } from '../../../core/bean/Bean';
 import { BeanKind } from '../../../core/bean/BeanKind';
+import { mapAndFilter } from '../../../core/utils/mapAndFilter';
+import { isNotEmpty } from '../../../core/utils/isNotEmpty';
 
 export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
   public code = MessageCode.CT5;
@@ -12,25 +14,29 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
   public description = 'Bean candidate not found.';
   public candidatesByName: NodeDetails[];
   public candidatesByType: NodeDetails[];
-  public beanDeclarationNodeDetails: NodeDetails;
-  public beanKind: BeanKind;
+  public beanDeclarationNodeDetails: NodeDetails | null;
+  public beanKind: BeanKind | null;
 
   constructor(
     details: string | null,
     place: ts.Node,
-    relatedBean: Bean,
+    relatedBean: Bean | null,
     candidatesByName: Bean[],
     candidatesByType: Bean[],
   ) {
-    super(details, place, relatedBean.parentConfiguration);
+    super(details, place, relatedBean?.parentConfiguration ?? null);
 
-    this.candidatesByName = candidatesByName.map(it => this.getNodeDetails(it));
-    this.candidatesByType = candidatesByType.map(it => this.getNodeDetails(it));
-    this.beanDeclarationNodeDetails = getNodeDetails(relatedBean.node);
-    this.beanKind = relatedBean.kind;
+    this.candidatesByName = mapAndFilter(candidatesByName, it => this.getNodeDetails(it), isNotEmpty);
+    this.candidatesByType = mapAndFilter(candidatesByType, it => this.getNodeDetails(it), isNotEmpty);
+    this.beanDeclarationNodeDetails = relatedBean === null ? null : getNodeDetails(relatedBean.node);
+    this.beanKind = relatedBean?.kind ?? null;
   }
 
-  private getNodeDetails(bean: Bean): NodeDetails {
+  private getNodeDetails(bean: Bean | null): NodeDetails | null {
+    if (bean === null) {
+      return null;
+    }
+
     const nodeDetails = getNodeDetails(bean.node);
 
     nodeDetails.declarationName = bean.fullName;
