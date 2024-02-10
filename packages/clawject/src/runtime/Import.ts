@@ -25,6 +25,6 @@ export const Import: {
 
 /** @public */
 export interface ImportedConfiguration<C extends ClassConstructor<any>> {
-  constructor: C;
-  ___clawject_internal_token___: never;
+  readonly constructor: C;
+  readonly ___clawject_internal_token___: never;
 }
