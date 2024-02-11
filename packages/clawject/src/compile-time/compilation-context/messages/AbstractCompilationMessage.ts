@@ -6,7 +6,7 @@ import { getNodeDetails, NodeDetails } from '../../core/ts/utils/getNodeDetails'
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { Application } from '../../core/application/Application';
 
-export interface IRelatedConfigurationMetadata {
+export interface IRelatedConfigurationOrApplicationMetadata {
   name: string;
   fileName: string;
   nodeDetails: NodeDetails;
@@ -19,7 +19,8 @@ export abstract class AbstractCompilationMessage {
   public abstract description: string;
 
   public readonly place: NodeDetails;
-  public readonly relatedConfigurationMetadata: IRelatedConfigurationMetadata | null;
+  public readonly relatedConfigurationMetadata: IRelatedConfigurationOrApplicationMetadata | null;
+  public readonly relatedApplicationMetadata: IRelatedConfigurationOrApplicationMetadata | null;
 
   contextualFileName: string;
 
@@ -31,11 +32,14 @@ export abstract class AbstractCompilationMessage {
   ) {
     this.place = getNodeDetails(place);
     this.relatedConfigurationMetadata = this.getRelatedConfigurationMetadata(relatedConfiguration);
+    this.relatedApplicationMetadata = application
+      ? this.getRelatedConfigurationMetadata(application.rootConfiguration)
+      : null;
 
     this.contextualFileName = getCompilationContext().contextualFileName;
   }
 
-  private getRelatedConfigurationMetadata(relatedConfiguration: Configuration | null): IRelatedConfigurationMetadata | null {
+  private getRelatedConfigurationMetadata(relatedConfiguration: Configuration | null): IRelatedConfigurationOrApplicationMetadata | null {
     if (relatedConfiguration === null) {
       return null;
     }

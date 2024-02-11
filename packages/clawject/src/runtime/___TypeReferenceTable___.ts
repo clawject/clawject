@@ -14,6 +14,6 @@ export interface ___TypeReferenceTable___ {
   MapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
   CatContext: CatContext<any, any>;
   ImportedConfiguration: ImportedConfiguration<any>;
-  BeanConstructor: BeanConstructorFactory<any, any>;
+  BeanConstructorFactory: BeanConstructorFactory<any, any>;
   Promise: Promise<any> | PromiseLike<any>;
 }

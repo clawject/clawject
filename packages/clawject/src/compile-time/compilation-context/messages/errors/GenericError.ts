@@ -5,5 +5,5 @@ import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 export class GenericError extends AbstractCompilationMessage {
   public code = MessageCode.CT0;
   public type = MessageType.ERROR;
-  public description = 'Error.';
+  public description = 'GenericError';
 }

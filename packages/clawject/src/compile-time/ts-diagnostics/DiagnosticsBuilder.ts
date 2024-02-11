@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { getCompilationContext } from '../../transformer/getCompilationContext';
-import { AbstractCompilationMessage, IRelatedConfigurationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
+import { AbstractCompilationMessage, IRelatedConfigurationOrApplicationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
 import { CircularDependenciesError } from '../compilation-context/messages/errors/CircularDependenciesError';
 import { CanNotRegisterBeanError } from '../compilation-context/messages/errors/CanNotRegisterBeanError';
@@ -175,7 +175,7 @@ export class DiagnosticsBuilder {
     }
   }
 
-  private static buildRelatedDiagnosticsFromRelatedConfigurationMetadata(relatedConfigurationMetadata: IRelatedConfigurationMetadata): ts.DiagnosticRelatedInformation {
+  private static buildRelatedDiagnosticsFromRelatedConfigurationMetadata(relatedConfigurationMetadata: IRelatedConfigurationOrApplicationMetadata): ts.DiagnosticRelatedInformation {
     const nodeDetails = relatedConfigurationMetadata.nameNodeDetails ?? relatedConfigurationMetadata.nodeDetails;
 
     return {

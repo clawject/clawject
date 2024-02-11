@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { DeclarationInfo } from './DeclarationInfo';
 import { PrimitiveTypeCompatibilityMatrix } from './PrimitiveTypeCompatibilityMatrix';
 import { DITypeFlag } from './DITypeFlag';
-import { escape, isArray } from 'lodash';
+import { escape } from 'lodash';
 import { BaseTypesRepository } from './BaseTypesRepository';
 
 export class DIType {

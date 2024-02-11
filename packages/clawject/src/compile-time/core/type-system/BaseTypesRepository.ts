@@ -12,7 +12,7 @@ type BaseTypes = {
   MapStringToAny: DIType;
   CatContext: DIType;
   ImportedConfiguration: DIType;
-  BeanConstructor: DIType;
+  BeanConstructorFactory: DIType;
   Promise: DIType;
 }
 
@@ -57,7 +57,7 @@ export class BaseTypesRepository {
       MapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
       CatContext: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['CatContext'])),
       ImportedConfiguration: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
-      BeanConstructor: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructor'])),
+      BeanConstructorFactory: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
       Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
     };
   }
