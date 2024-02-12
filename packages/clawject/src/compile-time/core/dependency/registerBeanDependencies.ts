@@ -26,7 +26,8 @@ export const registerBeanDependencies = (configuration: Configuration) => {
 
 function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
   const typeChecker = getCompilationContext().typeChecker;
-  const beanType = DITypeBuilder.getPromisedTypeOfPromise(typeChecker.getTypeAtLocation(bean.node));
+  const nodeType = typeChecker.getTypeAtLocation(bean.node);
+  const beanType = DITypeBuilder.getPromisedTypeOfPromise(nodeType) ?? nodeType;
 
   if (!beanType) {
     getCompilationContext().report(new TypeQualifyError(

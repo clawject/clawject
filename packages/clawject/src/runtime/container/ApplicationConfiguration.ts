@@ -1,6 +1,7 @@
 import { ClassConstructor } from '../api/ClassConstructor';
 import { RuntimeConfigurationMetadata } from '../metadata/RuntimeConfigurationMetadata';
 import { MetadataStorage } from '../metadata/MetadataStorage';
+import { RuntimeErrors } from '../api/RuntimeErrors';
 
 export class ApplicationConfiguration {
   private _instance: any | null = null;
@@ -8,8 +9,7 @@ export class ApplicationConfiguration {
 
   get index(): number {
     if (this._index === null) {
-      //TODO runtime error
-      throw new Error('Id not initialized');
+      throw new RuntimeErrors.IllegalStateError('Id not initialized in application configuration');
     }
 
     return this._index;
@@ -39,8 +39,7 @@ export class ApplicationConfiguration {
     const metadata = MetadataStorage.getApplicationMetadata(classConstructor) ?? MetadataStorage.getConfigurationMetadata(classConstructor);
 
     if (metadata === null) {
-      //TODO runtime error
-      throw new Error('No configuration metadata found');
+      throw new RuntimeErrors.NoClassMetadataFoundError('No configuration metadata found');
     }
 
     return metadata;

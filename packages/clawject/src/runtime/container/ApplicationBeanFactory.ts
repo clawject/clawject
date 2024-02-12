@@ -12,6 +12,7 @@ import { ApplicationBeanDependency } from './ApplicationBeanDependency';
 import { ApplicationBeanFinder } from './ApplicationBeanFinder';
 import { MaybeAsync } from '../types/MaybeAsync';
 import { Utils } from '../Utils';
+import { RuntimeErrors } from '../api/RuntimeErrors';
 
 export class ApplicationBeanFactory {
   exportedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
@@ -21,7 +22,8 @@ export class ApplicationBeanFactory {
 
   constructor(
     private readonly applicationConfigurationFactory: ApplicationConfigurationFactory,
-  ) {}
+  ) {
+  }
 
   async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
     await this.createApplicationBeans(applicationMetadata);
@@ -77,8 +79,7 @@ export class ApplicationBeanFactory {
     const exportedBean = Utils.getValueSafe(this.exportedBeanNameToApplicationBeanDependency, beanName);
 
     if (exportedBean === Utils.EMPTY_VALUE) {
-      //TODO runtime error
-      throw new Error(`No exported bean found for name: ${beanName}`);
+      throw new RuntimeErrors.BeanNotFoundError(`No exported bean found by exported name: ${beanName}`);
     }
 
     return exportedBean.getValue();
@@ -97,8 +98,7 @@ export class ApplicationBeanFactory {
       const beanDependenciesMetadataByConfiguration = applicationMetadata.beanDependenciesMetadata[applicationConfiguration.index];
 
       if (!beanDependenciesMetadataByConfiguration) {
-        //TODO runtime error
-        throw new Error('No bean dependencies metadata found');
+        throw new RuntimeErrors.CorruptedMetadataError('No bean dependencies metadata found');
       }
 
       const configurationIndexToBeanClassPropertyToApplicationBean = new Map<string, ApplicationBean>();
@@ -153,8 +153,8 @@ export class ApplicationBeanFactory {
   }
 
   private async initBeans(): Promise<void> {
-    await Promise.all(this.applicationBeans.map((applicationBean) => {
-      const factory = this.getBeanFactoryFunction(applicationBean);
+    await Promise.all(this.applicationBeans.map(async (applicationBean) => {
+      const factory = await this.getBeanFactoryFunction(applicationBean);
 
       const objectFactory = new ObjectFactoryImpl(() => {
         const dependencies = applicationBean.dependencies?.map(it => it.getValue()) ?? [];
@@ -182,15 +182,22 @@ export class ApplicationBeanFactory {
     }));
   }
 
-  private getBeanFactoryFunction(applicationBean: ApplicationBean): (...args: any[]) => any {
+  private getBeanFactoryFunction(applicationBean: ApplicationBean): MaybeAsync<(...args: any[]) => any> {
     const configurationInstance = applicationBean.parentConfiguration.instance;
 
     switch (applicationBean.beanMetadata.kind) {
     case BeanKind.FACTORY_METHOD:
     case BeanKind.LIFECYCLE_METHOD:
       return configurationInstance[applicationBean.beanClassProperty].bind(configurationInstance);
-    case BeanKind.CLASS_CONSTRUCTOR:
-      return (configurationInstance[applicationBean.beanClassProperty] as BeanConstructorFactory<any, any>).factory;
+    case BeanKind.CLASS_CONSTRUCTOR: {
+      const classPropertyValue = configurationInstance[applicationBean.beanClassProperty] as MaybeAsync<BeanConstructorFactory<any, any>>;
+
+      if (Utils.isPromise(classPropertyValue)) {
+        return classPropertyValue.then(it => it.factory);
+      }
+
+      return classPropertyValue.factory;
+    }
     case BeanKind.FACTORY_ARROW_FUNCTION:
     case BeanKind.LIFECYCLE_ARROW_FUNCTION:
       return configurationInstance[applicationBean.beanClassProperty];

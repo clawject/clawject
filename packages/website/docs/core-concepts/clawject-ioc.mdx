@@ -4,20 +4,21 @@ title: Clawject IoC Container
 
 An IoC container is a common characteristic of frameworks that implement IoC.
 
-In Clawject, **CatContext** abstract class is a representation of the single IoC container.
+In Clawject, class defined with **`@ClawjectApplication`** decorator is a representation of the single IoC container.
 The Clawject container is responsible for instantiating, configuring and assembling objects known as Beans,
 as well as managing their life cycles.
 
-Right now Clawject provides one way to manage IoC containers. This is **ContainerManager** interface.
+Right now Clawject provides one way to manage IoC containers. **`ClawjectFactory`** class.
 
 Here is the way to initialize the container:
 
 ```ts
-import { ContainerManager, CatContext } from '@clawject/di';
+import { ClawjectApplication, ClawjectFactory } from '@clawject/di';
 
-class ApplicationContext extends CatContext {}
+@ClawjectApplication
+class Application {}
 
-ContainerManager.init(ApplicationContext);
+const applicationContext = await ClawjectFactory.createApplicationContext(Application)
 ```
 
 ## Constructor-Based Dependency Injection
@@ -26,7 +27,7 @@ In the case of constructor-based dependency injection,
 the container will invoke a constructor with arguments each representing a dependency we want to set.
 
 Clawject resolves each argument primarily by type, followed by the name of the constructor parameter.
-Let's see the configuration of a bean and its dependencies using Bean call:
+Let's see the defining of a bean and its dependencies using Bean function call:
 
 ```ts
 class Bar {}
@@ -34,14 +35,15 @@ class Foo {
   constructor(private bar: Bar) {}
 }
 
-class ApplicationContext extends CatContext {
+@ClawjectApplication
+class Application {
   foo = Bean(Foo)
   bar = Bean(Bar)
 }
 ```
 
 We're passing class constructor to the Bean function and assigning the result of function to the class property to define a bean;
-Bean name is a class property name.
+Bean name is a class property name to which we assign the result of the Bean function.
 
 ## Bean scopes
 
@@ -65,7 +67,8 @@ class Foo {
   constructor(private baz: Baz) {}
 }
 
-class ApplicationContext extends CatContext {
+@ClawjectApplication
+class Application {
   foo = Bean(Foo)
   bar = Bean(Bar)
 
@@ -84,10 +87,11 @@ To avoid this, we can use the **lazy** decorator with on the bean configuration 
 **foo** bean will only be initialized when it's first requested, and not at startup.
 
 ```ts
-class ApplicationContext extends CatContext {
+class Foo {}
+
+@ClawjectApplication
+class Application {
   @Lazy
   foo = Bean(Foo)
 }
 ```
-
-You can redefine the default lazy value for all beans in clawject configuration file [features.lazyBeans](/docs/configuration.mdx#featureslazybeans).

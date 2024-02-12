@@ -25,7 +25,7 @@ export const registerBeanFromDeclarationMetadata = (
   let type: ts.Type | null = getCompilationContext().typeChecker.getTypeAtLocation(classElement);
 
   if (bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
-    type = DITypeBuilder.getPromisedTypeOfPromise(type);
+    type = DITypeBuilder.getPromisedTypeOfPromise(type) ?? type;
   }
 
   if (!type) {

@@ -34,7 +34,8 @@ export const fillBeanTypes = (configuration: Configuration) => {
 
     if (bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
       const typedBeanNode = bean.node as ClassPropertyWithCallExpressionInitializer;
-      const beanType = DITypeBuilder.getPromisedTypeOfPromise(typeChecker.getTypeAtLocation(typedBeanNode));
+      const nodeType = typeChecker.getTypeAtLocation(typedBeanNode);
+      const beanType = DITypeBuilder.getPromisedTypeOfPromise(nodeType) ?? nodeType;
 
       if (!beanType) {
         compilationContext.report(new TypeQualifyError(

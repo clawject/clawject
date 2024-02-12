@@ -1,16 +1,5 @@
 /** @public */
 export namespace RuntimeErrors {
-  /** @public */
-  export class NoInitializedContextFoundError extends Error {
-    constructor(
-      message: string,
-      public readonly contextKey: any
-    ) {
-      super(message);
-    }
-
-    override name = 'NoInitializedContextFoundError' as const;
-  }
 
   /** @public */
   export class BeanNotFoundError extends Error {
@@ -18,18 +7,8 @@ export namespace RuntimeErrors {
   }
 
   /** @public */
-  export class ClassNotInheritorOfCatContextError extends Error {
-    override name = 'ClassNotInheritorOfCatContextError' as const;
-  }
-
-  /** @public */
-  export class UsageWithoutConfiguredDIError extends Error {
-    override name = 'UsageWithoutConfiguredDIError' as const;
-  }
-
-  /** @public */
-  export class IllegalAccessError extends Error {
-    override name = 'IllegalAccessError' as const;
+  export class CorruptedMetadataError extends Error {
+    override name = 'CorruptedMetadataError' as const;
   }
 
   /** @public */
@@ -38,13 +17,18 @@ export namespace RuntimeErrors {
   }
 
   /** @public */
-  export class ScopeIsNotRegisteredError extends Error {
-    override name = 'ScopeIsNotRegisteredError' as const;
+  export class IllegalAccessError extends Error {
+    override name = 'IllegalAccessError' as const;
   }
 
   /** @public */
-  export class PrimitiveCouldNotBeWrappedInProxyError extends Error {
-    override name = 'PrimitiveCouldNotBeWrappedInProxyError' as const;
+  export class IllegalArgumentError extends Error {
+    override name = 'IllegalArgumentError' as const;
+  }
+
+  /** @public */
+  export class IllegalStateError extends Error {
+    override name = 'IllegalStateError' as const;
   }
 
   /** @public */
@@ -53,13 +37,17 @@ export namespace RuntimeErrors {
   }
 
   /** @public */
-  export class NoContextMemberFactoryFoundError extends Error {
-    override name = 'NoContextMemberFactoryFoundError' as const;
+  export class PrimitiveCouldNotBeWrappedInProxyError extends Error {
+    override name = 'PrimitiveCouldNotBeWrappedInProxyError' as const;
   }
 
-  //TODO document
   /** @public */
-  export class IllegalArgumentError extends Error {
-    override name = 'IllegalArgumentError' as const;
+  export class ScopeIsNotRegisteredError extends Error {
+    override name = 'ScopeIsNotRegisteredError' as const;
+  }
+
+  /** @public */
+  export class UsageWithoutConfiguredDIError extends Error {
+    override name = 'UsageWithoutConfiguredDIError' as const;
   }
 }

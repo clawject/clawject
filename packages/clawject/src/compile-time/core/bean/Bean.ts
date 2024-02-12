@@ -59,7 +59,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   }
 
   getExternalValue(): boolean {
-    return this.external ?? this.parentConfiguration.external ?? ConfigLoader.get().features.defaultExternalBeans;
+    return this.external ?? this.parentConfiguration.external ?? ConfigLoader.get().beans.defaultExternal;
   }
 
   registerType(diType: DIType, tsType: ts.Type | null): void {

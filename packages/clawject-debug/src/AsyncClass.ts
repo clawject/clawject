@@ -1,1 +1,4 @@
-export class AsyncClass {}
+export class AsyncClass {
+
+  data = 'async data';
+}

@@ -36,9 +36,9 @@ Configuration schema is:
 ```typescript
 interface Config {
   unsafeTSVersion?: boolean; // Default: false
-  features?: {
-    keepContextNames?: boolean; // Default: true
-  };
+  beans?: {
+    defaultExternal?: boolean; // Default: true
+  }
 }
 ```
 
@@ -51,8 +51,11 @@ But if you want to disable this check, you can set `unsafeTSVersion` to `true`.
 
 Default value is `false`.
 
-### `features.keepContextNames`
+### `beans.defaultExternal`
 
-Keeps context class names in generated code, it can be useful for debugging purposes.
+//TODO add links to external and internal
+When `true`, all beans are considered external by default.
+
+When `false`, all beans are considered internal by default.
 
 Default value is `true`.

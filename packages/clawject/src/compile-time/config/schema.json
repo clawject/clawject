@@ -14,13 +14,13 @@
         false
       ]
     },
-    "features": {
+    "beans": {
       "type": "object",
       "properties": {
-        "keepContextNames": {
+        "defaultExternal": {
           "type": "boolean",
           "default": true,
-          "title": "Keeps context class names in generated code, it's can be useful for debugging purposes",
+          "title": "Defines whether beans should be considered external by default in all configuration and application classes.",
           "examples": [
             true,
             false

@@ -293,23 +293,6 @@ Runtime errors are regular JavaScript errors that can be thrown during the appli
 Clawject exporting Error classes that can be caught and handled in the application code.
 Each error has `name` property, so it can be identified via name or via `instanceof` operator.
 
-### NoInitializedContextFoundError
-It occurs when the context is not initialized, and you're trying
-to get [`InitializedContext`](/docs/api/initialized-context.mdx) object
-from [`ContainerManager`](/docs/api/container-manager.mdx).
-Example:
-
-```ts
-class MyContext extends CatContext {}
-ContainerManager.get(MyContext);
-```
-
-**Solution:** Initialize the context before getting it from the container manager.
-
-:::tip
-`NoInitializedContextFoundError` object contains `contextKey` property.
-:::
-
 ### BeanNotFoundError
 It occurs when the bean that is requested is not found in the context.
 This error should not appear if everything is configured correctly.
@@ -327,15 +310,6 @@ initializedContext.getBean('dog');
 ```
 
 **Solution:** Define missing bean in the context.
-
-### ClassNotInheritorOfCatContextError
-It occurs when you're trying to initialize the context that is not inherited from CatContext. Example:
-```ts
-class MyContext {}
-ContainerManager.init(MyContext);
-```
-
-**Solution:** Inherit context from CatContext.
 
 ### UsageWithoutConfiguredDIError
 It occurs when you're trying to use Clawject without proper configuration,
@@ -394,3 +368,15 @@ ContainerManager.init(MyContext);
 It can occur if you edited generated file and removed some context member factory.
 
 **Solution:** Do edit generated files, regenerate file.
+
+### IllegalArgumentError
+It occurs when an incorrect argument is passed to some method or function.
+Example:
+```ts
+@ClawjectApplication
+class MyApplication {
+  importedFunction = Import('non-costructable-value');
+}
+```
+
+**Solution:** Pass only expected arguments.

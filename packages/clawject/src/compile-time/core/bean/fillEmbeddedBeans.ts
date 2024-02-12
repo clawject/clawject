@@ -53,7 +53,7 @@ export const fillEmbeddedBeans = (
     }
 
     if (type) {
-      type = DITypeBuilder.getPromisedTypeOfPromise(type);
+      type = DITypeBuilder.getPromisedTypeOfPromise(type) ?? type;
     }
 
     const typeSymbol = type?.getSymbol();

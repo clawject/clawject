@@ -8,130 +8,140 @@ import { useFormattedCode } from '@site/src/docs-components/useFormattedCode';
 export const CompareClawjectWithOthers = () => {
   const clawject = useFormattedCode(
     `
-interface ICache<T> {}
-class CacheImpl<T> implements ICache<T> { /* ... */ }
+interface Cat { /* ... */ }
+interface Dog { /* ... */ }
+interface PetOwner<T> {}
 
-    class Service {
-    constructor(
-      private customerCache: ICache<Customer>,
-      private storeCache: ICache<Store>,
-    ) {}
-    }
+class PetOwnerImpl<T> implements PetOwner<T> { /* ... */ }
 
-  class ApplicationContext extends CatContext {
-    customerCache = Bean(CacheImpl<Customer>)
-    storeCache = Bean(CacheImpl<Store>)
-    service = Bean(Service)
-  }
+class OwnersService {
+  constructor(
+    private catOwner: PetOwner<Cat>,
+    private dogOwner: PetOwner<Dog>,
+  ) {}
+}
+
+@ClawjectApplication
+class Application {
+  catOwner = Bean(PetOwnerImpl<Cat>)
+  dogOwner = Bean(PetOwnerImpl<Dog>)
+  ownersService = Bean(OwnersService)
+}
     `,
     'typescript'
   );
   const nest = useFormattedCode(
     `
-interface ICache<T> {}
+interface Cat { /* ... */ }
+interface Dog { /* ... */ }
+interface PetOwner<T> {}
+
 @Injectable()
-class CacheImpl<T> implements ICache<T> { /* ... */ }
+class PetOwnerImpl<T> implements PetOwner<T> { /* ... */ }
 
 const InjectionTokens = {
-  CustomerCache: Symbol('CustomerCache'),
-  StoreCache: Symbol('StoreCache'),
+  CatOwner: Symbol('CatOwner'),
+  DogOwner: Symbol('DogOwner'),
 };
 
 @Injectable()
-class Service {
+class OwnersService {
   constructor(
-    @Inject(InjectionTokens.CustomerCache)
-    private customerCache: ICache<Customer>,
-    @Inject(InjectionTokens.StoreCache)
-    private storeCache: ICache<Store>,
+    @Inject(InjectionTokens.CatOwner)
+    private catOwner: PetOwner<Cat>,
+    @Inject(InjectionTokens.DogOwner)
+    private dogOwner: PetOwner<Dog>,
   ) {}
 }
 
 @Module({
   providers: [
-    Service,
+    OwnersService,
     {
-      provide: InjectionTokens.CustomerCache,
-      useClass: CacheImpl,
+      provide: InjectionTokens.CatOwner,
+      useClass: PetOwnerImpl,
     },
     {
-      provide: InjectionTokens.StoreCache,
-      useClass: CacheImpl,
+      provide: InjectionTokens.DogOwner,
+      useClass: PetOwnerImpl,
     },
   ],
 })
-class AppModule {}
+class ApplicationModule {}
 
     `,
     'typescript'
   );
+
   const angular = useFormattedCode(
     `
-    interface ICache<T> {}
+interface Cat { /* ... */ }
+interface Dog { /* ... */ }
+interface PetOwner<T> {}
+
 @Injectable()
-class CacheImpl<T> implements ICache<T> {
-  /* ... */
-}
+class PetOwnerImpl<T> implements PetOwner<T> { /* ... */ }
 
 const InjectionTokens = {
-  CustomerCache: new InjectionToken<ICache<Customer>>('CustomerCache'),
-  StoreCache: new InjectionToken<ICache<Store>>('StoreCache'),
+  CatOwner: new InjectionToken<PetOwner<Cat>>('CatOwner'),
+  DogOwner: new InjectionToken<PetOwner<Dog>>('DogOwner'),
 };
 
 @Injectable()
-class Service {
+class OwnersService {
   constructor(
-    @Inject(InjectionTokens.CustomerCache)
-    private customerCache: ICache<Customer>,
-    @Inject(InjectionTokens.StoreCache)
-    private storeCache: ICache<Store>,
+    @Inject(InjectionTokens.CatOwner)
+    private catOwner: PetOwner<Cat>,
+    @Inject(InjectionTokens.DogOwner)
+    private dogOwner: PetOwner<Dog>,
   ) {}
 }
 
 @NgModule({
   providers: [
-    Service,
+    OwnersService,
     {
-      provide: InjectionTokens.CustomerCache,
-      useClass: CacheImpl,
+      provide: InjectionTokens.CatOwner,
+      useClass: PetOwnerImpl,
     },
     {
-      provide: InjectionTokens.StoreCache,
-      useClass: CacheImpl,
+      provide: InjectionTokens.DogOwner,
+      useClass: PetOwnerImpl,
     },
  ]
 })
-class AppModule {}
+class ApplicationModule {}
 `,
     'typescript'
   );
 
   const tsyringe = useFormattedCode(
     `
-interface ICache<T> {}
+interface Cat { /* ... */ }
+interface Dog { /* ... */ }
+interface PetOwner<T> {}
+
 @injectable()
-class CacheImpl<T> implements ICache<T> { /* ... */ }
+class PetOwnerImpl<T> implements PetOwner<T> { /* ... */ }
 
 const InjectionTokens = {
-  CustomerCache: Symbol("CustomerCache"),
-  StoreCache: Symbol("StoreCache"),
+  CatOwner: Symbol("CatOwner"),
+  DogOwner: Symbol("DogOwner"),
 };
 
 @injectable()
-class Service {
+class OwnersService {
   constructor(
-    @inject(InjectionTokens.CustomerCache)
-    private customerCache: ICache<Customer>,
-    @inject(InjectionTokens.StoreCache)
-   private storeCache: ICache<Store>,
+    @inject(InjectionTokens.CatOwner)
+    private catOwner: PetOwner<Cat>,
+    @inject(InjectionTokens.DogOwner)
+    private dogOwner: PetOwner<Dog>,
   ) {}
 }
 
-container.register(InjectionTokens.CustomerCache, { useClass: CacheImpl });
-container.register(InjectionTokens.StoreCache, { useClass: CacheImpl });
-container.register(Service, { useClass: Service });
-
-const service = container.resolve(Service);
+container.register(InjectionTokens.CatOwner, { useClass: PetOwnerImpl });
+container.register(InjectionTokens.DogOwner, { useClass: PetOwnerImpl });
+container.register(OwnersService, { useClass: OwnersService });
     `,
     'typescript'
   );

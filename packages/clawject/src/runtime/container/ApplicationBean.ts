@@ -1,6 +1,4 @@
 import { RuntimeBeanMetadata } from '../metadata/MetadataTypes';
-import { ApplicationBeanDependencyMetadata } from '../metadata/RuntimeApplicationMetadata';
-import { RuntimeConfigurationMetadata } from '../metadata/RuntimeConfigurationMetadata';
 import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ObjectFactoryImpl } from '../ObjectFactoryImpl';
 import { ObjectFactoryResult } from '../api/ObjectFactory';
@@ -20,8 +18,7 @@ export class ApplicationBean {
 
   get objectFactory(): ObjectFactoryImpl {
     if (this._objectFactory === null) {
-      //TODO runtime error
-      throw new Error('Object factory not initialized');
+      throw new RuntimeErrors.IllegalStateError('Object factory not initialized');
     }
 
     return this._objectFactory;
@@ -35,7 +32,7 @@ export class ApplicationBean {
     public readonly dependencies: ApplicationBeanDependency[] | null,
     public readonly classConstructor: ClassConstructor<any> | null
   ) {
-    this.name = `${parentConfiguration.index}_${id}`;
+    this.name = `${parentConfiguration.index}_${id}_${beanMetadata.qualifiedName}`;
   }
 
   init(objectFactory: ObjectFactoryImpl): void {
@@ -43,11 +40,6 @@ export class ApplicationBean {
   }
 
   getValue(): MaybeAsync<ObjectFactoryResult> {
-    if (this._objectFactory === null) {
-      //TODO runtime error
-      throw new Error('Object factory not initialized');
-    }
-
     const scope = this.getScope();
     const useProxy = scope.useProxy?.() ?? true;
 

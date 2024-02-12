@@ -2,6 +2,7 @@ import { ClassConstructor } from '../api/ClassConstructor';
 import { ApplicationBeanFactory } from './ApplicationBeanFactory';
 import { ApplicationConfigurationFactory } from './ApplicationConfigurationFactory';
 import { MetadataStorage } from '../metadata/MetadataStorage';
+import { RuntimeErrors } from '../api/RuntimeErrors';
 
 export class ClawjectContainer {
   private applicationConfigurationFactory = new ApplicationConfigurationFactory();
@@ -15,8 +16,7 @@ export class ClawjectContainer {
     const applicationMetadata = MetadataStorage.getApplicationMetadata(this.applicationClass);
 
     if (applicationMetadata === null) {
-      //TODO runtime error
-      throw new Error('No application metadata found');
+      throw new RuntimeErrors.NoClassMetadataFoundError('No application metadata found');
     }
 
     await this.applicationConfigurationFactory.init(this.applicationClass);

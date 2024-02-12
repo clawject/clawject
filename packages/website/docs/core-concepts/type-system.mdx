@@ -15,7 +15,7 @@ but Clawject using [nominal typing](https://en.wikipedia.org/wiki/Nominal_type_s
 
 As an example - we have 2 classes `Cat` and `Dog`, both of them have the same properties and methods,
 if we will use `Cat` instead of `Dog` or vice versa -
-TypeScript will not complain about it.
+TypeScript will not complain about it, because both classes have the same structure.
 
 ```ts
 class Cat {
@@ -57,13 +57,16 @@ class Dog {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
+  dog = Bean(Dog);
+
   @PostConstruct
-  doMeow(animal: Cat): void { // <- error will be reported here
+  doMeow(
+    animal: Cat // <- error will be reported here
+  ): void {
     animal.voice();
   }
-
-  dog = Bean(Dog);
 }
 ```
 
@@ -93,38 +96,9 @@ Also - Clawject supports literal (const) types, literal types are compatible wit
 
 Let's look at the example:
 
-```mdx-code-block
-<Tabs>
-<TabItem value="explicit-type" label="Explicit type declaration">
-```
-
 ```ts
-class MyContext extends CatContext {
-  @Bean stringLiteral: 'string_literal' = 'string_literal';
-  @Bean numberLiteral: 42 = 42;
-  @Bean booleanLiteral: true = true;
-  @Bean enumLiteral: MyEnum.FIRST = MyEnum.FIRST;
-  @Bean bigintLiteral: 42n = 42n;
-
-  @PostConstruct
-  postConstruct(
-    string: string, // <- stringLiteral bean will be injected here
-    number: number, // <- numberLiteral bean will be injected here
-    boolean: boolean, // <- booleanLiteral bean will be injected here
-    Enum: MyEnum, // <- enumLiteral bean will be injected here
-    bigint: bigint, // <- bigintLiteral bean will be injected here
-  ) {}
-}
-```
-
-```mdx-code-block
-</TabItem>
-
-<TabItem value="const-type" label="Type declaration with const">
-```
-
-```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean stringLiteral = 'string_literal' as const;
   @Bean numberLiteral = 42 as const;
   @Bean booleanLiteral = true as const;
@@ -142,11 +116,6 @@ class MyContext extends CatContext {
 }
 ```
 
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
 ## Object types
 Because Clawject is using nominal typing — it's relying on at type declaration name and place,
 so it's not possible to use anonymous types or type aliases with non-named members [Type aliases](#type-aliases), but it's possible to use named types like `class` or `interface`:
@@ -160,7 +129,8 @@ so it's not possible to use anonymous types or type aliases with non-named membe
 class Foo {}
 interface Bar {}
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean foo: Foo = new Foo();
   @Bean bar: Bar = {};
 
@@ -179,7 +149,8 @@ class MyContext extends CatContext {
 ```
 
 ```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean foo: { bar: string } = {bar: 'barValue'};
 
   @PostConstruct
@@ -208,7 +179,8 @@ class Foo<T> {
   ) {}
 }
 
-class ApplicationContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean stringData = 'meow';
   @Bean numberData = 42;
 
@@ -223,7 +195,7 @@ class ApplicationContext extends CatContext {
 :::tip
 - If a generic type has a default value, it will be used as a fallback type.
 - If a generic type has `extends` constraint - it will be used as a fallback type.
-- If you're not specifying a generic type explicitly, and it doesn't have default value or `extends` constraint - it will be treated as `unknown` type.
+- If you're not specifying a generic type explicitly, and it doesn't have default value or `extends` constraint - it will be treated as `unknown` type (default typescript behavior).
 :::
 
 Let's take a look at the next example to better understand how generic types are resolved when they are not specified explicitly:
@@ -238,11 +210,13 @@ class Bar<T = string> {
 }
 
 class Baz {}
+
 class Quux<T extends Baz> {
   constructor(data: T) {}
 }
 
-class ApplicationContext extends CatContext {
+@ClawjectApplication
+class Application {
   /* The type of parameter `data` will be `unknown` */
   foo = Bean(Foo)
 
@@ -300,7 +274,8 @@ class CacheManager {
   ) {}
 }
 
-class ApplicationContext extends CatContext {
+@ClawjectApplication
+class Application {
   customerCache = Bean(CacheImpl<Customer>);
   storeCache = Bean(CacheImpl<Store>);
   customerService = Bean(CustomerService);
@@ -318,7 +293,8 @@ interface IFoo { foo: string }
 interface IBar { bar: string }
 interface IBaz { baz: string }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean fooAndBar: IFoo & IBar = { foo: 'fooValue', bar: 'barValue' }
   @Bean fooAndBaz: IFoo & IBaz = { foo: 'fooValue', baz: 'bazValue' }
   @Bean fooAndBarAndBaz: IFoo & IBar & IBaz = { foo: 'fooValue', bar: 'barValue', baz: 'bazValue' }
@@ -345,7 +321,8 @@ class Service<T> {
 interface Foo { foo: string }
 interface Bar { bar: string }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   fooRepository = Bean(Repository<Foo>);
   barRepository = Bean(Repository<Bar>);
   fooService = Bean(Service<Foo>)  // <- "fooRepository" will be injected as a "repository" dependency
@@ -366,7 +343,8 @@ so it's not possible to create a bean with a union type, but it's possible to re
 interface IFoo { foo: string }
 interface IBar { bar: string }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean bar: IBar = { bar: 'barValue' }
   @Bean foo: IFoo = { foo: 'fooValue' }
 
@@ -384,7 +362,8 @@ Clawject has support for tuple types.
 Tuple types are treated as a *nominal types*:
 
 ```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean tuple: [string, number] = ['foo', 42];
 
   @PostConstruct
@@ -408,7 +387,8 @@ interface Bar {}
 
 type Baz = Foo & Bar;
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   /* Type of Bean resolved to `Foo` */
   @Bean foo: Foo = {};
   /* Type of Bean resolved to `Bar` */
@@ -426,7 +406,8 @@ If type alias has anonymous members - these members will not be taken into accou
 interface Foo {foo: string}
 type Bar = Foo & {bar: string};
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   /* Type of Bean resolved to `Foo` */
   @Bean foo: Foo = {foo: ''};
   /* Type of Bean resolved to `Foo` */

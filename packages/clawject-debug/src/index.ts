@@ -1,22 +1,13 @@
-import {
-  Bean,
-  ClawjectApplication,
-  ClawjectFactory,
-  Configuration,
-  ExportBeans,
-  External,
-  Import,
-  Internal, PostConstruct, Primary
-} from '@clawject/di';
+import {Bean, ClawjectApplication, PostConstruct} from '@clawject/di';
+
+interface Test<T> {}
 
 @ClawjectApplication
-export class Application {
-  @Bean test() {
-    return {} as Promise<void>;
+class Application {
+  @Bean strOrNumber = {} as Test<string | number>;
+
+  @PostConstruct
+  postConstruct(str: Test<string | number>) {
+    console.log('PostConstruct');
   }
-
-  exported2 = ExportBeans<{ a: any }>();
 }
-
-const app = await ClawjectFactory.createApplicationContext(Application);
-const data = app.getExportedBean('a');

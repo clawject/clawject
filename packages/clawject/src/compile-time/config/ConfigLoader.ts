@@ -10,9 +10,8 @@ import { merge } from 'lodash';
 export class ConfigLoader {
   private static defaultConfig: DIConfig = {
     unsafeTSVersion: false,
-    features: {
-      keepContextNames: true,
-      defaultExternalBeans: true
+    beans: {
+      defaultExternal: true,
     }
   };
   static cachedConfig: DIConfig | null = null;

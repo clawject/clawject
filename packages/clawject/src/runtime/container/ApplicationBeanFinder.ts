@@ -1,4 +1,5 @@
 import { ApplicationBean } from './ApplicationBean';
+import { RuntimeErrors } from '../api/RuntimeErrors';
 
 export class ApplicationBeanFinder {
   constructor(
@@ -9,13 +10,11 @@ export class ApplicationBeanFinder {
     const configurationIndexToBeanClassPropertyToApplicationBean = this.configurationIndexToBeanClassPropertyToApplicationBean.get(configurationIndex);
 
     if (!configurationIndexToBeanClassPropertyToApplicationBean) {
-      //TODO runtime error
-      throw new Error('No instantiated configuration found by index');
+      throw new RuntimeErrors.IllegalStateError('No instantiated configuration found by index');
     }
 
     if (!configurationIndexToBeanClassPropertyToApplicationBean.has(beanClassProperty)) {
-      //TODO runtime error
-      throw new Error('No instantiated bean found by class property');
+      throw new RuntimeErrors.IllegalStateError('No application bean found by class property');
     }
 
     return configurationIndexToBeanClassPropertyToApplicationBean.get(beanClassProperty)!;
