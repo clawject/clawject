@@ -28,13 +28,13 @@ export const fillBeanTypes = (configuration: Configuration) => {
       const callSignature = callSignatures[0];
       const returnType = typeChecker.getReturnTypeOfSignature(callSignature);
 
-      bean.registerType(DITypeBuilder.build(returnType));
+      bean.registerType(DITypeBuilder.build(returnType), returnType);
       return;
     }
 
     if (bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
       const typedBeanNode = bean.node as ClassPropertyWithCallExpressionInitializer;
-      const beanType = DITypeBuilder.getAwaitedType(typeChecker.getTypeAtLocation(typedBeanNode));
+      const beanType = DITypeBuilder.getPromisedTypeOfPromise(typeChecker.getTypeAtLocation(typedBeanNode));
 
       if (!beanType) {
         compilationContext.report(new TypeQualifyError(
@@ -74,7 +74,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
       const callSignature = callSignatures[0];
       const callSignatureReturnType = callSignature.getReturnType();
 
-      bean.registerType(DITypeBuilder.build(callSignatureReturnType));
+      bean.registerType(DITypeBuilder.build(callSignatureReturnType), callSignatureReturnType);
       return;
     }
 
@@ -82,7 +82,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
       const typedBeanNode = bean.node as ts.PropertyDeclaration | GetAccessorDeclaration;
       const elementType = typeChecker.getTypeAtLocation(typedBeanNode);
 
-      bean.registerType(DITypeBuilder.build(elementType));
+      bean.registerType(DITypeBuilder.build(elementType), elementType);
       return;
     }
   });

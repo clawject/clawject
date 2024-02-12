@@ -25,7 +25,7 @@ export const registerBeanFromDeclarationMetadata = (
   let type: ts.Type | null = getCompilationContext().typeChecker.getTypeAtLocation(classElement);
 
   if (bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
-    type = DITypeBuilder.getAwaitedType(type);
+    type = DITypeBuilder.getPromisedTypeOfPromise(type);
   }
 
   if (!type) {
@@ -37,7 +37,7 @@ export const registerBeanFromDeclarationMetadata = (
     return;
   }
 
-  bean.registerType(DITypeBuilder.build(type));
+  bean.registerType(DITypeBuilder.build(type), type);
 
   configuration.beanRegister.register(bean);
 };

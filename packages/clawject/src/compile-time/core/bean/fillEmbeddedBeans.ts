@@ -53,7 +53,7 @@ export const fillEmbeddedBeans = (
     }
 
     if (type) {
-      type = DITypeBuilder.getAwaitedType(type);
+      type = DITypeBuilder.getPromisedTypeOfPromise(type);
     }
 
     const typeSymbol = type?.getSymbol();
@@ -103,7 +103,7 @@ export const fillEmbeddedBeans = (
         external: rootBean.external,
         primary: rootBean.primary,
       });
-      bean.registerType(intersectionType);
+      bean.registerType(intersectionType, null);
       configuration.beanRegister.register(bean);
     });
   });

@@ -106,14 +106,6 @@ export class DIType {
     return BaseTypesRepository.getBaseTypes().Promise.isCompatible(this);
   }
 
-  get nonPromiseType(): DIType {
-    if (this.isPromise) {
-      return this.typeArguments[0] ?? DITypeBuilder.void();
-    }
-
-    return this;
-  }
-
   get isOptionalUndefined(): boolean {
     return this.isUnion && this.unionOrIntersectionTypes.some(it => it.isVoidUndefinedPlainUnionIntersection);
   }

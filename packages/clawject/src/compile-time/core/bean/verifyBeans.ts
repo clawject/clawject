@@ -12,6 +12,8 @@ import { MissingInitializerError } from '../../compilation-context/messages/erro
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { ConfigLoader } from '../../config/ConfigLoader';
+import { DITypeBuilder } from '../type-system/DITypeBuilder';
+import { DIType } from '../type-system/DIType';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNRESOLVABLE, 'unresolvable'],
@@ -96,7 +98,14 @@ export function verifyBeanType(bean: Bean): void {
     return;
   }
 
-  const beanType = bean.diType.nonPromiseType;
+  let beanType = bean.diType;
+
+  const beanTypeNode = bean.typeRef.getAndDisposeSafe();
+
+  if (beanTypeNode !== null) {
+    const awaited = DITypeBuilder.getPromisedTypeOfPromise(beanTypeNode) ?? beanTypeNode;
+    beanType = DITypeBuilder.build(awaited);
+  }
 
   if (UNSUPPORTED_TYPES.has(beanType.typeFlag)) {
     let typeNode = bean.node.type;

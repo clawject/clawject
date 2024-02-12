@@ -19,7 +19,7 @@ export const registerImports = (configuration: Configuration): void => {
 
 export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration): void {
   const typeChecker = getCompilationContext().typeChecker;
-  const importType = DITypeBuilder.getAwaitedType(typeChecker.getTypeAtLocation(member));
+  const importType = DITypeBuilder.getPromisedTypeOfPromise(typeChecker.getTypeAtLocation(member));
 
   if (!importType) {
     getCompilationContext().report(new TypeQualifyError(

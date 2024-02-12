@@ -1,33 +1,31 @@
-import ts from 'typescript';
-
-export class DisposableNodeHolder<N extends ts.Node = ts.Node> {
+export class DisposableNodeHolder<N extends object> {
   constructor(node?: N) {
-    node && (this.node = node);
+    node && (this.value = node);
   }
 
   private _hasBeenInitialized = false;
 
-  private _node: N | null = null;
+  private _value: N | null = null;
 
-  public get node(): N {
-    if (this._node === null) {
+  public get value(): N {
+    if (this._value === null) {
       throw new Error('Trying to access node before its initialization');
     }
 
-    return this._node;
+    return this._value;
   }
 
-  public set node(node: N | null) {
+  public set value(node: N | null) {
     if (node === null) {
       return;
     }
 
-    this._node = node;
+    this._value = node;
     this._hasBeenInitialized = true;
   }
 
   public getAndDispose(): N {
-    const node = this.node;
+    const node = this.value;
 
     this.clear();
 
@@ -47,7 +45,7 @@ export class DisposableNodeHolder<N extends ts.Node = ts.Node> {
   }
 
   public clear(): void {
-    this._node = null;
+    this._value = null;
     this._hasBeenInitialized = false;
   }
 }

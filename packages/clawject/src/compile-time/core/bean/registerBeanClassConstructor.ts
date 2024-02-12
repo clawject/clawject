@@ -22,9 +22,9 @@ export const registerBeanClassConstructor = (
     external: getExternalValueFromNode(classElement) ?? null,
   });
 
-  bean.lazyExpression.node = getBeanLazyExpressionValue(bean);
-  bean.scopeExpression.node = getBeanScopeExpressionValue(bean);
-  bean.conditionExpression.node = getBeanConditionExpressionValue(bean);
+  bean.lazyExpression.value = getBeanLazyExpressionValue(bean);
+  bean.scopeExpression.value = getBeanScopeExpressionValue(bean);
+  bean.conditionExpression.value = getBeanConditionExpressionValue(bean);
   bean.qualifier = getBeanQualifierValue(bean);
   configuration.beanRegister.register(bean);
 };

@@ -34,6 +34,8 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
   conditionExpression = new DisposableNodeHolder<ts.Expression>();
+  //Will be used on verifyBeans stage
+  typeRef = new DisposableNodeHolder<ts.Type>();
 
   constructor(values: Partial<Bean> = {}) {
     super();
@@ -60,11 +62,12 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
     return this.external ?? this.parentConfiguration.external ?? ConfigLoader.get().features.defaultExternalBeans;
   }
 
-  registerType(diType: DIType): void {
+  registerType(diType: DIType, tsType: ts.Type | null): void {
     this._diType = diType;
     diType.declarations.map(it => {
       FileGraph.add(this.parentConfiguration.fileName, it.fileName);
     });
+    this.typeRef.value = tsType;
   }
 
   get fullName(): string {

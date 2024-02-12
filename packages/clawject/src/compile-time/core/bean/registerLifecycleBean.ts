@@ -46,6 +46,6 @@ export const registerLifecycleBean = (
     lifecycle: Array.from(lifecycles),
   });
 
-  bean.registerType(DITypeBuilder.any());
+  bean.registerType(DITypeBuilder.any(), null);
   configuration.beanRegister.register(bean);
 };

@@ -9,25 +9,10 @@ import {
   Internal, PostConstruct, Primary
 } from '@clawject/di';
 
-@Configuration
-class Test {
-  data(arg: string): number
-  @Bean data(arg: any): any {
-    return arg;
-  }
-
-  @Bean
-  init(data: string): number {
-    console.log('init');
-
-    return 1;
-  }
-}
-
 @ClawjectApplication
 export class Application {
   @Bean test() {
-    return Promise.resolve();
+    return {} as Promise<void>;
   }
 
   exported2 = ExportBeans<{ a: any }>();
