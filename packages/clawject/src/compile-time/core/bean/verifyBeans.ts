@@ -59,15 +59,32 @@ export function verifyBeanNameUniqueness(beans: Set<Bean>): void {
   });
 
   beans.forEach(bean => {
+    const beanParentConfiguration = bean.parentConfiguration;
     const beansByName = nameToBeans.get(bean.fullName) ?? [];
+    let duplicatedBeans: Bean[];
 
-    if (beansByName.length > 1) {
+    if (bean.getExternalValue()) {
+      duplicatedBeans = beansByName.filter(it => {
+        const isInternal = !it.getExternalValue();
+        if (isInternal && it.parentConfiguration !== beanParentConfiguration) {
+          return false;
+        }
+
+        return it !== bean;
+      });
+    } else {
+      duplicatedBeans = beansByName.filter(it => {
+        return it !== bean && it.parentConfiguration === beanParentConfiguration;
+      });
+    }
+
+    if (duplicatedBeans.length > 0) {
       const compilationContext = getCompilationContext();
       compilationContext.report(new DuplicateNameError(
         null,
         bean.node.name,
-        bean.parentConfiguration,
-        beansByName.filter(it => it !== bean),
+        beanParentConfiguration,
+        duplicatedBeans,
       ));
     }
   });

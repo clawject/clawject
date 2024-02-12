@@ -5,9 +5,6 @@ import { TypeQualifyError } from '../../compilation-context/messages/errors/Type
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import ts from 'typescript';
-import { isPropertyWithArrowFunction } from '../ts/predicates/isPropertyWithArrowFunction';
-import { unwrapExpressionFromRoundBrackets } from '../ts/utils/unwrapExpressionFromRoundBrackets';
-import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { BeanKind } from './BeanKind';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { DIType } from '../type-system/DIType';
@@ -16,6 +13,7 @@ import { DITypeBuilder } from '../type-system/DITypeBuilder';
 export const fillEmbeddedBeans = (
   configuration: Configuration,
 ): void => {
+  // Needed because we're modifying an original collection
   const beans = Array.from(configuration.beanRegister.elements);
 
   beans.forEach((rootBean) => {
@@ -98,10 +96,11 @@ export const fillEmbeddedBeans = (
 
       const bean = new Bean({
         classMemberName: rootBean.classMemberName,
+        parentConfiguration: configuration,
         node: rootBean.node,
         kind: rootBean.kind,
         nestedProperty: name,
-        public: false,
+        external: rootBean.external,
         primary: rootBean.primary,
       });
       bean.registerType(intersectionType);

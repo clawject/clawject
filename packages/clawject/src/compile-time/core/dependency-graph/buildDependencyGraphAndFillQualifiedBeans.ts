@@ -12,9 +12,15 @@ export const buildDependencyGraphAndFillQualifiedBeans = (configurationOrApplica
   const compilationContext = getCompilationContext();
 
   beans.forEach(bean => {
+    const beanParentConfiguration = bean.parentConfiguration;
     //TODO check for external and internal beans
     const allBeansWithoutCurrentAndWithoutExternalInternalBeans = beans
       .filter(it => {
+        const isInternal = !it.getExternalValue();
+        if (isInternal && it.parentConfiguration !== beanParentConfiguration) {
+          return false;
+        }
+
         return it !== bean;
       });
     const missingDependencies: Dependency[] = [];

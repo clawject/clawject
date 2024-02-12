@@ -8,6 +8,7 @@ import { extractDecoratorMetadata } from '../decorator-processor/extractDecorato
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getBeanQualifierValue } from './getBeanQualifierValue';
 import { getBeanConditionExpressionValue } from './getBeanConditionExpressionValue';
+import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 
 export const registerBeanFactoryArrowFunction = (
   configuration: Configuration,
@@ -18,6 +19,7 @@ export const registerBeanFactoryArrowFunction = (
     node: classElement,
     kind: BeanKind.FACTORY_ARROW_FUNCTION,
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
+    external: getExternalValueFromNode(classElement) ?? null,
   });
 
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);

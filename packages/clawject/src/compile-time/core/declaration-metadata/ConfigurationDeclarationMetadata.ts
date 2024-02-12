@@ -3,6 +3,7 @@ import { BeanKind } from '../bean/BeanKind';
 
 export interface ConfigurationDeclarationMetadata extends DeclarationMetadata {
   kind: DeclarationMetadataKind.CONFIGURATION;
+  external: boolean | null;
   beans: BeanDeclarationMetadata[];
   imports: ImportDeclarationMetadata[];
 }
@@ -12,6 +13,7 @@ export interface BeanDeclarationMetadata {
   qualifier: string | null;
   kind: BeanKind;
   primary: boolean;
+  external: boolean | null;
   nestedProperty: string | null;
 }
 

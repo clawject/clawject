@@ -9,6 +9,7 @@ import { LifecycleKind } from '../../../runtime/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { FileGraph } from '../file-graph/FileGraph';
 import * as Case from 'case';
+import { ConfigLoader } from '../../config/ConfigLoader';
 
 export type BeanNode = ts.MethodDeclaration
   | ClassPropertyWithCallExpressionInitializer
@@ -25,7 +26,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   private _diType: DIType | null = null;
   declare kind: BeanKind;
   lifecycle: LifecycleKind[] = [];
-  public = false;
+  external: boolean | null = null;
   primary = false;
   dependencies = new Set<Dependency>();
   //Only when bean is annotated with @Embedded
@@ -33,7 +34,6 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
   conditionExpression = new DisposableNodeHolder<ts.Expression>();
-  async = false;
 
   constructor(values: Partial<Bean> = {}) {
     super();
@@ -54,6 +54,10 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
     }
 
     return this._diType;
+  }
+
+  getExternalValue(): boolean {
+    return this.external ?? this.parentConfiguration.external ?? ConfigLoader.get().features.defaultExternalBeans;
   }
 
   registerType(diType: DIType): void {

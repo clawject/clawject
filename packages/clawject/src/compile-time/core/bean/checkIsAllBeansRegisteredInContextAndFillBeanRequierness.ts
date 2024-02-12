@@ -56,7 +56,7 @@ export const checkIsAllBeansRegisteredInContextAndFillBeanRequierness = (context
       return;
     }
 
-    bean.public = true;
+    bean.external = true;
   });
 
   if (missingElements.length > 0) {

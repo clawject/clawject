@@ -5,13 +5,13 @@ import { RuntimeErrors } from '../errors';
 import { TransientScope } from './TransientScope';
 
 export class InternalScopeRegister {
-  private static scopes = new Map<string, CustomScope>([
+  private static scopes = new Map<string | number, CustomScope>([
     ['singleton', new SingletonScope()],
     ['fresh', new FreshScope()],
     ['transient', new TransientScope()],
   ]);
 
-  static registerScope(name: string, scope: CustomScope): void {
+  static registerScope(name: string | number, scope: CustomScope): void {
     if (this.scopes.has(name)) {
       throw new RuntimeErrors.DuplicateScopeError(`Scope with name ${name} is already registered.`);
     }
@@ -19,7 +19,7 @@ export class InternalScopeRegister {
     this.scopes.set(name, scope);
   }
 
-  static unregisterScope(name: string): boolean {
+  static unregisterScope(name: string | number): boolean {
     return this.scopes.delete(name);
   }
 
@@ -27,11 +27,11 @@ export class InternalScopeRegister {
     return this.assureRegistered(name);
   }
 
-  static hasScope(name: string): boolean {
+  static hasScope(name: string | number): boolean {
     return this.scopes.has(name);
   }
 
-  static assureRegistered(name: string): CustomScope | never {
+  static assureRegistered(name: string | number): CustomScope | never {
     const scope = this.scopes.get(name);
 
     if (!scope) {

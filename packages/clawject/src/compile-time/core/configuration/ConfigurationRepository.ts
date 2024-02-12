@@ -2,6 +2,7 @@ import ts from 'typescript';
 import { Configuration } from './Configuration';
 import { unquoteString } from '../utils/unquoteString';
 import { DependencyGraph } from '../dependency-graph/DependencyGraph';
+import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 
 export class ConfigurationRepository {
   static fileNameToLastConfigurationCounter = new Map<string, number>();
@@ -17,6 +18,7 @@ export class ConfigurationRepository {
     configuration.id = this.buildId(classDeclaration);
     configuration.fileName = classDeclaration.getSourceFile().fileName;
     configuration.node = classDeclaration;
+    configuration.external = getExternalValueFromNode(classDeclaration);
 
     if (classDeclaration.name !== undefined) {
       configuration.className = unquoteString(classDeclaration.name.getText());

@@ -10,6 +10,7 @@ import { extractDecoratorMetadata } from '../decorator-processor/extractDecorato
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getBeanQualifierValue } from './getBeanQualifierValue';
 import { getBeanConditionExpressionValue } from './getBeanConditionExpressionValue';
+import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 
 export const registerBeanFactoryMethod = (
   configuration: Configuration,
@@ -30,6 +31,7 @@ export const registerBeanFactoryMethod = (
     node: classElement,
     kind: BeanKind.FACTORY_METHOD,
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
+    external: getExternalValueFromNode(classElement) ?? null,
   });
 
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);

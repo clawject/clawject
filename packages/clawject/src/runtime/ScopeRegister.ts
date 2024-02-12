@@ -19,7 +19,7 @@ export class ScopeRegister {
    *
    * @docs https://clawject.org/docs/api/scope-register#scoperegisterregisterscope
    */
-  static registerScope(scopeName: string, scope: CustomScope): void {
+  static registerScope(scopeName: string | number, scope: CustomScope): void {
     InternalScopeRegister.registerScope(scopeName, scope);
   }
 
@@ -30,7 +30,7 @@ export class ScopeRegister {
    *
    * @docs https://clawject.org/docs/api/scope-register#scoperegisterunregisterscope
    * */
-  static unregisterScope(scopeName: string): boolean {
+  static unregisterScope(scopeName: string | number): boolean {
     return InternalScopeRegister.unregisterScope(scopeName);
   }
 
@@ -41,7 +41,7 @@ export class ScopeRegister {
    *
    * @docs https://clawject.org/docs/api/scope-register#scoperegisterhasscope
    * */
-  static hasScope(scopeName: string): boolean {
+  static hasScope(scopeName: string | number): boolean {
     return InternalScopeRegister.hasScope(scopeName);
   }
 }

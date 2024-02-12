@@ -22,9 +22,11 @@ export class DeclarationMetadataBuilder {
     const metadata: ConfigurationDeclarationMetadata | ApplicationDeclarationMetadata = {
       kind: metadataKind,
       version: this.METADATA_VERSION,
+      external: configuration.external,
       beans: Array.from(configuration.beanRegister.elements).map(bean => ({
         kind: bean.kind,
         primary: bean.primary,
+        external: bean.external,
         qualifier: bean.qualifier,
         nestedProperty: bean.nestedProperty,
         classPropertyName: bean.classMemberName

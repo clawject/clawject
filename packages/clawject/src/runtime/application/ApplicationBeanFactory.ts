@@ -15,7 +15,6 @@ import { isPromise } from './utils/isPromise';
 import { EMPTY_TOKEN, getSafeFromMap } from './utils/getSafeFromMap';
 
 export class ApplicationBeanFactory {
-  qualifiedBeanNameToApplicationBean = new Map<string, ApplicationBean>();
   exportedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
   applicationBeans: ApplicationBean[] = [];
   configurationIndexToBeanClassPropertyToApplicationBean = new Map<number, Map<string, ApplicationBean>>();
@@ -140,7 +139,6 @@ export class ApplicationBeanFactory {
         );
         configurationIndexToBeanClassPropertyToApplicationBean.set(beanClassProperty, applicationBean);
         this.applicationBeans.push(applicationBean);
-        this.qualifiedBeanNameToApplicationBean.set(applicationBean.beanMetadata.qualifiedName, applicationBean);
       });
 
       await Promise.all(initPromises);

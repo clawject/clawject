@@ -80,7 +80,8 @@ function fillExportedBeansForClassElementNode(application: Application, member: 
 
 function fillApplicationExportedBeans(application: Application, exportedBeans: Map<string, Dependency>): void {
   exportedBeans.forEach((dependency, propertyName) => {
-    const resolvedDependency = DependencyResolver.resolveDependencies(dependency, Array.from(application.beans), null);
+    const externalBeans = Array.from(application.beans).filter(it => it.getExternalValue());
+    const resolvedDependency = DependencyResolver.resolveDependencies(dependency, externalBeans, null);
 
     application.exportedBeans.set(propertyName, resolvedDependency);
   });

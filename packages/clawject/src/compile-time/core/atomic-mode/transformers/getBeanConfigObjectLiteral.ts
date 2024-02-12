@@ -18,7 +18,7 @@ export function getBeanConfigObjectLiteral(context: Configuration): ts.ObjectLit
           ),
           factory.createPropertyAssignment(
             factory.createIdentifier('public'),
-            createBoolean(bean.public),
+            createBoolean(false),
           ),
           factory.createPropertyAssignment(
             factory.createIdentifier('lazy'),

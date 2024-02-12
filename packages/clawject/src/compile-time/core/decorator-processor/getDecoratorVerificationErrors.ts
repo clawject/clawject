@@ -21,7 +21,6 @@ export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): Abstr
   const isCatContext = isExtendsCatContext(node);
   const isConfigurationClass = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Configuration));
   const isApplicationClass = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.ClawjectApplication));
-  const isComponentClass = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Component));
 
   if (isCatContext) {
     errors.push(...verifyDecorators(node, DecoratorTarget.CatContextClass, null));
@@ -41,8 +40,6 @@ export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): Abstr
     decoratorParent = DecoratorParent.ConfigurationClass;
   } else if (isApplicationClass) {
     decoratorParent = DecoratorParent.ApplicationClass;
-  } else if (isComponentClass) {
-    decoratorParent = DecoratorParent.ComponentClass;
   } else {
     decoratorParent = DecoratorParent.AnyClass;
   }

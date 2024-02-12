@@ -1,9 +1,8 @@
-,Autowired,Bean,PreDestroy,Component,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,ComponentScan,Imports,Conditional,ClawjectApplication,Internal
-Class,no,no,no,yes,yes,no,no,no,no,no,no,no,no,no,yes,no
-ClassProperty,yes,yes,no,no,no,no,no,no,no,no,no,no,yes,no,no,yes
-ClassFunction,no,yes,yes,no,no,no,no,yes,no,no,no,no,no,no,no,yes
-CatContextClass,no,no,no,no,no,no,yes,no,yes,no,no,no,no,no,no,no
-Bean,no,yes,no,no,no,yes,yes,no,yes,yes,yes,no,no,yes,no,yes
-ConfigurationClass,no,no,no,no,yes,no,yes,no,yes,no,no,yes,no,no,yes,yes
-ApplicationClass,no,no,no,no,yes,no,yes,no,yes,no,no,yes,no,no,yes,yes
-ComponentClass,no,no,no,yes,no,no,yes,no,yes,yes,yes,no,no,no,no,no
+,Bean,PreDestroy,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,Conditional,ClawjectApplication,Internal,External
+Class,no,no,yes,no,no,no,no,no,no,no,yes,no,no
+ClassProperty,yes,no,no,no,no,no,no,no,no,no,no,yes,yes
+ClassFunction,yes,yes,no,no,no,yes,no,no,no,no,no,yes,yes
+CatContextClass,no,no,no,no,yes,no,yes,no,no,no,no,no,no
+Bean,yes,no,no,yes,yes,no,yes,yes,yes,yes,no,yes,yes
+ConfigurationClass,no,no,yes,no,yes,no,yes,no,no,no,yes,yes,yes
+ApplicationClass,no,no,yes,no,yes,no,yes,no,no,no,yes,yes,yes

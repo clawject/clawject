@@ -21,10 +21,6 @@ export class BeanFactory {
   public getPublicBean(name: string): any {
     const beanConfig = this.getBeanConfig(name);
 
-    if (!beanConfig.public) {
-      console.warn(`Bean ${name} is not defined in Context's interface. This Bean will not be checked for type matching with Context's interface at compile-time. Context: ${this.runtimeContextMetadata.className}`);
-    }
-
     return this.getBean(name);
   }
 
@@ -32,9 +28,6 @@ export class BeanFactory {
     const result: Record<string, any> = {};
 
     Object.entries(this.runtimeContextMetadata.beans).forEach(([beanName, beanConfig]) => {
-      if (beanConfig.public) {
-        result[beanName] = this.getBean(beanName);
-      }
     });
 
     return result;

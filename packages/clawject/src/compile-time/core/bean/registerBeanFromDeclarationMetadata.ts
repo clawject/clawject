@@ -17,6 +17,7 @@ export const registerBeanFromDeclarationMetadata = (
     node: classElement as BeanNode,
     kind: beanDeclarationMetadata.kind,
     primary: beanDeclarationMetadata.primary,
+    external: beanDeclarationMetadata.external,
     nestedProperty: beanDeclarationMetadata.nestedProperty,
     qualifier: beanDeclarationMetadata.qualifier,
   });

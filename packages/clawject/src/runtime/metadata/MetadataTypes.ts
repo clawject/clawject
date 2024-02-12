@@ -4,7 +4,6 @@ import { BeanKind } from '../../compile-time/core/bean/BeanKind';
 
 export interface RuntimeBeanMetadata {
   scope: ScopeValue | null;
-  public: boolean;
   lazy: boolean | null;
   kind: BeanKind;
   qualifiedName: string;

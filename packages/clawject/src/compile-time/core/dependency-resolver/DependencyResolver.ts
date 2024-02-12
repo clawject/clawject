@@ -128,13 +128,13 @@ export class DependencyResolver {
   private static reportPossibleCandidates(
     bean: Bean | null,
     dependency: Dependency,
-    allBeansWithoutCurrent: Bean[],
+    beansToSearch: Bean[],
   ): void {
     const compilationContext = getCompilationContext();
     const [
       byName,
       byType,
-    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, allBeansWithoutCurrent);
+    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, beansToSearch);
 
     compilationContext.report(new BeanCandidateNotFoundError(
       `Found ${byName.length + byType.length} injection candidates.`,

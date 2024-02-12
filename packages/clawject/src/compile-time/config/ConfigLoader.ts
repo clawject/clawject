@@ -13,6 +13,7 @@ export class ConfigLoader {
     unsafeTSVersion: false,
     features: {
       keepContextNames: true,
+      defaultExternalBeans: true
     }
   };
   static cachedConfig: DIConfig | null = null;

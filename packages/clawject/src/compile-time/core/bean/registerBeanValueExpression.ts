@@ -8,6 +8,7 @@ import { extractDecoratorMetadata } from '../decorator-processor/extractDecorato
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getBeanQualifierValue } from './getBeanQualifierValue';
 import { getBeanConditionExpressionValue } from './getBeanConditionExpressionValue';
+import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 
 export const registerBeanValueExpression = (
   configuration: Configuration,
@@ -18,6 +19,7 @@ export const registerBeanValueExpression = (
     node: classElement,
     kind: BeanKind.VALUE_EXPRESSION,
     primary: extractDecoratorMetadata(classElement, DecoratorKind.Primary) !== null,
+    external: getExternalValueFromNode(classElement) ?? null,
   });
 
   bean.lazyExpression.node = getBeanLazyExpressionValue(bean);

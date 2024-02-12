@@ -33,7 +33,6 @@ export class RuntimeMetadataBuilder {
       beans: beans.reduce((acc, bean) => {
         acc[bean.classMemberName] = {
           scope: bean.scopeExpression.getAndDisposeSafe() as any,
-          public: bean.public,
           lazy: bean.lazyExpression.getAndDisposeSafe() as any,
           kind: bean.kind,
           qualifiedName: bean.fullName,

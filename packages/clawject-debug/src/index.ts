@@ -1,18 +1,43 @@
-import {Bean, ClawjectApplication, ClawjectFactory, ExportBeans, ImportedConfiguration, Qualifier} from '@clawject/di';
+import {
+  Bean,
+  ClawjectApplication,
+  ClawjectFactory,
+  Configuration,
+  ExportBeans,
+  External,
+  Import,
+  Internal, PostConstruct, Primary
+} from '@clawject/di';
 
-@ClawjectApplication
-export class _1 {
-  @Bean @Qualifier('Test') asd = 2;
-
-  @Bean number = 1 as const;
-
-  exported = ExportBeans<{ allnums: number[] }>();
+class A {
+  constructor(public someProperty: string) {
+  }
 }
 
-const claw = await ClawjectFactory.createApplicationContext(_1);
+interface IEmbedded {
+  a: A;
+}
 
-const beans = await claw.getExportedBeans();
+@Configuration
+@Internal
+class Test {
+  @Bean @Primary data = 'test';
 
-console.log(beans);
+  @Bean
+  init(data: string): number {
+    console.log('init');
 
-await claw.destroy();
+    return 1;
+  }
+}
+
+@ClawjectApplication
+export class Application {
+  test = Import(Test);
+
+  @Bean data = 'test';
+
+  exported = ExportBeans<{ a: string }>();
+}
+
+const app = await ClawjectFactory.createApplicationContext(Application);

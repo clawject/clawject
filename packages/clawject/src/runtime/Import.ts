@@ -1,12 +1,13 @@
 import { ClassConstructor } from './ClassConstructor';
 import { RuntimeErrors } from './errors';
+import { isPromise } from './application/utils/isPromise';
 
 /** @public */
 export const Import: {
   <C extends ClassConstructor<any>>(configurationClass: C): ImportedConfiguration<C>
   <C extends ClassConstructor<any>>(configurationClass: Promise<C>): Promise<ImportedConfiguration<C>>
 } = (configurationClass: any): any => {
-  if (configurationClass instanceof Promise) {
+  if (isPromise(configurationClass)) {
     return configurationClass.then((resolvedConfigurationClass) => {
       return {
         constructor: resolvedConfigurationClass

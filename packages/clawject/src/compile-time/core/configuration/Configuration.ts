@@ -14,6 +14,7 @@ export class Configuration extends Entity<ts.ClassDeclaration> {
 
   className: string | null = null;
   diType: DIType | null = null;
+  external: boolean | null = null;
 
   importRegister = new ImportRegister(this);
   beanRegister = new BeanRegister(this);
