@@ -1,5 +1,4 @@
 ,Bean,PreDestroy,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,Conditional,ClawjectApplication,Internal,External
-CatContextClass,yes,yes,no,yes,yes,yes,yes,yes,yes,yes,no,no,no
 ConfigurationClass,yes,yes,no,yes,yes,yes,yes,yes,yes,yes,no,yes,yes
 ApplicationClass,yes,yes,no,yes,yes,yes,yes,yes,yes,yes,no,yes,yes
 AnyClass,no,yes,no,no,no,yes,no,no,no,no,no,no,no

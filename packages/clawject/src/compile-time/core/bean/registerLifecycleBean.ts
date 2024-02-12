@@ -5,7 +5,7 @@ import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { LifecycleKind } from '../../../runtime/LifecycleKind';
+import { LifecycleKind } from '../../../runtime/types/LifecycleKind';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';

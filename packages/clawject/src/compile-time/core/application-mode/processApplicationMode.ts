@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { CompilationContext } from '../../compilation-context/CompilationContext';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
-import { Value } from '../../../runtime/Value';
+import { Value } from '../../../runtime/types/Value';
 import { CONSTANTS } from '../../../constants/index';
 import { processClassDeclaration } from './processClassDeclaration';
 import { getDecoratorVerificationErrors } from '../decorator-processor/getDecoratorVerificationErrors';

@@ -16,11 +16,12 @@ export const fillBeanTypes = (configuration: Configuration) => {
       const callSignatures = beanType.getCallSignatures();
 
       if (callSignatures.length !== 1) {
-        `        compilationContext.report(new TypeQualifyError(
-          'Could not resolve bean function signature. Bean must have exactly one call signature, found ${callSignatures.length} signatures.',
+        compilationContext.report(new TypeQualifyError(
+          `Could not resolve bean factory signature. Bean must have exactly 1 call signature, found ${callSignatures.length} signatures.`,
           bean.node,
           configuration,
-        ));`;
+        ));
+        configuration.beanRegister.deregister(bean);
         return;
       }
 
@@ -41,6 +42,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
           typedBeanNode,
           configuration,
         ));
+        configuration.beanRegister.deregister(bean);
         return;
       }
 
@@ -52,6 +54,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
           typedBeanNode,
           configuration,
         ));
+        configuration.beanRegister.deregister(bean);
         return;
       }
 
@@ -64,6 +67,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
           typedBeanNode,
           configuration,
         ));
+        configuration.beanRegister.deregister(bean);
         return;
       }
 

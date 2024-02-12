@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { Configuration } from '../../configuration/Configuration';
 import { Application } from '../../application/Application';
 import { valueToASTExpression } from '../../ts/utils/valueToASTExpression';
-import { addDoNotEditCommentToStaticInitBlock } from '../../atomic-mode/transformers/addDoNotEditCommentToStaticInitBlock';
+import { addDoNotEditCommentToStaticInitBlock } from './addDoNotEditCommentToStaticInitBlock';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { filterLibraryModifiers } from '../../ts/utils/filterLibraryModifiers';
 import { BeanNode } from '../../bean/Bean';

@@ -4,6 +4,7 @@ import { PrimitiveTypeCompatibilityMatrix } from './PrimitiveTypeCompatibilityMa
 import { DITypeFlag } from './DITypeFlag';
 import { escape } from 'lodash';
 import { BaseTypesRepository } from './BaseTypesRepository';
+import { DITypeBuilder } from './DITypeBuilder';
 
 export class DIType {
   declare tsTypeFlags: ts.TypeFlags;
@@ -103,6 +104,14 @@ export class DIType {
 
   get isPromise(): boolean {
     return BaseTypesRepository.getBaseTypes().Promise.isCompatible(this);
+  }
+
+  get nonPromiseType(): DIType {
+    if (this.isPromise) {
+      return this.typeArguments[0] ?? DITypeBuilder.void();
+    }
+
+    return this;
   }
 
   get isOptionalUndefined(): boolean {
@@ -219,21 +228,21 @@ export class DIType {
       return false;
     }
 
-    if (this.isIntersection && to.isIntersection) {
-      return this.unionOrIntersectionTypes.every(it => {
-        return to.unionOrIntersectionTypes.some(toIt => it.isCompatible(toIt));
-      });
-    }
+    // if (this.isIntersection && to.isIntersection) {
+    //   return this.unionOrIntersectionTypes.every(it => {
+    //     return to.unionOrIntersectionTypes.some(toIt => it.isCompatible(toIt));
+    //   });
+    // }
 
     if (this.isIntersection) {
       return this.unionOrIntersectionTypes.every(it => it.isCompatible(to));
     }
 
-    if (this.isUnion && to.isIntersection) {
-      return this.unionOrIntersectionTypes.some(it => {
-        return to.unionOrIntersectionTypes.some(toType => it.isCompatible(toType));
-      });
-    }
+    // if (this.isUnion && to.isIntersection) {
+    //   return this.unionOrIntersectionTypes.some(it => {
+    //     return to.unionOrIntersectionTypes.some(toType => it.isCompatible(toType));
+    //   });
+    // }
 
     if (this.isUnion) {
       return this.unionOrIntersectionTypes.some(it => it.isCompatible(to));

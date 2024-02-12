@@ -42,7 +42,7 @@ export const fillEmbeddedBeans = (
 
       if (callSignatures.length !== 1) {
         compilationContext.report(new TypeQualifyError(
-          `Could not resolve bean function signature. Bean must have exactly one call signature, found ${callSignatures.length} signatures.`,
+          `Could not resolve bean factory signature. Bean must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
           rootBeanNode,
           configuration,
         ));

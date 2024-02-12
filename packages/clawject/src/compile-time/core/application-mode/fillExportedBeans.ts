@@ -22,19 +22,21 @@ export const fillExportedBeans = (application: Application): void => {
 function fillExportedBeansForClassElementNode(application: Application, member: ts.PropertyDeclaration, exportedBeans: Map<string, Dependency>): void {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
+  const callSignatures = nodeType.getCallSignatures();
 
-  const awaitedType = DITypeBuilder.getAwaitedType(nodeType);
-
-  if (awaitedType === null) {
+  if (callSignatures.length !== 1) {
     getCompilationContext().report(new TypeQualifyError(
-      'Could not resolve export beans type.',
+      `Could not resolve exported beans signature. Exported beans property must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
       member,
       application.rootConfiguration,
     ));
     return;
   }
 
-  const properties = awaitedType.getProperties();
+  const callSignature = callSignatures[0];
+
+  const returnType = typeChecker.getReturnTypeOfSignature(callSignature);
+  const properties = returnType.getProperties();
 
   const beansProperty = properties.find(it => it.getName() === 'beans');
 
@@ -73,7 +75,7 @@ function fillExportedBeansForClassElementNode(application: Application, member: 
       existedDependency.diType = symbolDIType;
       exportedBeans.set(propertyName, existedDependency);
     } else {
-      existedDependency.diType = DITypeBuilder.buildSyntheticIntersectionOrPlain([existedDependency.diType, DITypeBuilder.build(typeChecker.getTypeOfSymbol(property))]);
+      existedDependency.diType = DITypeBuilder.buildSyntheticIntersectionOrPlain([existedDependency.diType, symbolDIType]);
     }
   });
 }

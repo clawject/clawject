@@ -4,7 +4,6 @@ import { AbstractCompilationMessage } from '../../compilation-context/messages/A
 import { verifyDecorators } from './verifyDecorators';
 import { DecoratorTarget } from './DecoratorTarget';
 import { isPropertyWithArrowFunction } from '../ts/predicates/isPropertyWithArrowFunction';
-import { isExtendsCatContext } from '../ts/predicates/isExtendsCatContext';
 import { isBeanFactoryMethod } from '../ts/predicates/isBeanFactoryMethod';
 import { isBeanClassConstructor } from '../ts/predicates/isBeanClassConstructor';
 import { isBeanFactoryArrowFunction } from '../ts/predicates/isBeanFactoryArrowFunction';
@@ -18,13 +17,10 @@ export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): Abstr
   const errors: AbstractCompilationMessage[] = [];
   const classDecorators = getDecorators(node);
 
-  const isCatContext = isExtendsCatContext(node);
   const isConfigurationClass = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.Configuration));
   const isApplicationClass = classDecorators.some(it => isDecoratorFromLibrary(it, DecoratorKind.ClawjectApplication));
 
-  if (isCatContext) {
-    errors.push(...verifyDecorators(node, DecoratorTarget.CatContextClass, null));
-  } else if (isConfigurationClass) {
+  if (isConfigurationClass) {
     errors.push(...verifyDecorators(node, DecoratorTarget.ConfigurationClass, null));
   } else if (isApplicationClass) {
     errors.push(...verifyDecorators(node, DecoratorTarget.ApplicationClass, null));
@@ -34,9 +30,7 @@ export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): Abstr
 
   let decoratorParent: DecoratorParent;
 
-  if (isCatContext) {
-    decoratorParent = DecoratorParent.CatContextClass;
-  } else if (isConfigurationClass) {
+  if (isConfigurationClass) {
     decoratorParent = DecoratorParent.ConfigurationClass;
   } else if (isApplicationClass) {
     decoratorParent = DecoratorParent.ApplicationClass;

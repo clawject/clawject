@@ -1,7 +1,7 @@
-import { CustomScope } from './CustomScope';
+import { CustomScope } from '../api/CustomScope';
 import { SingletonScope } from './SingletonScope';
 import { FreshScope } from './FreshScope';
-import { RuntimeErrors } from '../errors';
+import { RuntimeErrors } from '../api/RuntimeErrors';
 import { TransientScope } from './TransientScope';
 
 export class InternalScopeRegister {

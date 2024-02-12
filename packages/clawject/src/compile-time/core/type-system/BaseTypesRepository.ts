@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { DIType } from './DIType';
 import { CONSTANTS } from '../../../constants';
 import { DITypeBuilder } from './DITypeBuilder';
-import { ___TypeReferenceTable___ } from '../../../runtime/___TypeReferenceTable___';
+import { ___TypeReferenceTable___ } from '../../../runtime/api/___TypeReferenceTable___';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 type BaseTypes = {
@@ -10,7 +10,6 @@ type BaseTypes = {
   Set: DIType;
   Map: DIType;
   MapStringToAny: DIType;
-  CatContext: DIType;
   ImportedConfiguration: DIType;
   BeanConstructorFactory: DIType;
   Promise: DIType;
@@ -55,7 +54,6 @@ export class BaseTypesRepository {
       Set: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Set'])),
       Map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
       MapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
-      CatContext: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['CatContext'])),
       ImportedConfiguration: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
       BeanConstructorFactory: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
       Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),

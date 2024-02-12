@@ -188,6 +188,15 @@ export class DITypeBuilder {
     return diType;
   }
 
+  static void(): DIType {
+    const diType = new DIType();
+
+    diType.tsTypeFlags = ts.TypeFlags.Void;
+    diType.parsedTSTypeFlags = new Set();
+
+    return diType;
+  }
+
   private static _build(tsType: ts.Type, resolvedTypeArguments: ts.Type[] | null): DIType {
     const diType = new DIType();
 

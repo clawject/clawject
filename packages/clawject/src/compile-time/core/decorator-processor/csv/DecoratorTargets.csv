@@ -2,7 +2,6 @@
 Class,no,no,yes,no,no,no,no,no,no,no,yes,no,no
 ClassProperty,yes,no,no,no,no,no,no,no,no,no,no,yes,yes
 ClassFunction,yes,yes,no,no,no,yes,no,no,no,no,no,yes,yes
-CatContextClass,no,no,no,no,yes,no,yes,no,no,no,no,no,no
 Bean,yes,no,no,yes,yes,no,yes,yes,yes,yes,no,yes,yes
 ConfigurationClass,no,no,yes,no,yes,no,yes,no,no,no,yes,yes,yes
 ApplicationClass,no,no,yes,no,yes,no,yes,no,no,no,yes,yes,yes

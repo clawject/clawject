@@ -5,7 +5,7 @@ import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
 import { Dependency } from '../dependency/Dependency';
 import { Entity } from '../Entity';
-import { LifecycleKind } from '../../../runtime/LifecycleKind';
+import { LifecycleKind } from '../../../runtime/types/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { FileGraph } from '../file-graph/FileGraph';
 import * as Case from 'case';

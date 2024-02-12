@@ -1,6 +1,6 @@
-import { CustomScope } from './CustomScope';
-import { ObjectFactory, ObjectFactoryResult } from '../object-factory/ObjectFactory';
-import { Callback } from '../types/Callback';
+import { CustomScope } from '../api/CustomScope';
+import { ObjectFactory, ObjectFactoryResult } from '../api/ObjectFactory';
+import { Callback } from './Callback';
 
 export class FreshScope implements CustomScope {
   get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {

@@ -9,19 +9,12 @@ import {
   Internal, PostConstruct, Primary
 } from '@clawject/di';
 
-class A {
-  constructor(public someProperty: string) {
-  }
-}
-
-interface IEmbedded {
-  a: A;
-}
-
 @Configuration
-@Internal
 class Test {
-  @Bean @Primary data = 'test';
+  data(arg: string): number
+  @Bean data(arg: any): any {
+    return arg;
+  }
 
   @Bean
   init(data: string): number {
@@ -33,11 +26,12 @@ class Test {
 
 @ClawjectApplication
 export class Application {
-  test = Import(Test);
+  @Bean test() {
+    return Promise.resolve();
+  }
 
-  @Bean data = 'test';
-
-  exported = ExportBeans<{ a: string }>();
+  exported2 = ExportBeans<{ a: any }>();
 }
 
 const app = await ClawjectFactory.createApplicationContext(Application);
+const data = app.getExportedBean('a');

@@ -1,5 +1,5 @@
-import { LifecycleKind } from '../LifecycleKind';
-import { ScopeValue } from '../decorators';
+import { LifecycleKind } from '../types/LifecycleKind';
+import { ScopeValue } from '../api/decorators';
 import { BeanKind } from '../../compile-time/core/bean/BeanKind';
 
 export interface RuntimeBeanMetadata {

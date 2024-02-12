@@ -6,8 +6,8 @@ import { transformConfigurationOrApplicationClass } from './transformers/transfo
 import { ApplicationRepository } from '../application/ApplicationRepository';
 import { processApplication } from './processApplication';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { processImplicitComponents } from '../atomic-mode/processImplicitComponents';
-import { Value } from '../../../runtime/Value';
+import { processImplicitComponents } from './processImplicitComponents';
+import { Value } from '../../../runtime/types/Value';
 
 export const processClassDeclaration = (node: ts.ClassDeclaration, shouldAddInternalImport: Value<boolean>): ts.Node => {
   const configurationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Configuration);

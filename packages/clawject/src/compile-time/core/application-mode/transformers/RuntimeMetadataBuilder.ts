@@ -2,7 +2,7 @@ import { Configuration } from '../../configuration/Configuration';
 import { Bean } from '../../bean/Bean';
 import { Import } from '../../import/Import';
 import { RuntimeConfigurationMetadata } from '../../../../runtime/metadata/RuntimeConfigurationMetadata';
-import { LifecycleKind } from '../../../../runtime/LifecycleKind';
+import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { filterAndMap } from '../../utils/filterAndMap';
 import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExportedBeanMetadata, RuntimeApplicationMetadata } from '../../../../runtime/metadata/RuntimeApplicationMetadata';
 import { Application } from '../../application/Application';

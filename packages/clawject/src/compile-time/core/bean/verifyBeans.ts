@@ -34,10 +34,7 @@ const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
 export const verifyBeans = (configuration: Configuration): void => {
   const beans = configuration.beanRegister.elements;
 
-  if (ConfigLoader.get().mode === 'atomic') {
-    // Only verify uniqueness in atomic mode, in application mode it is verified in processApplication function
-    verifyBeanNameUniqueness(beans);
-  }
+  verifyBeanNameUniqueness(beans);
 
   beans.forEach(bean => {
     verifyBeanType(bean);
@@ -99,7 +96,9 @@ export function verifyBeanType(bean: Bean): void {
     return;
   }
 
-  if (UNSUPPORTED_TYPES.has(bean.diType.typeFlag)) {
+  const beanType = bean.diType.nonPromiseType;
+
+  if (UNSUPPORTED_TYPES.has(beanType.typeFlag)) {
     let typeNode = bean.node.type;
 
     if (bean.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
