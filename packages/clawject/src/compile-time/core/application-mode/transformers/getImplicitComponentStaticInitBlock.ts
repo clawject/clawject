@@ -2,10 +2,10 @@ import ts, { factory } from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
-import { addDoNotEditCommentToStaticInitBlock } from './addDoNotEditCommentToStaticInitBlock';
+import { addDoNotEditComment, DoNotEditElement } from './addDoNotEditComment';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
-  return addDoNotEditCommentToStaticInitBlock(factory.createClassStaticBlockDeclaration(factory.createBlock(
+  const block = factory.createClassStaticBlockDeclaration(factory.createBlock(
     [
       factory.createExpressionStatement(factory.createCallExpression(
         factory.createPropertyAccessExpression(
@@ -28,7 +28,9 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
       ))
     ],
     true
-  )));
+  ));
+
+  return addDoNotEditComment(block, DoNotEditElement.STATIC_INIT_BLOCK);
 };
 
 const getLifecycleConfigProperty = (component: Component): ts.ObjectLiteralExpression => {

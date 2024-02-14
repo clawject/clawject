@@ -1,15 +1,20 @@
-export declare class Test {
-  b: string;
-
+export declare class Application {
+  test: number;
   #___clawject_compile_time_metadata___: {
-    kind: 'configuration';
+    kind: 2;
     version: 1;
-    beans: {
-      b: {
+    external: null;
+    beans: [
+      {
+        kind: 4;
+        primary: false;
+        external: null;
         qualifier: null;
-        embedded: false;
-      };
-    };
-    imports: {};
+        nestedProperty: null;
+        classPropertyName: 'test';
+      }
+    ];
+    imports: [
+    ];
   };
 }

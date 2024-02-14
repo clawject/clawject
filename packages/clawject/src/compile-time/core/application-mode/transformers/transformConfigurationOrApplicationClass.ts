@@ -2,7 +2,7 @@ import ts, { factory } from 'typescript';
 import { Configuration } from '../../configuration/Configuration';
 import { Application } from '../../application/Application';
 import { valueToASTExpression } from '../../ts/utils/valueToASTExpression';
-import { addDoNotEditCommentToStaticInitBlock } from './addDoNotEditCommentToStaticInitBlock';
+import { addDoNotEditComment, DoNotEditElement } from './addDoNotEditComment';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { filterLibraryModifiers } from '../../ts/utils/filterLibraryModifiers';
 import { BeanNode } from '../../bean/Bean';
@@ -12,7 +12,7 @@ import { RuntimeMetadataBuilder } from './RuntimeMetadataBuilder';
 export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclaration, configuration: Configuration, application: Application | null): ts.ClassDeclaration => {
   const runtimeMetadata = RuntimeMetadataBuilder.metadata(configuration, application);
   const metadataDefinitionMethod = application !== null ? 'defineApplicationMetadata' : 'defineConfigurationMetadata';
-  const metadataStaticInitBlock = addDoNotEditCommentToStaticInitBlock(factory.createClassStaticBlockDeclaration(factory.createBlock(
+  const staticInitBlock = factory.createClassStaticBlockDeclaration(factory.createBlock(
     [
       factory.createExpressionStatement(factory.createCallExpression(
         factory.createPropertyAccessExpression(
@@ -27,7 +27,8 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
       ))
     ],
     true
-  )));
+  ));
+  const metadataStaticInitBlock = addDoNotEditComment(staticInitBlock, DoNotEditElement.STATIC_INIT_BLOCK);
 
   const updatedMembers = node.members.map(node => {
     const bean = configuration.beanRegister.getByNode(node as BeanNode);

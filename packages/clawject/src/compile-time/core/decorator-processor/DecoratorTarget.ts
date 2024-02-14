@@ -5,4 +5,5 @@ export enum DecoratorTarget {
   Bean = 'Bean',
   ConfigurationClass = 'ConfigurationClass',
   ApplicationClass = 'ApplicationClass',
+  Import = 'Import',
 }

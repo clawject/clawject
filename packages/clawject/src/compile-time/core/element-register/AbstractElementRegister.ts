@@ -22,4 +22,8 @@ export abstract class AbstractElementRegister<T extends { id: string, node: N },
   getById(id: string): T | null {
     return this.idToElement.get(id) ?? null;
   }
+
+  hasElement(element: T): boolean {
+    return this.elements.has(element);
+  }
 }

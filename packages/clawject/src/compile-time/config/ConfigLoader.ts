@@ -12,7 +12,10 @@ export class ConfigLoader {
     unsafeTSVersion: false,
     beans: {
       defaultExternal: true,
-    }
+    },
+    imports: {
+      defaultExternal: true,
+    },
   };
   static cachedConfig: DIConfig | null = null;
   static onConfigLoaded: ((configFilename: string) => void) | null = null;

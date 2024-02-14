@@ -6,6 +6,7 @@ import { Application } from '../application/Application';
 import { ApplicationDeclarationMetadata } from './ApplicationDeclarationMetadata';
 import { ConfigurationDeclarationMetadata } from './ConfigurationDeclarationMetadata';
 import { valueToASTType } from '../ts/utils/valueToASTType';
+import { addDoNotEditComment, DoNotEditElement } from '../application-mode/transformers/addDoNotEditComment';
 
 export class DeclarationMetadataBuilder {
   private static METADATA_VERSION = 1;
@@ -32,16 +33,19 @@ export class DeclarationMetadataBuilder {
         classPropertyName: bean.classMemberName
       })),
       imports : Array.from(configuration.importRegister.elements).map(imp => ({
-        classPropertyName: imp.classMemberName
+        classPropertyName: imp.classMemberName,
+        external: imp.external
       })),
     };
 
-    return factory.createPropertyDeclaration(
+    const property = factory.createPropertyDeclaration(
       [],
       factory.createPrivateIdentifier(CompileTimeElement.COMPILE_TIME_METADATA),
       undefined,
       valueToASTType(metadata),
       undefined
     );
+
+    return addDoNotEditComment(property, DoNotEditElement.FIELD);
   }
 }

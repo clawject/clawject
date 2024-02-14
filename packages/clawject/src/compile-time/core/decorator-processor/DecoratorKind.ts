@@ -12,6 +12,7 @@ export enum DecoratorKind {
   ClawjectApplication = 'ClawjectApplication',
   Internal = 'Internal',
   External = 'External',
+  Dynamic = 'Dynamic',
 }
 
 export const DecoratorKinds = new Set(Object.values(DecoratorKind));

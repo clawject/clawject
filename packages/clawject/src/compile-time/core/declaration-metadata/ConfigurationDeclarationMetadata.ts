@@ -19,4 +19,5 @@ export interface BeanDeclarationMetadata {
 
 export interface ImportDeclarationMetadata {
   classPropertyName: string;
+  external: boolean | null;
 }

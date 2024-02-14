@@ -1,3 +1,3 @@
-Bean,PreDestroy,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,Conditional,ClawjectApplication,Internal,External
-0,0,0,0,"0,1",0,1,0,1,1,0,"0,1","0,1"
-no,no,no,no,no,no,no,no,yes,no,no,yes,yes
+Bean,PreDestroy,Configuration,Embedded,Lazy,PostConstruct,Scope,Primary,Qualifier,Conditional,ClawjectApplication,Internal,External,Dynamic
+0,0,0,0,"0,1",0,1,0,1,1,0,"0,1","0,1",0
+no,no,no,no,no,no,no,no,yes,no,no,yes,yes,no

@@ -1,38 +1,20 @@
 import ts, { factory, SyntaxKind } from 'typescript';
 import { DeclarationMetadata } from './DeclarationMetadata';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { CompileTimeElement } from './CompileTimeElement';
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 import { CorruptedMetadataError } from '../../compilation-context/messages/errors/CorruptedMetadataError';
 
 export class DeclarationMetadataParser {
   static parse(classDeclaration: ts.ClassDeclaration): DeclarationMetadata | AbstractCompilationMessage | null {
-    const typeChecker = getCompilationContext().typeChecker;
-    const type = typeChecker.getTypeAtLocation(classDeclaration);
+    const metadataProperty = classDeclaration.members.find(it => {
+      if (!ts.isPropertyDeclaration(it)) {
+        return false;
+      }
 
-    const metadataSymbol = type.getProperties()
-      .find(it => it.name === CompileTimeElement.COMPILE_TIME_METADATA);
+      return it.name?.getText() === CompileTimeElement.COMPILE_TIME_METADATA;
+    }) as ts.PropertyDeclaration | undefined;
 
-    if (!metadataSymbol) {
-      return null;
-    }
-
-    const declarations = metadataSymbol.getDeclarations() ?? [];
-
-    if (declarations.length === 0) {
-      return null;
-    }
-
-    if (declarations.length > 1) {
-      return new CorruptedMetadataError(
-        `Compiled metadata must have exactly one declaration, but found ${declarations.length}.`,
-        classDeclaration,
-        null,
-      );
-    }
-
-    const metadataDeclaration = declarations[0];
-    const declarationTypeNode = (metadataDeclaration as ts.PropertyDeclaration).type;
+    const declarationTypeNode = metadataProperty?.type;
 
     if (!declarationTypeNode || !ts.isTypeLiteralNode(declarationTypeNode)) {
       return new CorruptedMetadataError(

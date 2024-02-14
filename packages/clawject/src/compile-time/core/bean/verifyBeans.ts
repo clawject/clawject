@@ -14,6 +14,7 @@ import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { DIType } from '../type-system/DIType';
+import { isImportClassProperty } from '../ts/predicates/isImportClassProperty';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNRESOLVABLE, 'unresolvable'],
@@ -46,7 +47,7 @@ export const verifyBeans = (configuration: Configuration): void => {
   });
 };
 
-export function verifyBeanNameUniqueness(beans: Set<Bean>): void {
+export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[]): void {
   const nameToBeans = new Map<string, Bean[]>();
 
   beans.forEach(bean => {

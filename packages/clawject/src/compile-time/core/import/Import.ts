@@ -8,6 +8,7 @@ export class Import extends Entity<PropertyDeclaration> {
   declare classMemberName: string;
 
   resolvedConfiguration: Configuration | null = null;
+  external: boolean | null = null;
 
   constructor(values: Partial<Import> = {}) {
     super();

@@ -3,4 +3,7 @@ export interface DIConfig {
   beans: {
     defaultExternal: boolean;
   }
+  imports: {
+    defaultExternal: boolean;
+  }
 }

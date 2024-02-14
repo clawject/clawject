@@ -1,4 +1,3 @@
-import { Configuration } from '../configuration/Configuration';
 import { DependencyGraph } from './DependencyGraph';
 import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
@@ -8,32 +7,52 @@ import { BeanKind } from '../bean/BeanKind';
 import { Application } from '../application/Application';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 
-export const buildDependencyGraphAndFillQualifiedBeans = (configurationOrApplication: Configuration | Application, beans: Bean[], dependencyGraph: DependencyGraph) => {
+export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[], dependencyGraph: DependencyGraph) => {
   const compilationContext = getCompilationContext();
 
   beans.forEach(bean => {
     const beanParentConfiguration = bean.parentConfiguration;
-    //TODO check for external and internal beans
-    const allBeansWithoutCurrentAndWithoutExternalInternalBeans = beans
-      .filter(it => {
-        const isInternal = !it.getExternalValue();
-        if (isInternal && it.parentConfiguration !== beanParentConfiguration) {
-          return false;
-        }
+    const beanCandidates = beans.filter(it => {
+      //Filtering out the bean itself
+      if (it === bean) {
+        return false;
+      }
 
-        return it !== bean;
-      });
+      //Accepting all beans from the current configuration
+      if (it.parentConfiguration === beanParentConfiguration) {
+        return true;
+      }
+
+      if(!it.getExternalValue()) {
+        return false;
+      }
+
+      const itConfiguration = it.parentConfiguration;
+      const resolvedConfigurationImport = application.resolvedImports.get(itConfiguration);
+
+      if (!resolvedConfigurationImport) {
+        return true;
+      }
+
+      const isItImportedAsExternal =  resolvedConfigurationImport.getExternalValue();
+
+      if (isItImportedAsExternal) {
+        return true;
+      }
+
+      return resolvedConfigurationImport.imports.some(imported => beanParentConfiguration.importRegister.hasElement(imported));
+    });
     const missingDependencies: Dependency[] = [];
 
     bean.dependencies.forEach(dependency => {
-      const maybeResolvedDependency = DependencyResolver.resolveDependencies(dependency, allBeansWithoutCurrentAndWithoutExternalInternalBeans, bean);
+      const maybeResolvedDependency = DependencyResolver.resolveDependencies(dependency, beanCandidates, bean);
 
       if (!maybeResolvedDependency.isResolved()) {
         missingDependencies.push(dependency);
       }
 
       dependencyGraph.addNodeWithEdges(bean, maybeResolvedDependency.getAllResolvedBeans());
-      configurationOrApplication.registerResolvedDependency(bean, maybeResolvedDependency);
+      application.registerResolvedDependency(bean, maybeResolvedDependency);
     });
 
     if (missingDependencies.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {

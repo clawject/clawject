@@ -8,16 +8,17 @@ import { ConfigurationImportError } from '../../compilation-context/messages/err
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
+import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 
 export const registerImports = (configuration: Configuration): void => {
   configuration.node.members.forEach(member => {
     if (isImportClassProperty(member)) {
-      registerImportForClassElementNode(configuration, member);
+      registerImportForClassElementNode(configuration, member, getExternalValueFromNode(member));
     }
   });
 };
 
-export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration): void {
+export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration, externalValue: boolean | null): void {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
   const importType = DITypeBuilder.getPromisedTypeOfPromise(nodeType) ?? nodeType;
@@ -126,7 +127,8 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   const imp = new Import({
     classMemberName: member.name?.getText() ?? '',
     node: member,
-    resolvedConfiguration: processedConfigurationClass
+    resolvedConfiguration: processedConfigurationClass,
+    external: externalValue,
   });
 
   configuration.importRegister.register(imp);

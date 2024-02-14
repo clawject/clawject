@@ -7,8 +7,6 @@ import { Component } from '../component/Component';
 import { processLifecycleElement } from './transformers/processLifecycleElement';
 import { isLifecycleArrowFunctionBean } from '../ts/predicates/isLifecycleArrowFunctionBean';
 import { getImplicitComponentStaticInitBlock } from './transformers/getImplicitComponentStaticInitBlock';
-import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
-import { isNameReserved } from '../utils/isNameReserved';
 import { Value } from '../../../runtime/types/Value';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
@@ -18,29 +16,16 @@ export function processImplicitComponents(
 ): ts.Node {
   let component: Component | null = null;
 
+  const hasDecoratorsFromLibrary = node.members.some(it => getDecorators(it).some(it => isDecoratorFromLibrary(it, undefined)));
+
+  if (!hasDecoratorsFromLibrary) {
+    return node;
+  }
+
+  shouldAddImports.value = true;
+
   const newMembers = node.members.map(it => {
-    const elementDecorators = getDecorators(it);
-    const hasDecoratorsFromLibrary = elementDecorators
-      .some(it => isDecoratorFromLibrary(it, undefined));
-
-    if (!hasDecoratorsFromLibrary) {
-      return it;
-    } else {
-      //If there are decorators from library, then we should add imports
-      shouldAddImports.value = true;
-    }
-
     component = component ?? ComponentRepository.register(node, false);
-
-    if (isNameReserved(it.name?.getText() ?? '')) {
-      getCompilationContext().report(new IncorrectNameError(
-        `'${it.name?.getText() ?? ''}' name is reserved for the di-container.`,
-        it,
-        null,
-      ));
-
-      return it;
-    }
 
     //Processing lifecycle methods
     if (isLifecycleMethodBean(it) || isLifecycleArrowFunctionBean(it)) {

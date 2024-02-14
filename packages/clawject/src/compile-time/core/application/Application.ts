@@ -6,6 +6,7 @@ import { GenericError } from '../../compilation-context/messages/errors/GenericE
 import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { Bean } from '../bean/Bean';
 import { MaybeResolvedDependency } from '../dependency-resolver/MaybeResolvedDependency';
+import { ResolvedConfigurationImport } from './ResolvedConfigurationImport';
 
 export class Application extends Entity<ts.ClassDeclaration> {
   constructor(
@@ -27,6 +28,8 @@ export class Application extends Entity<ts.ClassDeclaration> {
       resolvedDependencies.push(resolvedDependency);
     }
   }
+
+  resolvedImports = new Map<Configuration, ResolvedConfigurationImport>();
 
   private _beans: Set<Bean> | null = null;
   get beans(): Set<Bean> {

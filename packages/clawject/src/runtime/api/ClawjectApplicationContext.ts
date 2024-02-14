@@ -3,7 +3,7 @@ import { ClassConstructor } from './ClassConstructor';
 import { ExportedBeans } from './ExportBeans';
 
 type PickFieldsWithType<T, U> = {
-  [K in keyof T as T[K] extends U ? K : never]: Awaited<T[K]>;
+  [K in keyof T as T[K] extends U ? K : never]: T[K];
 };
 type FieldValues<T extends object> = T[keyof T];
 type MergedObjects<U> =

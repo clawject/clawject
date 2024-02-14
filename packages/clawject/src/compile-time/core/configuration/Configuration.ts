@@ -5,8 +5,6 @@ import { Entity } from '../Entity';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { FileGraph } from '../file-graph/FileGraph';
 import { ImportRegister } from '../import/ImportRegister';
-import { Bean } from '../bean/Bean';
-import { MaybeResolvedDependency } from '../dependency-resolver/MaybeResolvedDependency';
 
 export class Configuration extends Entity<ts.ClassDeclaration> {
   declare id: string;
@@ -21,16 +19,6 @@ export class Configuration extends Entity<ts.ClassDeclaration> {
 
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
-
-  resolvedBeanDependencies = new Map<Bean, MaybeResolvedDependency[]>();
-  registerResolvedDependency(bean: Bean, resolvedDependency: MaybeResolvedDependency): void {
-    const resolvedDependencies = this.resolvedBeanDependencies.get(bean);
-    if (!resolvedDependencies) {
-      this.resolvedBeanDependencies.set(bean, [resolvedDependency]);
-    } else {
-      resolvedDependencies.push(resolvedDependency);
-    }
-  }
 
   registerDIType(diType: DIType): void {
     this.diType = diType;

@@ -28,6 +28,21 @@
         }
       },
       "additionalProperties": false
+    },
+    "imports": {
+      "type": "object",
+      "properties": {
+        "defaultExternal": {
+          "type": "boolean",
+          "default": true,
+          "title": "Defines whether import of configuration should be considered external by default in all configuration and application classes.",
+          "examples": [
+            true,
+            false
+          ]
+        }
+      },
+      "additionalProperties": false
     }
   }
 }

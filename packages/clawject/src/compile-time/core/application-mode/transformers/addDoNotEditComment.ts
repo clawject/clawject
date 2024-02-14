@@ -1,0 +1,26 @@
+import ts from 'typescript';
+
+export enum DoNotEditElement {
+  STATIC_INIT_BLOCK = 'STATIC_INIT_BLOCK',
+  FIELD = 'FIELD',
+}
+
+export const addDoNotEditComment = <T extends ts.Node> (node: T, element: DoNotEditElement): T => {
+  let message = '';
+
+  switch (element) {
+  case DoNotEditElement.STATIC_INIT_BLOCK:
+    message = 'The content of this static initialization block is auto-generated, editing it could lead to unexpected behavior.';
+    break;
+  case DoNotEditElement.FIELD:
+    message = 'This field is auto-generated, editing it could lead to unexpected behavior.';
+    break;
+  }
+
+  return ts.addSyntheticLeadingComment(
+    node,
+    ts.SyntaxKind.MultiLineCommentTrivia,
+    `* ${message}`,
+    true
+  );
+};

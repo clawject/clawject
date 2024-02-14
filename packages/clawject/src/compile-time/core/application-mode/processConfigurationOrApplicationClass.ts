@@ -35,16 +35,20 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
     //This branch is for imported configurations
     const compilationMetadata = DeclarationMetadataParser.parse(node);
 
-    if (compilationMetadata === null) {
+    if (parentImportNode === null && compilationMetadata === null) {
       return null;
     }
 
-    if (parentImportNode !== null) {
+    if (parentImportNode !== null && compilationMetadata === null) {
       getCompilationContext().report(new NotSupportedError(
         'Only configuration and application classes can be imported in this context.',
         parentImportNode,
         parentConfiguration,
       ));
+      return null;
+    }
+
+    if (compilationMetadata === null) {
       return null;
     }
 
@@ -93,7 +97,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
         return;
       }
 
-      registerImportForClassElementNode(configuration, classElementNode);
+      registerImportForClassElementNode(configuration, classElementNode, it.external);
     });
 
     //Registering beans
