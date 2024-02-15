@@ -33,6 +33,7 @@ export const registerBeanFromDeclarationMetadata = (
       null,
       classElement,
       configuration,
+      null,
     ));
     return;
   }

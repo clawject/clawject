@@ -1,10 +1,10 @@
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import ts from 'typescript';
 import { Configuration } from '../../../core/configuration/Configuration';
 import { Bean } from '../../../core/bean/Bean';
 import { NodeDetails } from '../../../core/ts/utils/getNodeDetails';
+import { Application } from '../../../core/application/Application';
 
 class DuplicateElement {
   constructor(
@@ -14,8 +14,7 @@ class DuplicateElement {
 }
 
 export class DuplicateNameError extends AbstractCompilationMessage {
-  public code = MessageCode.CT14;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE14;
   public description = 'Duplicate name.';
   public duplicateElements: DuplicateElement[] = [];
 
@@ -23,9 +22,10 @@ export class DuplicateNameError extends AbstractCompilationMessage {
     details: string | null,
     place: ts.Node,
     relatedConfiguration: Configuration | null,
-    relatedBeans: Bean[]
+    relatedApplication: Application | null,
+    relatedBeans: Bean[],
   ) {
-    super(details, place, relatedConfiguration);
+    super(details, place, relatedConfiguration, relatedApplication);
 
     this.duplicateElements = relatedBeans.map(bean => new DuplicateElement(
       bean.fullName,

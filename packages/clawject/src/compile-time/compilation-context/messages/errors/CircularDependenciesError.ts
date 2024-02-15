@@ -1,9 +1,9 @@
 import ts from 'typescript';
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { Bean } from '../../../core/bean/Bean';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
+import { Application } from '../../../core/application/Application';
 
 class CycleMember {
   constructor(
@@ -13,16 +13,16 @@ class CycleMember {
 }
 
 export class CircularDependenciesError extends AbstractCompilationMessage {
-  public code = MessageCode.CT7;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE7;
   public description = 'Circular dependencies detected.';
   public cycleMembers: CycleMember[];
 
   constructor(
     place: ts.Node,
     cycleMembers: Bean[],
+    relatedApplication: Application,
   ) {
-    super(null, place, null);
+    super(null, place, null, relatedApplication);
 
     this.cycleMembers = cycleMembers
       .map(bean => new CycleMember(

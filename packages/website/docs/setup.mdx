@@ -66,8 +66,10 @@ Clawject will work pretty well in **native tsc watch mode** as well!
 {
   "compilerOptions": {
     "plugins": [
+      { "transform": "@clawject/di/transformer" },
       {
-        "transform": "@clawject/di/transformer"
+        "transform": "@clawject/di/transformer/metadata",
+        "afterDeclarations": true
       }
     ]
   }

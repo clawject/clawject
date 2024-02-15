@@ -1,9 +1,7 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class CorruptedMetadataError extends AbstractCompilationMessage {
-  public code = MessageCode.CT16;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE16;
   public description = 'Metadata of class is corrupted.';
 }

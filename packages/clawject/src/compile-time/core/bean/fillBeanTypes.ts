@@ -20,6 +20,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
           `Could not resolve bean factory signature. Bean must have exactly 1 call signature, found ${callSignatures.length} signatures.`,
           bean.node,
           configuration,
+          null,
         ));
         configuration.beanRegister.deregister(bean);
         return;
@@ -42,6 +43,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
           'Could not resolve bean type.',
           typedBeanNode,
           configuration,
+          null,
         ));
         configuration.beanRegister.deregister(bean);
         return;
@@ -54,6 +56,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
           'Could not resolve bean factory type, try to use factory-method Bean instead.',
           typedBeanNode,
           configuration,
+          null,
         ));
         configuration.beanRegister.deregister(bean);
         return;
@@ -67,6 +70,7 @@ export const fillBeanTypes = (configuration: Configuration) => {
           'Could not resolve bean factory call signature, try to use factory-method Bean instead.',
           typedBeanNode,
           configuration,
+          null,
         ));
         configuration.beanRegister.deregister(bean);
         return;

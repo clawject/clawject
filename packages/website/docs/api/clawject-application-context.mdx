@@ -1,0 +1,178 @@
+---
+title: ClawjectApplicationContext
+---
+
+ClawjectApplicationContext is an object that represents the context of the Clawject application.
+It stores and manages configurations and beans of the application.
+
+## Usage
+
+Let's define a simple application with a single bean and try to expose it using [ExposeBeans function](/docs/api/expose-beans.mdx):
+
+```typescript
+import {ClawjectApplication, ClawjectFactory, Bean, ExposeBeans} from '@clawject/di';
+
+class Cat {
+  constructor(
+    public readonly id: string,
+  ) {}
+
+  public meow() {
+    console.log('Meow!');
+  }
+}
+
+class CatRepository {
+  constructor(
+    //...
+  ) {}
+
+  findById(id: string): Cat {
+    // ...
+  }
+}
+
+@ClawjectApplication
+class Application {
+  catRepository = Bean(CatRepository);
+
+  exposed = ExposeBeans<{ repository: CatRepository }>();
+}
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+const repository = await applicationContext.getExposedBean('repository');
+```
+
+In this example, we have defined a simple application with a single bean `CatRepository` and exposed it using `ExposeBeans` function.
+We can then access the exposed bean using `getExposedBean` method of the `ClawjectApplicationContext` object.
+
+Also, we can get all exposed beans using `getExposedBeans` method:
+
+```typescript
+@ClawjectApplication
+class Application {
+  catRepository = Bean(CatRepository);
+  catService = Bean(CatService);
+
+  exposed = ExposeBeans<{ repository: CatRepository, service: CatService }>();
+}
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+const exposedBeans = await applicationContext.getExposedBeans();
+
+console.log(exposedBeans.repository);
+console.log(exposedBeans.service);
+```
+
+After running this code, we will see the `CatRepository` and `CatService` objects in the console.
+
+Now let's define some initialization and destruction logic for our beans using
+[@PostConstruct](/docs/api/lifecycle.mdx#postconstruct) and [@PreDestroy](/docs/api/lifecycle.mdx#predestroy) decorators:
+
+```typescript
+@ClawjectApplication
+class Application {
+  dbConnection = Bean(DBConnection);
+
+  @PostConstruct
+  onInit(dbConnection: DBConnection) {
+    dbConnection.connect();
+    console.log('DBConnection initialized');
+  }
+
+  @PreDestroy
+  onClose(dbConnection: DBConnection) {
+    dbConnection.close();
+    console.log('DBConnection closed');
+  }
+}
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+// Will print 'DBConnection initialized'
+
+await applicationContext.close();
+// Will print 'DBConnection closed'
+```
+
+## Methods overview
+
+### `.getExposedBean`
+
+Returns the exposed bean by the given name, if more than one bean is exposed with the same name - intersection of them types will be returned.
+
+```typescript
+import {Bean, ClawjectApplication, ClawjectFactory, ExposeBeans} from "@clawject/di";
+
+interface Foo { value: 'foo' }
+interface Bar { value: 'bar' }
+
+@ClawjectApplication
+class Application {
+  @Bean foo: Foo = {value: 'foo'};
+  @Bean bar: Bar = {value: 'bar'};
+
+  exposed = ExposeBeans<{ exposedBean: Foo }>()
+}
+
+const application = await ClawjectFactory.createApplicationContext(Application);
+const exposedBean = await application.getExposedBean('exposedBean');
+
+console.log(exposedBean.value); // 'foo'
+```
+
+
+### `.getExposedBeans`
+
+Returns all exposed beans.
+
+```typescript
+import {Bean, ClawjectApplication, ClawjectFactory, ExposeBeans} from '@clawject/di';
+
+interface Foo { value: 'foo' }
+interface Bar { value: 'bar' }
+
+@ClawjectApplication
+class Application {
+  @Bean foo: Foo = {value: 'foo'};
+  @Bean bar: Bar = {value: 'bar'};
+
+  exposed = ExposeBeans<{ exposedBean1: Foo, exposedBean2: Bar }>();
+}
+
+const application = await ClawjectFactory.createApplicationContext(Application);
+const exposedBeans = await application.getExposedBeans();
+
+console.log(exposedBeans); // { exposedBean1: { value: 'foo' }, exposedBean2: { value: 'bar' } }
+```
+
+### `.close`
+
+Closes the application context and destroys all beans.
+Functions decorated with `@PreDestroy` will be called for all beans.
+
+```typescript
+import {Bean, ClawjectApplication, ClawjectFactory, PreDestroy} from '@clawject/di';
+
+class Foo {
+  @PreDestroy
+  destroy() {
+    console.log('destroy foo');
+  }
+}
+
+@ClawjectApplication
+class Application {
+  foo = Bean(Foo);
+
+  @PreDestroy
+  destroy() {
+    console.log('destroy application');
+  }
+}
+
+const application = await ClawjectFactory.createApplicationContext(Application);
+await application.close();
+// prints: 'destroy foo'
+// prints: 'destroy application'
+```
+

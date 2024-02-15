@@ -7,8 +7,8 @@ import { CircularDependenciesError } from './messages/errors/CircularDependencie
 import { CanNotRegisterBeanError } from './messages/errors/CanNotRegisterBeanError';
 import { MissingBeansDeclarationError } from './messages/errors/MissingBeansDeclarationError';
 import { DuplicateNameError } from './messages/errors/DuplicateNameError';
-import { TypeMismatchError } from './messages/errors/TypeMismatchError';
 
+//TODO refactor for better errors
 export class BuildErrorFormatter {
   static formatErrors(compilationErrors: AbstractCompilationMessage[]): string | null {
     const configurationPathToCompilationErrors = this.groupByConfiguration(compilationErrors);
@@ -103,14 +103,6 @@ export class BuildErrorFormatter {
       });
 
       return [baseMessage, ...missingElementsRelatedInformation].join('\n');
-    }
-
-    if (error instanceof TypeMismatchError) {
-      const typeMismatchElements = error.mismatchElements.map(it => {
-        return `  '${it.name}' is declared here. ${this.getPathWithPosition(it.location)}`;
-      });
-
-      return [baseMessage, ...typeMismatchElements].join('\n');
     }
 
     return baseMessage;

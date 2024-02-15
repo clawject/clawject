@@ -1,9 +1,7 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class NotStaticallyKnownError extends AbstractCompilationMessage {
-  public code = MessageCode.CT15;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE15;
   public description = 'Element should be statically known.';
 }

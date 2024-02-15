@@ -9,7 +9,8 @@ export class ClawjectContainer {
   private applicationBeanFactory = new ApplicationBeanFactory(this.applicationConfigurationFactory);
 
   constructor(
-    public readonly applicationClass: ClassConstructor<any>
+    public readonly applicationClass: ClassConstructor<any>,
+    public readonly applicationClassConstructorParameters: any[],
   ) {}
 
   async init(): Promise<void> {
@@ -19,7 +20,7 @@ export class ClawjectContainer {
       throw new RuntimeErrors.NoClassMetadataFoundError('No application metadata found');
     }
 
-    await this.applicationConfigurationFactory.init(this.applicationClass);
+    await this.applicationConfigurationFactory.init(this.applicationClass, this.applicationClassConstructorParameters);
     await this.applicationBeanFactory.init(applicationMetadata);
   }
 
@@ -27,15 +28,15 @@ export class ClawjectContainer {
     await this.applicationBeanFactory.postInit();
   }
 
-  async destroy(): Promise<void> {
-    this.applicationBeanFactory.destroy();
+  async close(): Promise<void> {
+    this.applicationBeanFactory.close();
   }
 
-  getExportedBean(beanName: string): Promise<any> {
-    return this.applicationBeanFactory.getExportedBean(beanName);
+  getExposedBean(beanName: string): Promise<any> {
+    return this.applicationBeanFactory.getExposedBean(beanName);
   }
 
-  getExportedBeans(): Promise<Record<string, any>> {
-    return this.applicationBeanFactory.getExportedBeans();
+  getExposedBeans(): Promise<Record<string, any>> {
+    return this.applicationBeanFactory.getExposedBeans();
   }
 }

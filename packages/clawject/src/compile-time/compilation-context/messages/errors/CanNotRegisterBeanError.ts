@@ -1,10 +1,10 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import ts from 'typescript';
 import { Configuration } from '../../../core/configuration/Configuration';
 import { NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { Dependency } from '../../../core/dependency/Dependency';
+import { Application } from '../../../core/application/Application';
 
 class MissingCandidate {
   constructor(
@@ -14,8 +14,7 @@ class MissingCandidate {
 }
 
 export class CanNotRegisterBeanError extends AbstractCompilationMessage {
-  public code = MessageCode.CT4;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE4;
   public description = 'Can not register Bean.';
   public missingCandidates: MissingCandidate[];
 
@@ -23,9 +22,10 @@ export class CanNotRegisterBeanError extends AbstractCompilationMessage {
     details: string | null,
     place: ts.Node,
     relatedConfiguration: Configuration | null,
+    relatedApplication: Application | null,
     missingCandidates: Dependency[],
   ) {
-    super(details, place, relatedConfiguration);
+    super(details, place, relatedConfiguration, relatedApplication);
 
     this.missingCandidates = missingCandidates.map(it => {
       return new MissingCandidate(

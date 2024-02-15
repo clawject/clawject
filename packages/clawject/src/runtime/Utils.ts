@@ -1,6 +1,7 @@
 import { ClawjectObjectStorage } from '@clawject/object-storage';
 import { ClassConstructor } from './api/ClassConstructor';
 import { MaybeAsync } from './types/MaybeAsync';
+import { InstantiationConstructorParameters } from './api/InstantiationConstructorParameters';
 
 export class Utils {
 
@@ -50,4 +51,16 @@ export class Utils {
 
     return map.get(key)!;
   };
+
+  static async getResolvedConstructorParameters(constructorParameters: InstantiationConstructorParameters<any[]>): Promise<any[]> {
+    if (!constructorParameters) {
+      return [];
+    }
+
+    if (typeof constructorParameters === 'function') {
+      return constructorParameters();
+    }
+
+    return constructorParameters;
+  }
 }

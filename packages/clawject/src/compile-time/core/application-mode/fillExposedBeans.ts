@@ -7,19 +7,20 @@ import { TypeQualifyError } from '../../compilation-context/messages/errors/Type
 import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 
-export const fillExportedBeans = (application: Application): void => {
-  const exportedBeans = new Map<string, Dependency>();
+export const fillExposedBeans = (application: Application): void => {
+  const exposedBeans = new Map<string, Dependency>();
+  const dependencyToSymbols = new Map<Dependency, ts.Symbol[]>();
 
   application.rootConfiguration.node.members.forEach(member => {
     if (isExportBeansClassProperty(member)) {
-      fillExportedBeansForClassElementNode(application, member, exportedBeans);
+      fillExposedBeansForClassElementNode(application, member, exposedBeans, dependencyToSymbols);
     }
   });
 
-  fillApplicationExportedBeans(application, exportedBeans);
+  fillApplicationExposedBeans(application, exposedBeans);
 };
 
-function fillExportedBeansForClassElementNode(application: Application, member: ts.PropertyDeclaration, exportedBeans: Map<string, Dependency>): void {
+function fillExposedBeansForClassElementNode(application: Application, member: ts.PropertyDeclaration, exposedBeans: Map<string, Dependency>, dependencyToSymbols: Map<Dependency, ts.Symbol[]>): void {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
   const callSignatures = nodeType.getCallSignatures();
@@ -28,7 +29,8 @@ function fillExportedBeansForClassElementNode(application: Application, member: 
     getCompilationContext().report(new TypeQualifyError(
       `Could not resolve exported beans signature. Exported beans property must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
       member,
-      application.rootConfiguration,
+      null,
+      application,
     ));
     return;
   }
@@ -44,7 +46,8 @@ function fillExportedBeansForClassElementNode(application: Application, member: 
     getCompilationContext().report(new TypeQualifyError(
       'Could not resolve export beans type.',
       member,
-      application.rootConfiguration,
+      null,
+      application,
     ));
     return;
   }
@@ -58,7 +61,8 @@ function fillExportedBeansForClassElementNode(application: Application, member: 
       getCompilationContext().report(new TypeQualifyError(
         'Could not resolve export beans type.',
         member,
-        application.rootConfiguration,
+        null,
+        application,
       ));
       return;
     }
@@ -66,25 +70,27 @@ function fillExportedBeansForClassElementNode(application: Application, member: 
     const symbolType = typeChecker.getTypeOfSymbol(property);
     const symbolDIType = DITypeBuilder.build(symbolType);
 
-    let existedDependency = exportedBeans.get(propertyName);
+    let existedDependency = exposedBeans.get(propertyName);
 
     if (!existedDependency) {
       existedDependency = new Dependency();
       existedDependency.node = propertyDeclaration as ts.PropertyDeclaration;
       existedDependency.parameterName = propertyName;
       existedDependency.diType = symbolDIType;
-      exportedBeans.set(propertyName, existedDependency);
+      exposedBeans.set(propertyName, existedDependency);
+      dependencyToSymbols.set(existedDependency, [property]);
     } else {
       existedDependency.diType = DITypeBuilder.buildSyntheticIntersectionOrPlain([existedDependency.diType, symbolDIType]);
+      dependencyToSymbols.get(existedDependency)?.push(property);
     }
   });
 }
 
-function fillApplicationExportedBeans(application: Application, exportedBeans: Map<string, Dependency>): void {
-  exportedBeans.forEach((dependency, propertyName) => {
+function fillApplicationExposedBeans(application: Application, exposedBeans: Map<string, Dependency>): void {
+  exposedBeans.forEach((dependency, propertyName) => {
     const externalBeans = Array.from(application.beans).filter(it => it.getExternalValue());
-    const resolvedDependency = DependencyResolver.resolveDependencies(dependency, externalBeans, null);
+    const resolvedDependency = DependencyResolver.resolveDependencies(dependency, externalBeans, null, application);
 
-    application.exportedBeans.set(propertyName, resolvedDependency);
+    application.exposedBeans.set(propertyName, resolvedDependency);
   });
 }

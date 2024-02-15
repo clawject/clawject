@@ -22,6 +22,7 @@ export const registerBeanFactoryMethod = (
       'Method Bean should have a body.',
       classElement.name,
       configuration,
+      null,
     ));
     return;
   }

@@ -1,9 +1,7 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class MissingInitializerError extends AbstractCompilationMessage {
-  public code = MessageCode.CT6;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE6;
   public description = 'Missing initializer.';
 }

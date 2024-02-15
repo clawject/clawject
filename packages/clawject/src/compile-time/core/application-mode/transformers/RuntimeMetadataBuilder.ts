@@ -4,7 +4,7 @@ import { Import } from '../../import/Import';
 import { RuntimeConfigurationMetadata } from '../../../../runtime/metadata/RuntimeConfigurationMetadata';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { filterAndMap } from '../../utils/filterAndMap';
-import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExportedBeanMetadata, RuntimeApplicationMetadata } from '../../../../runtime/metadata/RuntimeApplicationMetadata';
+import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExposedBeanMetadata, RuntimeApplicationMetadata } from '../../../../runtime/metadata/RuntimeApplicationMetadata';
 import { Application } from '../../application/Application';
 import { compact } from 'lodash';
 import { RuntimeBeanMetadata } from '../../../../runtime/metadata/MetadataTypes';
@@ -67,12 +67,12 @@ export class RuntimeMetadataBuilder {
       beanDependenciesMetadata.push(beanDependencies);
     });
 
-    const exportedBeansMetadata: ExportedBeanMetadata[] = [];
-    application.exportedBeans.forEach((maybeResolvedDependency, name) => {
+    const exposedBeansMetadata: ExposedBeanMetadata[] = [];
+    application.exposedBeans.forEach((maybeResolvedDependency, name) => {
       const metadata = this.getDependencyMetadata(application, maybeResolvedDependency);
 
       if (metadata !== null) {
-        exportedBeansMetadata.push({
+        exposedBeansMetadata.push({
           qualifiedName: name,
           metadata,
         });
@@ -82,7 +82,7 @@ export class RuntimeMetadataBuilder {
     return {
       ...configurationMetadata,
       beanDependenciesMetadata,
-      exportedBeansMetadata,
+      exposedBeansMetadata,
     };
   }
 

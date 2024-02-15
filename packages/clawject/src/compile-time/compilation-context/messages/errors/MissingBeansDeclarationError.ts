@@ -1,10 +1,9 @@
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
-import { Configuration } from '../../../core/configuration/Configuration';
+import { ErrorCode } from '../ErrorCode';
 import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { compact } from 'lodash';
+import { Application } from '../../../core/application/Application';
 
 class MissingElement {
   constructor(
@@ -14,18 +13,17 @@ class MissingElement {
 }
 
 export class MissingBeansDeclarationError extends AbstractCompilationMessage {
-  public code = MessageCode.CT12;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE12;
   public description = 'Missing Bean declaration.';
   public missingElementsLocations: MissingElement[];
 
   constructor(
     details: string | null,
     place: ts.Node,
-    relatedConfiguration: Configuration | null,
+    relatedApplication: Application,
     missingElements: ts.Symbol[],
   ) {
-    super(details, place, relatedConfiguration);
+    super(details, place, null, relatedApplication);
 
     this.missingElementsLocations = compact(missingElements.map(symbol => {
       return symbol.declarations?.map(declaration => {

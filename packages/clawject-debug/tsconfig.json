@@ -16,7 +16,14 @@
     "declaration": true,
     "sourceMap": false,
     "plugins": [
-
+      {
+        "name": "@clawject/language-service",
+        "transform": "@clawject/di/transformer"
+      },
+      {
+        "transform": "@clawject/di/transformer/metadata",
+        "afterDeclarations": true
+      }
     ]
   },
   "exclude": [

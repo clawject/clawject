@@ -24,6 +24,7 @@ export const isBeanFactoryArrowFunction = (
       null,
       node,
       null,
+      null,
     ));
     return false;
   }

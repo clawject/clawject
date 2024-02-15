@@ -26,7 +26,7 @@ Example file names are:
 Also, you can declare a `clawject` property in your `package.json` file to configure Clawject.
 
 :::note
-If you're using `@clawject/language-service` - most likely you'll need to restart typescript language service after changing configuration.
+If you're using `@clawject/language-service` - you may need to restart typescript language service after editing configuration file.
 :::
 
 ## Configuration schema
@@ -37,6 +37,9 @@ Configuration schema is:
 interface Config {
   unsafeTSVersion?: boolean; // Default: false
   beans?: {
+    defaultExternal?: boolean; // Default: true
+  },
+  imports?: {
     defaultExternal?: boolean; // Default: true
   }
 }
@@ -54,8 +57,17 @@ Default value is `false`.
 ### `beans.defaultExternal`
 
 //TODO add links to external and internal
-When `true`, all beans are considered external by default.
+When `true`, all beans are considered external, if not explicitly marked as internal.
 
-When `false`, all beans are considered internal by default.
+When `false`, all beans are considered internal, if not explicitly marked as external.
+
+Default value is `true`.
+
+### `imports.defaultExternal`
+
+//TODO add links to external and internal
+When `true`, all imported configurations are considered external, if not explicitly marked as internal.
+
+When `false`, all imported configurations are considered internal, if not explicitly marked as external.
 
 Default value is `true`.

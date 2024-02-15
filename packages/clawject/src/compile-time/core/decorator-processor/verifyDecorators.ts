@@ -51,6 +51,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         `@${decoratorKind} is not compatible with @${incompatibleDecorator}.`,
         incompatibleDecoratorExpression,
         null,
+        null,
       ));
     });
   });
@@ -66,6 +67,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         `@${decoratorKind} was used ${decorators.length} times, but expected 1.`,
         decorators[1],
         null,
+        null,
       ));
       return;
     }
@@ -79,6 +81,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         `@${decoratorKind} is not compatible with target ${decoratorTarget}, can be applied to: ${expectedTargets}.`,
         decoratorNode,
         null,
+        null,
       ));
       return;
     }
@@ -91,6 +94,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         errors.push(new NotSupportedError(
           `@${decoratorKind} can not be used inside ${decoratorParent}, can be used inside: ${expectedParents}.`,
           decoratorNode,
+          null,
           null,
         ));
         return;
@@ -111,6 +115,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
           `@${decoratorKind} was used with ${args.length} arguments, but expected ${argsCount}.`,
           decoratorNode,
           null,
+          null,
         ));
       }
     } else {
@@ -118,6 +123,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         errors.push(new IncorrectArgumentsLengthError(
           `@${decoratorKind} was used with ${args.length} arguments, but expected at least ${argsCount.min}.`,
           decoratorNode,
+          null,
           null,
         ));
         return;
@@ -127,6 +133,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         errors.push(new IncorrectArgumentsLengthError(
           `@${decoratorKind} was used with ${args.length} arguments, but expected at most ${argsCount.max}.`,
           decoratorNode,
+          null,
           null,
         ));
         return;
@@ -151,6 +158,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
         errors.push(new NotStaticallyKnownError(
           `Argument #${index} should be statically known literal.`,
           arg,
+          null,
           null,
         ));
       }

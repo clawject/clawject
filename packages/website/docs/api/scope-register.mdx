@@ -9,7 +9,7 @@ See [@Scope](/docs/api/scope.mdx) and [Custom Scopes](/docs/advanced-concepts/cu
 
 ## Methods overview
 
-### `ScopeRegister.registerScope`
+### `.registerScope`
 
 This method allows you to register a new [Custom Scope](/docs/advanced-concepts/custom-scopes.mdx) and [use it](/docs/api/scope.mdx) for beans.
 
@@ -23,7 +23,7 @@ class MyScope implements CustomScope { /* ... */ }
 ScopeRegister.registerScope('my-scope', MyScope);
 ```
 
-### `ScopeRegister.unregisterScope`
+### `.unregisterScope`
 
 This method allows you to unregister scope by name.
 Returns `true` if scope by given name existed and has been removed, or `false` if the scope does not exist.
@@ -34,7 +34,7 @@ import { ScopeRegister } from '@clawject/di';
 const hasBeenRegistered = ScopeRegister.unregisterScope('my-scope');
 ```
 
-### `ScopeRegister.hasScope`
+### `.hasScope`
 
 Check whether the scope with the given name is registered.
 Returns `true` if scope by given name exists, or `false` if the scope does not exist.

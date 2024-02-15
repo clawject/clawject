@@ -2,8 +2,9 @@ import { ImportedConfiguration } from './Import';
 import { BeanConstructorFactory } from './decorators/index';
 
 /**
- * @internal It's a part of API used by clawject internally,
- * do not rely on it in your code because it may and will be changed without notice.
+ * @internalApi It's a part of API used by clawject internally,
+ * do not rely on it in your code because it **may and will be changed** without notice.
+ *
  * @public
  */
 export interface ___TypeReferenceTable___ {
@@ -11,7 +12,7 @@ export interface ___TypeReferenceTable___ {
   Set: ReadonlySet<any> | Set<any>;
   Map: ReadonlyMap<any, any> | Map<any, any>;
   MapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
-  ImportedConfiguration: ImportedConfiguration<any>;
+  ImportedConfiguration: ImportedConfiguration<any, any>;
   BeanConstructorFactory: BeanConstructorFactory<any, any>;
   Promise: Promise<any> | PromiseLike<any>;
 }

@@ -4,12 +4,14 @@ import { Dependency } from '../dependency/Dependency';
 import { BeanCandidateNotFoundError } from '../../compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
+import { Application } from '../application/Application';
 
 export class DependencyResolver {
   static resolveDependencies(
     dependency: Dependency,
     beansToSearch: Bean[],
     relatedBean: Bean | null,
+    relatedApplication: Application,
   ): MaybeResolvedDependency {
     switch (true) {
     case dependency.diType.isEmptyValue:
@@ -21,7 +23,7 @@ export class DependencyResolver {
       return this.buildForCollectionOrArray(dependency, beansToSearch);
 
     default:
-      return this.buildForBaseType(dependency, beansToSearch, relatedBean);
+      return this.buildForBaseType(dependency, beansToSearch, relatedBean, relatedApplication);
     }
   }
 
@@ -29,6 +31,7 @@ export class DependencyResolver {
     dependency: Dependency,
     beansToSearch: Bean[],
     relatedBean: Bean | null,
+    relatedApplication: Application,
   ): MaybeResolvedDependency {
     const resolvedDependency = new MaybeResolvedDependency(dependency);
 
@@ -65,6 +68,7 @@ export class DependencyResolver {
         relatedBean,
         [],
         matchedByTypeAndPrimary,
+        relatedApplication,
       );
       getCompilationContext().report(error);
       return resolvedDependency;
@@ -75,7 +79,7 @@ export class DependencyResolver {
       return resolvedDependency;
     }
 
-    this.reportPossibleCandidates(relatedBean, dependency, beansToSearch);
+    this.reportPossibleCandidates(relatedBean, dependency, beansToSearch, relatedApplication);
 
     return resolvedDependency;
   }
@@ -129,6 +133,7 @@ export class DependencyResolver {
     bean: Bean | null,
     dependency: Dependency,
     beansToSearch: Bean[],
+    relatedApplication: Application,
   ): void {
     const compilationContext = getCompilationContext();
     const [
@@ -142,6 +147,7 @@ export class DependencyResolver {
       bean,
       byName,
       byType,
+      relatedApplication,
     ));
   }
 }

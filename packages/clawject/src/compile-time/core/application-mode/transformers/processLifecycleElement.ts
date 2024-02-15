@@ -38,7 +38,8 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     getCompilationContext().report(new NotSupportedError(
       'Lifecycle elements could not have arguments outside of CatContext classes.',
       node,
-      null
+      null,
+      null,
     ));
 
     return node;
@@ -48,7 +49,8 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     getCompilationContext().report(new IncorrectNameError(
       'Lifecycle element should have a name.',
       node,
-      null
+      null,
+      null,
     ));
 
     return node;
@@ -58,7 +60,8 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     getCompilationContext().report(new NotStaticallyKnownError(
       'Lifecycle element should have statically known name.',
       node,
-      null
+      null,
+      null,
     ));
 
     return node;
@@ -70,7 +73,8 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     compilationContext.report(new NotStaticallyKnownError(
       'Lifecycle element should have statically known name.',
       node,
-      null
+      null,
+      null,
     ));
 
     return node;

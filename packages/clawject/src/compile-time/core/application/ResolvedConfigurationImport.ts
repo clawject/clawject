@@ -11,7 +11,7 @@ export class ResolvedConfigurationImport {
   ) {
 
     imports.forEach(it => {
-      this.external = this.external || it.external;
+      this.external = this.external || (it.external ?? ConfigLoader.get().imports.defaultExternal);
     });
   }
 

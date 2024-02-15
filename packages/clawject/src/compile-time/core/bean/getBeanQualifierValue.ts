@@ -27,6 +27,7 @@ export const getBeanQualifierValue = (bean: Bean): string | null => {
       'Qualifier can not be empty.',
       qualifierValue,
       null,
+      null,
     ));
     return null;
   }

@@ -6,7 +6,6 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { Dependency } from './Dependency';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { DIType } from '../type-system/DIType';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 
 export const registerBeanDependencies = (configuration: Configuration) => {
@@ -34,6 +33,7 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
       null,
       bean.node,
       bean.parentConfiguration,
+      null,
     ));
     return;
   }
@@ -45,6 +45,7 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
       'Could not resolve bean dependencies. Bean must have constructor property.',
       bean.node,
       bean.parentConfiguration,
+      null,
     ));
     return;
   }
@@ -56,6 +57,7 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
       'Could not resolve bean dependencies. Bean must have exactly one construct signature.',
       bean.node,
       bean.parentConfiguration,
+      null,
     ));
     return;
   }
@@ -69,6 +71,7 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
         'Could not resolve bean dependencies. Construct signature parameter must have exactly one declaration.',
         bean.node,
         bean.parentConfiguration,
+        null,
       ));
       return;
     }
@@ -95,6 +98,7 @@ function registerBeanDependenciesFromBeanCallSignature(bean: Bean) {
       'Could not resolve bean dependencies. Bean must have exactly one call signature.',
       bean.node,
       bean.parentConfiguration,
+      null,
     ));
     return;
   }
@@ -109,6 +113,7 @@ function registerBeanDependenciesFromBeanCallSignature(bean: Bean) {
         'Could not resolve bean dependencies. Call signature parameter must have exactly one declaration.',
         bean.node,
         bean.parentConfiguration,
+        null,
       ));
       return;
     }

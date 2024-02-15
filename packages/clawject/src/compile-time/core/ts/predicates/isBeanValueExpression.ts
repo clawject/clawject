@@ -26,6 +26,7 @@ export const isBeanValueExpression = (
       null,
       node,
       null,
+      null,
     ));
     return false;
   }

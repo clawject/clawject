@@ -1,4 +1,3 @@
-import { DependencyGraph } from './DependencyGraph';
 import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
@@ -7,7 +6,7 @@ import { BeanKind } from '../bean/BeanKind';
 import { Application } from '../application/Application';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 
-export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[], dependencyGraph: DependencyGraph) => {
+export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[]) => {
   const compilationContext = getCompilationContext();
 
   beans.forEach(bean => {
@@ -45,13 +44,13 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
     const missingDependencies: Dependency[] = [];
 
     bean.dependencies.forEach(dependency => {
-      const maybeResolvedDependency = DependencyResolver.resolveDependencies(dependency, beanCandidates, bean);
+      const maybeResolvedDependency = DependencyResolver.resolveDependencies(dependency, beanCandidates, bean, application);
 
       if (!maybeResolvedDependency.isResolved()) {
         missingDependencies.push(dependency);
       }
 
-      dependencyGraph.addNodeWithEdges(bean, maybeResolvedDependency.getAllResolvedBeans());
+      application.dependencyGraph.addNodeWithEdges(bean, maybeResolvedDependency.getAllResolvedBeans());
       application.registerResolvedDependency(bean, maybeResolvedDependency);
     });
 
@@ -60,6 +59,7 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
         null,
         bean.node,
         bean.parentConfiguration,
+        application,
         missingDependencies,
       ));
     }

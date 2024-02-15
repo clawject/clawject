@@ -25,6 +25,7 @@ export const isLifecycleArrowFunctionBean = (
       null,
       node,
       null,
+      null,
     ));
 
     return false;

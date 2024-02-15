@@ -1,9 +1,7 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class IncorrectNameError extends AbstractCompilationMessage {
-  public code = MessageCode.CT1;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE1;
   public description = 'Incorrect name.';
 }

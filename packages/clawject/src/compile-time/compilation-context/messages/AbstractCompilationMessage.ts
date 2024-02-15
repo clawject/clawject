@@ -1,10 +1,12 @@
 import ts from 'typescript';
 import { Configuration } from '../../core/configuration/Configuration';
-import { MessageCode } from './MessageCode';
+import { ErrorCode } from './ErrorCode';
 import { MessageType } from './MessageType';
 import { getNodeDetails, NodeDetails } from '../../core/ts/utils/getNodeDetails';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { Application } from '../../core/application/Application';
+import { WarningCode } from './WarningCode';
+import { InfoCode } from './InfoCode';
 
 export interface IRelatedConfigurationOrApplicationMetadata {
   name: string;
@@ -13,9 +15,22 @@ export interface IRelatedConfigurationOrApplicationMetadata {
   nameNodeDetails: NodeDetails | null;
 }
 
+const errorCodes = new Set<string>(Object.values(ErrorCode));
+const warningCodes = new Set<string>(Object.values(WarningCode));
+
 export abstract class AbstractCompilationMessage {
-  public abstract code: MessageCode;
-  public abstract type: MessageType;
+  public abstract code: ErrorCode | WarningCode | InfoCode;
+  get type(): MessageType {
+    if (errorCodes.has(this.code)) {
+      return MessageType.ERROR;
+    }
+
+    if (warningCodes.has(this.code)) {
+      return MessageType.WARNING;
+    }
+
+    return MessageType.INFO;
+  }
   public abstract description: string;
 
   public readonly place: NodeDetails;
@@ -28,12 +43,20 @@ export abstract class AbstractCompilationMessage {
     public readonly details: string | null,
     place: ts.Node,
     relatedConfiguration: Configuration | null,
-    application: Application | null = null,
+    relatedApplication: Application | null,
   ) {
     this.place = getNodeDetails(place);
-    this.relatedConfigurationMetadata = this.getRelatedConfigurationMetadata(relatedConfiguration);
-    this.relatedApplicationMetadata = application
-      ? this.getRelatedConfigurationMetadata(application.rootConfiguration)
+
+    const rootConfiguration = relatedApplication?.rootConfiguration ?? null;
+
+    if (relatedConfiguration === rootConfiguration) {
+      this.relatedConfigurationMetadata = null;
+    } else {
+      this.relatedConfigurationMetadata = this.getRelatedConfigurationMetadata(relatedConfiguration);
+    }
+
+    this.relatedApplicationMetadata = relatedApplication
+      ? this.getRelatedConfigurationMetadata(relatedApplication.rootConfiguration)
       : null;
 
     this.contextualFileName = getCompilationContext().contextualFileName;

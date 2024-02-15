@@ -1,9 +1,7 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class IncorrectArgumentsLengthError extends AbstractCompilationMessage {
-  public code = MessageCode.CT9;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE9;
   public description = 'Incorrect arguments length.';
 }

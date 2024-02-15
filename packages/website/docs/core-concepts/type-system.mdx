@@ -171,8 +171,6 @@ class Application {
 Clawject has first-class support for generic types:
 
 ```ts
-import {Bean, CatContext} from '@clawject/di';
-
 class Foo<T> {
   constructor(
     private data: T
@@ -217,7 +215,7 @@ class Quux<T extends Baz> {
 
 @ClawjectApplication
 class Application {
-  /* The type of parameter `data` will be `unknown` */
+  /* The type of parameter `data` will be `unknown`, and clawject will not know what to inject here */
   foo = Bean(Foo)
 
   /* The type of parameter `data` will be `string` */

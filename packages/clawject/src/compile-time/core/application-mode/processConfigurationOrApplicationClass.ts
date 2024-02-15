@@ -44,6 +44,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
         'Only configuration and application classes can be imported in this context.',
         parentImportNode,
         parentConfiguration,
+        null,
       ));
       return null;
     }
@@ -62,6 +63,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
         'Only configuration and application classes are supported here.',
         parentImportNode ?? node,
         parentConfiguration,
+        null,
       ));
       return null;
     }
@@ -84,6 +86,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
           `No class member declared in metadata found ${it.classPropertyName}.`,
           node,
           parentConfiguration,
+          null,
         ));
         return;
       }
@@ -93,6 +96,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
           'Import element declared in metadata must be a property declaration.',
           classElementNode,
           parentConfiguration,
+          null,
         ));
         return;
       }
@@ -109,6 +113,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
           `No class member declared in metadata found ${beanDeclarationMetadata.classPropertyName}.`,
           node,
           parentConfiguration,
+          null,
         ));
         return;
       }

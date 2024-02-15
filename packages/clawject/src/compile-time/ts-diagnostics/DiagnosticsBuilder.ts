@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts, { createGetCanonicalFileName } from 'typescript';
 import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { AbstractCompilationMessage, IRelatedConfigurationOrApplicationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
@@ -9,27 +9,29 @@ import { BeanKind } from '../core/bean/BeanKind';
 import { MissingBeansDeclarationError } from '../compilation-context/messages/errors/MissingBeansDeclarationError';
 import { DuplicateNameError } from '../compilation-context/messages/errors/DuplicateNameError';
 import { MessageType } from '../compilation-context/messages/MessageType';
-import { TypeMismatchError } from '../compilation-context/messages/errors/TypeMismatchError';
-
-const MESSAGES_WITHOUT_CONTEXT_DETAILS = [
-  CircularDependenciesError,
-  CanNotRegisterBeanError,
-  MissingBeansDeclarationError,
-  BeanCandidateNotFoundError,
-  DuplicateNameError,
-];
+import { ConfigurationAlreadyImportedInfo } from '../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
 
 export class DiagnosticsBuilder {
+  private static formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
+    getCurrentDirectory: () => getCompilationContext().program.getCurrentDirectory(),
+    getCanonicalFileName: (fileName) => fileName,
+    getNewLine: () => '\n',
+  };
+
+  static diagnosticsToString(diagnostics: ts.Diagnostic[]): string {
+    return ts.formatDiagnosticsWithColorAndContext(diagnostics, this.formatDiagnosticsHost);
+  }
+
   static getDiagnostics(fileName?: string): ts.Diagnostic[] {
     const messages = fileName ?
       getCompilationContext().getMessages(fileName)
       : getCompilationContext().getAllMessages();
 
     return messages
-      .map(it => this.getFormattedDiagnostics(it));
+      .map(it => this.compilationMessageToDiagnostic(it));
   }
 
-  private static getFormattedDiagnostics(message: AbstractCompilationMessage): ts.Diagnostic {
+  static compilationMessageToDiagnostic(message: AbstractCompilationMessage): ts.Diagnostic {
     const diagnosticCategory = this.getDiagnosticCategory(message);
     const diagnosticsCode = this.getDiagnosticCode(message);
 
@@ -73,7 +75,7 @@ export class DiagnosticsBuilder {
     }
 
     if (message instanceof BeanCandidateNotFoundError) {
-      messageDescription = '';
+      messageDescription = 'Could not qualify bean candidate.';
 
       const candidatesByType: ts.DiagnosticRelatedInformation[] = message.candidatesByType.map(it => ({
         messageText: `'${it.declarationName ?? '<anonymous>'}' matched by type.`,
@@ -133,22 +135,28 @@ export class DiagnosticsBuilder {
       relatedInformation.push(...duplicateNamesRelatedInformation);
     }
 
-    if (message instanceof TypeMismatchError) {
-      const typeMismatchRelatedInformation: ts.DiagnosticRelatedInformation[] = message.mismatchElements.map(it => ({
-        messageText: `'${it.name}' is declared here.`,
-        start: it.location.startOffset,
-        length: it.location.length,
+    if (message instanceof ConfigurationAlreadyImportedInfo) {
+      const duplicateImportsRelatedInformation: ts.DiagnosticRelatedInformation[] = message.relatedImportsDetails.map(it => ({
+        messageText: `'${it.declarationName}' is declared here.`,
+        start: it.startOffset,
+        length: it.length,
         code: diagnosticsCode,
-        file: this.getSourceFile(it.location.filePath),
+        file: this.getSourceFile(it.filePath),
         category: this.getDiagnosticCategory(message),
       }));
 
-      relatedInformation.push(...typeMismatchRelatedInformation);
+      relatedInformation.push(...duplicateImportsRelatedInformation);
     }
 
-    if (message.relatedConfigurationMetadata !== null && MESSAGES_WITHOUT_CONTEXT_DETAILS.every(it => !(message instanceof it))) {
+    if (message.relatedConfigurationMetadata !== null) {
       relatedInformation.push(
         this.buildRelatedDiagnosticsFromRelatedConfigurationMetadata(message.relatedConfigurationMetadata)
+      );
+    }
+
+    if (message.relatedApplicationMetadata !== null) {
+      relatedInformation.push(
+        this.buildRelatedDiagnosticsFromRelatedConfigurationMetadata(message.relatedApplicationMetadata)
       );
     }
 
@@ -167,7 +175,7 @@ export class DiagnosticsBuilder {
   private static getDiagnosticCategory(message: AbstractCompilationMessage): ts.DiagnosticCategory {
     switch (message.type) {
     case MessageType.INFO:
-      return ts.DiagnosticCategory.Message;
+      return ts.DiagnosticCategory.Suggestion;
     case MessageType.WARNING:
       return ts.DiagnosticCategory.Warning;
     case MessageType.ERROR:

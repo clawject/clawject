@@ -2,7 +2,7 @@ import { Configuration } from '../configuration/Configuration';
 import { Entity } from '../Entity';
 import ts from 'typescript';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { GenericError } from '../../compilation-context/messages/errors/GenericError';
+import { UnexpectedError } from '../../compilation-context/messages/errors/UnexpectedError';
 import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { Bean } from '../bean/Bean';
 import { MaybeResolvedDependency } from '../dependency-resolver/MaybeResolvedDependency';
@@ -48,7 +48,7 @@ export class Application extends Entity<ts.ClassDeclaration> {
     }
   }
 
-  exportedBeans = new Map<string, MaybeResolvedDependency>();
+  exposedBeans = new Map<string, MaybeResolvedDependency>();
 
   private configurationToIndex = new Map<Configuration, number>();
   getConfigurationIndexUnsafe(configuration: Configuration): number {
@@ -76,10 +76,11 @@ export class Application extends Entity<ts.ClassDeclaration> {
         const resolvedConfiguration = elements[i].resolvedConfiguration;
 
         if (resolvedConfiguration === null) {
-          getCompilationContext().report(new GenericError(
+          getCompilationContext().report(new UnexpectedError(
             'No resolved configuration found in import.',
             this.node,
             null,
+            this,
           ));
           return;
         }

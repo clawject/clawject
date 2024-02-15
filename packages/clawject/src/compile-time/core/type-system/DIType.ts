@@ -194,7 +194,11 @@ export class DIType {
       return false;
     }
 
-    if (this.isAny || this.isUnknown) {
+    if (this.isUnknown) {
+      return false;
+    }
+
+    if (this.isAny) {
       return true;
     }
 

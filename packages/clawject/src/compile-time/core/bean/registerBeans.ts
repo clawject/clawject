@@ -50,6 +50,7 @@ export function registerBeans(configuration: Configuration): void {
         'Unknown Bean target.',
         classElement,
         configuration,
+        null,
       ));
       return;
     }

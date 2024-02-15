@@ -1,5 +1,4 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
@@ -7,10 +6,10 @@ import { Bean } from '../../../core/bean/Bean';
 import { BeanKind } from '../../../core/bean/BeanKind';
 import { mapAndFilter } from '../../../core/utils/mapAndFilter';
 import { isNotEmpty } from '../../../core/utils/isNotEmpty';
+import { Application } from '../../../core/application/Application';
 
 export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
-  public code = MessageCode.CT5;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE5;
   public description = 'Bean candidate not found.';
   public candidatesByName: NodeDetails[];
   public candidatesByType: NodeDetails[];
@@ -23,8 +22,9 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
     relatedBean: Bean | null,
     candidatesByName: Bean[],
     candidatesByType: Bean[],
+    relatedApplication: Application,
   ) {
-    super(details, place, relatedBean?.parentConfiguration ?? null);
+    super(details, place, relatedBean?.parentConfiguration ?? null, relatedApplication);
 
     this.candidatesByName = mapAndFilter(candidatesByName, it => this.getNodeDetails(it), isNotEmpty);
     this.candidatesByType = mapAndFilter(candidatesByType, it => this.getNodeDetails(it), isNotEmpty);

@@ -9,6 +9,7 @@ import { NotSupportedError } from '../../compilation-context/messages/errors/Not
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
+import { ConfigLoader } from '../../config/ConfigLoader';
 
 export const registerImports = (configuration: Configuration): void => {
   configuration.node.members.forEach(member => {
@@ -28,6 +29,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'Could not resolve import type.',
       member,
       configuration,
+      null,
     ));
     return;
   }
@@ -40,6 +42,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'Import must have a constructor property.',
       member,
       configuration,
+      null,
     ));
     return;
   }
@@ -52,6 +55,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'No imported class construct signatures found.',
       member,
       configuration,
+      null,
     ));
     return;
   }
@@ -61,6 +65,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'Imported class mush have only 1 construct signature.',
       member,
       configuration,
+      null,
     ));
     return;
   }
@@ -75,6 +80,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'Could not resolve import symbol.',
       member,
       configuration,
+      null,
     ));
     return;
   }
@@ -86,6 +92,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'No import signatures found.',
       member,
       configuration,
+      null,
     ));
     return;
   }
@@ -97,6 +104,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'No imported class construct signatures found.',
       member,
       configuration,
+      null,
     ));
     return;
   }
@@ -106,6 +114,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'Imported class mush have only 1 construct signature.',
       member,
       configuration,
+      null
     ));
     return;
   }
@@ -119,6 +128,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       'Only configuration and application classes can be imported in this context.',
       member,
       configuration,
+      null
     ));
 
     return;

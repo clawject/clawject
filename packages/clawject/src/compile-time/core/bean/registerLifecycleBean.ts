@@ -20,6 +20,7 @@ export const registerLifecycleBean = (
       'Lifecycle method should have a body.',
       classElement.name,
       configuration,
+      null,
     ));
     return;
   }

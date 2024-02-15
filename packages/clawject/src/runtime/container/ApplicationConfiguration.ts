@@ -17,6 +17,7 @@ export class ApplicationConfiguration {
 
   constructor(
     public readonly classConstructor: ClassConstructor<any>,
+    public readonly applicationClassConstructorParameters: any[],
   ) {}
 
   init(index: number): void {
@@ -29,7 +30,7 @@ export class ApplicationConfiguration {
 
   get instance(): any {
     if (this._instance === null) {
-      this._instance = new this.classConstructor();
+      this._instance = new this.classConstructor(...this.applicationClassConstructorParameters);
     }
 
     return this._instance;

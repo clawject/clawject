@@ -1,9 +1,7 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class DependencyResolvingError extends AbstractCompilationMessage {
-  public code = MessageCode.CT10;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE10;
   public description = 'Can not resolve dependency.';
 }

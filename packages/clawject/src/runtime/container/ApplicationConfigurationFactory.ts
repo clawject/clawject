@@ -7,9 +7,12 @@ import { Utils } from '../Utils';
 export class ApplicationConfigurationFactory {
   private applicationConfigurations: ApplicationConfiguration[] = [];
 
-  async init(applicationClass: ClassConstructor<any>): Promise<void> {
+  async init(
+    applicationClass: ClassConstructor<any>,
+    applicationClassConstructorParameters: any[],
+  ): Promise<void> {
     const visited = new Set<ClassConstructor<any>>();
-    const firstApplicationConfiguration = new ApplicationConfiguration(applicationClass);
+    const firstApplicationConfiguration = new ApplicationConfiguration(applicationClass, applicationClassConstructorParameters);
     const stack = [firstApplicationConfiguration];
 
     while (stack.length > 0) {
@@ -23,28 +26,51 @@ export class ApplicationConfigurationFactory {
       this.applicationConfigurations.push(current);
 
       const elements = configurationMetadata.imports.map(it => it.classPropertyName);
-      const importedConfigurationClasses: MaybeAsync<ClassConstructor<any>>[] = [];
+      const importedConfigurationsClasses: MaybeAsync<{
+        constructor: ClassConstructor<any>;
+        args: MaybeAsync<any[]>;
+      }>[] = [];
 
       for (let i = elements.length - 1; i >= 0; i--) {
         const importPropertyName = elements[i];
-        const importedConfiguration = instance[importPropertyName] as MaybeAsync<ImportedConfiguration<any>>;
-        let importedConfigurationConstructor: MaybeAsync<ClassConstructor<any>>;
+        const importedConfiguration = instance[importPropertyName] as MaybeAsync<ImportedConfiguration<any, any>>;
+
+        let importedConfigurationConstruction: MaybeAsync<{
+          constructor: ClassConstructor<any>;
+          args: MaybeAsync<any[]>;
+        }>;
 
         if (Utils.isPromise(importedConfiguration)) {
-          importedConfigurationConstructor = importedConfiguration
-            .then((importedConfiguration) => importedConfiguration.constructor);
+          importedConfigurationConstruction = importedConfiguration
+            .then((importedConfiguration) => {
+              return {
+                constructor: importedConfiguration.constructor,
+                args: Utils.getResolvedConstructorParameters(importedConfiguration.constructorParameters),
+              };
+            });
         } else {
-          importedConfigurationConstructor = importedConfiguration.constructor;
+          importedConfigurationConstruction = {
+            constructor: importedConfiguration.constructor,
+            args: Utils.getResolvedConstructorParameters(importedConfiguration.constructorParameters),
+          };
         }
 
-        importedConfigurationClasses.push(importedConfigurationConstructor);
+        importedConfigurationsClasses.push(importedConfigurationConstruction);
       }
 
-      const configurationClasses = await Promise.all(importedConfigurationClasses);
+      const configurationClasses = await Promise.all(importedConfigurationsClasses.map(async(it) => {
+        const awaitedIt = await it;
+        const awaitedItArgs = await awaitedIt.args;
 
-      configurationClasses.forEach((configurationClass) => {
-        if (!visited.has(configurationClass)) {
-          stack.push(new ApplicationConfiguration(configurationClass));
+        return {
+          constructor: awaitedIt.constructor,
+          args: awaitedItArgs,
+        };
+      }));
+
+      configurationClasses.forEach((it) => {
+        if (!visited.has(it.constructor)) {
+          stack.push(new ApplicationConfiguration(it.constructor, it.args));
         }
       });
     }

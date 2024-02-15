@@ -51,8 +51,10 @@ export const TSPatchWebpackTSLoader = () => {
     {
       "compilerOptions": {
         "plugins": [
+          { "transform": "@clawject/di/transformer" },
           {
-            "transform": "@clawject/di/transformer"
+            "transform": "@clawject/di/transformer/metadata",
+            "afterDeclarations": true
           }
         ]
       }
@@ -94,8 +96,10 @@ export const TSPatchViteRollupPlugin = () => {
     {
       "compilerOptions": {
         "plugins": [
+          { "transform": "@clawject/di/transformer" },
           {
-            "transform": "@clawject/di/transformer"
+            "transform": "@clawject/di/transformer/metadata",
+            "afterDeclarations": true
           }
         ]
       }

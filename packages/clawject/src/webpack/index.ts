@@ -1,18 +1,18 @@
 import { Compilation, Compiler } from 'webpack';
 import { getCompilationContext } from '../transformer/getCompilationContext';
-import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildErrorFormatter';
+import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
 
 const reportDIErrorsHook = (compilation: Compilation) => {
-  const compilationContext = getCompilationContext();
-  const message = BuildErrorFormatter.formatErrors(
-    compilationContext.errors,
-  );
+  const errors = getCompilationContext().errors;
 
-  if (message === null) {
+  if (errors.length === 0) {
     return;
   }
 
-  compilation.errors.push(buildWebpackError(message));
+  const mapped = errors.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it));
+  const formatted = DiagnosticsBuilder.diagnosticsToString(mapped);
+
+  compilation.errors.push(formatted as any);
 };
 
 /** @public */

@@ -29,6 +29,7 @@ export const fillEmbeddedBeans = (
         '@Embedded decorator is not allowed for class constructor beans.',
         rootBean.node,
         configuration,
+        null,
       ));
       return;
     }
@@ -45,6 +46,7 @@ export const fillEmbeddedBeans = (
           `Could not resolve bean factory signature. Bean must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
           rootBeanNode,
           configuration,
+          null,
         ));
         return;
       }
@@ -63,6 +65,7 @@ export const fillEmbeddedBeans = (
         'Could not resolve type, try specify type explicitly.',
         rootBean.node,
         configuration,
+        null,
       ));
       return;
     }
@@ -74,6 +77,7 @@ export const fillEmbeddedBeans = (
         'Could not resolve type, try specify type explicitly.',
         rootBean.node,
         configuration,
+        null,
       ));
       return;
     }

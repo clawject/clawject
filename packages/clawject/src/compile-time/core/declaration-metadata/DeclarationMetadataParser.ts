@@ -14,12 +14,17 @@ export class DeclarationMetadataParser {
       return it.name?.getText() === CompileTimeElement.COMPILE_TIME_METADATA;
     }) as ts.PropertyDeclaration | undefined;
 
-    const declarationTypeNode = metadataProperty?.type;
+    if (!metadataProperty) {
+      return null;
+    }
+
+    const declarationTypeNode = metadataProperty.type;
 
     if (!declarationTypeNode || !ts.isTypeLiteralNode(declarationTypeNode)) {
       return new CorruptedMetadataError(
         'Compiled metadata property must have type literal node.',
         classDeclaration,
+        null,
         null,
       );
     }
@@ -63,6 +68,7 @@ export class DeclarationMetadataParser {
           `Could not parse metadata literal type node, kind: ${typedNode.literal.kind}`,
           typedNode.literal,
           null,
+          null,
         );
       }
     }
@@ -70,6 +76,7 @@ export class DeclarationMetadataParser {
       return new CorruptedMetadataError(
         `Could not parse metadata literal type node, kind: ${node.kind}`,
         node,
+        null,
         null,
       );
     }

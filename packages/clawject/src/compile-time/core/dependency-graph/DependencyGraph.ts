@@ -1,6 +1,5 @@
 import graphlib from 'graphlib';
 import { Bean } from '../bean/Bean';
-import { Configuration } from '../configuration/Configuration';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { mapAndFilter } from '../utils/mapAndFilter';
 import { analyzeGraph } from 'graph-cycles';
@@ -8,12 +7,6 @@ import { analyzeGraph } from 'graph-cycles';
 const { Graph, alg } = graphlib;
 
 export class DependencyGraph {
-  private static _global = new DependencyGraph();
-
-  static get global() {
-    return this._global;
-  }
-
   graph = new Graph();
 
   addNodeWithEdges(node: Bean, edges: Bean[]) {
@@ -42,12 +35,6 @@ export class DependencyGraph {
         },
         (it): it is Bean => Boolean(it),
       );
-    });
-  }
-
-  clearByConfiguration(configuration: Configuration): void {
-    configuration.beanRegister.elements.forEach(bean => {
-      this.graph.removeNode(bean.id);
     });
   }
 

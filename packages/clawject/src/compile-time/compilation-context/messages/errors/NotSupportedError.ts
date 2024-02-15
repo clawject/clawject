@@ -1,9 +1,7 @@
-import { MessageCode } from '../MessageCode';
-import { MessageType } from '../MessageType';
+import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 
 export class NotSupportedError extends AbstractCompilationMessage {
-  public code = MessageCode.CT11;
-  public type = MessageType.ERROR;
+  public code = ErrorCode.CE11;
   public description = 'Not supported.';
 }

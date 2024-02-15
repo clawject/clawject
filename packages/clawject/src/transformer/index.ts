@@ -5,7 +5,6 @@ import { processApplicationMode } from '../compile-time/core/application-mode/pr
 import { cleanup, cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { DecoratorRules } from '../compile-time/core/decorator-processor/DecoratorRules';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
-import { BuildErrorFormatter } from '../compile-time/compilation-context/BuildErrorFormatter';
 import { getCompilationContext } from './getCompilationContext';
 
 /** @public */
@@ -42,12 +41,13 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
       } else if (compilationContext.errors.length > 0) {
         //Falling back to throwing error from the compiler,
         // if ts-patch is not used - in watch mode it will finish a process
-        const message = BuildErrorFormatter.formatErrors(
-          compilationContext.errors,
-        );
+        const errors = getCompilationContext().errors;
 
-        if (message !== null) {
-          console.log(message);
+        if (errors.length > 0) {
+          const mapped = errors.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it));
+          const formatted = DiagnosticsBuilder.diagnosticsToString(mapped);
+
+          console.log(formatted);
           process.exit(1);
         }
       }

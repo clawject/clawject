@@ -57,8 +57,6 @@ export class ConfigurationRepository {
     this.fileNameToLastConfigurationCounter.delete(fileName);
     configurations.forEach(configuration => {
       this.configurationIdToConfiguration.delete(configuration.id);
-
-      DependencyGraph.global.clearByConfiguration(configuration);
     });
   }
 

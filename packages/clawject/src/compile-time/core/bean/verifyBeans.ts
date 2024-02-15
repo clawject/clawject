@@ -15,6 +15,7 @@ import { ConfigLoader } from '../../config/ConfigLoader';
 import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { DIType } from '../type-system/DIType';
 import { isImportClassProperty } from '../ts/predicates/isImportClassProperty';
+import { Application } from '../application/Application';
 
 const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
   [DITypeFlag.UNRESOLVABLE, 'unresolvable'],
@@ -37,7 +38,7 @@ const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
 export const verifyBeans = (configuration: Configuration): void => {
   const beans = configuration.beanRegister.elements;
 
-  verifyBeanNameUniqueness(beans);
+  verifyBeanNameUniqueness(beans, null);
 
   beans.forEach(bean => {
     verifyBeanType(bean);
@@ -47,7 +48,7 @@ export const verifyBeans = (configuration: Configuration): void => {
   });
 };
 
-export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[]): void {
+export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[], application: Application | null): void {
   const nameToBeans = new Map<string, Bean[]>();
 
   beans.forEach(bean => {
@@ -84,6 +85,7 @@ export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[]): void {
         null,
         bean.node.name,
         beanParentConfiguration,
+        application,
         duplicatedBeans,
       ));
     }
@@ -119,6 +121,7 @@ export function verifyBeanType(bean: Bean): void {
       `Type '${UNSUPPORTED_TYPES.get(bean.diType.typeFlag)}' not supported as a Bean type.`,
       typeNode ?? bean.node,
       parentConfiguration,
+      null,
     ));
     parentConfiguration.beanRegister.deregister(bean);
     return;
@@ -137,7 +140,8 @@ function verifyName(bean: Bean): void {
   compilationContext.report(new NotStaticallyKnownError(
     'Bean element should have statically known name.',
     bean.node.name,
-    bean.parentConfiguration
+    bean.parentConfiguration,
+    null,
   ));
   bean.parentConfiguration.beanRegister.deregister(bean);
 }
@@ -153,7 +157,8 @@ function verifyModifiers(bean: Bean): void {
   compilationContext.report(new NotSupportedError(
     `Bean declaration should not have modifier ${RESTRICTED_MODIFIERS.get(restrictedModifier.kind)}.`,
     bean.node.name,
-    bean.parentConfiguration
+    bean.parentConfiguration,
+    null
   ));
   bean.parentConfiguration.beanRegister.deregister(bean);
 }
@@ -179,7 +184,8 @@ function verifyBeanInitializers(bean: Bean): void {
     compilationContext.report(new MissingInitializerError(
       null,
       bean.node,
-      bean.parentConfiguration
+      bean.parentConfiguration,
+      null
     ));
     bean.parentConfiguration.beanRegister.deregister(bean);
   }

@@ -2,10 +2,10 @@ import { RuntimeConfigurationMetadata } from './RuntimeConfigurationMetadata';
 
 export interface RuntimeApplicationMetadata extends RuntimeConfigurationMetadata {
   beanDependenciesMetadata: ApplicationBeanDependenciesMetadata[][];
-  exportedBeansMetadata: ExportedBeanMetadata[];
+  exposedBeansMetadata: ExposedBeanMetadata[];
 }
 
-export interface ExportedBeanMetadata {
+export interface ExposedBeanMetadata {
   qualifiedName: string;
   metadata: ApplicationBeanDependencyMetadata;
 }

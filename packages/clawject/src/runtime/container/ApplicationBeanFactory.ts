@@ -54,7 +54,7 @@ export class ApplicationBeanFactory {
     await Promise.all([...regular, ...lifecycle]);
   }
 
-  destroy(): void {
+  close(): void {
     const lifecycleBeans = new Set<ApplicationBean>();
 
     this.applicationBeans.forEach((applicationBean) => {
@@ -75,7 +75,7 @@ export class ApplicationBeanFactory {
     });
   }
 
-  getExportedBean(beanName: string): Promise<any> {
+  getExposedBean(beanName: string): Promise<any> {
     const exportedBean = Utils.getValueSafe(this.exportedBeanNameToApplicationBeanDependency, beanName);
 
     if (exportedBean === Utils.EMPTY_VALUE) {
@@ -85,12 +85,12 @@ export class ApplicationBeanFactory {
     return exportedBean.getValue();
   }
 
-  getExportedBeans(): Promise<Record<string, any>> {
+  async getExposedBeans(): Promise<Record<string, any>> {
     const data = Promise.all(
       Array.from(this.exportedBeanNameToApplicationBeanDependency.entries()).map(async ([beanName, exportedBean]) => [beanName, await exportedBean.getValue()] as const),
     );
 
-    return data.then((entries) => Object.fromEntries(entries));
+    return Object.fromEntries(await data);
   }
 
   private async createApplicationBeans(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
@@ -147,7 +147,7 @@ export class ApplicationBeanFactory {
   }
 
   private fillExportedBeans(applicationMetadata: RuntimeApplicationMetadata): void {
-    applicationMetadata.exportedBeansMetadata.forEach((exportedBeanMetadata) => {
+    applicationMetadata.exposedBeansMetadata.forEach((exportedBeanMetadata) => {
       this.exportedBeanNameToApplicationBeanDependency.set(exportedBeanMetadata.qualifiedName, new ApplicationBeanDependency(exportedBeanMetadata.metadata, this.applicationBeanFinder));
     });
   }
