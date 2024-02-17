@@ -1,6 +1,6 @@
 /** @public */
 export const ExposeBeans = <T extends object>(): (exposedBeans: ExposedBeans<T>) => ExposedBeans<T> => {
-  return (exportedBeans) => exportedBeans;
+  return (exposedBeans) => exposedBeans;
 };
 
 /** @public */

@@ -5,28 +5,29 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
+import { CType } from '../type-system/CType';
 
 export const fillExposedBeans = (application: Application): void => {
   const exposedBeans = new Map<string, Dependency>();
-  const dependencyToSymbols = new Map<Dependency, ts.Symbol[]>();
+  const dependencyToSymbol = new Map<Dependency, ts.Symbol>();
 
   application.rootConfiguration.node.members.forEach(member => {
     if (isExportBeansClassProperty(member)) {
-      fillExposedBeansForClassElementNode(application, member, exposedBeans, dependencyToSymbols);
+      fillExposedBeansForClassElementNode(application, member, exposedBeans, dependencyToSymbol);
     }
   });
 
   fillApplicationExposedBeans(application, exposedBeans);
 };
 
-function fillExposedBeansForClassElementNode(application: Application, member: ts.PropertyDeclaration, exposedBeans: Map<string, Dependency>, dependencyToSymbols: Map<Dependency, ts.Symbol[]>): void {
+function fillExposedBeansForClassElementNode(application: Application, member: ts.PropertyDeclaration, exposedBeans: Map<string, Dependency>, dependencyToSymbol: Map<Dependency, ts.Symbol>): void {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
   const callSignatures = nodeType.getCallSignatures();
 
   if (callSignatures.length !== 1) {
     getCompilationContext().report(new TypeQualifyError(
-      `Could not resolve exported beans signature. Exported beans property must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
+      `Could not resolve exposed beans signature. Exposed beans property must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
       member,
       null,
       application,
@@ -66,23 +67,25 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
       return;
     }
 
-    const symbolType = typeChecker.getTypeOfSymbol(property);
-    //TODO
-    // const symbolDIType = DITypeBuilder.build(symbolType);
-
-    let existedDependency = exposedBeans.get(propertyName);
-
-    if (!existedDependency) {
-      existedDependency = new Dependency();
-      existedDependency.node = propertyDeclaration as ts.PropertyDeclaration;
-      existedDependency.parameterName = propertyName;
-      // existedDependency.cType = symbolDIType;
-      exposedBeans.set(propertyName, existedDependency);
-      dependencyToSymbols.set(existedDependency, [property]);
-    } else {
-      // existedDependency.cType = DITypeBuilder.buildSyntheticIntersectionOrPlain([existedDependency.cType, symbolDIType]);
-      dependencyToSymbols.get(existedDependency)?.push(property);
+    if (exposedBeans.has(propertyName)) {
+      getCompilationContext().report(new TypeQualifyError(
+        'Duplicate declaration of exposed beans property.',
+        propertyDeclaration,
+        null,
+        application,
+      ));
+      return;
     }
+
+    const symbolType = typeChecker.getTypeOfSymbol(property);
+    const symbolCType = new CType(symbolType);
+
+    const dependency = new Dependency();
+    dependency.node = propertyDeclaration as ts.PropertyDeclaration;
+    dependency.parameterName = propertyName;
+    dependency.cType = symbolCType;
+    exposedBeans.set(propertyName, dependency);
+    dependencyToSymbol.set(dependency, property);
   });
 }
 

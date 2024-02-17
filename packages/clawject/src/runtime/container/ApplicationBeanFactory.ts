@@ -15,7 +15,7 @@ import { Utils } from '../Utils';
 import { RuntimeErrors } from '../api/RuntimeErrors';
 
 export class ApplicationBeanFactory {
-  exportedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
+  exposedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
   applicationBeans: ApplicationBean[] = [];
   configurationIndexToBeanClassPropertyToApplicationBean = new Map<number, Map<string, ApplicationBean>>();
   applicationBeanFinder = new ApplicationBeanFinder(this.configurationIndexToBeanClassPropertyToApplicationBean);
@@ -27,7 +27,7 @@ export class ApplicationBeanFactory {
 
   async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
     await this.createApplicationBeans(applicationMetadata);
-    this.fillExportedBeans(applicationMetadata);
+    this.fillExposedBeans(applicationMetadata);
     await this.initBeans();
   }
 
@@ -76,18 +76,21 @@ export class ApplicationBeanFactory {
   }
 
   getExposedBean(beanName: string): Promise<any> {
-    const exportedBean = Utils.getValueSafe(this.exportedBeanNameToApplicationBeanDependency, beanName);
+    const exposedBeans = Utils.getValueSafe(this.exposedBeanNameToApplicationBeanDependency, beanName);
 
-    if (exportedBean === Utils.EMPTY_VALUE) {
-      throw new RuntimeErrors.BeanNotFoundError(`No exported bean found by exported name: ${beanName}`);
+    if (exposedBeans === Utils.EMPTY_VALUE) {
+      throw new RuntimeErrors.BeanNotFoundError(`No exposed bean found by exposed name: ${beanName}`);
     }
 
-    return exportedBean.getValue();
+    return exposedBeans.getValue();
   }
 
   async getExposedBeans(): Promise<Record<string, any>> {
     const data = Promise.all(
-      Array.from(this.exportedBeanNameToApplicationBeanDependency.entries()).map(async ([beanName, exportedBean]) => [beanName, await exportedBean.getValue()] as const),
+      Array.from(this.exposedBeanNameToApplicationBeanDependency.entries())
+        .map(async ([beanName, exposedBeans]) =>
+          [beanName, await exposedBeans.getValue()] as const
+        ),
     );
 
     return Object.fromEntries(await data);
@@ -146,9 +149,9 @@ export class ApplicationBeanFactory {
     await Promise.all(resultPromise);
   }
 
-  private fillExportedBeans(applicationMetadata: RuntimeApplicationMetadata): void {
-    applicationMetadata.exposedBeansMetadata.forEach((exportedBeanMetadata) => {
-      this.exportedBeanNameToApplicationBeanDependency.set(exportedBeanMetadata.qualifiedName, new ApplicationBeanDependency(exportedBeanMetadata.metadata, this.applicationBeanFinder));
+  private fillExposedBeans(applicationMetadata: RuntimeApplicationMetadata): void {
+    applicationMetadata.exposedBeansMetadata.forEach((exposedBeanMetadata) => {
+      this.exposedBeanNameToApplicationBeanDependency.set(exposedBeanMetadata.qualifiedName, new ApplicationBeanDependency(exposedBeanMetadata.metadata, this.applicationBeanFinder));
     });
   }
 
