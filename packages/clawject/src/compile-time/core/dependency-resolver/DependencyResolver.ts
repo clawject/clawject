@@ -36,10 +36,7 @@ export class DependencyResolver {
     const resolvedDependency = new MaybeResolvedDependency(dependency);
 
     const matchedByType = beansToSearch
-      .filter(it => dependency.cType.isCompatible(it.cType));
-
-    // const matchedByType = beansToSearch
-    //   .filter(it => dependency.cType.isCompatibleToPossiblePromise(it.cType));
+      .filter(it => dependency.cType.isCompatibleToPossiblePromise(it.cType));
 
     if (matchedByType.length === 1) {
       resolvedDependency.qualifiedBean = matchedByType[0];
