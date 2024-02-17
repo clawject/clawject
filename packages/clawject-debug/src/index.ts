@@ -1,14 +1,17 @@
-import {Bean, ClawjectApplication, PostConstruct} from '@clawject/di';
+import {Bean, ClawjectApplication, Embedded, PostConstruct} from '@clawject/di';
 
 @ClawjectApplication
 class App {
-  @Bean a: A<string | number> = {} as any;
+  @Bean @Embedded a: A & B = {} as any;
 
   @PostConstruct
-  pc(test: B<string>) {
+  pc(test: A & C) {
 
   }
 }
 
-interface B<T> {}
-interface A<T> extends B<T> {}
+interface A { nested: C }
+interface B { nested: D }
+
+interface C {}
+interface D {}

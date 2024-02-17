@@ -126,17 +126,22 @@ export class TypeComparator {
       return false;
     }
 
+    if (this.checkFlag(source, TypeFlags.Intersection) && this.checkFlag(target, TypeFlags.Intersection)) {
+      return (target as ts.IntersectionType).types.every(targetType => {
+        return (source as ts.IntersectionType).types.some(sourceType => this.compareType(sourceType, targetType));
+      });
+    }
+
     if (this.checkFlag(target, TypeFlags.Union)) {
       return (target as ts.UnionType).types.some(it => this.compareType(source, it));
     }
 
     if (this.checkFlag(target, TypeFlags.Intersection)) {
-      if (this.checkFlag(source, TypeFlags.Intersection)) {
-        return (target as ts.IntersectionType).types.every(it =>
-          (source as ts.IntersectionType).types.some(sourceIt => this.compareType(sourceIt, it)));
-      }
+      return (target as ts.IntersectionType).types.every(it => this.compareType(source, it));
+    }
 
-      return (target as ts.UnionType).types.every(it => this.compareType(source, it));
+    if (this.checkFlag(source, TypeFlags.Intersection)) {
+      return (source as ts.IntersectionType).types.some(it => this.compareType(it, target));
     }
 
     if (this.checkFlag(source, TypeFlags.Primitive) !== this.checkFlag(target, TypeFlags.Primitive)) {
