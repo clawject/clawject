@@ -2,7 +2,6 @@ import ts from 'typescript';
 import { Application } from '../application/Application';
 import { isExportBeansClassProperty } from '../ts/predicates/isExportBeansClassProperty';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
@@ -68,7 +67,8 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
     }
 
     const symbolType = typeChecker.getTypeOfSymbol(property);
-    const symbolDIType = DITypeBuilder.build(symbolType);
+    //TODO
+    // const symbolDIType = DITypeBuilder.build(symbolType);
 
     let existedDependency = exposedBeans.get(propertyName);
 
@@ -76,11 +76,11 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
       existedDependency = new Dependency();
       existedDependency.node = propertyDeclaration as ts.PropertyDeclaration;
       existedDependency.parameterName = propertyName;
-      existedDependency.diType = symbolDIType;
+      // existedDependency.cType = symbolDIType;
       exposedBeans.set(propertyName, existedDependency);
       dependencyToSymbols.set(existedDependency, [property]);
     } else {
-      existedDependency.diType = DITypeBuilder.buildSyntheticIntersectionOrPlain([existedDependency.diType, symbolDIType]);
+      // existedDependency.cType = DITypeBuilder.buildSyntheticIntersectionOrPlain([existedDependency.cType, symbolDIType]);
       dependencyToSymbols.get(existedDependency)?.push(property);
     }
   });

@@ -1,7 +1,6 @@
 import ts from 'typescript';
 import { Configuration } from './Configuration';
 import { unquoteString } from '../utils/unquoteString';
-import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 
 export class ConfigurationRepository {

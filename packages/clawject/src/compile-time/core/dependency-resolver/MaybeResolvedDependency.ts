@@ -13,7 +13,7 @@ export class MaybeResolvedDependency {
   qualifiedCollectionBeans: Bean[] | null = null;
 
   isResolved(): boolean {
-    if (this.dependency.diType.isOptional) {
+    if (this.dependency.cType.isOptional()) {
       return true;
     }
 
@@ -25,7 +25,7 @@ export class MaybeResolvedDependency {
       return true;
     }
 
-    return this.dependency.diType.isEmptyValue;
+    return this.dependency.cType.isEmptyValue();
   }
 
   getAllResolvedBeans(): Bean[] {

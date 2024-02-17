@@ -6,10 +6,8 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { processConfigurationOrApplicationClass } from '../application-mode/processConfigurationOrApplicationClass';
 import { ConfigurationImportError } from '../../compilation-context/messages/errors/ConfigurationImportError';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
-import { ConfigLoader } from '../../config/ConfigLoader';
+import { CType } from '../type-system/CType';
 
 export const registerImports = (configuration: Configuration): void => {
   configuration.node.members.forEach(member => {
@@ -22,19 +20,10 @@ export const registerImports = (configuration: Configuration): void => {
 export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration, externalValue: boolean | null): void {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
-  const importType = DITypeBuilder.getPromisedTypeOfPromise(nodeType) ?? nodeType;
+  let importType = new CType(nodeType);
+  importType = importType.getPromisedType() ?? importType;
 
-  if (!importType) {
-    getCompilationContext().report(new TypeQualifyError(
-      'Could not resolve import type.',
-      member,
-      configuration,
-      null,
-    ));
-    return;
-  }
-
-  const properties = importType.getProperties();
+  const properties = importType.tsType.getProperties();
   const constructor = properties.find(it => it.getName() === 'constructor');
 
   if (!constructor) {

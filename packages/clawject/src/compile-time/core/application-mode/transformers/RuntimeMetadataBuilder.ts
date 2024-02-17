@@ -88,13 +88,13 @@ export class RuntimeMetadataBuilder {
 
   private static getDependencyMetadata(application: Application, maybeResolvedDependency: MaybeResolvedDependency): ApplicationBeanDependencyMetadata | null {
     let kind: ApplicationBeanDependencyMetadata['kind'];
-    if (maybeResolvedDependency.dependency.diType.isSet) {
+    if (maybeResolvedDependency.dependency.cType.isSet()) {
       kind = 'set';
-    } else if (maybeResolvedDependency.dependency.diType.isMap) {
+    } else if (maybeResolvedDependency.dependency.cType.isMap()) {
       kind = 'map';
-    } else if (maybeResolvedDependency.dependency.diType.isArray) {
+    } else if (maybeResolvedDependency.dependency.cType.isArray()) {
       kind = 'array';
-    } else if (maybeResolvedDependency.dependency.diType.isEmptyValue || maybeResolvedDependency.qualifiedBean === null && maybeResolvedDependency.qualifiedCollectionBeans === null) {
+    } else if (maybeResolvedDependency.dependency.cType.isEmptyValue() || maybeResolvedDependency.qualifiedBean === null && maybeResolvedDependency.qualifiedCollectionBeans === null) {
       kind = 'value';
     } else {
       kind = 'plain';
@@ -142,7 +142,7 @@ export class RuntimeMetadataBuilder {
     case 'value': {
       let value: any = null;
 
-      if (maybeResolvedDependency.dependency.diType.isVoidUndefinedPlainUnionIntersection) {
+      if (maybeResolvedDependency.dependency.cType.isVoidLike()) {
         value = undefined;
       }
 

@@ -4,11 +4,9 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
-import ts from 'typescript';
 import { BeanKind } from './BeanKind';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
-import { DIType } from '../type-system/DIType';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
+import { CType } from '../type-system/CType';
 
 export const fillEmbeddedBeans = (
   configuration: Configuration,
@@ -36,7 +34,7 @@ export const fillEmbeddedBeans = (
 
     const typeChecker = compilationContext.typeChecker;
     const rootBeanNode = rootBean.node;
-    let type: ts.Type | null = typeChecker.getTypeAtLocation(rootBeanNode);
+    let type = typeChecker.getTypeAtLocation(rootBeanNode);
 
     if (rootBean.kind === BeanKind.FACTORY_METHOD || rootBean.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
       const callSignatures = typeChecker.getTypeAtLocation(rootBeanNode).getCallSignatures();
@@ -55,59 +53,23 @@ export const fillEmbeddedBeans = (
     }
 
     if (type) {
-      type = DITypeBuilder.getPromisedTypeOfPromise(type) ?? type;
+      const cType = new CType(type);
+      type = cType.getPromisedType()?.tsType ?? cType.tsType;
     }
 
-    const typeSymbol = type?.getSymbol();
+    const typeProperties = type.getProperties();
 
-    if (!typeSymbol) {
-      compilationContext.report(new TypeQualifyError(
-        'Could not resolve type, try specify type explicitly.',
-        rootBean.node,
-        configuration,
-        null,
-      ));
-      return;
-    }
-
-    const declarations = typeSymbol.declarations ?? [];
-
-    if (declarations.length === 0) {
-      compilationContext.report(new TypeQualifyError(
-        'Could not resolve type, try specify type explicitly.',
-        rootBean.node,
-        configuration,
-        null,
-      ));
-      return;
-    }
-
-    const declarationsTypes = declarations.reduce((acc, declaration) => {
-      const declarationType = typeChecker.getTypeAtLocation(declaration);
-      declarationType.getProperties().forEach(property => {
-        const propertyTypes = acc.get(property.name) ?? [];
-        !acc.has(property.name) && acc.set(property.name, propertyTypes);
-        const type = typeChecker.getTypeOfSymbolAtLocation(property, declaration);
-
-        propertyTypes.push(DITypeBuilder.build(type));
-      });
-
-      return acc;
-    }, new Map<string, DIType[]>());
-
-    declarationsTypes.forEach((types, name) => {
-      const intersectionType = DITypeBuilder.buildSyntheticIntersectionOrPlain(types);
-
+    typeProperties.forEach(propertySymbol => {
       const bean = new Bean({
         classMemberName: rootBean.classMemberName,
         parentConfiguration: configuration,
         node: rootBean.node,
         kind: rootBean.kind,
-        nestedProperty: name,
+        nestedProperty: propertySymbol.name,
         external: rootBean.external,
         primary: rootBean.primary,
       });
-      bean.registerType(intersectionType, null);
+      bean.registerType(new CType(typeChecker.getTypeOfSymbol(propertySymbol)));
       configuration.beanRegister.register(bean);
     });
   });

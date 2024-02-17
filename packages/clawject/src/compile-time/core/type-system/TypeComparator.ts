@@ -1,6 +1,20 @@
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import ts, { ObjectFlags, TypeFlags } from 'typescript';
 import { get } from 'lodash';
+import { isNotEmpty } from '../utils/isNotEmpty';
+
+class ObjectTypeWrapper {
+  constructor(
+    public typeSymbol: ts.Symbol | undefined,
+    public typeArguments: ts.Type[],
+  ) {}
+
+  equals(other: ObjectTypeWrapper): boolean {
+    return this.typeSymbol === other.typeSymbol &&
+      this.typeArguments.length === other.typeArguments.length &&
+      this.typeArguments.every((it, i) => it === other.typeArguments[i]);
+  }
+}
 
 export class TypeComparator {
 
@@ -10,6 +24,85 @@ export class TypeComparator {
 
   static checkObjectFlag(type: ts.Type, flag: ts.ObjectFlags): boolean {
     return !!(get(type, 'objectFlags', 0) & flag);
+  }
+
+  static isReferenceType(type: ts.Type): type is ts.TypeReference {
+    return this.checkObjectFlag(type, ObjectFlags.Reference);
+  }
+
+  private static getExpandedReferenceTypes(type: ts.TypeReference): ObjectTypeWrapper[] {
+    const typeChecker = getCompilationContext().typeChecker;
+
+    const baseType = type as ts.TypeReference;
+    const baseTypeArguments = typeChecker.getTypeArguments(baseType).filter(it => {
+      return !ts.isThisTypeParameter(it);
+    });
+    const baseTypeSymbol = baseType.getSymbol();
+    const processedElements: ObjectTypeWrapper[] = [];
+    const stack: ObjectTypeWrapper[] = [
+      new ObjectTypeWrapper(baseTypeSymbol, baseTypeArguments as ts.Type[])
+    ];
+
+    while (stack.length > 0) {
+      const typeWithTypeArguments = stack.pop()!;
+      const {typeSymbol, typeArguments} = typeWithTypeArguments;
+      processedElements.push(typeWithTypeArguments);
+
+      if (!typeSymbol) {
+        return [];
+      }
+
+      typeSymbol.getDeclarations()?.forEach(declaration => {
+        if (ts.isClassDeclaration(declaration) || ts.isInterfaceDeclaration(declaration)) {
+          const typeArgumentsMap = new Map<ts.Symbol, ts.Type | null>();
+          declaration.typeParameters?.forEach((it, i) => {
+            typeArgumentsMap.set(it.symbol, typeArguments[i] ?? null);
+          });
+
+          const heritageClausesMembers = declaration.heritageClauses?.map(it => it.types).flat() ?? [];
+
+          heritageClausesMembers.forEach(member => {
+            const memberSymbol = typeChecker.getTypeAtLocation(member).getSymbol();
+            const memberTypeArguments = member.typeArguments?.map(it => {
+              const type = typeChecker.getTypeAtLocation(it);
+              if (ts.isThisTypeParameter(type)) {
+                return;
+              }
+
+              const symbol = type.getSymbol();
+
+              if (!symbol) {
+                return type;
+              }
+
+              let foundType = typeArgumentsMap.get(symbol);
+
+              if (!foundType) {
+                for (const declaration of symbol.getDeclarations() ?? []) {
+                  foundType = typeArgumentsMap.get(declaration.symbol);
+
+                  if (foundType) {
+                    break;
+                  }
+                }
+              }
+
+              return foundType ?? type;
+            }).filter(isNotEmpty) ?? [];
+
+            const typeWithTypeArguments = new ObjectTypeWrapper(memberSymbol, memberTypeArguments);
+
+            if (processedElements.some(it => it.equals(typeWithTypeArguments))) {
+              return;
+            } else {
+              stack.push(new ObjectTypeWrapper(memberSymbol, memberTypeArguments));
+            }
+          });
+        }
+      });
+    }
+
+    return processedElements;
   }
 
   static compareType(source: ts.Type, target: ts.Type): boolean {
@@ -29,18 +122,6 @@ export class TypeComparator {
       return true;
     }
 
-    if (this.checkObjectFlag(source, ObjectFlags.Anonymous) || this.checkObjectFlag(target, ObjectFlags.Anonymous)) {
-      return this.compareAnonymousAliasSymbols(source, target);
-    }
-
-    if (typeChecker.isTupleType(source) || typeChecker.isTupleType(target)) {
-      return this.compareTupleTypes(source as ts.TupleType, target as ts.TupleType);
-    }
-
-    if (this.checkFlag(target, TypeFlags.Object) && this.checkFlag(source, TypeFlags.Object)) {
-      return this.compareObjectTypes(source as ts.ObjectType, target as ts.ObjectType);
-    }
-
     if (this.checkFlag(source, TypeFlags.Union)) {
       return false;
     }
@@ -56,6 +137,29 @@ export class TypeComparator {
       }
 
       return (target as ts.UnionType).types.every(it => this.compareType(source, it));
+    }
+
+    if (this.checkFlag(source, TypeFlags.Primitive) !== this.checkFlag(target, TypeFlags.Primitive)) {
+      return false;
+    }
+
+    if (this.checkObjectFlag(source, ObjectFlags.Anonymous) || this.checkObjectFlag(target, ObjectFlags.Anonymous)) {
+      return this.compareAnonymousAliasSymbols(source, target);
+    }
+
+    if (typeChecker.isTupleType(source) || typeChecker.isTupleType(target)) {
+      return this.compareTupleTypes(source as ts.TupleType, target as ts.TupleType);
+    }
+
+    if (this.checkFlag(source, TypeFlags.Object) && this.checkFlag(target, TypeFlags.Object)) {
+      if (this.isReferenceType(source) && this.isReferenceType(target)) {
+        const expandedSourceTypes = this.getExpandedReferenceTypes(source);
+        const expandedTargetTypes = this.getExpandedReferenceTypes(target);
+
+        return this.compareObjectTypeWrappers(expandedSourceTypes, expandedTargetTypes);
+      }
+
+      return this.compareObjectTypes(source as ts.ObjectType, target as ts.ObjectType);
     }
 
     return isAssignableByTypescript;
@@ -134,14 +238,34 @@ export class TypeComparator {
     });
   }
 
-  private static compareDeclarationsBySymbol(source: ts.Symbol, target: ts.Symbol): boolean {
+  static compareDeclarationsBySymbol(source: ts.Symbol, target: ts.Symbol): boolean {
     const targetDeclarations = target.getDeclarations() ?? [];
     const sourceDeclarations = new Set(source.getDeclarations() ?? []);
 
     return targetDeclarations.every(it => sourceDeclarations.has(it));
   }
 
-  private static isReferenceType(type: ts.Type): type is ts.TypeReference {
-    return this.checkObjectFlag(type, ObjectFlags.Reference);
+  private static compareObjectTypeWrappers(source: ObjectTypeWrapper[], target: ObjectTypeWrapper[]): boolean {
+    return target.every(targetType => {
+      return source.some(sourceType => {
+        if (!sourceType.typeSymbol || !targetType.typeSymbol) {
+          return false;
+        }
+
+        const isCompatibleBySymbol = TypeComparator.compareDeclarationsBySymbol(sourceType.typeSymbol, targetType.typeSymbol);
+
+        if (!isCompatibleBySymbol) {
+          return false;
+        }
+
+        if (sourceType.typeArguments.length !== targetType.typeArguments.length) {
+          return false;
+        }
+
+        return sourceType.typeArguments.every((it, i) => {
+          return TypeComparator.compareType(it, targetType.typeArguments[i]);
+        });
+      });
+    });
   }
 }

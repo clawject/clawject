@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { DIType } from '../type-system/DIType';
 import { ClassPropertyWithArrowFunctionInitializer, ClassPropertyWithCallExpressionInitializer, ClassPropertyWithExpressionInitializer } from '../ts/types';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
@@ -7,9 +6,10 @@ import { Dependency } from '../dependency/Dependency';
 import { Entity } from '../Entity';
 import { LifecycleKind } from '../../../runtime/types/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
-import { FileGraph } from '../file-graph/FileGraph';
 import * as Case from 'case';
 import { ConfigLoader } from '../../config/ConfigLoader';
+import { CType } from '../type-system/CType';
+import { FileGraph } from '../file-graph/FileGraph';
 
 export type BeanNode = ts.MethodDeclaration
   | ClassPropertyWithCallExpressionInitializer
@@ -23,7 +23,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   declare parentConfiguration: Configuration; //Set by Context or Configuration during registration
   declare classMemberName: string;
   qualifier: string | null = null;
-  private _diType: DIType | null = null;
+  private _cType: CType | null = null;
   declare kind: BeanKind;
   lifecycle: LifecycleKind[] = [];
   external: boolean | null = null;
@@ -34,8 +34,6 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
   conditionExpression = new DisposableNodeHolder<ts.Expression>();
-  //Will be used on verifyBeans stage
-  typeRef = new DisposableNodeHolder<ts.Type>();
 
   constructor(values: Partial<Bean> = {}) {
     super();
@@ -45,29 +43,28 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
 
   registerDependency(dependency: Dependency): void {
     this.dependencies.add(dependency);
-    dependency.diType.declarationFileNames.forEach(it => {
-      FileGraph.add(this.parentConfiguration.fileName, it);
+    dependency.cType.getDeclarations().forEach(it => {
+      FileGraph.add(this.parentConfiguration.fileName, it.getSourceFile().fileName);
     });
   }
 
-  get diType(): DIType {
-    if (this._diType === null) {
-      throw new Error('DIType for bean is not set.');
+  get cType(): CType {
+    if (this._cType === null) {
+      throw new Error('CType for bean is not set.');
     }
 
-    return this._diType;
+    return this._cType;
   }
 
   getExternalValue(): boolean {
     return this.external ?? this.parentConfiguration.external ?? ConfigLoader.get().beans.defaultExternal;
   }
 
-  registerType(diType: DIType, tsType: ts.Type | null): void {
-    this._diType = diType;
-    diType.declarations.map(it => {
-      FileGraph.add(this.parentConfiguration.fileName, it.fileName);
+  registerType(cType: CType): void {
+    this._cType = cType;
+    cType.getDeclarations().forEach(it => {
+      FileGraph.add(this.parentConfiguration.fileName, it.getSourceFile().fileName);
     });
-    this.typeRef.value = tsType;
   }
 
   get fullName(): string {

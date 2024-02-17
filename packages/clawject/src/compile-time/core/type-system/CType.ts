@@ -26,7 +26,11 @@ export class CType {
     return this.getUnionOrIntersectionTypes()?.every(it => it.isEmptyValue()) ?? (this.isVoidLike() || this.isNull());
   }
 
-  private getUnionOrIntersectionTypes(): CType[] | null {
+  getDeclarations(): ts.Declaration[] {
+    return this.tsType.symbol?.declarations ?? [];
+  }
+
+  getUnionOrIntersectionTypes(): CType[] | null {
     if (!this.isUnionOrIntersection()) {
       return null;
     }
@@ -36,11 +40,19 @@ export class CType {
     return thisUnionOrIntersectionTSType.types.map(it => new CType(it));
   }
 
-  private isUnionOrIntersection(): boolean {
+  getTypeArguments(): CType[] | null {
+    if (TypeComparator.isReferenceType(this.tsType)) {
+      return getCompilationContext().typeChecker.getTypeArguments(this.tsType).map(it => new CType(it));
+    }
+
+    return null;
+  }
+
+  isUnionOrIntersection(): boolean {
     return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.UnionOrIntersection);
   }
 
-  private isUnion(): boolean {
+  isUnion(): boolean {
     return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Union);
   }
 
@@ -48,8 +60,24 @@ export class CType {
     return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.VoidLike);
   }
 
+  isUndefined(): boolean {
+    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Undefined);
+  }
+
+  isVoid(): boolean {
+    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Null);
+  }
+
   isNull(): boolean {
     return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Null);
+  }
+
+  isNever(): boolean {
+    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Never);
+  }
+
+  isSymbol(): boolean {
+    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.ESSymbol);
   }
 
   isArray(): boolean {
@@ -72,6 +100,17 @@ export class CType {
     return BaseTypesRepository.getBaseTypes().CPromise.isCompatible(this);
   }
 
+  getPromisedType(): CType | null {
+    const typeChecker = getCompilationContext().typeChecker;
+    const promisedType = typeChecker.getPromisedTypeOfPromise(this.tsType);
+
+    if (!promisedType) {
+      return null;
+    }
+
+    return new CType(promisedType);
+  }
+
   isOptionalUndefined(): boolean {
     return this.isUnion() && (this.getUnionOrIntersectionTypes()?.some(it => it.isVoidLike()) ?? false);
   }
@@ -85,17 +124,14 @@ export class CType {
   }
 
   isCompatibleToPossiblePromise(to: CType): boolean {
-    const typeChecker = getCompilationContext().typeChecker;
     if (to.isPromise()) {
-      const promisedType = typeChecker.getPromisedTypeOfPromise(to.tsType);
+      const promisedType = this.getPromisedType();
 
       if (!promisedType) {
         return false;
       }
 
-      const promisedTypeCType = new CType(promisedType);
-
-      return this.isCompatible(promisedTypeCType);
+      return this.isCompatible(promisedType);
     }
 
     return this.isCompatible(to);

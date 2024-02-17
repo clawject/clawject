@@ -8,7 +8,7 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import { LifecycleKind } from '../../../runtime/types/LifecycleKind';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
+import { CType } from '../type-system/CType';
 
 export const registerLifecycleBean = (
   configuration: Configuration,
@@ -47,6 +47,6 @@ export const registerLifecycleBean = (
     lifecycle: Array.from(lifecycles),
   });
 
-  bean.registerType(DITypeBuilder.any(), null);
+  bean.registerType(new CType(getCompilationContext().typeChecker.getAnyType()));
   configuration.beanRegister.register(bean);
 };

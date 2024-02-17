@@ -1,10 +1,10 @@
 import { Bean } from '../bean/Bean';
 import { nameMatcher } from './nameMatcher';
-import { DIType } from '../type-system/DIType';
+import { CType } from '../type-system/CType';
 
 export const getPossibleBeanCandidates = (
   propertyName: string,
-  propertyType: DIType,
+  propertyType: CType,
   contextBeans: Bean[]
 ): [byName: Bean[], byType: Bean[]] => {
   const propertyNameMatcher = nameMatcher(propertyName.toLowerCase());
@@ -13,7 +13,7 @@ export const getPossibleBeanCandidates = (
   const candidatesByType: Bean[] = [];
 
   contextBeans.forEach(it => {
-    if (propertyType.isCompatible(it.diType)) {
+    if (propertyType.isCompatible(it.cType)) {
       candidatesByType.push(it);
       return;
     }

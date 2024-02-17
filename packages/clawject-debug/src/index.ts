@@ -1,8 +1,14 @@
-class Test {
-  source: F<string> = {} as any;
-  target: B<string> = {} as any;
+import {Bean, ClawjectApplication, PostConstruct} from '@clawject/di';
+
+@ClawjectApplication
+class App {
+  @Bean a: A<string | number> = {} as any;
+
+  @PostConstruct
+  pc(test: B<string>) {
+
+  }
 }
 
-type F<T> = A<T> & B<T>
-interface A<T> {}
 interface B<T> {}
+interface A<T> extends B<T> {}

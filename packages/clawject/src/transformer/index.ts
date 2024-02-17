@@ -6,6 +6,7 @@ import { cleanup, cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { DecoratorRules } from '../compile-time/core/decorator-processor/DecoratorRules';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
 import { getCompilationContext } from './getCompilationContext';
+import { TypeComparator } from '../compile-time/core/type-system/TypeComparator';
 
 /** @public */
 const transformer = (program: ts.Program, config: unknown, transformerExtras?: TransformerExtras): ts.TransformerFactory<ts.SourceFile> => {

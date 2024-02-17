@@ -1,19 +1,19 @@
 import ts from 'typescript';
-import { DIType } from '../type-system/DIType';
 import { Entity } from '../Entity';
+import { CType } from '../type-system/CType';
 
 export class Dependency extends Entity<ts.ParameterDeclaration | ts.PropertyDeclaration> {
   declare parameterName: string;
-  private _diType: DIType | null = null;
+  private _cType: CType | null = null;
 
-  get diType(): DIType {
-    if (this._diType === null) {
+  get cType(): CType {
+    if (this._cType === null) {
       throw new Error('DIType of dependency is not initialized');
     }
-    return this._diType;
+    return this._cType;
   }
 
-  set diType(diType: DIType) {
-    this._diType = diType;
+  set cType(cType: CType) {
+    this._cType = cType;
   }
 }

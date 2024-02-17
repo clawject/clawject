@@ -8,10 +8,10 @@ import { ApplicationRepository } from '../application/ApplicationRepository';
 export const cleanup = (fileName: string): void => {
   getCompilationContext().clearMessagesByFileName(fileName);
 
-  ConfigurationRepository.clearByFileName(fileName);
   ApplicationRepository.clearByFileName(fileName);
   ComponentRepository.clearByContextualFileName(fileName);
   FileGraph.clearByFileName(fileName);
+  BaseTypesRepository.clear();
 };
 
 export const cleanupAll = (): void => {
@@ -21,4 +21,5 @@ export const cleanupAll = (): void => {
   ComponentRepository.clear();
   BaseTypesRepository.clear();
   FileGraph.clear();
+  BaseTypesRepository.clear();
 };

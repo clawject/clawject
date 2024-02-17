@@ -12,8 +12,7 @@
     "run:webpack_hot": "webpack serve --config webpack.config.js --mode development",
     "run:webpack_prod": "webpack --config webpack.config.js --mode production",
     "run:language_service": "tsserver --logVerbosity verbose --traceToConsole",
-    "postinstall": "ts-patch install",
-    "test": "yarn run tsc && node --expose-gc dist/index.js"
+    "postinstall": "ts-patch install"
   },
   "dependencies": {
     "@clawject/di": "../../dist/packages/clawject",

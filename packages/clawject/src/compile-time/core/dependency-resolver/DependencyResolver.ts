@@ -14,12 +14,12 @@ export class DependencyResolver {
     relatedApplication: Application,
   ): MaybeResolvedDependency {
     switch (true) {
-    case dependency.diType.isEmptyValue:
+    case dependency.cType.isEmptyValue():
       return new MaybeResolvedDependency(dependency);
 
-    case dependency.diType.isArray:
-    case dependency.diType.isSet:
-    case dependency.diType.isMapStringToAny:
+    case dependency.cType.isArray():
+    case dependency.cType.isSet():
+    case dependency.cType.isMapStringToAny():
       return this.buildForCollectionOrArray(dependency, beansToSearch);
 
     default:
@@ -36,7 +36,7 @@ export class DependencyResolver {
     const resolvedDependency = new MaybeResolvedDependency(dependency);
 
     const matchedByType = beansToSearch
-      .filter(it => dependency.diType.isCompatibleToPossiblePromise(it.diType));
+      .filter(it => dependency.cType.isCompatibleToPossiblePromise(it.cType));
 
     if (matchedByType.length === 1) {
       resolvedDependency.qualifiedBean = matchedByType[0];
@@ -75,7 +75,7 @@ export class DependencyResolver {
     }
 
     //If no bean candidates and bean is optional just do nothing
-    if (dependency.diType.isOptional) {
+    if (dependency.cType.isOptional()) {
       return resolvedDependency;
     }
 
@@ -91,7 +91,7 @@ export class DependencyResolver {
     const resolvedDependency = new MaybeResolvedDependency(dependency);
 
     const otherCollectionsMatchedByNameAndType = beansToSearch.filter(it =>
-      it.fullName === dependency.parameterName && dependency.diType.isCompatibleToPossiblePromise(it.diType),
+      it.fullName === dependency.parameterName && dependency.cType.isCompatibleToPossiblePromise(it.cType),
     );
 
     //If matched my name and type - just taking specific bean that returns collection
@@ -102,23 +102,23 @@ export class DependencyResolver {
 
     const matched: Bean[] = [];
 
-    if (dependency.diType.isMapStringToAny) {
+    if (dependency.cType.isMapStringToAny()) {
       beansToSearch.forEach(beanCandidate => {
-        if (dependency.diType.isUnionOrIntersection) {
-          dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[1].isCompatibleToPossiblePromise(beanCandidate.diType))
+        if (dependency.cType.isUnionOrIntersection()) {
+          dependency.cType.getUnionOrIntersectionTypes()?.every(it => it.getTypeArguments()?.[1].isCompatibleToPossiblePromise(beanCandidate.cType))
           && matched.push(beanCandidate);
         } else {
-          dependency.diType.typeArguments[1].isCompatibleToPossiblePromise(beanCandidate.diType)
+          dependency.cType.getTypeArguments()?.[1].isCompatibleToPossiblePromise(beanCandidate.cType)
           && matched.push(beanCandidate);
         }
       });
     } else {
       beansToSearch.forEach(beanCandidate => {
-        if (dependency.diType.isUnionOrIntersection) {
-          dependency.diType.unionOrIntersectionTypes.every(it => it.typeArguments[0].isCompatibleToPossiblePromise(beanCandidate.diType))
+        if (dependency.cType.isUnionOrIntersection()) {
+          dependency.cType.getUnionOrIntersectionTypes()?.every(it => it.getTypeArguments()?.[0].isCompatibleToPossiblePromise(beanCandidate.cType))
           && matched.push(beanCandidate);
         } else {
-          dependency.diType.typeArguments[0].isCompatibleToPossiblePromise(beanCandidate.diType)
+          dependency.cType.getTypeArguments()?.[0].isCompatibleToPossiblePromise(beanCandidate.cType)
           && matched.push(beanCandidate);
         }
       });
@@ -139,7 +139,7 @@ export class DependencyResolver {
     const [
       byName,
       byType,
-    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.diType, beansToSearch);
+    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.cType, beansToSearch);
 
     compilationContext.report(new BeanCandidateNotFoundError(
       `Found ${byName.length + byType.length} injection candidates.`,

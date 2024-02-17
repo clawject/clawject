@@ -1,5 +1,4 @@
 import { IncorrectTypeError } from '../../compilation-context/messages/errors/IncorrectTypeError';
-import { DITypeFlag } from '../type-system/DITypeFlag';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
@@ -11,23 +10,8 @@ import { BeanKind } from './BeanKind';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
-import { ConfigLoader } from '../../config/ConfigLoader';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { DIType } from '../type-system/DIType';
-import { isImportClassProperty } from '../ts/predicates/isImportClassProperty';
 import { Application } from '../application/Application';
 
-const UNSUPPORTED_TYPES = new Map<DITypeFlag, string>([
-  [DITypeFlag.UNRESOLVABLE, 'unresolvable'],
-  [DITypeFlag.UNSUPPORTED, 'unsupported'],
-  [DITypeFlag.ANONYMOUS, 'anonymous'],
-  [DITypeFlag.NEVER, 'never'],
-  [DITypeFlag.VOID, 'void'],
-  [DITypeFlag.UNDEFINED, 'undefined'],
-  [DITypeFlag.NULL, 'null'],
-  [DITypeFlag.UNION, 'union'],
-  [DITypeFlag.SYMBOL, 'symbol'],
-]);
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.AbstractKeyword, 'abstract'],
   [ts.SyntaxKind.StaticKeyword, 'static'],
@@ -101,16 +85,37 @@ export function verifyBeanType(bean: Bean): void {
     return;
   }
 
-  let beanType = bean.diType;
+  const beanType = bean.cType.getPromisedType() ?? bean.cType;
 
-  const beanTypeNode = bean.typeRef.getAndDisposeSafe();
+  let errorTypeName: string | null = null;
 
-  if (beanTypeNode !== null) {
-    const awaited = DITypeBuilder.getPromisedTypeOfPromise(beanTypeNode) ?? beanTypeNode;
-    beanType = DITypeBuilder.build(awaited);
+  switch (true) {
+  case beanType.isNever():
+    errorTypeName = 'never';
+    break;
+  case beanType.isVoid():
+  case beanType.isVoidLike():
+    errorTypeName = 'void';
+    break;
+
+  case beanType.isUndefined():
+    errorTypeName = 'undefined';
+    break;
+
+  case beanType.isNull():
+    errorTypeName = 'null';
+    break;
+
+  case beanType.isUnion():
+    errorTypeName = 'union';
+    break;
+
+  case beanType.isSymbol():
+    errorTypeName = 'symbol';
+    break;
   }
 
-  if (UNSUPPORTED_TYPES.has(beanType.typeFlag)) {
+  if (errorTypeName !== null) {
     let typeNode = bean.node.type;
 
     if (bean.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
@@ -118,13 +123,12 @@ export function verifyBeanType(bean: Bean): void {
     }
 
     compilationContext.report(new IncorrectTypeError(
-      `Type '${UNSUPPORTED_TYPES.get(bean.diType.typeFlag)}' not supported as a Bean type.`,
+      `Type '${errorTypeName}' not supported as a Bean type.`,
       typeNode ?? bean.node,
       parentConfiguration,
       null,
     ));
     parentConfiguration.beanRegister.deregister(bean);
-    return;
   }
 }
 

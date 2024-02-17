@@ -5,8 +5,8 @@ import { Bean } from '../bean/Bean';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { DependencyResolvingError } from '../../compilation-context/messages/errors/DependencyResolvingError';
 import { Dependency } from './Dependency';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
+import { CType } from '../type-system/CType';
 
 export const registerBeanDependencies = (configuration: Configuration) => {
   configuration.beanRegister.elements.forEach(bean => {
@@ -26,7 +26,8 @@ export const registerBeanDependencies = (configuration: Configuration) => {
 function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(bean.node);
-  const beanType = DITypeBuilder.getPromisedTypeOfPromise(nodeType) ?? nodeType;
+  let beanType = new CType(nodeType);
+  beanType = beanType.getPromisedType() ?? beanType;
 
   if (!beanType) {
     getCompilationContext().report(new TypeQualifyError(
@@ -38,7 +39,7 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
     return;
   }
 
-  const constructorProperty = beanType.getProperty('constructor');
+  const constructorProperty = beanType.tsType.getProperty('constructor');
 
   if (!constructorProperty) {
     getCompilationContext().report(new DependencyResolvingError(
@@ -77,11 +78,10 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
     }
 
     const typeOfParameter = typeChecker.getTypeOfSymbol(parameter);
-    const diType = DITypeBuilder.build(typeOfParameter);
 
     const dependency = new Dependency();
     dependency.parameterName = parameter.name;
-    dependency.diType = diType;
+    dependency.cType = new CType(typeOfParameter);
     dependency.node = parameterDeclarations[0] as ts.ParameterDeclaration;
 
     bean.registerDependency(dependency);
@@ -119,11 +119,10 @@ function registerBeanDependenciesFromBeanCallSignature(bean: Bean) {
     }
 
     const typeOfParameter = typeChecker.getTypeOfSymbol(parameter);
-    const diType = DITypeBuilder.build(typeOfParameter);
 
     const dependency = new Dependency();
     dependency.parameterName = parameter.name;
-    dependency.diType = diType;
+    dependency.cType = new CType(typeOfParameter);
     dependency.node = parameterDeclarations[0] as ts.ParameterDeclaration;
 
     bean.registerDependency(dependency);

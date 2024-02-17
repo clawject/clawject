@@ -2,10 +2,7 @@ import ts from 'typescript';
 import { Configuration } from '../configuration/Configuration';
 import { BeanDeclarationMetadata } from '../declaration-metadata/ConfigurationDeclarationMetadata';
 import { Bean, BeanNode } from './Bean';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
-import { BeanKind } from './BeanKind';
-import { DITypeBuilder } from '../type-system/DITypeBuilder';
-import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
+import { fillBeanType } from './fillBeanTypes';
 
 export const registerBeanFromDeclarationMetadata = (
   configuration: Configuration,
@@ -22,23 +19,7 @@ export const registerBeanFromDeclarationMetadata = (
     qualifier: beanDeclarationMetadata.qualifier,
   });
 
-  let type: ts.Type | null = getCompilationContext().typeChecker.getTypeAtLocation(classElement);
-
-  if (bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
-    type = DITypeBuilder.getPromisedTypeOfPromise(type) ?? type;
-  }
-
-  if (!type) {
-    getCompilationContext().report(new TypeQualifyError(
-      null,
-      classElement,
-      configuration,
-      null,
-    ));
-    return;
-  }
-
-  bean.registerType(DITypeBuilder.build(type), type);
-
   configuration.beanRegister.register(bean);
+
+  fillBeanType(configuration, bean);
 };

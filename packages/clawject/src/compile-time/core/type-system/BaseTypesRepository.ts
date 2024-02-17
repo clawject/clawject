@@ -1,20 +1,10 @@
 import ts from 'typescript';
-import { DIType } from './DIType';
 import { CONSTANTS } from '../../../constants';
-import { DITypeBuilder } from './DITypeBuilder';
 import { ___TypeReferenceTable___ } from '../../../runtime/api/___TypeReferenceTable___';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { CType } from './CType';
 
 type BaseTypes = {
-  Array: DIType;
-  Set: DIType;
-  Map: DIType;
-  MapStringToAny: DIType;
-  ImportedConfiguration: DIType;
-  BeanConstructorFactory: DIType;
-  Promise: DIType;
-
   CArray: CType;
   CSet: CType;
   CMap: CType;
@@ -59,14 +49,6 @@ export class BaseTypesRepository {
       }, {} as Record<keyof ___TypeReferenceTable___, ts.TypeElement>);
 
     this.baseTypes = {
-      Array: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Array'])),
-      Set: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Set'])),
-      Map: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
-      MapStringToAny: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
-      ImportedConfiguration: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
-      BeanConstructorFactory: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
-      Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
-
       CArray: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Array'])),
       CSet: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Set'])),
       CMap: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
