@@ -4,6 +4,7 @@ import { CONSTANTS } from '../../../constants';
 import { DITypeBuilder } from './DITypeBuilder';
 import { ___TypeReferenceTable___ } from '../../../runtime/api/___TypeReferenceTable___';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { CType } from './CType';
 
 type BaseTypes = {
   Array: DIType;
@@ -13,6 +14,14 @@ type BaseTypes = {
   ImportedConfiguration: DIType;
   BeanConstructorFactory: DIType;
   Promise: DIType;
+
+  CArray: CType;
+  CSet: CType;
+  CMap: CType;
+  CMapStringToAny: CType;
+  CImportedConfiguration: CType;
+  CBeanConstructorFactory: CType;
+  CPromise: CType;
 }
 
 export class BaseTypesRepository {
@@ -57,6 +66,14 @@ export class BaseTypesRepository {
       ImportedConfiguration: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
       BeanConstructorFactory: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
       Promise: DITypeBuilder.build(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
+
+      CArray: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Array'])),
+      CSet: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Set'])),
+      CMap: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
+      CMapStringToAny: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
+      CImportedConfiguration: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
+      CBeanConstructorFactory: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
+      CPromise: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
     };
   }
 

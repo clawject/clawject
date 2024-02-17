@@ -4,7 +4,6 @@ import { PrimitiveTypeCompatibilityMatrix } from './PrimitiveTypeCompatibilityMa
 import { DITypeFlag } from './DITypeFlag';
 import { escape } from 'lodash';
 import { BaseTypesRepository } from './BaseTypesRepository';
-import { DITypeBuilder } from './DITypeBuilder';
 
 export class DIType {
   declare tsTypeFlags: ts.TypeFlags;
@@ -15,6 +14,7 @@ export class DIType {
   constantValue: string | number | ts.PseudoBigInt | boolean | undefined = undefined;
   typeArguments: DIType[] = [];
   unionOrIntersectionTypes: DIType[] = [];
+  //TODO maybe add declarations to new type, check how language service works without it
   declarations: DeclarationInfo[] = [];
 
   get declarationFileNames(): string[] {

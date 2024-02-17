@@ -1,23 +1,8 @@
-import {Bean, ClawjectApplication, ClawjectFactory, PreDestroy} from '@clawject/di';
-
-class Foo {
-  @PreDestroy
-  destroy() {
-    console.log('destroy foo');
-  }
+class Test {
+  source: F<string> = {} as any;
+  target: B<string> = {} as any;
 }
 
-@ClawjectApplication
-class Application {
-  foo = Bean(Foo);
-
-  @PreDestroy
-  destroy() {
-    console.log('destroy application');
-  }
-}
-
-const application = await ClawjectFactory.createApplicationContext(Application);
-await application.close();
-// prints: 'destroy foo'
-// prints: 'destroy application'
+type F<T> = A<T> & B<T>
+interface A<T> {}
+interface B<T> {}
