@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[339],{2597:e=>{e.exports=JSON.parse('{"label":"code-editor","permalink":"/docs/tags/code-editor","allTagsPath":"/docs/tags","count":1,"items":[{"id":"language-service","title":"","description":"Language Service \u2728","permalink":"/docs/language-service"}],"unlisted":false}')}}]);

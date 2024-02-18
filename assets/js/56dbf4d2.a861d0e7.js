@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7734],{6209:e=>{e.exports=JSON.parse('{"label":"@ClawjectApplication","permalink":"/docs/tags/clawject-application","allTagsPath":"/docs/tags","count":1,"items":[{"id":"overview/configurations","title":"","description":"Configurations","permalink":"/docs/overview/configurations"}],"unlisted":false}')}}]);

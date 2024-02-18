@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[723],{1728:s=>{s.exports=JSON.parse('{"label":"tsc","permalink":"/docs/tags/tsc","allTagsPath":"/docs/tags","count":1,"items":[{"id":"setup","title":"","description":"Prerequisites","permalink":"/docs/setup"}],"unlisted":false}')}}]);

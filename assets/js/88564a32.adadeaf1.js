@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[6188],{8228:e=>{e.exports=JSON.parse('{"label":"import","permalink":"/docs/tags/import","allTagsPath":"/docs/tags","count":1,"items":[{"id":"configuration","title":"","description":"Configuration \ud83d\udd2e","permalink":"/docs/configuration"}],"unlisted":false}')}}]);

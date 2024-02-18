@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[740],{7901:e=>{e.exports=JSON.parse('{"label":"generics","permalink":"/docs/tags/generics","allTagsPath":"/docs/tags","count":1,"items":[{"id":"core-concepts/type-system","title":"","description":"Clawject Type System","permalink":"/docs/core-concepts/type-system"}],"unlisted":false}')}}]);
