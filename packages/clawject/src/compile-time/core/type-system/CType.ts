@@ -4,12 +4,51 @@ import { BaseTypesRepository } from './BaseTypesRepository';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export class CType {
+  private static EMPTY_SET = new Set<string>();
   private tsTypeRef: WeakRef<ts.Type>;
+  private _relatedFileNames: Set<string> | null = null;
+
+  get relatedFileNames(): Set<string> {
+    // If we are not in language service mode,
+    // we don't need to calculate related files because tsc watch mode handling all file graph this for us.
+    if (!getCompilationContext().languageServiceMode) {
+      return CType.EMPTY_SET;
+    }
+
+    if (this._relatedFileNames === null) {
+      const relatedFileNames = new Set<string>();
+      this.fillRelatedFiles(this.tsType, relatedFileNames);
+      this._relatedFileNames = relatedFileNames;
+    }
+
+    return this._relatedFileNames;
+  }
 
   constructor(
     tsType: ts.Type
   ) {
     this.tsTypeRef = new WeakRef(tsType);
+  }
+
+  private fillRelatedFiles(type: ts.Type, relatedFileNames: Set<string>): void {
+    if (TypeComparator.checkFlag(type, ts.TypeFlags.UnionOrIntersection)) {
+      const unionOrIntersectionType = type as ts.UnionOrIntersectionType;
+      unionOrIntersectionType.types.forEach(it => this.fillRelatedFiles(it, relatedFileNames));
+    }
+
+    if (TypeComparator.checkFlag(type, ts.TypeFlags.Object)) {
+      const expandedObjectTypes = TypeComparator.getExpandedObjectType(type as ts.ObjectType);
+
+      expandedObjectTypes.forEach(it => {
+        const symbolDeclarations = it.typeSymbol?.declarations ?? [];
+
+        symbolDeclarations.forEach(declaration => {
+          relatedFileNames.add(declaration.getSourceFile().fileName);
+        });
+
+        it.typeArguments.forEach(it => this.fillRelatedFiles(it, relatedFileNames));
+      });
+    }
   }
 
   get tsType(): ts.Type {
@@ -24,10 +63,6 @@ export class CType {
 
   isEmptyValue(): boolean {
     return this.getUnionOrIntersectionTypes()?.every(it => it.isEmptyValue()) ?? (this.isVoidLike() || this.isNull());
-  }
-
-  getDeclarations(): ts.Declaration[] {
-    return this.tsType.symbol?.declarations ?? [];
   }
 
   getUnionOrIntersectionTypes(): CType[] | null {

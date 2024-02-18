@@ -31,7 +31,15 @@ export class TypeComparator {
     return this.checkObjectFlag(type, ObjectFlags.Reference);
   }
 
-  private static getExpandedReferenceTypes(type: ts.TypeReference): ObjectTypeWrapper[] {
+  private static expandedObjectTypeCache = new WeakMap<ts.ObjectType, ObjectTypeWrapper[]>();
+
+  static getExpandedObjectType(type: ts.ObjectType): ObjectTypeWrapper[] {
+    const cached = this.expandedObjectTypeCache.get(type);
+
+    if (cached) {
+      return cached;
+    }
+
     const typeChecker = getCompilationContext().typeChecker;
 
     const baseType = type as ts.TypeReference;
@@ -103,6 +111,7 @@ export class TypeComparator {
       });
     }
 
+    this.expandedObjectTypeCache.set(type, processedElements);
     return processedElements;
   }
 
@@ -162,14 +171,10 @@ export class TypeComparator {
     }
 
     if (this.checkFlag(source, TypeFlags.Object) && this.checkFlag(target, TypeFlags.Object)) {
-      if (this.isReferenceType(source) && this.isReferenceType(target)) {
-        const expandedSourceTypes = this.getExpandedReferenceTypes(source);
-        const expandedTargetTypes = this.getExpandedReferenceTypes(target);
+      const expandedSourceTypes = this.getExpandedObjectType(source as ts.ObjectType);
+      const expandedTargetTypes = this.getExpandedObjectType(target as ts.ObjectType);
 
-        return this.compareObjectTypeWrappers(expandedSourceTypes, expandedTargetTypes);
-      }
-
-      return this.compareObjectTypes(source as ts.ObjectType, target as ts.ObjectType);
+      return this.compareObjectTypeWrappers(expandedSourceTypes, expandedTargetTypes);
     }
 
     return isAssignableByTypescript;

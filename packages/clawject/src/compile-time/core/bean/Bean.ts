@@ -43,8 +43,8 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
 
   registerDependency(dependency: Dependency): void {
     this.dependencies.add(dependency);
-    dependency.cType.getDeclarations().forEach(it => {
-      FileGraph.add(this.parentConfiguration.fileName, it.getSourceFile().fileName);
+    dependency.cType.relatedFileNames.forEach(it => {
+      FileGraph.add(this.parentConfiguration.fileName, it);
     });
   }
 
@@ -62,8 +62,8 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
 
   registerType(cType: CType): void {
     this._cType = cType;
-    cType.getDeclarations().forEach(it => {
-      FileGraph.add(this.parentConfiguration.fileName, it.getSourceFile().fileName);
+    cType.relatedFileNames.forEach(it => {
+      FileGraph.add(this.parentConfiguration.fileName, it);
     });
   }
 

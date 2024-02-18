@@ -1,11 +1,13 @@
 ---
-title: ClawjectApplicationContext
+title: ''
 ---
+
+## ClawjectApplicationContext
 
 ClawjectApplicationContext is an object that represents the context of the Clawject application.
 It stores and manages configurations and beans of the application.
 
-## Usage
+### Usage
 
 Let's define a simple application with a single bean and try to expose it using [ExposeBeans function](/docs/overview/expose-beans.mdx):
 
@@ -94,9 +96,9 @@ await applicationContext.close();
 // Will print 'DBConnection closed'
 ```
 
-## Methods overview
+### Methods overview
 
-### `.getExposedBean`
+#### `.getExposedBean`
 
 Returns the exposed bean by the given name, if more than one bean is exposed with the same name - intersection of them types will be returned.
 
@@ -121,7 +123,7 @@ console.log(exposedBean.value); // 'foo'
 ```
 
 
-### `.getExposedBeans`
+#### `.getExposedBeans`
 
 Returns all exposed beans.
 
@@ -145,7 +147,7 @@ const exposedBeans = await application.getExposedBeans();
 console.log(exposedBeans); // { exposedBean1: { value: 'foo' }, exposedBean2: { value: 'bar' } }
 ```
 
-### `.close`
+#### `.close`
 
 Closes the application context and destroys all beans.
 Functions decorated with `@PreDestroy` will be called for all beans.

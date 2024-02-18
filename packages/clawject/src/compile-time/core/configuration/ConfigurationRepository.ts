@@ -56,6 +56,12 @@ export class ConfigurationRepository {
     this.fileNameToLastConfigurationCounter.delete(fileName);
     configurations.forEach(configuration => {
       this.configurationIdToConfiguration.delete(configuration.id);
+
+      const configurationNode = configuration.getNodeSafe();
+
+      if (configurationNode) {
+        this.nodeToConfiguration.delete(configurationNode);
+      }
     });
   }
 

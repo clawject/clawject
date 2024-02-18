@@ -1,6 +1,8 @@
 ---
-title: ClawjectFactory
+title: ''
 ---
+
+## ClawjectFactory
 
 It's a factory class that creates a [ClawjectApplicationContext](/docs/overview/clawject-application-context.mdx) instance.
 
@@ -9,17 +11,17 @@ It's a factory class that creates a [ClawjectApplicationContext](/docs/overview/
 To create a new `ClawjectApplicationContext` instance, you need to pass the class that is the root class of your application.
 This class is the class that contains the `@ClawjectApplication` decorator.
 
-Method `createApplicationContext` returns a promise that resolves to a new `ClawjectApplicationContext` instance.
+Method `createApplicationContext` returns a promise that resolves to a newly created `ClawjectApplicationContext` instance.
 
 ```typescript
 import { ClawjectFactory, ClawjectApplication } from '@clawject/di';
 
 @ClawjectApplication
-class MyApplicationClass {
+class Application {
   // ...
 }
 
-const applicationContext = await ClawjectFactory.createApplicationContext(MyApplicationClass);
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
 ```
 
 If application class contains constructor, you should pass the constructor arguments as the second parameter to `createApplicationContext`.
@@ -32,18 +34,18 @@ Constructor arguments can be either:
 import { ClawjectFactory, ClawjectApplication } from '@clawject/di';
 
 @ClawjectApplication
-class MyApplicationClass {
+class Application {
   constructor(
     private someConfigurationValue: string
   ) {}
 }
 
 // Pass an array of values
-ClawjectFactory.createApplicationContext(MyApplicationClass, ['some value']);
+ClawjectFactory.createApplicationContext(Application, ['some value']);
 // Pass a function that returns an array of values
-ClawjectFactory.createApplicationContext(MyApplicationClass, () => ['some value'] as const);
+ClawjectFactory.createApplicationContext(Application, () => ['some value'] as const);
 // Pass a function that returns a Promise that resolves to an array of values
-ClawjectFactory.createApplicationContext(MyApplicationClass, async () => {
+ClawjectFactory.createApplicationContext(Application, async () => {
   const configurationValue = await fetchValue('https://...');
 
   return [configurationValue] as const;

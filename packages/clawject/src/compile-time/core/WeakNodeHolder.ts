@@ -45,6 +45,10 @@ export class WeakNodeHolder<N extends ts.Node = ts.Node> {
     this._hasBeenSet = true;
   }
 
+  public getNodeSafe(): N | null {
+    return this._nodeRef?.deref() ?? null;
+  }
+
   public hasBeenSet(): boolean {
     return this._hasBeenSet;
   }
