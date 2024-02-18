@@ -2,7 +2,11 @@
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 export default {
   docs: [
-    'intro',
+    {
+      type: 'doc',
+      label: 'Introduction 🚀',
+      id: 'intro',
+    },
     {
       type: 'doc',
       label: 'Setup 🛠',
