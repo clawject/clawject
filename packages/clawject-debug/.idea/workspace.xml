@@ -7,11 +7,7 @@
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/ConfigurationAlreadyImportedInfo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/ConfigurationAlreadyImportedInfo.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/UnusedWarning.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/GenericInfo.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/import.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/import.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/bean.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +100,7 @@
       <recent name="$PROJECT_DIR$/static" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:upgradeClawject">
+  <component name="RunManager" selected="npm.run:webpack_hot">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -157,11 +153,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:tscw" />
         <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:tsc_debug" />
-        <item itemvalue="npm.run:webpack_hot" />
       </list>
     </recent_temporary>
   </component>

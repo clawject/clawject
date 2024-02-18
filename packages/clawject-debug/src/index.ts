@@ -1,16 +1,26 @@
-import { ClawjectApplication, Configuration, Import } from '@clawject/di';
-@Configuration
-class FooConfiguration {
-  // ...
+import {Bean, ClawjectApplication} from '@clawject/di';
+
+class Foo {
+  constructor(
+    private bar: Bar,
+  ) {}
 }
 
-@Configuration
-class BarConfiguration {
-  fooConfiguration = Import(FooConfiguration);
+class Bar {
+  constructor(
+    private baz: Baz,
+  ) {}
+}
+
+class Baz {
+  constructor(
+    private foo: Foo,
+  ) {}
 }
 
 @ClawjectApplication
 class Application {
-  fooConfiguration = Import(FooConfiguration);
-  barConfiguration = Import(BarConfiguration);
+  foo = Bean(Foo);
+  bar = Bean(Bar);
+  baz = Bean(Baz);
 }

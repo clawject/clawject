@@ -1,5 +1,5 @@
 ---
-title: Bean
+title: ''
 ---
 
 ```mdx-code-block
@@ -7,14 +7,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
+## Bean
+
 Bean is an object that is managed and constructed by Clawject container it can have dependencies,
 and it can be a dependency for other Beans.
 
-## Declare Bean
+### Declare Bean
 
 There are a few ways to declare a Bean, let's explore all of them one by one.
 
-### `@Bean` decorator
+#### `@Bean` decorator
 You can decorate property, getter or method with `@Bean` decorator to declare a Bean.
 
 When you're decorating **method** or property that holds **arrow function** -
@@ -30,7 +32,8 @@ class Foo {
   name = 'foo';
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean foo() {
     return new Foo();
   }
@@ -45,12 +48,13 @@ you can just assign value to property decorated with `@Bean` decorator.
 ```ts title="Declaring bean without dependencies"
 class Foo {}
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean foo = new Foo();
 }
 ```
 
-### `Bean` function
+#### `Bean` function
 It can be quite annoying to declare each dependency in method or arrow function for your class,
 especially when your class has a lot of dependencies.
 So, if you add/change/remove a dependency - you need to change it in factory-function level as well.
@@ -75,7 +79,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   foo = Bean(Foo);
 
   @Bean stringBean = 'dependency0';
@@ -104,7 +109,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean foo(
     dependency0: string,
     dependency1: number,
@@ -137,7 +143,7 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-## Bean Types
+### Bean Types
 
 Bean type is a type of value that bean will provide as a dependency for other beans.
 
@@ -145,18 +151,19 @@ There are a few restrictions on bean value types: `symbol`, `undefined`, `void`,
 If you specify an invalid bean type, you will get compile-time error.
 
 ```ts
-class MyContext extends CatContext {
-  @Bean symb = Symbol();
-  @Bean undef: undefined = undefined;
+@ClawjectApplication
+class Application {
+  @Bean symbol = Symbol();
+  @Bean undefined = undefined;
   @Bean void: void = undefined;
-  @Bean nul: null = null;
+  @Bean null = null;
   @Bean never(): never { throw new Error('never'); }
   @Bean union: string | number = 'union';
 }
 ```
 
-## Specifying Bean type
-You can specify the type explicitly for each property,
+### Specifying a Bean type
+You can specify the type explicitly for each Bean,
 but it is not necessary to, because Clawject using TypeScript type system to infer types.
 
 The next two examples are equivalent:
@@ -169,7 +176,8 @@ The next two examples are equivalent:
 ```ts
 class Foo {}
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean propertyBean = new Foo();
   @Bean factoryMethodBean() { return new Foo(); }
   @Bean arrowFunctionBean = () => new Foo();
@@ -184,7 +192,8 @@ class MyContext extends CatContext {
 ```
 
 ```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean propertyBean: Foo = new Foo();
   @Bean factoryMethodBean(): Foo { return new Foo(); }
   @Bean arrowFunctionBean = (): Foo => new Foo();
@@ -197,13 +206,11 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-### Bean type narrowing
+#### Bean type narrowing
 
 In this example we will narrow a bean type from `FooBar & IFoo & IBar` to `IFoo`:
 
 ```ts
-import { Bean, CatContext, PostConstruct } from '@clawject/di';
-
 interface IFoo {
   foo: string;
 }
@@ -217,7 +224,8 @@ class FooBar implements IFoo, IBar {
   bar = 'bar';
 }
 
-class ApplicationContext extends CatContext {
+@ClawjectApplication
+class Application {
   /* The type of bean is IFoo now */
   fooBar = Bean<IFoo, typeof FooBar>(FooBar);
 
@@ -233,7 +241,49 @@ class ApplicationContext extends CatContext {
 }
 ```
 
-## Bean Dependencies
+### Asynchronous Beans
+
+Sometimes you need to create a bean asynchronously, for example, when you need to fetch some data from the server to create a bean.
+To mark beans as asynchronous, you can just return `Promise` from factory-function, `async` method or just plain bean value.
+
+When Bean is requested as a dependency for another bean or as an exposed bean, Clawject will wait for the promise to resolve and then use the resolved value as a bean.
+
+```ts
+class Foo {
+  constructor(
+    /*
+    * We don't need to specify parameter as Promise<string>
+    * because Clawject will handle promises automatically
+    */
+    private somePropertyThatFetchedAsynchronously: string,
+  ) {}
+}
+
+@ClawjectApplication
+class Application {
+  @Bean async somePropertyThatFetchedAsynchronously() {
+    const response = await fetch('https://example.com/some-data');
+    return response.text();
+  }
+
+  foo = Bean(Foo);
+}
+```
+
+Also if you want to use dynamic import to create a bean without factory functions (using only `Bean` function) you can do it like this:
+
+```ts title="foo.ts"
+export class Foo {}
+```
+
+```ts title="app.ts"
+@ClawjectApplication
+class Application {
+  foo = Bean(import('./foo').then(module => module.Foo));
+}
+```
+
+### Bean Dependencies
 
 Bean dependency is a parameter of a bean that is injected by Clawject.
 Dependency can be declared in class constructor, or in a `factory-method`.
@@ -251,7 +301,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean bar = 'barValue';
   @Bean baz = 42;
 
@@ -273,7 +324,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean bar = 'barValue';
   @Bean baz = 42;
 
@@ -288,7 +340,7 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-## How dependencies are resolved
+### How dependencies are resolved
 
 There are a few steps that are taken to resolve bean dependencies.
 
@@ -304,7 +356,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean barBean = 'barValue';
 
   foo = Bean(Foo);
@@ -312,7 +365,7 @@ class MyContext extends CatContext {
 ```
 
 If **more than one** compatible bean is found - Clawject try to find a candidate that has the same name as parameter.
-If such bean is found - it's used as a dependency.
+If such a bean is found - it's used as a dependency.
 
 ```ts
 class Foo {
@@ -321,7 +374,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean bar = 'barValue';
   @Bean barOther = 'barOtherValue';
 
@@ -330,7 +384,7 @@ class MyContext extends CatContext {
 ```
 
 If **more than one** compatible bean is found, and none of them has the same name
-as parameter - then compilation error will be reported.
+as parameter and not [`@Primary`](/docs/overview/primary.mdx) - then compilation error will be reported.
 
 ```ts
 class Foo {
@@ -339,7 +393,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean bar1 = 'bar1Value';
   @Bean bar2 = 'bar2Value';
 
@@ -347,7 +402,7 @@ class MyContext extends CatContext {
 }
 ```
 
-## Optional dependencies
+### Optional dependencies
 
 Dependencies can be optional, if there are no suitable bean candidates found - `undefined` or `null` will be injected.
 
@@ -365,7 +420,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   foo = Bean(Foo);
 }
 ```
@@ -383,7 +439,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   foo = Bean(Foo);
 }
 ```
@@ -401,7 +458,8 @@ class Foo {
   ) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   foo = Bean(Foo);
 }
 ```
@@ -411,25 +469,43 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-## Circular dependencies
+### Circular dependencies
 
 Clawject will detect circular dependencies and report compilation error with involved beans.
 
 ```ts
-class Bar {
-  constructor(
-    private foo: Foo,
-  ) {}
-}
-
 class Foo {
   constructor(
     private bar: Bar,
   ) {}
 }
 
-class MyContext extends CatContext {
-  foo = Bean(Foo); // <- Circular dependencies detected. foo <—> bar
-  bar = Bean(Bar); // <- Circular dependencies detected. bar <—> foo
+class Bar {
+  constructor(
+    private baz: Baz,
+  ) {}
+}
+
+class Baz {
+  constructor(
+    private foo: Foo,
+  ) {}
+}
+
+@ClawjectApplication
+class Application {
+  /*
+  * Circular dependencies detected.
+  * ┌─────┐
+  * |  foo
+  * ↑     ↓
+  * |  bar
+  * ↑     ↓
+  * |  baz
+  * └─────┘
+  */
+  foo = Bean(Foo);
+  bar = Bean(Bar);
+  baz = Bean(Baz);
 }
 ```
