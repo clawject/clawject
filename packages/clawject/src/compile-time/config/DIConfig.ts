@@ -1,5 +1,6 @@
 export interface DIConfig {
   unsafeTSVersion: boolean;
+  typeSystem: 'nominal' | 'structural';
   beans: {
     defaultExternal: boolean;
   }

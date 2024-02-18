@@ -14,6 +14,15 @@
         false
       ]
     },
+    "typeSystem": {
+      "type": "string",
+      "default": "nominal",
+      "title": "Defines which strategy of type comparison should be used. Typescript uses structural comparison by default, clawject uses nominal comparison.",
+      "examples": [
+        "nominal",
+        "structural"
+      ]
+    },
     "beans": {
       "type": "object",
       "properties": {

@@ -10,6 +10,7 @@ import { merge } from 'lodash';
 export class ConfigLoader {
   private static defaultConfig: DIConfig = {
     unsafeTSVersion: false,
+    typeSystem: 'nominal',
     beans: {
       defaultExternal: true,
     },

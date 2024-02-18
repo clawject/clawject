@@ -2,6 +2,7 @@ import { getCompilationContext } from '../../../transformer/getCompilationContex
 import ts, { ObjectFlags, TypeFlags } from 'typescript';
 import { get } from 'lodash';
 import { isNotEmpty } from '../utils/isNotEmpty';
+import { ConfigLoader } from '../../config/ConfigLoader';
 
 class ObjectTypeWrapper {
   constructor(
@@ -109,6 +110,10 @@ export class TypeComparator {
     const typeChecker = getCompilationContext().typeChecker;
 
     const isAssignableByTypescript = typeChecker.isTypeAssignableTo(source, target);
+
+    if (ConfigLoader.get().typeSystem === 'structural') {
+      return isAssignableByTypescript;
+    }
 
     if (!isAssignableByTypescript) {
       return false;
