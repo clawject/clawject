@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[923],{9312:s=>{s.exports=JSON.parse('{"label":"ts-patch","permalink":"/docs/tags/ts-patch","allTagsPath":"/docs/tags","count":1,"items":[{"id":"setup","title":"","description":"Prerequisites","permalink":"/docs/setup"}],"unlisted":false}')}}]);

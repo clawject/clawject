@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7014],{4619:e=>{e.exports=JSON.parse('{"label":"lazy","permalink":"/docs/tags/lazy","allTagsPath":"/docs/tags","count":1,"items":[{"id":"core-concepts/clawject-ioc","title":"","description":"Clawject IoC Container","permalink":"/docs/core-concepts/clawject-ioc"}],"unlisted":false}')}}]);

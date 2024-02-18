@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[9664],{5246:e=>{e.exports=JSON.parse('{"label":"nominal-typing","permalink":"/docs/tags/nominal-typing","allTagsPath":"/docs/tags","count":1,"items":[{"id":"core-concepts/type-system","title":"","description":"Clawject Type System","permalink":"/docs/core-concepts/type-system"}],"unlisted":false}')}}]);
