@@ -1,7 +1,7 @@
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { InfoCode } from '../InfoCode';
 
-export class UnusedWarning extends AbstractCompilationMessage {
-  public code = InfoCode.CI1;
+export class GenericInfo extends AbstractCompilationMessage {
+  public code = InfoCode.CI0;
   public description = 'Element is not used.';
 }

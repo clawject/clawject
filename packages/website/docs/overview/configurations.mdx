@@ -24,6 +24,7 @@ The root configuration class is the entry point **Clawject** uses to resolve
 and [exposed beans](/docs/overview/expose-beans.mdx).
 
 Each application can have as many configurations as needed, and each configuration can import other configurations.
+All the **configurations are singletons** in the context of the application.
 
 :::tip
 Configuration classes allow encapsulating specific beans, or vice versa,

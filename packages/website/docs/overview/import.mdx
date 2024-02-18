@@ -1,6 +1,162 @@
 ---
-title: Import
+title: ''
 ---
 
+## Import
 
+Import function allows you to import a `@Configuration` class to the target `@Configuration` class to use beans that is provided by imported configuration.
 
+### Usage
+
+Let's define `CoreFoo` class and corresponding interface.
+
+```ts title="core-foo.ts"
+export interface ICoreFoo {
+  foo(): string;
+}
+
+export class CoreFoo implements ICoreFoo {
+  foo() {
+    return 'foo';
+  }
+}
+```
+
+Lets define BaseConfiguration class.
+
+```ts title="core-configuration.ts"
+import { Bean, Configuration } from '@clawject/di';
+import { CoreFoo } from './core-foo';
+
+@Configuration
+export class CoreConfiguration {
+  coreFoo = Bean(CoreFoo);
+}
+```
+
+Let's define `BarService` that depends on `ICoreFoo`.
+
+```ts title="bar-service.ts"
+import { ICoreFoo } from './core-foo';
+
+export class BarService {
+  constructor(private coreFoo: ICoreFoo) {}
+
+  invokeFoo() {
+    this.coreFoo.foo();
+  }
+}
+```
+
+Now we can import `CoreConfiguration` to another configuration or application class.
+
+```ts title="bar-configuration.ts"
+import { Bean, Configuration, Import } from '@clawject/di';
+import { CoreConfiguration } from './core-configuration';
+import { BarService } from './bar-service';
+
+@Configuration
+export class BarConfiguration {
+  coreConfiguration = Import(CoreConfiguration);
+
+  barService = Bean(BarService);
+}
+```
+
+Now `BarConfiguration` can be imported to the application class and expose `BarService` from container.
+
+```ts title="application.ts"
+import { ClawjectApplication, Import } from '@clawject/di';
+import { BarConfiguration } from './bar-configuration';
+import { ExposeBeans } from './ExposeBeans';
+
+@ClawjectApplication
+export class Application {
+  barConfiguration = Import(BarConfiguration);
+
+  exposedBeans = ExposeBeans<{ barService: BarService }>()
+}
+```
+
+After all configuration trees are built, `BarService` will be able to inject `CoreFoo` bean by interface.
+
+```ts title="main.ts"
+import { ClawjectFactory } from '@clawject/di';
+import { Application } from './application';
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+const barService = await applicationContext.getExposedBean('barService');
+
+barService.invokeFoo(); // 'foo' will be printed to the console.
+```
+
+### Importing configuration with constructor parameters
+
+If the configuration class contains constructor, you should pass the constructor arguments as the second parameter to `Import` statement.
+Constructor arguments can be either:
+- Array of constructor arguments
+- Function that returns an array of values
+- Function that returns a Promise that resolves to an array of values
+
+```ts
+import { ClawjectApplication, Configuration, Import } from '@clawject/di';
+
+@Configuration
+class FooConfiguration {
+  constructor(
+    private readonly someConfigurationValue: string,
+  ) {}
+}
+
+@Configuration
+class BarConfiguration {
+  // Pass an array of values
+  fooConfiguration = Import(FooConfiguration, ['some value']);
+  // Pass a function that returns an array of values
+  fooConfiguration = Import(FooConfiguration, () => ['some value'] as const);
+  // Pass a function that returns a Promise that resolves to an array of values
+  fooConfiguration = Import(FooConfiguration, async () => {
+    const configurationValue = await fetchValue('https://...');
+
+    return [configurationValue] as const;
+  });
+}
+```
+
+### Importing configuration multiple times in the same application
+
+It is possible to import the same configuration multiple times in bounds of the same application.
+In this case, beans that are defined in imported configuration will be created only once and shared between all importers.
+
+:::tip
+Clawject will report you info in the IDE about the fact that the configuration is imported as [external](/docs/overview/internal-external.mdx#external) multiple times, and import can be omitted.
+:::
+
+```ts title="main.ts" showLineNumbers
+import { ClawjectApplication, Configuration, Import } from '@clawject/di';
+
+@Configuration
+class FooConfiguration {
+  // ...
+}
+
+@Configuration
+class BarConfiguration {
+  /*
+  * CI1: This configuration is already imported.
+  * main.ts(20, 3): `fooConfiguration` is declared here.
+  */
+  fooConfiguration = Import(FooConfiguration);
+}
+
+@ClawjectApplication
+class Application {
+  /**
+   * CI1: This configuration is already imported.
+   * main.ts(11, 3): `fooConfiguration` is declared here.
+   */
+  fooConfiguration = Import(FooConfiguration);
+  barConfiguration = Import(BarConfiguration);
+}
+
+```

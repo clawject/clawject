@@ -6,7 +6,7 @@ import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetai
 import { InfoCode } from '../InfoCode';
 
 export class ConfigurationAlreadyImportedInfo extends AbstractCompilationMessage {
-  public code = InfoCode.CI0;
+  public code = InfoCode.CI1;
   public description = 'This configuration is already imported.';
 
   relatedImportsDetails: NodeDetails[];

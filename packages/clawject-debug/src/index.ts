@@ -1,9 +1,16 @@
-import {Bean, ClawjectApplication, PostConstruct} from '@clawject/di';
-import {Test} from './Test';
-import {RequestedBean} from './RequestedBean';
+import { ClawjectApplication, Configuration, Import } from '@clawject/di';
+@Configuration
+class FooConfiguration {
+  // ...
+}
+
+@Configuration
+class BarConfiguration {
+  fooConfiguration = Import(FooConfiguration);
+}
 
 @ClawjectApplication
 class Application {
-  test = Bean(Test);
-  RequestedBean = Bean(RequestedBean);
+  fooConfiguration = Import(FooConfiguration);
+  barConfiguration = Import(BarConfiguration);
 }

@@ -98,7 +98,7 @@ await applicationContext.close();
 
 ### Methods overview
 
-#### `.getExposedBean`
+#### `.getExposedBean(exposedBeanName: string)`
 
 Returns the exposed bean by the given name, if more than one bean is exposed with the same name - intersection of them types will be returned.
 
@@ -123,7 +123,7 @@ console.log(exposedBean.value); // 'foo'
 ```
 
 
-#### `.getExposedBeans`
+#### `.getExposedBeans()`
 
 Returns all exposed beans.
 
@@ -147,7 +147,7 @@ const exposedBeans = await application.getExposedBeans();
 console.log(exposedBeans); // { exposedBean1: { value: 'foo' }, exposedBean2: { value: 'bar' } }
 ```
 
-#### `.close`
+#### `.close()`
 
 Closes the application context and destroys all beans.
 Functions decorated with `@PreDestroy` will be called for all beans.

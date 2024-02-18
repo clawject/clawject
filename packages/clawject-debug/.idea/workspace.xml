@@ -5,21 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ITest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/RequestedBean.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cat-service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dog-service.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/WeakNodeHolder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/WeakNodeHolder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/CType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/CType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/ConfigurationAlreadyImportedInfo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/ConfigurationAlreadyImportedInfo.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/UnusedWarning.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/infos/GenericInfo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/clawject-factory.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/clawject-factory.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/sidebars.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/sidebars.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/import.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/import.mdx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +104,7 @@
       <recent name="$PROJECT_DIR$/static" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:tscw">
+  <component name="RunManager" selected="npm.run:upgradeClawject">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -165,8 +157,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:tscw" />
         <item itemvalue="npm.run:upgradeClawject" />
+        <item itemvalue="npm.run:tscw" />
         <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:tsc_debug" />
         <item itemvalue="npm.run:webpack_hot" />
