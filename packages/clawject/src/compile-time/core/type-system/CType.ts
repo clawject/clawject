@@ -125,11 +125,7 @@ export class CType {
 
   isCompatibleToPossiblePromise(to: CType): boolean {
     if (to.isPromise()) {
-      const promisedType = this.getPromisedType();
-
-      if (!promisedType) {
-        return false;
-      }
+      const promisedType = this.getPromisedType() ?? this;
 
       return this.isCompatible(promisedType);
     }

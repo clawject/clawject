@@ -1,7 +1,7 @@
 import { Application } from '../application/Application';
 import { buildDependencyGraphAndFillQualifiedBeans } from '../dependency-graph/buildDependencyGraphAndFillQualifiedBeans';
 import { verifyBeanNameUniqueness } from '../bean/verifyBeans';
-import { reportAboutCircularDependencies } from '../report-cyclic-dependencies/reportAboutCircularDependencies';
+import { reportAboutCircularDependencies } from '../report-circular-dependencies/reportAboutCircularDependencies';
 import { fillExposedBeans } from './fillExposedBeans';
 import { fillImports } from './fillImports';
 import { reportApplicationInfoAndWarnings } from './reportApplicationInfoAndWarnings';

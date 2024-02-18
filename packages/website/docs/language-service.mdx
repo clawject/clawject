@@ -1,17 +1,25 @@
 ---
-title: Language Service ✨
+title: ''
+tags:
+  - setup
+  - language-service
+  - code-editor
+  - typescript
+  - error-checking
 ---
 
-The Clawject Language Service provides code editors (VSCode, WebStorm, etc.) with a way to get errors
-and navigation inside Beans, Configurations, etc.
+## Language Service ✨
 
-[Clawject package](https://www.npmjs.com/package/@clawject/di) provides language service plugin,
+The Clawject Language Service provides code editors (VSCode, WebStorm, etc.) with a way to get compile-time errors, suggestions
+about Beans, Configurations, Imports, etc.
+
+[Clawject package](https://www.npmjs.com/package/@clawject/di) provides language service plugin itself,
 but it can't be used directly because TypeScript not allows using language services that are not package itself,
 so `@clawject/language-service` package have `@clawject/di` as a peer-dependency and re-exporting its language service,
 so you shouldn't worry about versions compatibility, `@clawject/language-service` will always have single version
 and just re-use `@clawject/di` language service.
 
-## Installation
+### Installation
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';

@@ -1,41 +1,47 @@
 ---
-title: Configuration 🔮
+title: ''
+tags:
+  - setup
+  - configuration
+  - typescript
+  - type-checking
+  - type-system
+  - nominal
+  - structural
+  - duck
+  - bean
+  - 'import'
 ---
+
+## Configuration 🔮
 
 Clawject using [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig) to load configuration from different sources.
 Example file names are:
 
 - `.clawjectrc`
 - `.clawjectrc.json`
-- `.clawjectrc.yaml`
-- `.clawjectrc.yml`
 - `.clawjectrc.js`
 - `.clawjectrc.ts`
-- `.clawjectrc.cjs`
 - `.config/clawjectrc`
 - `.config/clawjectrc.json`
-- `.config/clawjectrc.yaml`
-- `.config/clawjectrc.yml`
 - `.config/clawjectrc.js`
 - `.config/clawjectrc.ts`
-- `.config/clawjectrc.cjs`
 - `clawject.config.js`
 - `clawject.config.ts`
-- `clawject.config.cjs`
-
-Also, you can declare a `clawject` property in your `package.json` file to configure Clawject.
+- `package.json` with a `clawject` property
 
 :::note
 If you're using `@clawject/language-service` - you may need to restart typescript language service after editing configuration file.
 :::
 
-## Configuration schema
+### Configuration schema
 
 Configuration schema is:
 
 ```typescript
-interface Config {
+interface ClawjectConfig {
   unsafeTSVersion?: boolean; // Default: false
+  typeSystem?: 'nominal' | 'structural'; // Default: 'nominal'
   beans?: {
     defaultExternal?: boolean; // Default: true
   },
@@ -49,25 +55,44 @@ interface Config {
 
 Allows using TypeScript version not officially supported by this version of Clawject.
 
-By default, Clawject will check your TypeScript version to ensure it's compatible with the version used by Clawject.
-But if you want to disable this check, you can set `unsafeTSVersion` to `true`.
+- When **`true`**, Clawject will not check your TypeScript version.
+- When **`false`**, Clawject will check your TypeScript version to ensure it's officially compatible with the versions supported by Clawject.
 
-Default value is `false`.
+**Default value** is `false`.
+
+### `typeSystem`
+
+Allows choosing between `nominal` and `structural` type system.
+
+- When **`nominal`**, Clawject will use a nominal type system to distinguish between beans and imports.
+- When **`structural`**, Clawject will use a structural type system (default for typescript) to distinguish between beans and imports.
+
+**Default value** is `nominal`.
+
+:::tip
+Read more about [nominal and structural type systems](/docs/core-concepts/type-system.mdx).
+:::
 
 ### `beans.defaultExternal`
 
-//TODO add links to external and internal
-When `true`, all beans are considered external, if not explicitly marked as internal.
+- When **`true`**, all beans are considered external, if not explicitly marked as internal.
+- When **`false`**, all beans are considered internal, if not explicitly marked as external.
 
-When `false`, all beans are considered internal, if not explicitly marked as external.
+**Default value** is `true`.
 
-Default value is `true`.
+:::tip
+//TODO add tag related to beans
+Read more about [@Internal and @External](/docs/overview/internal-external.mdx#beans).
+:::
 
 ### `imports.defaultExternal`
 
-//TODO add links to external and internal
-When `true`, all imported configurations are considered external, if not explicitly marked as internal.
+- When **`true`**, all imported configurations are considered external, if not explicitly marked as internal.
+- When **`false`**, all imported configurations are considered internal, if not explicitly marked as external.
 
-When `false`, all imported configurations are considered internal, if not explicitly marked as external.
+**Default value** is `true`.
 
-Default value is `true`.
+:::tip
+//TODO add tag related to configurations
+Read more about [@Internal and @External](/docs/overview/internal-external.mdx#configuration).
+:::

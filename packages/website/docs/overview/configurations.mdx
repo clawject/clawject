@@ -1,0 +1,74 @@
+---
+title: ''
+tags:
+  - '@Configuration'
+  - '@ClawjectApplication'
+---
+
+## Configurations
+Configuration is a class that is annotated with `@Configuration` or `@ClawjectApplication`.
+These decorators provide metadata to the container to process the configuration class and generate the corresponding metadata.
+
+<figure>
+  <img
+    src={require('/img/docs-config-tree.png').default}
+    style={{ maxHeight: '450px' }}
+    alt="Example banner"
+  />
+</figure>
+
+Each application has at least one configuration, a class that is annotated with `@ClawjectApplication`.
+The root configuration class is the entry point **Clawject** uses to resolve
+[beans and its dependencies](/docs/overview/bean.mdx#bean-dependencies),
+[imported configurations](/docs/overview/import.mdx)
+and [exposed beans](/docs/overview/expose-beans.mdx).
+
+Each application can have as many configurations as needed, and each configuration can import other configurations.
+
+:::tip
+Configuration classes allow encapsulating specific beans, or vice versa,
+to expose beans and configuration imports to the container using [@Internal and @External](/docs/overview/internal-external.mdx) decorators.
+:::
+
+###  Configuration class abilities
+
+Each class that is annotated with `@Configuration` or `@ClawjectApplication` is a configuration class.
+
+Configuration classes allow you to:
+- [Define beans](/docs/overview/bean.mdx)
+- [Import configurations](/docs/overview/import.mdx)
+- [Define lifecycle methods](/docs/overview/lifecycle.mdx)
+- [Export beans and re-export configuration imports to the container](/docs/overview/internal-external.mdx)
+
+### Features configuration
+
+The `PetRepository`, `CatService` and `DogService` belong to the same feature.
+Cat and Dog services are both using PetRepository to acquire the data.
+As they are part of one domain, it makes sense to define beans for them in a single feature-specific configuration class.
+
+```typescript title="pet-configuration.ts"
+import { Bean, Configuration } from '@clawject/di';
+import { CatService } from './cat-service';
+import { DogService } from './dog-service';
+import { PetRepository } from './pet-repository';
+
+@Configuration
+export class PetConfiguration {
+  catService = Bean(CatService);
+  dogService = Bean(DogService);
+  petRepository = Bean(PetRepository);
+}
+```
+
+Above, we defined the `PetConfiguration` in the `pet-configuration.ts` file.
+The last thing we need to do is import this configuration into the root application class.
+
+```typescript title="application.ts"
+import { ClawjectApplication, Import } from '@clawject/di';
+import { PetConfiguration } from './pet-configuration';
+
+@ClawjectApplication
+export class Application {
+  petConfiguration = Import(PetConfiguration);
+}
+```

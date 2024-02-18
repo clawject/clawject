@@ -1,5 +1,16 @@
 ---
-title: Clawject Type System
+title: ''
+tags:
+  - types
+  - type-system
+  - nominal-typing
+  - duck-typing
+  - structural-typing
+  - generics
+  - intersection-types
+  - union-types
+  - tuple-types
+  - type-aliases
 ---
 
 ```mdx-code-block
@@ -7,11 +18,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
-Clawject type system following a typescript type system as much as possible,
+## Clawject Type System
+
+By default - Clawject type system follows a typescript type system as much as possible,
 but there is one major difference -
 TypeScript using
 [structural type system (duck typing)](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#structural-type-system)
 but Clawject using [nominal typing](https://en.wikipedia.org/wiki/Nominal_type_system).
+
+:::tip
+You can configure Clawject to use structural typing by setting [typeSystem](/docs/configuration.mdx#typesystem) option to `structural` in configuration file.
+:::
+
+In a nutshell, nominal typing means that types are compared based on their name and place in the code,
+and structural typing means that types are compared based on their structure.
 
 As an example - we have 2 classes `Cat` and `Dog`, both of them have the same properties and methods,
 if we will use `Cat` instead of `Dog` or vice versa -
@@ -70,85 +90,42 @@ class Application {
 }
 ```
 
+## Nominal type system
+
+All the following examples are based on the Clawjects nominal type system implementation,
+so if you're chosen structural type system - some examples may not work as expected.
+
 ## Primitive types
-Clawject supports all primitive types from TypeScript:
- - `any | unknown`
- - `void | undefined`
- - `null`
- - `string`
- - `number`
- - `boolean`
- - `enum`
- - `bigint`
- - `symbol`
- - `unique symbol`
+Clawject supports all primitive types like `number`, `string`, type literals, etc. from TypeScript, and compares them the same as typescript does.
 
 :::tip
-Check [Bean Types](../api/bean.mdx#bean-types) section for not supported bean types.
+Check [Bean Types](../overview/bean.mdx#bean-types) section for not supported bean types.
 :::
 
-Also - Clawject supports literal (const) types, literal types are compatible with base types:
- - string literal: `'string_literal'`
- - number literal: `123`
- - boolean literal: `true` or `false`
- - enum literal: `MyEnum.FIRST`
- - bigint literal: `42n`
-
-Let's look at the example:
-
-```ts
-@ClawjectApplication
-class Application {
-  @Bean stringLiteral = 'string_literal' as const;
-  @Bean numberLiteral = 42 as const;
-  @Bean booleanLiteral = true as const;
-  @Bean enumLiteral = MyEnum.FIRST as const;
-  @Bean bigintLiteral = 42n as const;
-
-  @PostConstruct
-  postConstruct(
-    string: string, // <- stringLiteral bean will be injected here
-    number: number, // <- numberLiteral bean will be injected here
-    boolean: boolean, // <- booleanLiteral bean will be injected here
-    Enum: MyEnum, // <- enumLiteral bean will be injected here
-    bigint: bigint, // <- bigintLiteral bean will be injected here
-  ) {}
-}
-```
-
 ## Object types
-Because Clawject is using nominal typing — it's relying on at type declaration name and place,
-so it's not possible to use anonymous types or type aliases with non-named members [Type aliases](#type-aliases), but it's possible to use named types like `class` or `interface`:
+Because Clawject is using nominal typing — it's relying on at type declaration name and place.
 
-```mdx-code-block
-<Tabs>
-<TabItem value="type-references" label="Using type references">
-```
-
-```ts
+```ts title="Using type references"
 class Foo {}
 interface Bar {}
+type Baz = {};
 
 @ClawjectApplication
 class Application {
   @Bean foo: Foo = new Foo();
   @Bean bar: Bar = {};
+  @Bean baz: Baz = {};
 
   @PostConstruct
   postConstruct(
     dep0: Foo, // <- foo bean will be injected here
     dep1: Bar, // <- bar bean will be injected here
+    dep2: Baz, // <- baz bean will be injected here
   ) {}
 }
 ```
 
-```mdx-code-block
-</TabItem>
-
-<TabItem value="type-literals" label="Using object-like literals">
-```
-
-```ts
+```ts title="Using object literals"
 @ClawjectApplication
 class Application {
   @Bean foo: { bar: string } = {bar: 'barValue'};
@@ -160,11 +137,6 @@ class Application {
     foo: { bar: string },
   ) {}
 }
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
 ```
 
 ## Generic types
@@ -190,11 +162,10 @@ class Application {
 }
 ```
 
-:::tip
+If generic is not defined explicitly, clawject will try to resolve it in the following way:
 - If a generic type has a default value, it will be used as a fallback type.
 - If a generic type has `extends` constraint - it will be used as a fallback type.
 - If you're not specifying a generic type explicitly, and it doesn't have default value or `extends` constraint - it will be treated as `unknown` type (default typescript behavior).
-:::
 
 Let's take a look at the next example to better understand how generic types are resolved when they are not specified explicitly:
 
@@ -208,7 +179,6 @@ class Bar<T = string> {
 }
 
 class Baz {}
-
 class Quux<T extends Baz> {
   constructor(data: T) {}
 }
@@ -216,14 +186,13 @@ class Quux<T extends Baz> {
 @ClawjectApplication
 class Application {
   /* The type of parameter `data` will be `unknown`, and clawject will not know what to inject here */
-  foo = Bean(Foo)
+  foo = Bean(Foo);
 
   /* The type of parameter `data` will be `string` */
-  bar = Bean(Bar)
+  bar = Bean(Bar);
 
-  baz = Bean(Baz)
   /* The type of parameter `data` will be `Baz` */
-  quux = Bean(Quux)
+  quux = Bean(Quux);
 }
 ```
 
@@ -344,11 +313,10 @@ interface IBar { bar: string }
 @ClawjectApplication
 class Application {
   @Bean bar: IBar = { bar: 'barValue' }
-  @Bean foo: IFoo = { foo: 'fooValue' }
 
   @PostConstruct
   postConstruct(
-    dep0: IFoo | IBar, // <- "bar" will be injected here, because it was registered as a bean before 'foo'
+    dep0: IFoo | IBar, // <- "bar" will be injected here, because IFoo was not declared as a bean
   ) {}
 }
 ```
@@ -374,10 +342,8 @@ class Application {
 ## Type aliases
 
 From the typescript point of view -
-type aliases are just a named wrapper around base types like `string`, `number`, etc.
+type aliases are just a named wrapper around base types like `string`, `number`, object literals, etc.
 So type aliases will be treated as a set of base types.
-
-Example:
 
 ```ts
 interface Foo {}
@@ -395,20 +361,5 @@ class Application {
   @Bean baz: Baz = {};
   /* Type is identical to `baz` Bean */
   @Bean fooAndBar: Foo & Bar = {};
-}
-```
-
-If type alias has anonymous members - these members will not be taken into account:
-
-```ts
-interface Foo {foo: string}
-type Bar = Foo & {bar: string};
-
-@ClawjectApplication
-class Application {
-  /* Type of Bean resolved to `Foo` */
-  @Bean foo: Foo = {foo: ''};
-  /* Type of Bean resolved to `Foo` */
-  @Bean bar: Bar = {foo: '', bar: ''};
 }
 ```

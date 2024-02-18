@@ -77,11 +77,9 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
       return;
     }
 
-    const typeOfParameter = typeChecker.getTypeOfSymbol(parameter);
-
     const dependency = new Dependency();
     dependency.parameterName = parameter.name;
-    dependency.cType = new CType(typeOfParameter);
+    dependency.cType = new CType(getResolvedTypeFromParameterSymbol(parameter));
     dependency.node = parameterDeclarations[0] as ts.ParameterDeclaration;
 
     bean.registerDependency(dependency);
@@ -118,13 +116,21 @@ function registerBeanDependenciesFromBeanCallSignature(bean: Bean) {
       return;
     }
 
-    const typeOfParameter = typeChecker.getTypeOfSymbol(parameter);
-
     const dependency = new Dependency();
     dependency.parameterName = parameter.name;
-    dependency.cType = new CType(typeOfParameter);
+    dependency.cType = new CType(getResolvedTypeFromParameterSymbol(parameter));
     dependency.node = parameterDeclarations[0] as ts.ParameterDeclaration;
 
     bean.registerDependency(dependency);
   });
+}
+
+function getResolvedTypeFromParameterSymbol(parameter: ts.Symbol): ts.Type {
+  let type = getCompilationContext().typeChecker.getTypeOfSymbol(parameter);
+
+  if (type.isTypeParameter()) {
+    type = type.getDefault() ?? type.getConstraint() ?? type;
+  }
+
+  return type;
 }

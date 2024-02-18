@@ -7,7 +7,7 @@ It stores and manages configurations and beans of the application.
 
 ## Usage
 
-Let's define a simple application with a single bean and try to expose it using [ExposeBeans function](/docs/api/expose-beans.mdx):
+Let's define a simple application with a single bean and try to expose it using [ExposeBeans function](/docs/overview/expose-beans.mdx):
 
 ```typescript
 import {ClawjectApplication, ClawjectFactory, Bean, ExposeBeans} from '@clawject/di';
@@ -67,7 +67,7 @@ console.log(exposedBeans.service);
 After running this code, we will see the `CatRepository` and `CatService` objects in the console.
 
 Now let's define some initialization and destruction logic for our beans using
-[@PostConstruct](/docs/api/lifecycle.mdx#postconstruct) and [@PreDestroy](/docs/api/lifecycle.mdx#predestroy) decorators:
+[@PostConstruct](/docs/overview/lifecycle.mdx#postconstruct) and [@PreDestroy](/docs/overview/lifecycle.mdx#predestroy) decorators:
 
 ```typescript
 @ClawjectApplication

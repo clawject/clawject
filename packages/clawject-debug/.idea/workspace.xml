@@ -5,12 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/cat-service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dog-service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/docs/guides/sharing-configurations.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/docs/overview/expose-beans.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/docs/overview/internal-external.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../website/static/img/docs-config-tree.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/config/ConfigLoader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/config/ConfigLoader.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/config/DIConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/config/DIConfig.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/config/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/config/schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/registerBeanDependencies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/registerBeanDependencies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/report-cyclic-dependencies/reportAboutCircularDependencies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/report-circular-dependencies/reportAboutCircularDependencies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/CType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/CType.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/compiletime/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/compiletime/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/advanced-concepts/custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/advanced-concepts/custom-scopes.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/bean.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/clawject-application-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/clawject-application.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/clawject-factory.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/clawject-factory.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/configuration-decorator.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/embedded.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/expose-beans.mdx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/import.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/import.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/lazy.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/lifecycle.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/primary.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/primary.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/qualifier.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/qualifier.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/scope-register.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/scope-register.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/api/scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/configuration.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/configuration.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/ioc-di-basics.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/ioc-di-basics.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/errors.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/intro.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/intro.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/language-service.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/language-service.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/setup.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docusaurus.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/sidebars.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/sidebars.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/css/custom.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/css/custom.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/pages/markdown-page.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

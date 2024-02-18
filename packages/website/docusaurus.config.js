@@ -76,7 +76,10 @@ const config = {
   themeConfig:
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 6,
+      },
       navbar: {
         title: 'Clawject',
         hideOnScroll: true,
@@ -91,11 +94,6 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
-          // {
-          //     position: 'left',
-          //     label: 'Playground',
-          //     to: '/playground',
-          // },
           {
             href: 'https://github.com/clawject/clawject',
             position: 'right',
@@ -110,46 +108,12 @@ const config = {
             label: 'Made with <3 by Artem Korniev',
             href: 'https://github.com/artem1458',
           },
-          // {
-          //     title: 'Community',
-          //     items: [
-          //         {
-          //             label: 'Stack Overflow',
-          //             href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-          //         },
-          //         {
-          //             label: 'Discord',
-          //             href: 'https://discordapp.com/invite/docusaurus',
-          //         },
-          //         {
-          //             label: 'Twitter',
-          //             href: 'https://twitter.com/docusaurus',
-          //         },
-          //     ],
-          // },
-          // {
-          //     title: 'More',
-          //     items: [
-          //         {
-          //             label: 'Blog',
-          //             to: '/blog',
-          //         },
-          //         {
-          //             label: 'GitHub',
-          //             href: 'https://github.com/artem1458/clawject',
-          //         },
-          //     ],
-          // },
         ],
-        // copyright: `Made with . Built with Docusaurus.`,
       },
       prism: {
         theme: lightTheme,
         darkTheme: darkTheme,
         additionalLanguages: ['typescript', 'javascript', 'json', 'bash'],
-        magicComments: [
-
-        ],
       },
 
       algolia: {

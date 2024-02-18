@@ -1,6 +1,15 @@
 ---
-title: Clawject IoC Container
+title: ''
+tags:
+  - ioc
+  - di
+  - container
+  - bean
+  - scope
+  - lazy
 ---
+
+## Clawject IoC Container
 
 An IoC container is a common characteristic of frameworks that implement IoC.
 
@@ -47,7 +56,7 @@ Bean name is a class property name to which we assign the result of the Bean fun
 
 ## Bean scopes
 
-You can read more about scopes more here [@Scope](/docs/api/scope.mdx).
+You can read more about scopes more here [@Scope](/docs/overview/scope.mdx).
 
 For a bean with the default **singleton scope**,
 Clawject first checks if instance of the bean already created,
@@ -79,7 +88,7 @@ class Application {
 
 ## Lazy Initialized Beans
 
-You can read more about lazy beans here [@Lazy](/docs/api/lazy.mdx).
+You can read more about lazy beans here [@Lazy](/docs/overview/lazy.mdx).
 
 By default, the container creates and configures all singleton beans during initialization.
 To avoid this, we can use the **lazy** decorator with on the bean configuration level:

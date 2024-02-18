@@ -1,14 +1,15 @@
-import {Bean, ClawjectApplication, Embedded, PostConstruct} from '@clawject/di';
+import {Bean, ClawjectApplication, PostConstruct} from '@clawject/di';
+
+interface IFoo { foo: string }
+interface IBar { bar: string }
 
 @ClawjectApplication
-class App {
-  @Bean a: T1 = {} as any;
+class Application {
+  @Bean bar: IBar = { bar: 'barValue' };
+  @Bean foo: IFoo = { foo: 'fooValue' };
 
   @PostConstruct
-  pc(test: T2) {
-
-  }
+  postConstruct(
+    dep0: IFoo | IBar, // <- "bar" will be injected here, because it was registered as a bean before 'foo'
+  ) {}
 }
-
-type T1 = {}
-type T2 = {}

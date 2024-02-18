@@ -62,3 +62,13 @@
 .footer__links {
   margin-bottom: 0;
 }
+
+figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+code {
+  color: #2876d2;
+}
