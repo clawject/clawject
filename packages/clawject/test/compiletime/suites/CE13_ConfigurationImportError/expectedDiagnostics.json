@@ -1,0 +1,34 @@
+[
+  {
+    "messageText": "Could not import configuration. No imported class construct signatures found.",
+    "start": 118,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'BarConfiguration' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not import configuration. No imported class construct signatures found.",
+    "start": 225,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 209,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  }
+]

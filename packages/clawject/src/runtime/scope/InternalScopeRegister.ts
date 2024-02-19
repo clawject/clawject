@@ -21,7 +21,7 @@ export class InternalScopeRegister {
     return this.scopes.delete(name);
   }
 
-  static getScope(name: string): CustomScope {
+  static getScope(name: string | number): CustomScope {
     return this.assureRegistered(name);
   }
 

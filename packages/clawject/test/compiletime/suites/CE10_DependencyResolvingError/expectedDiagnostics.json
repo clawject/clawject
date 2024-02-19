@@ -1,0 +1,18 @@
+[
+  {
+    "messageText": "Can not resolve dependency. Could not resolve bean dependencies. Bean must have exactly one construct signature.",
+    "start": 102,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 86,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  }
+]

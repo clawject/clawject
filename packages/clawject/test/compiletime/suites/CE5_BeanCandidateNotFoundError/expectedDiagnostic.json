@@ -1,0 +1,460 @@
+[
+  {
+    "messageText": "Could not qualify bean candidate. Found 3 injection candidates.",
+    "start": 119,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'beanFunction' is declared here.",
+        "start": 272,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 5 injection candidates.",
+    "start": 136,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'str0' matched by type.",
+        "start": 225,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'str1' matched by type.",
+        "start": 248,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'beanFunction' is declared here.",
+        "start": 272,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 3 injection candidates.",
+    "start": 153,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'beanFunction' is declared here.",
+        "start": 272,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
+    "start": 330,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 4 injection candidates.",
+    "start": 347,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'str0' matched by type.",
+        "start": 225,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'str1' matched by type.",
+        "start": 248,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
+    "start": 364,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
+    "start": 427,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 4 injection candidates.",
+    "start": 444,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'str0' matched by type.",
+        "start": 225,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'str1' matched by type.",
+        "start": 248,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
+    "start": 461,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'preDestroy' matched by type.",
+        "start": 483,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
+    "start": 513,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 4 injection candidates.",
+    "start": 530,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'str0' matched by type.",
+        "start": 225,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'str1' matched by type.",
+        "start": 248,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
+    "start": 547,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'beanDecorator' matched by type.",
+        "start": 303,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'postConstruct' matched by type.",
+        "start": 391,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 210,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  }
+]

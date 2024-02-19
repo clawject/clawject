@@ -1,4 +1,4 @@
-import { Bean, CatContext, ContainerManager } from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from '@clawject/di';
 
 describe('BaseInjection', () => {
   const symProperty = Symbol('symProperty');
@@ -19,9 +19,10 @@ describe('BaseInjection', () => {
     ) {}
   }
 
-  it('test', () => {
+  it('test', async() => {
     //Given
-    class ApplicationContext extends CatContext {
+    @ClawjectApplication
+    class ApplicationContext {
       @Bean strProperty = 'strProperty';
       @Bean strFactoryMethod()  {return 'strFactoryMethod';}
       @Bean strFactoryArrowFunction = () => 'strFactoryArrowFunction';
@@ -89,13 +90,41 @@ describe('BaseInjection', () => {
         uniqueSymbol,
       );
       bar = Bean(Bar);
+
+      exposed = ExposeBeans<{
+        strProperty: string;
+        strFactoryMethod: string;
+        strFactoryArrowFunction: string;
+        str: string;
+        numProperty: number;
+        numFactoryMethod: number;
+        numFactoryArrowFunction: number;
+        num: number;
+        bigIntProperty: bigint;
+        bigIntFactoryMethod: bigint;
+        bigIntFactoryArrowFunction: bigint;
+        bigInt: bigint;
+        fooProperty: Foo;
+        fooFactoryMethod: Foo;
+        fooFactoryArrowFunction: Foo;
+        foo: Foo;
+        symProperty: typeof symProperty;
+        symFactoryMethod: typeof symFactoryMethod;
+        symFactoryArrowFunction: typeof symFactoryArrowFunction;
+        sym: typeof sym;
+        uniqueSymbol: typeof constUniqueSymbol;
+        barProperty: Bar;
+        barFactoryMethod: Bar;
+        barFactoryArrowFunction: Bar;
+        bar: Bar;
+      }>();
     }
 
     //When
-    const initializedContext = ContainerManager.init(ApplicationContext);
+    const applicationContext = await ClawjectFactory.createApplicationContext(ApplicationContext);
 
     //Then
-    const allBeans = initializedContext.getAllBeans() as Map<string, any>;
+    const allBeans = new Map<string, any>(Object.entries(await applicationContext.getExposedBeans()));
 
     expect(allBeans.get('strProperty')).toBe('strProperty');
     expect(allBeans.get('strFactoryMethod')).toBe('strFactoryMethod');

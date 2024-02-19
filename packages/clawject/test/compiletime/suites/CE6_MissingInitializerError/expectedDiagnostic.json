@@ -1,0 +1,66 @@
+[
+  {
+    "messageText": "Missing initializer.",
+    "start": 129,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Missing initializer.",
+    "start": 129,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Missing initializer.",
+    "start": 129,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Missing initializer.",
+    "start": 129,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  },
+  {
+    "messageText": "Missing initializer. Lifecycle method should have a body.",
+    "start": 165,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 113,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Missing initializer. Lifecycle method should have a body.",
+    "start": 202,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 113,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "messageText": "Element should be statically known. Bean element should have statically known name.",
+    "start": 200,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'MyConfiguration' is declared here.",
+        "start": 174,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Element should be statically known. Bean element should have statically known name.",
+    "start": 241,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'MyConfiguration' is declared here.",
+        "start": 174,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Element should be statically known. Bean element should have statically known name.",
+    "start": 267,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'MyConfiguration' is declared here.",
+        "start": 174,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Element should be statically known. Argument #0 should be statically known literal.",
+    "start": 350,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  }
+]

@@ -54,7 +54,7 @@ export class ApplicationBean {
     return this.beanMetadata.lazy ?? this.parentConfiguration.metadata.lazy;
   }
 
-  get scopeName(): string {
+  get scopeName(): string | number {
     return this.beanMetadata.scope ?? this.parentConfiguration.metadata.scope;
   }
 

@@ -259,17 +259,15 @@ class Application {
 **Solution:** Rename one of the exposed elements.
 
 #### CE13: ConfigurationImportError
-It occurs when you try to import class that is not annotated with `@Configuration` or `@ClawjectApplication`. Example:
+It occurs when Clawject cannot resolve class which you're trying to import. Example:
 ```ts
-class FooConfiguration {}
-
 @ClawjectApplication
 class Application {
-  foo = Import(FooConfiguration);
+  foo = Import(FooConfiguration); //FooConfiguration is not defined
 }
 ```
 
-**Solution:** Add `@Configuration` or `@ClawjectApplication` annotation to the imported class.
+**Solution:** Define missing class.
 
 #### CE14: DuplicateNameError
 It occurs when few beans have the same name (class member name or name defined via [`@Qualifier decorator`](/docs/overview/qualifier)). Example:

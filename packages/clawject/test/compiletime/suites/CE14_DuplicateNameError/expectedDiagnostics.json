@@ -1,0 +1,186 @@
+[
+  {
+    "messageText": "Duplicate name.",
+    "start": 119,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'a' is declared here.",
+        "start": 151,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Duplicate name.",
+    "start": 151,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'a' is declared here.",
+        "start": 119,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Duplicate name.",
+    "start": 168,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'c' is declared here.",
+        "start": 184,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Duplicate name.",
+    "start": 184,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'c' is declared here.",
+        "start": 168,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Duplicate name.",
+    "start": 119,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'a' is declared here.",
+        "start": 151,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Duplicate name.",
+    "start": 151,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'a' is declared here.",
+        "start": 119,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Duplicate name.",
+    "start": 168,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'c' is declared here.",
+        "start": 184,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Duplicate name.",
+    "start": 184,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'c' is declared here.",
+        "start": 168,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 97,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  }
+]

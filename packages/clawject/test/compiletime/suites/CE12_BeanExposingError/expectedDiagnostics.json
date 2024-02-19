@@ -1,0 +1,32 @@
+[
+  {
+    "messageText": "Could not expose beans. Duplicate declaration of exposed beans property detected.",
+    "start": 221,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'foo' is declared here.",
+        "start": 204,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'foo' is declared here.",
+        "start": 246,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 143,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  }
+]

@@ -12,13 +12,14 @@ export const getFile = (dirname: string, fileName: string, parameters: Record<st
   }, fileContent);
 };
 
-export const matchDiagnostic = (actual: ts.Diagnostic, expected: DiagnosticsLight): void => {
+export const matchDiagnostic = (actual: ts.Diagnostic | DiagnosticsLight, expected: DiagnosticsLight): void => {
   expect(actual).toMatchObject(expected);
 };
 
 export const matchDiagnostics = (actual: ts.Diagnostic[], expected: DiagnosticsLight[]): void => {
+  const actualLight = buildDiagnostics(actual);
   const sortedActual = sortBy(
-    actual,
+    actualLight,
     'messageText',
     'start',
   );
@@ -43,7 +44,7 @@ export const matchDiagnostics = (actual: ts.Diagnostic[], expected: DiagnosticsL
   });
 };
 
-export const buildDiagnostics = (diagnostics: ts.Diagnostic[]): DiagnosticsLight[] => {
+export function buildDiagnostics(diagnostics: ts.Diagnostic[]): DiagnosticsLight[] {
   return diagnostics.map(it => ({
     messageText: it.messageText,
     start: it.start,
@@ -58,4 +59,8 @@ export const buildDiagnostics = (diagnostics: ts.Diagnostic[]): DiagnosticsLight
       },
     }))
   }));
-};
+}
+
+export function debugDiagnostics(diagnostics: ts.Diagnostic[]): void {
+  console.log(JSON.stringify(buildDiagnostics(diagnostics)));
+}
