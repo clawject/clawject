@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../website/docs/advanced-concepts/custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/guides/custom-scopes.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/advanced-concepts/injecting-collections.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/guides/injecting-collections.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/configuration.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/configuration.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/errors.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/bean.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/clawject-application-context.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/clawject-factory.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/clawject-factory.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/configurations.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/embedded.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/expose-beans.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/expose-beans.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/import.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/import.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/internal-external.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/internal-external.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/lazy.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/lifecycle.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/primary.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/primary.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/qualifier.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/qualifier.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/scope-register.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/scope-register.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/overview/scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/scope.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/sidebars.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/sidebars.js" afterDir="false" />
-    </list>
+    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
