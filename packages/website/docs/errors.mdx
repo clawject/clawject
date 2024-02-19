@@ -42,23 +42,23 @@ This error appears directly on bean declaration in `@Configuration`/`@ClawjectAp
 
 **Solution:**
 - Define missing dependencies in the context.
-- Check a topic about [how dependencies are resolved](/docs/overview/bean#how-dependencies-are-resolved)
+- Check a topic about [how dependencies are resolved](/docs/fundamentals/bean#how-dependencies-are-resolved)
 - If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
-- Specify primary bean for the dependency with [`@Primary`](/docs/overview/primary) decorator.
+- Specify primary bean for the dependency with [`@Primary`](/docs/fundamentals/primary) decorator.
 
 #### CE5: BeanCandidateNotFoundError
 It occurs when the bean candidate for the specific dependency could not be resolved.
-- When declaring bean with [@Bean decorator](/docs/overview/bean#bean-decorator) - error will
+- When declaring bean with [@Bean decorator](/docs/fundamentals/bean#bean-decorator) - error will
   appear on the corresponding parameter of the **factory-function**.
-- When declaring bean with [Bean function](/docs/overview/bean#bean-function) - error will
+- When declaring bean with [Bean function](/docs/fundamentals/bean#bean-function) - error will
   appear on the corresponding parameter of the **class constructor**.
 If application has more than one matching candidate, for injection - Clawject will identify candidates that are matching by name and type.
 
 **Solution:**
 - Define missing dependencies in the context.
-- Check a topic about [how dependencies are resolved](/docs/overview/bean#how-dependencies-are-resolved)
+- Check a topic about [how dependencies are resolved](/docs/fundamentals/bean#how-dependencies-are-resolved)
 - If more than one matching dependency is defined - rename parameter to match one of the resolved dependencies by name.
-- Specify primary bean for the dependency with [`@Primary`](/docs/overview/primary) decorator.
+- Specify primary bean for the dependency with [`@Primary`](/docs/fundamentals/primary) decorator.
 
 #### CE6: MissingInitializerError
 It occurs when a property or method registered as a bean or lifecycle hook does not have an initializer.
@@ -133,7 +133,7 @@ Clawject will detect circular dependencies at compile-time and report this error
   ```
 
 #### CE8: IncorrectTypeError
-It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](/docs/overview/bean#bean-types). Example:
+It occurs when the type of the bean is not supported by Clawject, here defined restricted [Bean types](/docs/fundamentals/bean#bean-types). Example:
 ```ts
 @ClawjectApplication
 class Application {
@@ -201,7 +201,7 @@ It occurs when some feature is not supported by Clawject. Example:
     meow(data: any): void {}
   }
   ```
-- Using `@Embedded` decorator with bean declared with [Bean function](/docs/overview/bean#bean-function):
+- Using `@Embedded` decorator with bean declared with [Bean function](/docs/fundamentals/bean#bean-function):
   ```ts
   @ClawjectApplication
   class Application {
@@ -270,7 +270,7 @@ class Application {
 **Solution:** Define missing class.
 
 #### CE14: DuplicateNameError
-It occurs when few beans have the same name (class member name or name defined via [`@Qualifier decorator`](/docs/overview/qualifier)). Example:
+It occurs when few beans have the same name (class member name or name defined via [`@Qualifier decorator`](/docs/fundamentals/qualifier)). Example:
 ```ts
 @ClawjectApplication
 class Application {
