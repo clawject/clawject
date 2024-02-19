@@ -16,5 +16,5 @@ export enum ErrorCode {
   CE14 = 'CE14',
   CE15 = 'CE15',
   CE16 = 'CE16',
-  CE17 = 'CE17',
+  CE17 = 'CE17', // free
 }

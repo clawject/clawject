@@ -2,6 +2,8 @@ import ts from 'typescript';
 import { Configuration } from './Configuration';
 import { unquoteString } from '../utils/unquoteString';
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
+import { getConfigurationScopeExpressionValue } from './getConfigurationScopeExpressionValue';
+import { getConfigurationLazyExpressionValue } from './getConfigurationLazyExpressionValue';
 
 export class ConfigurationRepository {
   static fileNameToLastConfigurationCounter = new Map<string, number>();
@@ -18,6 +20,8 @@ export class ConfigurationRepository {
     configuration.fileName = classDeclaration.getSourceFile().fileName;
     configuration.node = classDeclaration;
     configuration.external = getExternalValueFromNode(classDeclaration);
+    configuration.scopeExpression.value = getConfigurationScopeExpressionValue(configuration);
+    configuration.lazyExpression.value = getConfigurationLazyExpressionValue(configuration);
 
     if (classDeclaration.name !== undefined) {
       configuration.className = unquoteString(classDeclaration.name.getText());

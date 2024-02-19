@@ -1,9 +1,298 @@
 ---
-title: '@Internal and @External'
+title: '@Internal @External'
 hide_title: true
 tags:
   - '@Internal'
   - '@External'
 ---
 
-### @Internal and @External decorators
+## @Internal and @External
+
+The `@Internal` and `@External` annotations are used to specify the visibility of a `Bean` or `Configuration Import`.
+Both annotations can be applied to bean declarations and to `Configuration/ClawjectApplication` classes.
+
+By default - if no visibility annotation is specified - a bean or configuration import is visible to all other beans and configuration imports across the whole application.
+
+:::tip
+You can re-define the default visibility of [beans](/docs/configuration#beansdefaultexternal) and [configuration imports](/docs/configuration#importsdefaultexternal).
+:::
+
+When defined on a `Bean` or `Configuration Import`, the `@Internal` and `@External` annotations are used to specify the visibility of the bean or configuration import in the context of the class in which it.
+When defined on a `Configuration/ClawjectApplication` class, the `@Internal` and `@External` annotations are used to specify the visibility of all beans and configuration imports defined in the class.
+
+:::tip Note that
+- `Bean`/`Configuration Import` level annotations have precedence over class level annotations.
+- Both decorators are mutually exclusive and cannot be used together in the same element.
+- Both decorators are interchangeable, `@Internal(false)` is equivalent to `@External` and `@External(false)` is equivalent to `@Internal`.
+:::
+
+### @Internal
+
+It Indicates that the bean or configuration import is only visible within the class in which it is applied.
+When applied on class level, all beans and configuration imports defined in the class are only visible within the class.
+
+#### When target is Bean
+
+Lets defined `FooConfiguration` which contain `BarService` and `BazService` beans.
+`BarService` will be visible only within `FooConfiguration` class and `BazService` will be visible outside of `FooConfiguration` class.
+
+```ts title="foo-configuration.ts"
+import { Bean, Configuration, Internal } from '@clawject/di';
+import { BarService } from './bar-service';
+import { BazService } from './baz-service';
+
+@Configuration
+export class FooConfiguration {
+  @Internal barService = Bean(BarService);
+  bazService = Bean(BazService);
+}
+```
+
+Now lets import `FooConfiguration` in `Application` and try to access `BarService` and `BazService`.
+
+```ts title="application.ts"
+import { ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { FooConfiguration } from './foo-configuration';
+import { BarService } from './bar-service';
+import { BazService } from './baz-service';
+
+@ClawjectApplication
+class Application {
+  fooConfiguration = Import(FooConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* BarService is not visible here and compilation error will be reported */
+    barService: BarService,
+    /* BazService is visible here and will be injected */
+    bazService: BazService
+  ): void {}
+}
+```
+
+#### When target is Imported Configuration
+
+Lets defined `FooConfiguration` which contain `FooService` bean.
+`FooService` will be visible to everyone that imports `FooConfiguration`.
+
+```ts title="foo-configuration.ts"
+import { Bean, Configuration } from '@clawject/di';
+import { FooService } from './foo-service';
+
+@Configuration
+export class FooConfiguration {
+  fooService = Bean(FooService);
+}
+```
+
+Now lets import `FooConfiguration` in `BarConfiguration`, mark an import as `@Internal` and try to access `FooService` bean.
+
+```ts title="bar-configuration.ts"
+import { Configuration, Import, Internal, PostConstruct } from '@clawject/di';
+import { FooConfiguration } from './foo-configuration';
+import { FooService } from './foo-service';
+
+@Configuration
+export class BarConfiguration {
+  @Internal fooConfiguration = Import(FooConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* FooService is visible here and will be injected */
+    fooService: FooService,
+  ): void {}
+}
+```
+
+Now we define `Application`, import `BarConfiguration` and try to access `FooService` bean.
+
+```ts title="application.ts"
+import { ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { BarConfiguration } from './bar-configuration';
+import { FooService } from './foo-service';
+
+@ClawjectApplication
+class Application {
+  barConfiguration = Import(BarConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* FooService is not visible here and compilation error will be reported */
+    fooService: FooService,
+  ): void {}
+}
+
+```
+
+#### When target is Configuration class
+
+Lets defined `FooConfiguration` which contain `BarService` and `BazService` beans.
+`BarService` and `BazService` will not be visible outside of `FooConfiguration` class.
+
+```ts title="foo-configuration.ts"
+import { Bean, Configuration, Internal } from '@clawject/di';
+import { BarService } from './bar-service';
+import { BazService } from './baz-service';
+
+@Configuration
+@Internal
+export class FooConfiguration {
+  barService = Bean(BarService);
+  bazService = Bean(BazService);
+}
+```
+
+Now lets import `FooConfiguration` in `Application` and try to access `BarService` and `BazService`.
+
+```ts title="application.ts"
+import { ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { FooConfiguration } from './foo-configuration';
+import { BarService } from './bar-service';
+import { BazService } from './baz-service';
+
+@ClawjectApplication
+export class Application {
+  fooConfiguration = Import(FooConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* BarService is not visible here and compilation error will be reported */
+    barService: BarService,
+    /* BazService is not visible here and compilation error will be reported */
+    bazService: BazService
+  ): void {}
+}
+```
+
+### @External
+
+It Indicates that the bean or configuration import is visible outside the class in which they are defined.
+When applied on class level, all beans and configuration imports defined in the class become visible outside the class.
+
+#### When target is Bean
+
+Lets defined `FooConfiguration` which contain `FooService` bean.
+`BarService` will be visible outside of `FooConfiguration` class.
+
+```ts title="foo-configuration.ts"
+import { Bean, Configuration, External } from '@clawject/di';
+import { FooService } from './foo-service';
+
+@Configuration
+export class FooConfiguration {
+  @External fooService = Bean(FooService);
+}
+```
+
+Now lets import `FooConfiguration` in `Application` and try to access `BarService` and `BazService`.
+
+```ts title="application.ts"
+import { ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { FooConfiguration } from './foo-configuration';
+import { FooService } from './foo-service';
+
+@ClawjectApplication
+class Application {
+  fooConfiguration = Import(FooConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* FooService is visible here and will be injected */
+    fooService: FooService
+  ): void {}
+}
+```
+
+#### When target is Imported Configuration
+
+Lets defined `FooConfiguration` which contain `FooService` bean.
+`FooService` will be visible to everyone that imports `FooConfiguration`.
+
+```ts title="foo-configuration.ts"
+import { Bean, Configuration, @External } from '@clawject/di';
+import { FooService } from './foo-service';
+
+@Configuration
+export class FooConfiguration {
+  @External fooService = Bean(FooService);
+}
+```
+
+Now lets import `FooConfiguration` in `BarConfiguration`, mark an import as `@External` and try to access `FooService` bean.
+
+```ts title="bar-configuration.ts"
+import { Configuration, Import, External, PostConstruct } from '@clawject/di';
+import { FooConfiguration } from './foo-configuration';
+import { FooService } from './foo-service';
+
+@Configuration
+export class BarConfiguration {
+  @External fooConfiguration = Import(FooConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* FooService is visible here and will be injected */
+    fooService: FooService,
+  ): void {}
+}
+```
+
+Now we define `Application`, import `BarConfiguration` and try to access `FooService` bean.
+
+```ts title="application.ts"
+import { ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { BarConfiguration } from './bar-configuration';
+import { FooService } from './foo-service';
+
+@ClawjectApplication
+class Application {
+  barConfiguration = Import(BarConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* FooService is visible here and will be injected */
+    fooService: FooService,
+  ): void {}
+}
+
+```
+
+#### When target is Configuration class
+
+Lets defined `FooConfiguration` which contain `BarService` and `BazService` beans.
+`BarService` and `BazService` will be visible outside of `FooConfiguration` class.
+
+```ts title="foo-configuration.ts"
+import { Bean, Configuration, External } from '@clawject/di';
+import { BarService } from './bar-service';
+import { BazService } from './baz-service';
+
+@Configuration
+@External
+export class FooConfiguration {
+  barService = Bean(BarService);
+  bazService = Bean(BazService);
+}
+```
+
+Now lets import `FooConfiguration` in `Application` and try to access `BarService` and `BazService`.
+
+```ts title="application.ts"
+import { ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { FooConfiguration } from './foo-configuration';
+import { BarService } from './bar-service';
+import { BazService } from './baz-service';
+
+@ClawjectApplication
+export class Application {
+  fooConfiguration = Import(FooConfiguration);
+
+  @PostConstruct
+  postConstruct(
+    /* BarService is visible here and will be injected */
+    barService: BarService,
+    /* BazService is visible here and will be injected */
+    bazService: BazService
+  ): void {}
+}
+```

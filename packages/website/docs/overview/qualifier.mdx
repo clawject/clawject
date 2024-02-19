@@ -1,5 +1,6 @@
 ---
 title: '@Qualifier'
+hide_title: true
 ---
 
 ```mdx-code-block
@@ -7,15 +8,18 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
-@Qualifier decorator allows us to specify a name for a bean.
+## @Qualifier
+
+`@Qualifier` decorator allows us to specify a name for a bean.
 This can be particularly useful when multiple beans of the same type exist,
 and we want to specify which bean to use in a certain scenario.
 In the future, this decorator will be used for a few more use cases.
 
-## Using @Qualifier to Specify a Bean's Name
+Lets use the `@Qualifier` decorator to specify the name of a bean.
 
 ```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean
   @Qualifier('cat')
   animal1 = new Animal('meow');

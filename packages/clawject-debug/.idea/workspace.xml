@@ -4,7 +4,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="" />
+    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanExposingError.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/getConfigurationLazyExpressionValue.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/getConfigurationScopeExpressionValue.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/BuildErrorFormatter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/BuildErrorFormatter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/ErrorCode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/ErrorCode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/MissingBeansDeclarationError.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/predicates/isExportBeansClassProperty.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/ts/predicates/isExposeBeansClassProperty.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/RuntimeErrors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/RuntimeErrors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Scope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Scope.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBeanFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBeanFactory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/FreshScope.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/InternalScopeRegister.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/InternalScopeRegister.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/advanced-concepts/injecting-collections.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/advanced-concepts/injecting-collections.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/configuration.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/configuration.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/clawject-ioc.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/errors.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/bean.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/bean.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/clawject-application-context.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/clawject-factory.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/clawject-factory.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/configurations.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/embedded.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/embedded.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/expose-beans.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/expose-beans.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/import.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/import.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/internal-external.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/internal-external.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/lazy.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/lifecycle.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/lifecycle.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/primary.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/primary.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/qualifier.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/qualifier.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/scope-register.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/scope-register.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/overview/scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/overview/scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/setup.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/sidebars.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/sidebars.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,41 +89,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/art/IdeaProjects/clawject/packages/clawject-debug/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "npm.run:languageService.executor": "Debug",
-    "npm.run:tsc.executor": "Run",
-    "npm.run:tsc_debug.executor": "Run",
-    "npm.run:tscw.executor": "Run",
-    "npm.run:upgradeClawject.executor": "Run",
-    "npm.run:webpack_hot.executor": "Run",
-    "npm.test.executor": "Run",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "settings.typescriptcompiler",
-    "ts.external.directory.path": "/Users/art/IdeaProjects/clawject/packages/clawject-debug/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/art/IdeaProjects/clawject/packages/clawject-debug/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;npm.run:languageService.executor&quot;: &quot;Debug&quot;,
+    &quot;npm.run:tsc.executor&quot;: &quot;Run&quot;,
+    &quot;npm.run:tsc_debug.executor&quot;: &quot;Run&quot;,
+    &quot;npm.run:tscw.executor&quot;: &quot;Run&quot;,
+    &quot;npm.run:upgradeClawject.executor&quot;: &quot;Run&quot;,
+    &quot;npm.run:webpack_hot.executor&quot;: &quot;Run&quot;,
+    &quot;npm.test.executor&quot;: &quot;Run&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.typescriptcompiler&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/art/IdeaProjects/clawject/packages/clawject-debug/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
@@ -96,7 +135,7 @@
       <recent name="$PROJECT_DIR$/static" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:webpack_hot">
+  <component name="RunManager" selected="npm.run:tsc">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -149,10 +188,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:tscw" />
-        <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:tsc_debug" />
       </list>
     </recent_temporary>
@@ -246,7 +285,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/../clawject/src/compile-time/core/configuration/ConfigurationRepository.ts</url>
-          <line>68</line>
+          <line>72</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">

@@ -1,4 +1,4 @@
-import ts, { createGetCanonicalFileName } from 'typescript';
+import ts from 'typescript';
 import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { AbstractCompilationMessage, IRelatedConfigurationOrApplicationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
@@ -6,10 +6,10 @@ import { CircularDependenciesError } from '../compilation-context/messages/error
 import { CanNotRegisterBeanError } from '../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanCandidateNotFoundError } from '../compilation-context/messages/errors/BeanCandidateNotFoundError';
 import { BeanKind } from '../core/bean/BeanKind';
-import { MissingBeansDeclarationError } from '../compilation-context/messages/errors/MissingBeansDeclarationError';
 import { DuplicateNameError } from '../compilation-context/messages/errors/DuplicateNameError';
 import { MessageType } from '../compilation-context/messages/MessageType';
 import { ConfigurationAlreadyImportedInfo } from '../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
+import { BeanExposingError } from '../compilation-context/messages/errors/BeanExposingError';
 
 export class DiagnosticsBuilder {
   private static formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
@@ -109,19 +109,6 @@ export class DiagnosticsBuilder {
       }
     }
 
-    if (message instanceof MissingBeansDeclarationError) {
-      const missingElementsRelatedInformation: ts.DiagnosticRelatedInformation[] = message.missingElementsLocations.map(it => ({
-        messageText: `'${it.name}' is declared here.`,
-        start: it.nodeDetails.startOffset,
-        length: it.nodeDetails.length,
-        code: diagnosticsCode,
-        file: this.getSourceFile(it.nodeDetails.filePath),
-        category: this.getDiagnosticCategory(message),
-      }));
-
-      relatedInformation.push(...missingElementsRelatedInformation);
-    }
-
     if (message instanceof DuplicateNameError) {
       const duplicateNamesRelatedInformation: ts.DiagnosticRelatedInformation[] = message.duplicateElements.map(it => ({
         messageText: `'${it.name}' is declared here.`,
@@ -146,6 +133,19 @@ export class DiagnosticsBuilder {
       }));
 
       relatedInformation.push(...duplicateImportsRelatedInformation);
+    }
+
+    if (message instanceof BeanExposingError) {
+      const missingElementsRelatedInformation: ts.DiagnosticRelatedInformation[] = message.problemNodes.map(it => ({
+        messageText: `'${it.declarationName}' is declared here.`,
+        start: it.startOffset,
+        length: it.length,
+        code: diagnosticsCode,
+        file: this.getSourceFile(it.filePath),
+        category: this.getDiagnosticCategory(message),
+      }));
+
+      relatedInformation.push(...missingElementsRelatedInformation);
     }
 
     if (message.relatedConfigurationMetadata !== null) {

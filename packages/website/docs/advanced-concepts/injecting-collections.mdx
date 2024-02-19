@@ -1,11 +1,14 @@
 ---
 title: Inject Arrays and Collections
+hide_title: true
 ---
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
+
+## Inject Arrays and Collections
 
 Sometimes you need to inject an array or collection of beans into another bean,
 for example, when you need to inject listeners into a publisher, or caches into a cache manager.
@@ -38,8 +41,8 @@ class CacheManager {
     this.caches.forEach(cache => cache.clear());
   }
 }
-
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   stringCache = Bean(Cache<string>)
   numberCache = Bean(Cache<number>)
   booleanCache = Bean(Cache<boolean>)
@@ -69,7 +72,8 @@ class CacheManager {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   stringCache = Bean(Cache<string>)
   numberCache = Bean(Cache<number>)
   booleanCache = Bean(Cache<boolean>)
@@ -99,7 +103,8 @@ class CacheManager {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   stringCache = Bean(Cache<string>)
   numberCache = Bean(Cache<number>)
   booleanCache = Bean(Cache<boolean>)
@@ -129,7 +134,8 @@ class CacheManager {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   stringCache = Bean(Cache<string>)
   numberCache = Bean(Cache<number>)
   booleanCache = Bean(Cache<boolean>)
@@ -159,7 +165,8 @@ class CacheManager {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   stringCache = Bean(Cache<string>)
   numberCache = Bean(Cache<number>)
   booleanCache = Bean(Cache<boolean>)
@@ -192,7 +199,8 @@ class CacheManager {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   stringCache = Bean(Cache<string>)
   numberCache = Bean(Cache<number>)
   booleanCache = Bean(Cache<boolean>)
@@ -225,7 +233,8 @@ class CacheManager {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   stringCache = Bean(Cache<string>)
   numberCache = Bean(Cache<number>)
   booleanCache = Bean(Cache<boolean>)
@@ -239,12 +248,13 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-## Defining Bean with Array or Collection type
+### Defining Bean with Array or Collection type
 If you want to define Bean with type Array or Collection - you can safely do that.
 To access such beans — you should match the type of collection and bean name.
 
 ```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean myCollection = new Set(['foo', 'bar', 'baz']);
   @Bean string1 = 'quux';
   @Bean string2 = 'quuux';

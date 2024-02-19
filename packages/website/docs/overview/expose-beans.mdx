@@ -4,3 +4,141 @@ hide_title: true
 ---
 
 ## ExposeBeans
+
+ExposeBeans function allows you to expose beans from the application context, so that they can be accessed from the outside of the `@ClawjectApplication` class.
+
+This function will have an effect only on the root of your application context class (the one annotated with `@ClawjectApplication`).
+Clawject will validate the beans that are being exposed and will report an error if the bean is not found in the application context.
+
+Exposed beans are resolved same as [bean dependencies are resolved](/docs/overview/bean#how-dependencies-are-resolved).
+
+### Usage
+
+Let's say you have a `@ClawjectApplication` class and you want to expose a bean from it.
+To do so, you can use `ExposeBeans` function and object type to expose the beans.
+
+```ts
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from '@clawject/di';
+
+class Foo {}
+class Bar {}
+
+interface BeansToExpose {
+  fooBean: Foo;
+  barBean: Bar;
+}
+
+@ClawjectApplication
+class Application {
+  foo = Bean(Foo);
+  bar = Bean(Bar);
+
+  exposed = ExposeBeans<BeansToExpose>()
+}
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+
+// We received the exposed beans as an object with the same keys as the `BeansToExpose` interface
+const exposedBeans = await applicationContext.getExposedBeans();
+console.log(exposedBeans.fooBean); // Foo {}
+console.log(exposedBeans.barBean); // Bar {}
+```
+
+If we want to get only one of the exposed beans, we can use `getExposedBean` method.
+
+```ts
+const fooBean = await applicationContext.getExposedBean('fooBean');
+console.log(fooBean); // Foo {}
+```
+
+You can also define more than one `ExposeBeans` fields in the `@ClawjectApplication` class, all them will be merged into one object.
+
+```ts
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from '@clawject/di';
+
+class Foo {}
+class Bar {}
+
+interface ExposedFoo {
+  fooBean: Foo;
+}
+interface ExposedBar {
+  barBean: Bar;
+}
+
+@ClawjectApplication
+class Application {
+  foo = Bean(Foo);
+  bar = Bean(Bar);
+
+  exposedFoo = ExposeBeans<ExposedFoo>();
+  exposedBar = ExposeBeans<ExposedBar>();
+}
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+
+// We received the exposed beans as an object with the same keys as the `BeansToExpose` interface
+const exposedBeans = await applicationContext.getExposedBeans();
+console.log(exposedBeans.fooBean); // Foo {}
+console.log(exposedBeans.barBean); // Bar {}
+```
+
+However, if you define the same key in more than one `ExposeBeans` field, an error will be reported.
+
+```ts showLineNumbers
+import { Bean, ClawjectApplication, ExposeBeans } from '@clawject/di';
+
+class Foo {}
+class Bar {}
+
+interface ExposedFoo {
+  fooBean: Foo;
+}
+interface ExposedBar {
+  fooBean: Foo;
+  barBean: Bar;
+}
+
+@ClawjectApplication
+class Application {
+  foo = Bean(Foo);
+  bar = Bean(Bar);
+
+  exposedFoo = ExposeBeans<ExposedFoo>();
+  /**
+  * CE17: Could not expose beans. Duplicate declaration of exposed beans property detected.
+  * index.ts(7, 3): 'fooBean' is declared here.
+  * index.ts(10, 3): 'fooBean' is declared here.
+  * index.ts(15, 7): Application is declared here.
+  */
+  exposedBar = ExposeBeans<ExposedBar>();
+}
+```
+
+But if you want to expose same bean with a different name, you can safely do it.
+
+```ts
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from '@clawject/di';
+
+class Foo {}
+
+interface ExposedFooOne {
+  fooBeanOne: Foo;
+}
+interface ExposedFooTwo {
+  fooBeanTwo: Foo;
+}
+
+@ClawjectApplication
+class Application {
+  foo = Bean(Foo);
+
+  exposedFooOne = ExposeBeans<ExposedFooOne>();
+  exposedFooTwo = ExposeBeans<ExposedFooTwo>();
+}
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+
+const exposedBeans = await applicationContext.getExposedBeans();
+console.log(exposedBeans.fooBeanOne === exposedBeans.fooBeanTwo); // true
+```

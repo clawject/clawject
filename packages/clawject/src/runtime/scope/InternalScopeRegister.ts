@@ -1,13 +1,11 @@
 import { CustomScope } from '../api/CustomScope';
 import { SingletonScope } from './SingletonScope';
-import { FreshScope } from './FreshScope';
 import { RuntimeErrors } from '../api/RuntimeErrors';
 import { TransientScope } from './TransientScope';
 
 export class InternalScopeRegister {
   private static scopes = new Map<string | number, CustomScope>([
     ['singleton', new SingletonScope()],
-    ['fresh', new FreshScope()],
     ['transient', new TransientScope()],
   ]);
 

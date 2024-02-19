@@ -1,18 +1,19 @@
 import ts from 'typescript';
 import { Application } from '../application/Application';
-import { isExportBeansClassProperty } from '../ts/predicates/isExportBeansClassProperty';
+import { isExposeBeansClassProperty } from '../ts/predicates/isExposeBeansClassProperty';
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 import { CType } from '../type-system/CType';
+import { BeanExposingError } from '../../compilation-context/messages/errors/BeanExposingError';
 
 export const fillExposedBeans = (application: Application): void => {
   const exposedBeans = new Map<string, Dependency>();
   const dependencyToSymbol = new Map<Dependency, ts.Symbol>();
 
   application.rootConfiguration.node.members.forEach(member => {
-    if (isExportBeansClassProperty(member)) {
+    if (isExposeBeansClassProperty(member)) {
       fillExposedBeansForClassElementNode(application, member, exposedBeans, dependencyToSymbol);
     }
   });
@@ -53,9 +54,12 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
   }
 
   const beansType = typeChecker.getTypeOfSymbol(beansProperty);
+  const duplicatedExposedProperties: ts.Symbol[] = [];
+
   beansType.getProperties().forEach(property => {
     const propertyName = property.getName();
     const propertyDeclaration = property.valueDeclaration;
+    const exposedBeanDependency = exposedBeans.get(propertyName);
 
     if (!propertyDeclaration) {
       getCompilationContext().report(new TypeQualifyError(
@@ -67,13 +71,14 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
       return;
     }
 
-    if (exposedBeans.has(propertyName)) {
-      getCompilationContext().report(new TypeQualifyError(
-        'Duplicate declaration of exposed beans property.',
-        propertyDeclaration,
-        null,
-        application,
-      ));
+    if (exposedBeanDependency) {
+      const duplicatedExposedPropertySymbol = exposedBeanDependency.getNodeSafe()?.symbol;
+
+      if (duplicatedExposedPropertySymbol) {
+        duplicatedExposedProperties.push(duplicatedExposedPropertySymbol);
+      }
+
+      duplicatedExposedProperties.push(property);
       return;
     }
 
@@ -87,6 +92,15 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
     exposedBeans.set(propertyName, dependency);
     dependencyToSymbol.set(dependency, property);
   });
+
+  if (duplicatedExposedProperties.length !== 0) {
+    getCompilationContext().report(new BeanExposingError(
+      'Duplicate declaration of exposed beans property detected.',
+      member,
+      duplicatedExposedProperties,
+      application,
+    ));
+  }
 }
 
 function fillApplicationExposedBeans(application: Application, exposedBeans: Map<string, Dependency>): void {

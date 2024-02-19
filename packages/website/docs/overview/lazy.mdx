@@ -1,34 +1,43 @@
 ---
 title: '@Lazy'
+hide_title: true
 ---
-
-
 
 ```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
-By default, Clawject creates all singleton beans eagerly at the initialization of the context.
+## @Lazy
+
+By default, Clawject creates all singleton beans eagerly when all configuration classes are instatiated.
+
 However, there are cases when we need to create a bean,
-not at the context initialization, but when we request it.
+not at the context initialization, but only when we request it.
 
-`@Lazy` decorator accepts optional boolean parameter that indicates is target will be lazy or not, default value: `true`.
+:::tip Note that
+- `Bean` level annotations have precedence over class level annotations.
+- `@Lazy` can be applied to `@Configuration` class or to the bean declaration.
+- `@Lazy` decorator accepts optional boolean parameter that indicates is target will be lazy or not, so to make it eager, you can use `@Lazy(false)`.
+:::
 
-## Lazy on CatContext class
+## Lazy on `@Configuration` class
 
-When we put @Lazy decorator over the class that is inheritor of `CatContext`,
-it indicates that all the beans that are declared in context should be loaded lazily.
+When we put `@Lazy` decorator on the `@Configuration` class,
+it indicates that all the beans that are declared in configuration should be loaded lazily.
 
 Let's have a look here:
 
 ```ts
+import {Bean, ClawjectApplication, ClawjectFactory, ExposeBeans, Lazy, PostConstruct} from '@clawject/di';
+
 class Foo {
   @PostConstruct
   postConstruct() {
     console.log('Foo bean has been created');
   }
 }
+
 class Bar {
   @PostConstruct
   postConstruct() {
@@ -36,25 +45,31 @@ class Bar {
   }
 }
 
+@ClawjectApplication
 @Lazy
-class MyContext extends CatContext {
+class Application {
   foo = Bean(Foo);
   bar = Bean(Bar);
+
+  exposed = ExposeBeans<{ foo: Foo, bar: Bar }>();
 }
 
-const context = ContainerManager.init(MyContext);
-
-context.getBean('foo'); // <- logs "Foo bean has been created"
-context.getBean('bar'); // <- logs "Bar bean has been created"
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+const foo = await applicationContext.getExposedBean('foo');
+// logs: Foo bean has been created
+const bar = await applicationContext.getExposedBean('bar');
+// logs: Bar bean has been created
 ```
 
 As we see, all beans are created only when we request them for the first time.
 
 ## Lazy on Beans
 
-We can also put @Lazy decorator over the bean declaration.
+We can also put `@Lazy` decorator over the bean declaration.
 
 ```ts
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans, Lazy, PostConstruct } from '@clawject/di';
+
 class Foo {
   @PostConstruct
   postConstruct() {
@@ -62,24 +77,25 @@ class Foo {
   }
 }
 
-class MyContext extends CatContext {
-  foo = Bean(Foo);
+@ClawjectApplication
+class Application {
+  @Lazy foo = Bean(Foo);
+
+  exposed = ExposeBeans<{ foo: Foo }>();
 }
 
-const context = ContainerManager.init(MyContext);
-
-context.getBean('foo'); // <- logs "Foo bean has been created"
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+await applicationContext.getExposedBean('foo');
+// logs: Foo bean has been created
 ```
 
-Again, the bean is created only when we request it for the first time.
+## Combining @Lazy on @Configuration and Bean
 
-## Combining @Lazy on CatContext and Bean
-
-We can also combine @Lazy decorator on CatContext and Bean.
-If Bean is decorated with `@Lazy`, it overrides the `@Lazy` on `CatContext` level for this bean,
-if not - value from `CatContext` is used.
+You can safely combine `@Lazy` on `@Configuration` and on the bean level.
 
 ```ts
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans, Lazy, PostConstruct } from '@clawject/di';
+
 class Foo {
   @PostConstruct
   postConstruct() {
@@ -93,14 +109,17 @@ class Bar {
   }
 }
 
+@ClawjectApplication
 @Lazy
-class MyContext extends CatContext {
-
-  @Lazy(false)
-  foo = Bean(Foo);
-
+class Application {
+  @Lazy(false) foo = Bean(Foo);
   bar = Bean(Bar);
+
+  exposed = ExposeBeans<{ bar: Bar }>();
 }
 
-ContainerManager.init(MyContext); // <- logs "Foo bean has been created"
+const applicationContext = await ClawjectFactory.createApplicationContext(Application);
+// logs: Foo bean has been created
+await applicationContext.getExposedBean('bar');
+// logs: Foo bean has been created
 ```

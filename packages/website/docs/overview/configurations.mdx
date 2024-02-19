@@ -20,16 +20,16 @@ These decorators provide metadata to the container to process the configuration 
 
 Each application has at least one configuration, a class that is annotated with `@ClawjectApplication`.
 The root configuration class is the entry point **Clawject** uses to resolve
-[beans and its dependencies](/docs/overview/bean.mdx#bean-dependencies),
-[imported configurations](/docs/overview/import.mdx)
-and [exposed beans](/docs/overview/expose-beans.mdx).
+[beans and its dependencies](/docs/overview/bean#bean-dependencies),
+[imported configurations](/docs/overview/import)
+and [exposed beans](/docs/overview/expose-beans).
 
 Each application can have as many configurations as needed, and each configuration can import other configurations.
 All the **configurations are singletons** in the context of the application.
 
 :::tip
 Configuration classes allow encapsulating specific beans, or vice versa,
-to expose beans and configuration imports to the container using [@Internal and @External](/docs/overview/internal-external.mdx) decorators.
+to expose beans and configuration imports to the container using [@Internal and @External](/docs/overview/internal-external) decorators.
 :::
 
 ###  Configuration class abilities
@@ -37,10 +37,10 @@ to expose beans and configuration imports to the container using [@Internal and 
 Each class that is annotated with `@Configuration` or `@ClawjectApplication` is a configuration class.
 
 Configuration classes allow you to:
-- [Define beans](/docs/overview/bean.mdx)
-- [Import configurations](/docs/overview/import.mdx)
-- [Define lifecycle methods](/docs/overview/lifecycle.mdx)
-- [Export beans and re-export configuration imports to the container](/docs/overview/internal-external.mdx)
+- [Define beans](/docs/overview/bean)
+- [Import configurations](/docs/overview/import)
+- [Define lifecycle methods](/docs/overview/lifecycle)
+- [Export beans and re-export configuration imports to the container](/docs/overview/internal-external)
 
 ### Features configuration
 

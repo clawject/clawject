@@ -81,18 +81,13 @@ export default {
         },
         {
           type: 'doc',
-          label: 'ScopeRegister',
-          id: 'overview/scope-register',
+          label: '@Internal @External',
+          id: 'overview/internal-external',
         },
         {
           type: 'doc',
           label: 'Lifecycle',
           id: 'overview/lifecycle',
-        },
-        {
-          type: 'doc',
-          label: '@Internal @External',
-          id: 'overview/internal-external',
         },
         {
           type: 'doc',
@@ -118,6 +113,11 @@ export default {
           type: 'doc',
           label: '@Scope',
           id: 'overview/scope',
+        },
+        {
+          type: 'doc',
+          label: 'ScopeRegister',
+          id: 'overview/scope-register',
         },
       ],
     },

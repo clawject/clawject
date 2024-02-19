@@ -2,8 +2,8 @@
 export namespace RuntimeErrors {
 
   /** @public */
-  export class BeanNotFoundError extends Error {
-    override name = 'BeanNotFoundError' as const;
+  export class ExposedBeanNotFoundError extends Error {
+    override name = 'ExposedBeanNotFoundError' as const;
   }
 
   /** @public */
@@ -14,11 +14,6 @@ export namespace RuntimeErrors {
   /** @public */
   export class DuplicateScopeError extends Error {
     override name = 'DuplicateScopeError' as const;
-  }
-
-  /** @public */
-  export class IllegalAccessError extends Error {
-    override name = 'IllegalAccessError' as const;
   }
 
   /** @public */

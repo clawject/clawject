@@ -10,11 +10,11 @@ tags:
   - tsc
 ---
 
-### Prerequisites
+## Prerequisites
   - Node.js version 16 or above
   - TypeScript version 4.8 – 5.3
 
-### Installation
+## Installation
 
 import { AddDependency } from '../src/docs-components/Setup';
 
@@ -26,7 +26,7 @@ Remember to [install language service plugin](./language-service.mdx) to get sup
 
 :::
 
-### ts-patch
+## ts-patch
 *Patches typescript to allow custom transformers (plugins) during build.*
 
 ts-patch is the best way to utilize **Clawject** features.
@@ -39,7 +39,7 @@ You can also use **ttypescript** instead of **ts-patch**, but it's deprecated an
 [deprecation notice](https://github.com/cevek/ttypescript#deprecation-notice).
 :::
 
-#### ts-patch, webpack, ts-loader
+### ts-patch, webpack, ts-loader
 
 :::warning
 When using webpack with **ts-loader** - make sure **transpileOnly** mode is disabled.
@@ -53,7 +53,7 @@ import { TSPatchWebpackTSLoader } from '../src/docs-components/Setup';
 
 <TSPatchWebpackTSLoader />
 
-#### ts-patch, vite, rollup-plugin-typescript2
+### ts-patch, vite, rollup-plugin-typescript2
 
 :::danger
 Currently **Vite** or **rollup-plugin-typescript2** not correctly utilizes ts-patch,
@@ -64,7 +64,7 @@ import { TSPatchViteRollupPlugin } from '../src/docs-components/Setup';
 
 <TSPatchViteRollupPlugin />
 
-#### ts-patch, pure typescript (tsc)
+### ts-patch, pure typescript (tsc)
 
 To make Clawject work with pure typescript (tsc), you need to define custom transformer in your tsconfig.json, and that's all.
 
@@ -86,10 +86,10 @@ Clawject will work pretty well in **native tsc watch mode** as well!
 }
 ```
 
-### Without ts-patch
+## Without ts-patch
 If you don't want to use ts-patch for some reason - you can utilize Clawject features without it.
 
-#### webpack, ts-loader
+### webpack, ts-loader
 
 import { WebpackTSLoader } from '../src/docs-components/Setup';
 

@@ -23,7 +23,7 @@ export class CoreFoo implements ICoreFoo {
 }
 ```
 
-Lets define BaseConfiguration class.
+Lets define CoreConfiguration class.
 
 ```ts title="core-configuration.ts"
 import { Bean, Configuration } from '@clawject/di';
@@ -130,7 +130,7 @@ It is possible to import the same configuration multiple times in bounds of the 
 In this case, beans that are defined in imported configuration will be created only once and shared between all importers.
 
 :::tip
-Clawject will report you info in the IDE about the fact that the configuration is imported as [external](/docs/overview/internal-external.mdx#external) multiple times, and import can be omitted.
+Clawject will report you info in the IDE about the fact that the configuration is imported as [external](/docs/overview/internal-external#external) multiple times, and import can be omitted.
 :::
 
 ```ts title="main.ts" showLineNumbers
@@ -143,7 +143,7 @@ class FooConfiguration {
 
 @Configuration
 class BarConfiguration {
-  /*
+  /**
   * CI1: This configuration is already imported.
   * main.ts(20, 3): `fooConfiguration` is declared here.
   */
@@ -153,9 +153,9 @@ class BarConfiguration {
 @ClawjectApplication
 class Application {
   /**
-   * CI1: This configuration is already imported.
-   * main.ts(11, 3): `fooConfiguration` is declared here.
-   */
+  * CI1: This configuration is already imported.
+  * main.ts(11, 3): `fooConfiguration` is declared here.
+  */
   fooConfiguration = Import(FooConfiguration);
   barConfiguration = Import(BarConfiguration);
 }

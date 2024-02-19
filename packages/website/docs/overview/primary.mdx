@@ -1,5 +1,6 @@
 ---
 title: '@Primary'
+hide_title: true
 ---
 
 ```mdx-code-block
@@ -7,18 +8,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
+## Primary
+
 @Primary decorator exists to provide preference to a specific bean when there are multiple beans of the same type available.
-Let's dig into this topic in more detail.
 
-
-## Why Do We Need @Primary?
+### Why @Primary is needed?
 
 There are situations when it's necessary to register more than one bean of the same type.
 
 Take the following scenario, for example, where we have `catAnimal` and `dogAnimal` beans, both belonging to the `Animal` type:
 
 ```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean
   catAnimal = new Animal('meow');
 
@@ -28,24 +30,21 @@ class MyContext extends CatContext {
   @PostConstruct
   postConstruct(
     animal: Animal // <-- Which bean will be injected here?
-  ) {
-    console.log(animal.sound);
-  }
+  ) {}
 }
 ```
 
 In this case, if we attempt to compile application,
-Clawject will report that 2 possible candidates found for animal parameter.
+Clawject will report that **two** possible candidates found for animal parameter.
 Normally, we can set argument name same as bean name, but what if we just need some any bean of type Animal?
-To overcome this problem, Clawject provides the @Primary decorator.
+To overcome this problem, Clawject provides the `@Primary` decorator.
 
-## Use @Primary With @Bean
-
-The @Primary decorator can be used with @Bean to indicate that
-a bean should be given preference when multiple beans of the same type are available.
+The `@Primary` decorator can be used on Bean to indicate that
+a Bean should be given preference when multiple beans of the same type are available.
 
 ```ts
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean
   @Primary
   catAnimal = new Animal('meow');
@@ -58,6 +57,28 @@ class MyContext extends CatContext {
     animal: Animal // <-- catAnimal will be injected here
   ) {
     console.log(animal.sound);
+  }
+}
+```
+
+In this case, `catAnimal` will be injected into the `postConstruct` method because it is marked as `@Primary`.
+But if you want to inject `dogAnimal`, even if `catAnimal` is marked as `@Primaru` you should specify parameter name of the dependency same as bean name.
+
+```ts
+@ClawjectApplication
+class Application {
+  @Bean
+  @Primary
+  catAnimal = new Animal('meow');
+
+  @Bean
+  dogAnimal = new Animal('woof');
+
+  @PostConstruct
+  postConstruct(
+    dogAnimal: Animal // <-- dogAnimal will be injected here
+  ) {
+    console.log(dogAnimal.sound);
   }
 }
 ```

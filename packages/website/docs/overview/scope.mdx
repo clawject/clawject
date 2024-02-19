@@ -1,5 +1,6 @@
 ---
 title: '@Scope'
+hide_title: true
 ---
 
 ```mdx-code-block
@@ -7,14 +8,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
+## @Scope
+
 The Scope of Bean is a way to define when Bean will be created and how it is managed by container.
 
 Clawject provides `@Scope` decorator to define a scope and have 3 built-in scopes:
-`singleton`, `transient` and `fresh`, default value is `singleton`.
+`singleton` and `transient`, default value is `singleton`.
 
-## Singleton scope *(default)*
+### Singleton scope *(default)*
 
-When we define a bean with the singleton scope, the container creates a single instance of that bean,
+When you define a bean with the singleton scope, the container creates a single instance of that bean,
 all requests for that bean will return the same object, which is cached.
 Any modifications to the object will be reflected in all references to the bean.
 This scope is the default value if no other scope is specified.
@@ -41,7 +44,8 @@ class Baz {
   constructor(public foo: Foo) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   foo = Bean(Foo);
 
   bar = Bean(Bar);
@@ -85,7 +89,8 @@ class Baz {
   constructor(public foo: Foo) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Scope("singleton")
   foo = Bean(Foo);
 
@@ -112,7 +117,7 @@ class MyContext extends CatContext {
 </Tabs>
 ```
 
-## Transient scope
+### Transient scope
 
 A Bean with the `transient` scope will return a different instance every time it is requested from the container.
 
@@ -137,7 +142,8 @@ class Baz {
   constructor(public foo: Foo) {}
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Scope("transient")
   foo = Bean(Foo);
 
@@ -159,62 +165,10 @@ class MyContext extends CatContext {
 }
 ```
 
-## Fresh scope
+### Scope on @Configuration class
 
-A Bean with the `fresh` scope will return a different instance every time it is used.
-When using `fresh` scope - **Clawject** will inject proxy instead of real instance (not like in `singleton` or `transient` scopes),
-So each property access or method call will create a new instance of the target bean.
-
-:::warning
-Methods decorated with @PreDestroy will not be called for beans with `fresh` scope.
-:::
-
-```ts
-class Foo {
-  name = 'foo';
-
-  setName(newName: string): void {
-    this.name = newName;
-    console.log(`New name is: ${this.name}`);
-  }
-}
-
-class MyContext extends CatContext {
-  @Scope("fresh")
-  foo = Bean(Foo);
-
-  @PostConstruct
-  postConstruct(foo: Foo, foo1: Foo) {
-    /**
-    * prints "foo", after that - instance could be collected by GC
-    * because Clawject is not storing reference to this object
-    * */
-    console.log(foo.name);
-    foo.setName(); // <- prints "New name is: foo"
-    /**
-    * prints "foo" again because a new instance was created
-    * when we've accessed property "name"
-    * */
-    console.log(foo.name);
-
-    /**
-    * prints "true" Because the same proxy-object is injected
-    * to save some memory
-    * */
-    console.log(foo === foo1);
-  }
-}
-```
-
-
-As you can see - Scopes is a basic concept, but it is very important to understand it.
-
-If you want to define your own scope, for example `HTTPRequestScope` - you can check out the [Custom Scopes](/docs/advanced-concepts/custom-scopes.mdx) section.
-
-## Scope on CatContext class
-
-When we put @Scope decorator over the class that is inheritor of `CatContext`,
-it indicates that all the beans that are declared in context should have scope that is defined in decorator.
+When you put `@Scope` decorator over the `@Configuration` or `@ClawjectApplication` class,
+it indicates that all the beans that are declared in context should have scope defined in decorator.
 
 Let's have a look here:
 
@@ -225,8 +179,9 @@ class Foo {
   }
 }
 
+@ClawjectApplication
 @Scope('transient')
-class MyContext extends CatContext {
+class Application {
   foo = Bean(Foo);
 
   @PostConstruct
@@ -240,7 +195,7 @@ class MyContext extends CatContext {
 As we see, `foo` bean will be created twice,
 because it's requested 2 times and it inherits `transient` scope from context.
 
-## Scope on Beans
+### Scope on Beans
 
 We can also put `@Scope` decorator over the bean declaration.
 
@@ -252,7 +207,8 @@ class Foo {
   }
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Scope('transient') foo = Bean(Foo);
 
   @PostConstruct
@@ -263,13 +219,13 @@ class MyContext extends CatContext {
 }
 ```
 
-As you can see - we've defined scope on `foo` bean, and foo was instantiated 2 times.
+As you can see - we've defined scope on `foo` bean, and foo was instantiated **two** times.
 
-## Combining @Scope on CatContext and Bean
+### Combining @Scope on @Configuration and Bean
 
-We can also combine @Scope decorator on CatContext and Bean.
-If Bean is decorated with `@Scope`, it overrides the `@Scope` on `CatContext` level for this bean,
-if not - value from `CatContext` is used.
+We can also combine `@Scope` decorator `@Configuration` and `Bean`.
+If Bean is decorated with `@Scope`, it overrides the `@Scope` on `@Configuration` level for this bean,
+if not - value from `@Configuration` is used.
 
 ```ts
 class Foo {
@@ -285,8 +241,9 @@ class Bar {
   }
 }
 
+@ClawjectApplication
 @Scope('transient')
-class MyContext extends CatContext {
+class Application {
     foo = Bean(Foo);
     @Scope('singleton') bar = Bean(Bar);
 

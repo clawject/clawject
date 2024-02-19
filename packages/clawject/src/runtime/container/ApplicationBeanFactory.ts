@@ -79,7 +79,7 @@ export class ApplicationBeanFactory {
     const exposedBeans = Utils.getValueSafe(this.exposedBeanNameToApplicationBeanDependency, beanName);
 
     if (exposedBeans === Utils.EMPTY_VALUE) {
-      throw new RuntimeErrors.BeanNotFoundError(`No exposed bean found by exposed name: ${beanName}`);
+      throw new RuntimeErrors.ExposedBeanNotFoundError(`No exposed bean found by exposed name: ${beanName}`);
     }
 
     return exposedBeans.getValue();

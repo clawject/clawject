@@ -3,7 +3,7 @@ import { ClassPropertyWithExpressionInitializer } from '../types';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
 
-export const isExportBeansClassProperty = (node: ts.Node): node is ClassPropertyWithExpressionInitializer =>
+export const isExposeBeansClassProperty = (node: ts.Node): node is ClassPropertyWithExpressionInitializer =>
   ts.isPropertyDeclaration(node) && hasExportBeansClassProperty(node);
 
 
@@ -26,5 +26,5 @@ function hasExportBeansClassProperty(node: ts.PropertyDeclaration): boolean {
     return false;
   }
 
-  return nodeSourceDescriptors.every(it => it.isLibraryNode && it.originalName === 'ExportBeans');
+  return nodeSourceDescriptors.every(it => it.isLibraryNode && it.originalName === 'ExposeBeans');
 }

@@ -1,5 +1,6 @@
 ---
 title: '@Embedded'
+hide_title: true
 ---
 
 
@@ -9,16 +10,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
-Clawject provides @Embedded decorator that allows to register elements from a plain object as a beans.
-Possible use cases:
-  - Embedding initialized contexts into another context
-  - Embedding external objects into a context
+## @Embedded
 
-Note that @Embedded decorator can't be applied to class-constructor Bean `foo = Bean(Foo)`.
+Clawject provides `@Embedded` decorator that allows to register elements from a plain object as a beans.
 
-## Embedding object into context
+:::tip Note that
+`@Embedded` decorator can't be applied to class-constructor Bean `foo = Bean(Foo)`.
+:::
 
-All properties of an object that is declared in `IFoo` will be available as a dependency in a context,
+### Embedding object into context
+
+All properties of an object that is declared in `IFoo` will be available as a dependency in a configuration,
 and the `IFoo` object itself will be available as a bean.
 
 ```ts
@@ -27,7 +29,8 @@ interface IFoo {
 }
 const foo: IFoo = { fooProperty: 'fooValue' };
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean
   @Embedded
   fooBean = foo;
@@ -40,9 +43,9 @@ class MyContext extends CatContext {
 }
 ```
 
-## Naming
+### Naming
 
-If you have more than one bean with the same type, and you want to inject bean from Embedded object,
+If you have more than one bean with the same type, and you want to inject bean specifically from an `Embedded` bean,
 you should specify the correct name for the dependency.
 
 In the embedded beans name will be defined as a class property name + property
@@ -55,7 +58,8 @@ interface IEmbedded {
   stringBean: string;
 }
 
-class MyContext extends CatContext {
+@ClawjectApplication
+class Application {
   @Bean
   @Embedded
   embeddedBean: IEmbedded = { stringBean: 'embeddedStringBean' };
@@ -69,9 +73,3 @@ class MyContext extends CatContext {
   ) {}
 }
 ```
-
-## @Lazy and @Scope on Embedded Beans
-
-You can use `@Lazy` and `@Scope` decorators on embedded beans same as for regular beans,
-but in that case -
-the whole object that is assigned to a bean value will have the specified scope or will be lazy.
