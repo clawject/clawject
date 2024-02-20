@@ -4,7 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="" />
+    <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/createBenchmark.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/filterSet.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/filterSetToArray.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/mapAndFilterSet.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/mapSet.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/mapSetToArray.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/logger/Logger.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ITest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RequestedBean.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/transformers/RuntimeMetadataBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/transformers/RuntimeMetadataBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/fillEmbeddedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/fillEmbeddedBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/declaration-metadata/DeclarationMetadataBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/declaration-metadata/DeclarationMetadataBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-resolver/DependencyResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-resolver/DependencyResolver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/runtime/suites/BaseInjection.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/runtime/suites/BaseInjection.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../language-service/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/../language-service/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../language-service/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../language-service/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../language-service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../language-service/package.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,6 +91,8 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.9.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.9.5&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/art/IdeaProjects/clawject/packages/clawject-debug/src&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -96,7 +128,7 @@
       <recent name="$PROJECT_DIR$/static" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run:tsc">
+  <component name="RunManager" selected="npm.run:upgradeClawject">
     <configuration name="run:tsc" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -149,9 +181,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:webpack_hot" />
-        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:tscw" />
         <item itemvalue="npm.run:tsc_debug" />
       </list>

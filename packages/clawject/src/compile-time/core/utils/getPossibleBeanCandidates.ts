@@ -5,21 +5,21 @@ import { CType } from '../type-system/CType';
 export const getPossibleBeanCandidates = (
   propertyName: string,
   propertyType: CType,
-  contextBeans: Bean[]
-): [byName: Bean[], byType: Bean[]] => {
+  contextBeans: Set<Bean>
+): [byName: Set<Bean>, byType: Set<Bean>] => {
   const propertyNameMatcher = nameMatcher(propertyName.toLowerCase());
 
-  const candidatesByName: Bean[] = [];
-  const candidatesByType: Bean[] = [];
+  const candidatesByName = new Set<Bean>();
+  const candidatesByType = new Set<Bean>();
 
   contextBeans.forEach(it => {
     if (propertyType.isCompatible(it.cType)) {
-      candidatesByType.push(it);
+      candidatesByType.add(it);
       return;
     }
 
     if (propertyNameMatcher(it.fullName.toLowerCase())) {
-      candidatesByName.push(it);
+      candidatesByName.add(it);
       return;
     }
   });

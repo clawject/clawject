@@ -1,6 +1,7 @@
 import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from '@clawject/di';
 
 describe('BaseInjection', () => {
+
   const symProperty = Symbol('symProperty');
   const symFactoryMethod = Symbol('symFactoryMethod');
   const symFactoryArrowFunction = Symbol('symFactoryArrowFunction');

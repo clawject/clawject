@@ -5,7 +5,7 @@ import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 export type PrimaryTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
 /**
  *
- * @docs https://clawject.org/docs/base-concepts/primary
+ * @docs https://clawject.com/docs/base-concepts/primary
  *
  * @public */
 export const Primary: DecoratorWithoutArguments<PrimaryTarget> = () => {

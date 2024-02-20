@@ -5,8 +5,8 @@ and navigation inside Beans, Contexts, etc.
 
 [Clawject package](https://www.npmjs.com/package/clawject) provide language service,
 but it can't be used directly because TypeScript not allows using language services that are not package itself,
-so `clawject-language-service` package have `clawject` as a peer-dependency and re-exporting its language service,
-so you shouldn't worry about versions compatibility, `clawject-language-service` will always have single version.
+so `@clawject/language-service` package have `clawject` as a peer-dependency and re-exporting its language service,
+so you shouldn't worry about versions compatibility, `@clawject/language-service` will always have single version.
 
 ## Installation
 

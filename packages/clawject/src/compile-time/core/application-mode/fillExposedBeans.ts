@@ -7,6 +7,7 @@ import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 import { CType } from '../type-system/CType';
 import { BeanExposingError } from '../../compilation-context/messages/errors/BeanExposingError';
+import { filterSet } from '../utils/filterSet';
 
 export const fillExposedBeans = (application: Application): void => {
   const exposedBeans = new Map<string, Dependency>();
@@ -105,7 +106,7 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
 
 function fillApplicationExposedBeans(application: Application, exposedBeans: Map<string, Dependency>): void {
   exposedBeans.forEach((dependency, propertyName) => {
-    const externalBeans = Array.from(application.beans).filter(it => it.getExternalValue());
+    const externalBeans = filterSet(application.beans, it => it.getExternalValue());
     const resolvedDependency = DependencyResolver.resolveDependencies(dependency, externalBeans, null, application);
 
     application.exposedBeans.set(propertyName, resolvedDependency);

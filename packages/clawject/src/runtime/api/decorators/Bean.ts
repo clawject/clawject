@@ -14,7 +14,7 @@ export interface BeanConstructorFactory<T, C extends ClassConstructor<T>> {
 /**
  * Indicates that a method/property produces/contains a bean to be managed by the Clawject container.
  *
- * @docs https://clawject.org/docs/base-concepts/bean
+ * @docs https://clawject.com/docs/base-concepts/bean
  *
  * @public
  */

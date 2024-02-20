@@ -18,6 +18,7 @@ class ObjectTypeWrapper {
 }
 
 export class TypeComparator {
+  private static expandedObjectTypeCache = new WeakMap<ts.ObjectType, ObjectTypeWrapper[]>();
 
   static checkFlag(type: ts.Type, flag: ts.TypeFlags): boolean {
     return !!(type.flags & flag);
@@ -31,7 +32,70 @@ export class TypeComparator {
     return this.checkObjectFlag(type, ObjectFlags.Reference);
   }
 
-  private static expandedObjectTypeCache = new WeakMap<ts.ObjectType, ObjectTypeWrapper[]>();
+  static compareType(source: ts.Type, target: ts.Type): boolean {
+    const typeChecker = getCompilationContext().typeChecker;
+
+    const isAssignableByTypescript = typeChecker.isTypeAssignableTo(source, target);
+
+    if (ConfigLoader.get().typeSystem === 'structural') {
+      return isAssignableByTypescript;
+    }
+
+    if (!isAssignableByTypescript) {
+      return false;
+    }
+
+    if (this.checkFlag(source, TypeFlags.Any) || this.checkFlag(target, TypeFlags.Any)) {
+      return true;
+    }
+
+    if (this.checkFlag(source, TypeFlags.Unknown) || this.checkFlag(target, TypeFlags.Unknown)) {
+      return true;
+    }
+
+    if (this.checkFlag(source, TypeFlags.Union)) {
+      return false;
+    }
+
+    if (this.checkFlag(source, TypeFlags.Intersection) && this.checkFlag(target, TypeFlags.Intersection)) {
+      return (target as ts.IntersectionType).types.every(targetType => {
+        return (source as ts.IntersectionType).types.some(sourceType => this.compareType(sourceType, targetType));
+      });
+    }
+
+    if (this.checkFlag(target, TypeFlags.Union)) {
+      return (target as ts.UnionType).types.some(it => this.compareType(source, it));
+    }
+
+    if (this.checkFlag(target, TypeFlags.Intersection)) {
+      return (target as ts.IntersectionType).types.every(it => this.compareType(source, it));
+    }
+
+    if (this.checkFlag(source, TypeFlags.Intersection)) {
+      return (source as ts.IntersectionType).types.some(it => this.compareType(it, target));
+    }
+
+    if (this.checkFlag(source, TypeFlags.Primitive) !== this.checkFlag(target, TypeFlags.Primitive)) {
+      return false;
+    }
+
+    if (this.checkObjectFlag(source, ObjectFlags.Anonymous) || this.checkObjectFlag(target, ObjectFlags.Anonymous)) {
+      return this.compareAnonymousAliasSymbols(source, target);
+    }
+
+    if (typeChecker.isTupleType(source) || typeChecker.isTupleType(target)) {
+      return this.compareTupleTypes(source as ts.TupleType, target as ts.TupleType);
+    }
+
+    if (this.checkFlag(source, TypeFlags.Object) && this.checkFlag(target, TypeFlags.Object)) {
+      const expandedSourceTypes = this.getExpandedObjectType(source as ts.ObjectType);
+      const expandedTargetTypes = this.getExpandedObjectType(target as ts.ObjectType);
+
+      return this.compareObjectTypeWrappers(expandedSourceTypes, expandedTargetTypes);
+    }
+
+    return isAssignableByTypescript;
+  }
 
   static getExpandedObjectType(type: ts.ObjectType): ObjectTypeWrapper[] {
     const cached = this.expandedObjectTypeCache.get(type);
@@ -113,71 +177,6 @@ export class TypeComparator {
 
     this.expandedObjectTypeCache.set(type, processedElements);
     return processedElements;
-  }
-
-  static compareType(source: ts.Type, target: ts.Type): boolean {
-    const typeChecker = getCompilationContext().typeChecker;
-
-    const isAssignableByTypescript = typeChecker.isTypeAssignableTo(source, target);
-
-    if (ConfigLoader.get().typeSystem === 'structural') {
-      return isAssignableByTypescript;
-    }
-
-    if (!isAssignableByTypescript) {
-      return false;
-    }
-
-    if (this.checkFlag(source, TypeFlags.Any) || this.checkFlag(target, TypeFlags.Any)) {
-      return true;
-    }
-
-    if (this.checkFlag(source, TypeFlags.Unknown) || this.checkFlag(target, TypeFlags.Unknown)) {
-      return true;
-    }
-
-    if (this.checkFlag(source, TypeFlags.Union)) {
-      return false;
-    }
-
-    if (this.checkFlag(source, TypeFlags.Intersection) && this.checkFlag(target, TypeFlags.Intersection)) {
-      return (target as ts.IntersectionType).types.every(targetType => {
-        return (source as ts.IntersectionType).types.some(sourceType => this.compareType(sourceType, targetType));
-      });
-    }
-
-    if (this.checkFlag(target, TypeFlags.Union)) {
-      return (target as ts.UnionType).types.some(it => this.compareType(source, it));
-    }
-
-    if (this.checkFlag(target, TypeFlags.Intersection)) {
-      return (target as ts.IntersectionType).types.every(it => this.compareType(source, it));
-    }
-
-    if (this.checkFlag(source, TypeFlags.Intersection)) {
-      return (source as ts.IntersectionType).types.some(it => this.compareType(it, target));
-    }
-
-    if (this.checkFlag(source, TypeFlags.Primitive) !== this.checkFlag(target, TypeFlags.Primitive)) {
-      return false;
-    }
-
-    if (this.checkObjectFlag(source, ObjectFlags.Anonymous) || this.checkObjectFlag(target, ObjectFlags.Anonymous)) {
-      return this.compareAnonymousAliasSymbols(source, target);
-    }
-
-    if (typeChecker.isTupleType(source) || typeChecker.isTupleType(target)) {
-      return this.compareTupleTypes(source as ts.TupleType, target as ts.TupleType);
-    }
-
-    if (this.checkFlag(source, TypeFlags.Object) && this.checkFlag(target, TypeFlags.Object)) {
-      const expandedSourceTypes = this.getExpandedObjectType(source as ts.ObjectType);
-      const expandedTargetTypes = this.getExpandedObjectType(target as ts.ObjectType);
-
-      return this.compareObjectTypeWrappers(expandedSourceTypes, expandedTargetTypes);
-    }
-
-    return isAssignableByTypescript;
   }
 
   private static compareObjectTypes(source: ts.ObjectType, target: ts.ObjectType): boolean {

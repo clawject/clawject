@@ -6,7 +6,7 @@ export type LazyTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
 /**
  * Indicates whether a bean is to be lazily initialized.
  *
- * @docs https://clawject.org/docs/base-concepts/lazy
+ * @docs https://clawject.com/docs/base-concepts/lazy
  *
  * @public
  */

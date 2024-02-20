@@ -7,6 +7,7 @@ import { ApplicationDeclarationMetadata } from './ApplicationDeclarationMetadata
 import { ConfigurationDeclarationMetadata } from './ConfigurationDeclarationMetadata';
 import { valueToASTType } from '../ts/utils/valueToASTType';
 import { addDoNotEditComment, DoNotEditElement } from '../application-mode/transformers/addDoNotEditComment';
+import { mapSetToArray } from '../utils/mapSetToArray';
 
 export class DeclarationMetadataBuilder {
   private static METADATA_VERSION = 1;
@@ -24,7 +25,7 @@ export class DeclarationMetadataBuilder {
       kind: metadataKind,
       version: this.METADATA_VERSION,
       external: configuration.external,
-      beans: Array.from(configuration.beanRegister.elements).map(bean => ({
+      beans: mapSetToArray(configuration.beanRegister.elements, bean => ({
         kind: bean.kind,
         primary: bean.primary,
         external: bean.external,
@@ -32,7 +33,7 @@ export class DeclarationMetadataBuilder {
         nestedProperty: bean.nestedProperty,
         classPropertyName: bean.classMemberName
       })),
-      imports : Array.from(configuration.importRegister.elements).map(imp => ({
+      imports : mapSetToArray(configuration.importRegister.elements, imp => ({
         classPropertyName: imp.classMemberName,
         external: imp.external
       })),

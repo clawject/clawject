@@ -1,12 +1,16 @@
-import { ClawjectApplication, Configuration, Import } from '@clawject/di';
+import {Bean, ClawjectApplication, PostConstruct} from '@clawject/di';
 
-@Configuration
-class BarConfiguration {
-  nonExistingConfiguration = Import(NonExistingConfiguration);
-}
+type MyFunction1 = () => void
+type MyFunction2 = (arg: number) => void
 
 @ClawjectApplication
 class Application {
-  nonExistingConfiguration = Import(NonExistingConfiguration);
-  bar = Import(BarConfiguration);
+  @Bean function1 = (): MyFunction1 => () => {};
+  @Bean function2 = (): MyFunction2 => () => {};
+
+  @PostConstruct
+  doMeow(
+    f: (arg: unknown) => void
+  ): void {
+  }
 }

@@ -4,7 +4,7 @@ import { ObjectFactory, ObjectFactoryResult } from './ObjectFactory';
  * The interface that represents a custom scope.
  * You should implement it if you want to register custom scope.
  *
- * @docs https://clawject.org/docs/advanced-concepts/custom-scopes
+ * @docs https://clawject.com/docs/advanced-concepts/custom-scopes
  *
  * @public
  */

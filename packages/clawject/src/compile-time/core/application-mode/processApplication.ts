@@ -5,16 +5,15 @@ import { reportAboutCircularDependencies } from '../report-circular-dependencies
 import { fillExposedBeans } from './fillExposedBeans';
 import { fillImports } from './fillImports';
 import { reportApplicationInfoAndWarnings } from './reportApplicationInfoAndWarnings';
+import { filterSet } from '../utils/filterSet';
 
 export const processApplication = (application: Application): void => {
-  const arrayApplicationBeans = Array.from(application.beans);
-
   verifyBeanNameUniqueness(
-    arrayApplicationBeans.filter(it => !it.isLifecycle()),
+    filterSet(application.beans, it => !it.isLifecycle()),
     application,
   );
   fillImports(application);
-  buildDependencyGraphAndFillQualifiedBeans(application, arrayApplicationBeans);
+  buildDependencyGraphAndFillQualifiedBeans(application, application.beans);
   reportAboutCircularDependencies(application);
   fillExposedBeans(application);
   reportApplicationInfoAndWarnings(application);

@@ -5,11 +5,12 @@ import { BeanCandidateNotFoundError } from '../../compilation-context/messages/e
 import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 import { Application } from '../application/Application';
+import { filterSet } from '../utils/filterSet';
 
 export class DependencyResolver {
   static resolveDependencies(
     dependency: Dependency,
-    beansToSearch: Bean[],
+    beansToSearch: Set<Bean>,
     relatedBean: Bean | null,
     relatedApplication: Application,
   ): MaybeResolvedDependency {
@@ -29,44 +30,45 @@ export class DependencyResolver {
 
   private static buildForBaseType(
     dependency: Dependency,
-    beansToSearch: Bean[],
+    beansToSearch: Set<Bean>,
     relatedBean: Bean | null,
     relatedApplication: Application,
   ): MaybeResolvedDependency {
     const resolvedDependency = new MaybeResolvedDependency(dependency);
 
-    const matchedByType = beansToSearch
-      .filter(it => dependency.cType.isCompatibleToPossiblePromise(it.cType));
+    const matchedByType = filterSet(
+      beansToSearch,
+      it => dependency.cType.isCompatibleToPossiblePromise(it.cType )
+    );
 
-    if (matchedByType.length === 1) {
+    if (matchedByType.size === 1) {
       resolvedDependency.qualifiedBean = matchedByType[0];
       return resolvedDependency;
     }
 
-    const matchedByTypeAndName = matchedByType
-      .filter(it => {
-        return dependency.parameterName === it.fullName;
-      });
+    const matchedByTypeAndName = filterSet(
+      matchedByType,
+      it => dependency.parameterName === it.fullName
+    );
 
-    if (matchedByTypeAndName.length === 1) {
+    if (matchedByTypeAndName.size === 1) {
       resolvedDependency.qualifiedBean = matchedByTypeAndName[0];
       return resolvedDependency;
     }
 
-    const matchedByTypeAndPrimary = matchedByType
-      .filter(it => it.primary);
+    const matchedByTypeAndPrimary = filterSet(matchedByType, it => it.primary);
 
-    if (matchedByTypeAndPrimary.length === 1) {
+    if (matchedByTypeAndPrimary.size === 1) {
       resolvedDependency.qualifiedBean = matchedByTypeAndPrimary[0];
       return resolvedDependency;
     }
 
-    if (matchedByTypeAndPrimary.length > 1) {
+    if (matchedByTypeAndPrimary.size > 1) {
       const error = new BeanCandidateNotFoundError(
-        `Found ${matchedByTypeAndPrimary.length} Primary injection candidates.`,
+        `Found ${matchedByTypeAndPrimary.size} Primary injection candidates.`,
         dependency.node,
         relatedBean,
-        [],
+        new Set(),
         matchedByTypeAndPrimary,
         relatedApplication,
       );
@@ -86,16 +88,17 @@ export class DependencyResolver {
 
   private static buildForCollectionOrArray(
     dependency: Dependency,
-    beansToSearch: Bean[],
+    beansToSearch: Set<Bean>,
   ): MaybeResolvedDependency {
     const resolvedDependency = new MaybeResolvedDependency(dependency);
 
-    const otherCollectionsMatchedByNameAndType = beansToSearch.filter(it =>
-      it.fullName === dependency.parameterName && dependency.cType.isCompatibleToPossiblePromise(it.cType),
+    const otherCollectionsMatchedByNameAndType = filterSet(
+      beansToSearch,
+      it => it.fullName === dependency.parameterName && dependency.cType.isCompatibleToPossiblePromise(it.cType)
     );
 
     //If matched my name and type - just taking specific bean that returns collection
-    if (otherCollectionsMatchedByNameAndType.length === 1) {
+    if (otherCollectionsMatchedByNameAndType.size === 1) {
       resolvedDependency.qualifiedBean = otherCollectionsMatchedByNameAndType[0];
       return resolvedDependency;
     }
@@ -132,7 +135,7 @@ export class DependencyResolver {
   private static reportPossibleCandidates(
     bean: Bean | null,
     dependency: Dependency,
-    beansToSearch: Bean[],
+    beansToSearch: Set<Bean>,
     relatedApplication: Application,
   ): void {
     const compilationContext = getCompilationContext();
@@ -142,7 +145,7 @@ export class DependencyResolver {
     ] = getPossibleBeanCandidates(dependency.parameterName, dependency.cType, beansToSearch);
 
     compilationContext.report(new BeanCandidateNotFoundError(
-      `Found ${byName.length + byType.length} injection candidates.`,
+      `Found ${byName.size + byType.size} injection candidates.`,
       dependency.node,
       bean,
       byName,

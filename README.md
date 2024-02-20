@@ -7,7 +7,7 @@ Clawject is TypeScript Dependency Injection framework that's here to make your c
 Forget about **injection tokens**, **providers** and a huge number of **decorators on and in your business classes**.
 Use typescript features like interfaces, generics, type hierarchies in a declarative and intuitive way and let Clawject do messy work for you!
 
-Check out [Clawject documentation](https://clawject.org/docs/) for more details.
+Check out [Clawject documentation](https://clawject.com/docs/) for more details.
 
 ```typescript
 import { Bean, CatContext, ContainerManager, PostConstruct } from '@clawject/di';

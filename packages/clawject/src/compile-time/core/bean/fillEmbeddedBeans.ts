@@ -12,7 +12,7 @@ export const fillEmbeddedBeans = (
   configuration: Configuration,
 ): void => {
   // Needed because we're modifying an original collection
-  const beans = Array.from(configuration.beanRegister.elements);
+  const beans = new Set(configuration.beanRegister.elements);
 
   beans.forEach((rootBean) => {
     const compilationContext = getCompilationContext();

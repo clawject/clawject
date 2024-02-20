@@ -1,6 +1,4 @@
 import { Configuration } from '../../configuration/Configuration';
-import { Bean } from '../../bean/Bean';
-import { Import } from '../../import/Import';
 import { RuntimeConfigurationMetadata } from '../../../../runtime/metadata/RuntimeConfigurationMetadata';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { filterAndMap } from '../../utils/filterAndMap';
@@ -13,33 +11,49 @@ import { MaybeResolvedDependency } from '../../dependency-resolver/MaybeResolved
 export class RuntimeMetadataBuilder {
 
   static metadata(configuration: Configuration, application: Application | null): RuntimeConfigurationMetadata | RuntimeApplicationMetadata {
-    const beans = Array.from(configuration.beanRegister.elements);
-    const imports = Array.from(configuration.importRegister.elements);
-
-    const runtimeConfigurationMetadata = this.configuration(configuration, beans, imports);
+    const runtimeConfigurationMetadata = this.configuration(configuration);
     const runtimeApplicationMetadata = application === null ? null : this.application(runtimeConfigurationMetadata, application);
 
     return runtimeApplicationMetadata ?? runtimeConfigurationMetadata;
   }
 
-  private static configuration(configuration: Configuration, beans: Bean[], imports: Import[]): RuntimeConfigurationMetadata {
+  private static configuration(configuration: Configuration): RuntimeConfigurationMetadata {
+    const beans = configuration.beanRegister.elements;
+    const imports = configuration.importRegister.elements;
+
+    const lifecycleMetadata: RuntimeConfigurationMetadata['lifecycle'] = {
+      [LifecycleKind.POST_CONSTRUCT]: [],
+      [LifecycleKind.PRE_DESTROY]: [],
+    };
+    const importsMetadata: RuntimeConfigurationMetadata['imports'] = [];
+    const beansMetadata: RuntimeConfigurationMetadata['beans'] = {};
+
+    beans.forEach(bean => {
+      if (bean.lifecycle.includes(LifecycleKind.POST_CONSTRUCT)) {
+        lifecycleMetadata[LifecycleKind.POST_CONSTRUCT].push(bean.classMemberName);
+      }
+
+      if (bean.lifecycle.includes(LifecycleKind.PRE_DESTROY)) {
+        lifecycleMetadata[LifecycleKind.PRE_DESTROY].push(bean.classMemberName);
+      }
+
+      beansMetadata[bean.classMemberName] = {
+        scope: bean.scopeExpression.getAndDisposeSafe() as any,
+        lazy: bean.lazyExpression.getAndDisposeSafe() as any,
+        kind: bean.kind,
+        qualifiedName: bean.fullName,
+      };
+    });
+
+    imports.forEach(it => {
+      importsMetadata.push({classPropertyName: it.classMemberName});
+    });
+
     return {
       className: configuration.className ?? '<anonymous>',
-      lifecycle: {
-        [LifecycleKind.POST_CONSTRUCT]: filterAndMap(beans, bean => bean.lifecycle.includes(LifecycleKind.POST_CONSTRUCT), bean => bean.classMemberName),
-        [LifecycleKind.PRE_DESTROY]: filterAndMap(beans, bean => bean.lifecycle.includes(LifecycleKind.PRE_DESTROY), bean => bean.classMemberName)
-      },
-      imports: imports.map(it => ({classPropertyName: it.classMemberName})),
-      beans: beans.reduce((acc, bean) => {
-        acc[bean.classMemberName] = {
-          scope: bean.scopeExpression.getAndDisposeSafe() as any,
-          lazy: bean.lazyExpression.getAndDisposeSafe() as any,
-          kind: bean.kind,
-          qualifiedName: bean.fullName,
-        };
-
-        return acc;
-      }, {} as Record<string, RuntimeBeanMetadata>),
+      lifecycle: lifecycleMetadata,
+      imports: importsMetadata,
+      beans: beansMetadata,
       lazy: configuration.lazyExpression.getAndDisposeSafe() as any ?? false,
       scope: configuration.scopeExpression.getAndDisposeSafe() as any ?? 'singleton',
     };
