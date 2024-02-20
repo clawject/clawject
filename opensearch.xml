@@ -4,8 +4,8 @@
   <ShortName>Clawject | DI made easy</ShortName>
   <Description>Search Clawject | DI made easy</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://clawject.org/img/logo.svg</Image>
-  <Url type="text/html" method="get" template="https://clawject.org/search?q={searchTerms}"/>
-  <Url type="application/opensearchdescription+xml" rel="self" template="https://clawject.org/opensearch.xml" />
-  <moz:SearchForm>https://clawject.org/</moz:SearchForm>
+  <Image width="16" height="16" type="image/x-icon">https://clawject.com/img/logo.svg</Image>
+  <Url type="text/html" method="get" template="https://clawject.com/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://clawject.com/opensearch.xml" />
+  <moz:SearchForm>https://clawject.com/</moz:SearchForm>
 </OpenSearchDescription>
