@@ -5,8 +5,7 @@ hide_title: true
 
 ## ClawjectApplicationContext
 
-ClawjectApplicationContext is an object that represents the context of the Clawject application.
-It stores and manages configurations and beans of the application.
+ClawjectApplicationContext is an object that stores and manages configurations and beans of the application.
 
 ### Usage
 
@@ -101,7 +100,7 @@ await applicationContext.close();
 
 #### `.getExposedBean(exposedBeanName: string)`
 
-Returns the exposed bean by the given name, if more than one bean is exposed with the same name - intersection of them types will be returned.
+Returns the exposed bean instance by the given name.
 
 ```typescript
 import {Bean, ClawjectApplication, ClawjectFactory, ExposeBeans} from "@clawject/di";
@@ -151,7 +150,7 @@ console.log(exposedBeans); // { exposedBean1: { value: 'foo' }, exposedBean2: { 
 #### `.close()`
 
 Closes the application context and destroys all beans.
-Functions decorated with `@PreDestroy` will be called for all beans.
+Functions annotated with `@PreDestroy` will be called for all beans.
 
 ```typescript
 import {Bean, ClawjectApplication, ClawjectFactory, PreDestroy} from '@clawject/di';

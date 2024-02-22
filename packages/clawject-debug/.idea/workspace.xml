@@ -5,35 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/createBenchmark.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/filterSet.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/filterSetToArray.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/mapAndFilterSet.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/mapSet.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/mapSetToArray.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/compile-time/logger/Logger.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ITest.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RequestedBean.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Test.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/compilation-context/messages/errors/BeanCandidateNotFoundError.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/transformers/RuntimeMetadataBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/transformers/RuntimeMetadataBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/fillEmbeddedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/fillEmbeddedBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/declaration-metadata/DeclarationMetadataBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/declaration-metadata/DeclarationMetadataBuilder.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-resolver/DependencyResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-resolver/DependencyResolver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/utils/getPossibleBeanCandidates.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/test/runtime/suites/BaseInjection.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/runtime/suites/BaseInjection.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../language-service/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/../language-service/.npmignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../language-service/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../language-service/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../language-service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../language-service/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/ClassConstructor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/ClassConstructor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/ClawjectApplicationContext.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/ClawjectApplicationContext.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/ClawjectFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/ClawjectFactory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/ExposeBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/ExposeBeans.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/Import.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/Import.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/InstantiationConstructorParameters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/InstantiationConstructorParameters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/RuntimeErrors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/RuntimeErrors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/test/runtime/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/test/runtime/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/errors.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/errors.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/fundamentals/clawject-application-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/clawject-application-context.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/fundamentals/import.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/import.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../website/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../website/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,4 +1,12 @@
-/** @public */
+/**
+ * Namespace for runtime errors.
+ *
+ * Each error class is a subclass of `Error` and has a unique name.
+ *
+ * @docs https://clawject.com/docs/errors#runtime
+ *
+ * @public
+ */
 export namespace RuntimeErrors {
 
   /** @public */

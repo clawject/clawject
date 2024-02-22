@@ -20,14 +20,14 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
     details: string | null,
     place: ts.Node,
     relatedBean: Bean | null,
-    candidatesByName: Set<Bean>,
-    candidatesByType: Set<Bean>,
+    candidatesByName: Bean[],
+    candidatesByType: Bean[],
     relatedApplication: Application,
   ) {
     super(details, place, relatedBean?.parentConfiguration ?? null, relatedApplication);
 
-    this.candidatesByName = mapAndFilter(Array.from(candidatesByName), it => this.getNodeDetails(it), isNotEmpty);
-    this.candidatesByType = mapAndFilter(Array.from(candidatesByType), it => this.getNodeDetails(it), isNotEmpty);
+    this.candidatesByName = mapAndFilter(candidatesByName, it => this.getNodeDetails(it), isNotEmpty);
+    this.candidatesByType = mapAndFilter(candidatesByType, it => this.getNodeDetails(it), isNotEmpty);
     this.beanDeclarationNodeDetails = relatedBean === null ? null : getNodeDetails(relatedBean.node);
     this.beanKind = relatedBean?.kind ?? null;
   }

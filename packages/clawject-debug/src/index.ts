@@ -1,16 +1,23 @@
-import {Bean, ClawjectApplication, PostConstruct} from '@clawject/di';
+import {Bean, ClawjectApplication, Configuration, Import, PostConstruct} from '@clawject/di';
 
-type MyFunction1 = () => void
-type MyFunction2 = (arg: number) => void
-
-@ClawjectApplication
-class Application {
-  @Bean function1 = (): MyFunction1 => () => {};
-  @Bean function2 = (): MyFunction2 => () => {};
+@Configuration
+class C {
+  imported = Import(Application);
 
   @PostConstruct
-  doMeow(
-    f: (arg: unknown) => void
-  ): void {
+  pc(_2: 2) {
+
+  }
+}
+
+@ClawjectApplication
+export class Application {
+  imported = Import(C);
+
+  @Bean _2 = 2 as const;
+
+  @PostConstruct
+  pc(_1: 1) {
+
   }
 }

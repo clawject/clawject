@@ -1,7 +1,8 @@
-.hero {
+.heroContainer {
   display: flex;
   justify-content: center;
-  gap: 16rem;
+  align-items: flex-start;
+  background: unset;
 }
 
 .contentContainer {
@@ -9,10 +10,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  margin-right: 5rem;
+}
+
+.heroSubtitle {
+  width: 30rem;
 }
 
 @media screen and (max-width: 996px) {
-  .hero {
+  .heroContainer {
     flex-direction: column-reverse;
     align-items: center;
     justify-content: center;
@@ -21,6 +27,13 @@
 
   .contentContainer {
     align-items: center;
+    margin-right: unset;
+  }
+
+  .heroSubtitle {
+    padding: 0 1rem;
+    width: auto;
+    text-align: center;
   }
 }
 
@@ -83,5 +96,10 @@
 .logo {
   position: relative;
   width: 128px;
+}
+
+.card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 1.5px 3px 0 rgba(0,0,0,.15);
 }
 

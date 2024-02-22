@@ -8,7 +8,7 @@ description: Compile-time and runtime errors.
 
 Clawject produces few types of errors compile-time and runtime.
 
-### Compile-time errors
+### Compile-time
 Each compile time error has own code that can be used to identify it.
 Each code is unique and consists of prefix `CE` and number.
 Example: `CE7`.
@@ -324,7 +324,7 @@ export declare class Application {
 
 **Solution:** Do not edit generated files, regenerate declaration file.
 
-### Runtime errors
+### Runtime
 Runtime errors are regular JavaScript errors that can be thrown during the application execution.
 Clawject exporting Error classes that can be caught and handled in the application code.
 Each error has `name` property, so it can be identified via `name` or via `instanceof` operator.

@@ -3,7 +3,13 @@ import { RuntimeErrors } from './RuntimeErrors';
 import { Utils } from '../Utils';
 import { InstantiationConstructorParameters } from './InstantiationConstructorParameters';
 
-/** @public */
+/**
+ * *Import* function allows you
+ * to import a {@link Configuration @Configuration} class into the target {@link Configuration @Configuration} class
+ * to use beans that is provided by imported configuration.
+ *
+ * @public
+ * */
 export const Import: {
   <C extends ClassConstructor<any, []>>(configurationClass: C): ImportedConfiguration<C>
   <C extends ClassConstructor<any>>(configurationClass: C, constructorParameters: InstantiationConstructorParameters<ConstructorParameters<C>>): ImportedConfiguration<C>
@@ -30,7 +36,11 @@ export const Import: {
   throw new RuntimeErrors.IllegalArgumentError('Argument must be a class constructor or a promise of a class constructor');
 };
 
-/** @public */
+/**
+ * Object that is produced by {@link Import} function.
+ *
+ * @public
+ */
 export interface ImportedConfiguration<C extends ClassConstructor<any>, A extends any[] = ConstructorParameters<C>> {
   readonly constructor: C;
   readonly constructorParameters: A | (() => A | Promise<A>);

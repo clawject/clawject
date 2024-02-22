@@ -5,9 +5,30 @@ import { Utils } from '../Utils';
 import { ClawjectApplicationContext } from './ClawjectApplicationContext';
 import { ClawjectApplicationContextImpl } from '../ClawjectApplicationContextImpl';
 
-/** @public */
+/**
+ * It's a factory class that creates a {@link ClawjectApplicationContext} instance.
+ *
+ * @docs https://clawject.com/docs/fundamentals/clawject-factory
+ *
+ * @public
+ * */
 export class ClawjectFactory {
+  /**
+   * Creates a {@link ClawjectApplicationContext} instance.
+   *
+   * @param clawjectApplication - The class that is annotated with {@link ClawjectApplication @ClawjectApplication}.
+   *
+   * @public
+   * */
   static async createApplicationContext<C extends ClassConstructor<any, []>>(clawjectApplication: C): Promise<ClawjectApplicationContext<C>>
+  /**
+   * Creates a {@link ClawjectApplicationContext} instance.
+   *
+   * @param clawjectApplication - The class that is annotated with {@link ClawjectApplication @ClawjectApplication}.
+   * @param constructorParameters - The constructor parameters of the `clawjectApplication` class.
+   *
+   * @public
+   * */
   static async createApplicationContext<C extends ClassConstructor<any>>(clawjectApplication: C, constructorParameters: InstantiationConstructorParameters<ConstructorParameters<C>>): Promise<ClawjectApplicationContext<C>>
   static async createApplicationContext<C extends ClassConstructor<any>>(clawjectApplication: C, constructorParameters?: any): Promise<ClawjectApplicationContext<C>> {
     const resolvedConstructorParameters = await Utils.getResolvedConstructorParameters(constructorParameters);

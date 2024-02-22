@@ -18,6 +18,10 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
         return false;
       }
 
+      if (it.isLifecycle()) {
+        return false;
+      }
+
       //Accepting all beans from the current configuration
       if (it.parentConfiguration === beanParentConfiguration) {
         return true;

@@ -33,14 +33,17 @@
     "react-dom": "^18.2.0",
     "react-type-animation": "^3.2.0",
     "runtimeTS": "npm:typescript@^4.9.5",
-    "styled-components": "^6.0.3"
+    "styled-components": "^6.0.3",
+    "usehooks-ts": "^2.15.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.1.1",
     "@docusaurus/tsconfig": "^3.1.1",
     "babel-plugin-styled-components": "^2.1.4",
     "typescript": "5.2.2",
-    "webpack-virtual-modules": "^0.5.0"
+    "webpack-virtual-modules": "^0.5.0",
+    "@types/lodash": "^4.14.202"
   },
   "browserslist": {
     "production": [
