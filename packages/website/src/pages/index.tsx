@@ -46,7 +46,7 @@ const TWO_MINUTES = 60 * 1000 * 2;
 
 export default function Home(): JSX.Element {
   const [lastSloganChange, setLastSloganChange]= useLocalStorage<number | null>('lastSloganChangeDate', null);
-  const [lastSloganPhrase, setLastSloganPhrase]= useLocalStorage<string | null>('lastSloganPhrase', sample(SUBTITLE_PHRASES));
+  const [lastSloganPhrase, setLastSloganPhrase]= useLocalStorage<string | null>('lastSloganPhrase', null);
 
   React.useEffect(() => {
     if (lastSloganChange === null) {
