@@ -21,7 +21,7 @@ const WORDS = shuffle([
   'Purr-fect',
   'Paw-some',
   'Feline grace',
-].map(it => [it, 3500]).flat());
+]).map(it => [it, 3500]).flat();
 
 const SUBTITLE_PHRASES = [
   'Type-safe dependency injection made effortless',
