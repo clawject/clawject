@@ -32,14 +32,14 @@ const SUBTITLE_PHRASES = [
   'Type-centric: Clawject\'s signature style',
   'Clean code, clear dependencies: Clawject\'s promise',
   'Type-safe, token-free: Clawject\'s hallmark',
-  'Type-driven di: Clawject\'s pledge',
+  'Type-driven DI: Clawject\'s pledge',
   '„Give me a type, I\'ll give you a dependency“',
-  'Curiosity didn\'t kill this cat, it perfected di',
-  '„With love from Ukrainian cats 🇺🇦“',
+  'Curiosity didn\'t kill this cat, it perfected DI',
+  'With love from Ukrainian cats 🇺🇦',
   'Cat-egorically efficient',
-  'No scratch, just smooth di',
+  'No scratch, just smooth DI',
   'Because cats know best',
-  'Sharp claws, sharp di',
+  'Sharp claws, sharp DI',
 ];
 
 const TWO_MINUTES = 60 * 1000 * 2;
