@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import Link from '@docusaurus/Link';
 import styles from './index.module.css';
 import { TypeAnimation } from 'react-type-animation';
-import { sample } from 'lodash';
+import { sample, shuffle } from 'lodash';
 
-const WORDS = [
+const WORDS = shuffle([
   'Declarative',
   'Intuitive',
   'External',
@@ -21,7 +21,7 @@ const WORDS = [
   'Purr-fect',
   'Paw-some',
   'Feline grace',
-].map(it => [it, 3500]).flat();
+].map(it => [it, 3500]).flat());
 
 const SUBTITLE_PHRASES = [
   'Type-safe dependency injection made effortless',
