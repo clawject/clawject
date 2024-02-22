@@ -42,6 +42,8 @@ const SUBTITLE_PHRASES = [
 ];
 
 export default function Home(): JSX.Element {
+  const subtitle = React.useMemo(() => sample(SUBTITLE_PHRASES), []);
+
   return (
     <Layout
       description="TypeScript Dependency Injection Framework"
@@ -51,7 +53,7 @@ export default function Home(): JSX.Element {
         <div className={styles.contentContainer}>
           <h1 className={classNames('hero__title')}>Clawject</h1>
           <p className={classNames('hero__subtitle', styles.heroSubtitle)}>
-            {sample(SUBTITLE_PHRASES)}
+            {subtitle}
           </p>
           <TypeAnimation preRenderFirstString sequence={WORDS} speed={10} repeat={Infinity}
             className={styles.typeAnimation}/>
