@@ -5,7 +5,6 @@ import Link from '@docusaurus/Link';
 import styles from './index.module.css';
 import { TypeAnimation } from 'react-type-animation';
 import { sample } from 'lodash';
-import { useLocalStorage } from 'usehooks-ts';
 
 const WORDS = [
   'Declarative',
@@ -42,24 +41,7 @@ const SUBTITLE_PHRASES = [
   'Sharp claws, sharp DI',
 ];
 
-const TWO_MINUTES = 60 * 1000 * 2;
-
 export default function Home(): JSX.Element {
-  const [lastSloganChange, setLastSloganChange]= useLocalStorage<number | null>('lastSloganChangeDate', null);
-  const [lastSloganPhrase, setLastSloganPhrase]= useLocalStorage<string | null>('lastSloganPhrase', null);
-
-  React.useEffect(() => {
-    if (lastSloganChange === null) {
-      setLastSloganChange(Date.now());
-      sample(SUBTITLE_PHRASES);
-    }
-
-    if (lastSloganChange + TWO_MINUTES < Date.now()) {
-      setLastSloganChange(Date.now());
-      setLastSloganPhrase(sample(SUBTITLE_PHRASES));
-    }
-  }, [lastSloganChange]);
-
   return (
     <Layout
       description="TypeScript Dependency Injection Framework"
@@ -69,7 +51,7 @@ export default function Home(): JSX.Element {
         <div className={styles.contentContainer}>
           <h1 className={classNames('hero__title')}>Clawject</h1>
           <p className={classNames('hero__subtitle', styles.heroSubtitle)}>
-            {lastSloganPhrase}
+            {sample(SUBTITLE_PHRASES)}
           </p>
           <TypeAnimation preRenderFirstString sequence={WORDS} speed={10} repeat={Infinity}
             className={styles.typeAnimation}/>
