@@ -9565,13 +9565,6 @@ url-loader@^4.1.1:
     mime-types "^2.1.27"
     schema-utils "^3.0.0"
 
-usehooks-ts@^2.15.0:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/usehooks-ts/-/usehooks-ts-2.15.0.tgz#4fa1585b2f3bb4ab44bfa1170d66d0cbb298b89e"
-  integrity sha512-2bLQ632044hD1Hp879yAFOPabXfx7SbzEZYnpIiaCw6lTHiuvsNS1sc2UBVycasjvQImD6QsNERQXjKg7OuTaA==
-  dependencies:
-    lodash.debounce "^4.0.8"
-
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"

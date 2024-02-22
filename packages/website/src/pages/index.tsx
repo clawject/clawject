@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import Link from '@docusaurus/Link';
 import styles from './index.module.css';
 import { TypeAnimation } from 'react-type-animation';
-import { sample, shuffle } from 'lodash';
+import { sample } from 'lodash';
 
-const WORDS = shuffle([
+const WORDS = [
   'Declarative',
   'Intuitive',
   'External',
@@ -21,7 +21,7 @@ const WORDS = shuffle([
   'Purr-fect',
   'Paw-some',
   'Feline grace',
-]).map(it => [it, 3500]).flat();
+].map(it => [it, 3500]).flat();
 
 const SUBTITLE_PHRASES = [
   'Type-safe dependency injection made effortless',
@@ -55,8 +55,8 @@ export default function Home(): JSX.Element {
           <p className={classNames('hero__subtitle', styles.heroSubtitle)}>
             {subtitle}
           </p>
-          {/*<TypeAnimation preRenderFirstString sequence={WORDS} speed={10} repeat={Infinity}*/}
-          {/*  className={styles.typeAnimation}/>*/}
+          <TypeAnimation preRenderFirstString sequence={WORDS} speed={10} repeat={Infinity}
+            className={styles.typeAnimation}/>
           <Link className={classNames('button button--primary button--outline button--lg')} to="/docs">
               Get Started
           </Link>
@@ -67,25 +67,6 @@ export default function Home(): JSX.Element {
           <img className={classNames(styles.logo)} src="/img/logo.svg" alt="Clawject"/>
         </div>
       </div>
-
-      {/*<div className="container margin-top--md">*/}
-      {/*  <div className="row">*/}
-
-      {/*    <div className={classNames('col col--4','margin-bottom--lg', 'col--offset-2')}>*/}
-      {/*      <div className={classNames('card', 'padding--lg', styles.card)}>*/}
-      {/*          Test*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-
-      {/*    <div className={classNames('col col--4', 'margin-bottom--lg')}>*/}
-      {/*      <div className={classNames('card', 'padding--lg', styles.card)}>*/}
-      {/*        Test*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-
-      {/*  </div>*/}
-      {/*</div>*/}
-
     </Layout>
   );
 }
