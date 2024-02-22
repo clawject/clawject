@@ -84,23 +84,23 @@ export default function Home(): JSX.Element {
         </div>
       </div>
 
-      <div className="container margin-top--md">
-        <div className="row">
+      {/*<div className="container margin-top--md">*/}
+      {/*  <div className="row">*/}
 
-          <div className={classNames('col col--4','margin-bottom--lg', 'col--offset-2')}>
-            <div className={classNames('card', 'padding--lg', styles.card)}>
-                Test
-            </div>
-          </div>
+      {/*    <div className={classNames('col col--4','margin-bottom--lg', 'col--offset-2')}>*/}
+      {/*      <div className={classNames('card', 'padding--lg', styles.card)}>*/}
+      {/*          Test*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
 
-          <div className={classNames('col col--4', 'margin-bottom--lg')}>
-            <div className={classNames('card', 'padding--lg', styles.card)}>
-              Test
-            </div>
-          </div>
+      {/*    <div className={classNames('col col--4', 'margin-bottom--lg')}>*/}
+      {/*      <div className={classNames('card', 'padding--lg', styles.card)}>*/}
+      {/*        Test*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
 
-        </div>
-      </div>
+      {/*  </div>*/}
+      {/*</div>*/}
 
     </Layout>
   );
