@@ -47,9 +47,6 @@ export default function Home(): JSX.Element {
 
   React.useEffect(() => {
     setSubtitle(sample(SUBTITLE_PHRASES));
-  }, []);
-
-  React.useEffect(() => {
     setWords(shuffle(WORDS).map(it => [it, 3500]).flat());
   }, []);
 
