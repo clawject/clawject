@@ -40,8 +40,8 @@ export namespace RuntimeErrors {
   }
 
   /** @public */
-  export class PrimitiveCouldNotBeWrappedInProxyError extends Error {
-    override name = 'PrimitiveCouldNotBeWrappedInProxyError' as const;
+  export class CouldNotBeProxiedError extends Error {
+    override name = 'CouldNotBeProxiedError' as const;
   }
 
   /** @public */

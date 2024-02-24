@@ -4,11 +4,10 @@ import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 /** @public */
 export type PostConstructTarget = PropertyDecorator & MethodDecorator;
 /**
- * Allows invoking a decorated method or property with arrow function after context is constructed or bean is created.
+ * Indicates that an annotated method or property with arrow function should be called
+ * after configuration or the bean has been constructed.
  *
- * @docs https://clawject.com/docs/base-concepts/postconstruct-predestroy
- *
- * @see PreDestroy
+ * @docs https://clawject.com/docs/fundamentals/lifecycle#postconstruct
  *
  * @public */
 export const PostConstruct: DecoratorWithoutArguments<PostConstructTarget> = () => {

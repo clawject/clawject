@@ -4,7 +4,7 @@ export type ObjectFactoryResult = string | number | boolean | bigint | Symbol | 
 /**
  * Defines a factory which can return an Object instance when invoked.
  *
- * @see CustomScope
+ * @see Scope
  *
  * @public
  */

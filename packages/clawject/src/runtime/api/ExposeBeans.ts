@@ -16,7 +16,7 @@ export const ExposeBeans = <T extends object>(): (exposedBeans: ExposedBeans<T>)
 };
 
 /**
- * Object that is produced by {@link ExposeBeans} function.
+ * @internalApi Object that is produced by {@link ExposeBeans} function.
  *
  * @public
  * */

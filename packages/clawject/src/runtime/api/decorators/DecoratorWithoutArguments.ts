@@ -1,5 +1,5 @@
 /**
- * Type declaration for a decorator without arguments.
+ * @internalApi Type declaration for a decorator without arguments.
  *
  * @public
  */

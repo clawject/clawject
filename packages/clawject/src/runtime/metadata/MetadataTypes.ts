@@ -1,6 +1,6 @@
 import { LifecycleKind } from '../types/LifecycleKind';
-import { ScopeValue } from '../api/decorators';
 import { BeanKind } from '../../compile-time/core/bean/BeanKind';
+import { ScopeValue } from '../api/Scope';
 
 export interface RuntimeBeanMetadata {
   scope: ScopeValue | null;

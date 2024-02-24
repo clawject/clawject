@@ -341,7 +341,7 @@ It occurs when class metadata is corrupted because it was altered manually or by
 #### DuplicateScopeError
 It occurs when you're trying to register the scope that is already registered. Example:
 ```ts
-class MyScope implements CustomScope {
+class MyScope implements Scope {
   //...
 }
 ScopeRegister.registerScope('my-scope', new MyScope());
@@ -372,12 +372,13 @@ It can occur if you passing class that is not annotated with `@ClawjectApplicati
 
 **Solution:** Pass only classes annotated with `@ClawjectApplication`.
 
-#### PrimitiveCouldNotBeWrappedInProxyError
-It occurs when your scope implementation defines `useProxy` method that is returned `true`, and bean that is returned primitive value
+#### CouldNotBeProxiedError
+It occurs when your scope implementation defines `useProxy` method that is returned `true`, and bean that is returned value that could not be proxied
 was decorated with this scope.
-JavaScript does not allow wrapping primitive values in proxy, so this error will be thrown. Example:
+JavaScript does not allow wrapping primitive values in proxy, and clawject not supports proxies on functions, so this error will be thrown.
+Example:
 ```ts
-class MyCustomScope implements CustomScope {
+class MyCustomScope implements Scope {
   useProxy(): boolean {
     return true;
   }
@@ -386,12 +387,13 @@ class MyCustomScope implements CustomScope {
 @ClawjectApplication
 class Application {
   @Bean @Scope('MyCustomScope') cat = 'Masya';
+  @Bean @Scope('MyCustomScope') catFunction = () => () => 'Masya';
 }
 ContainerManager.registerScope('MyCustomScope', new MyCustomScope());
 await ClawjectFactory.createApplicationContext(Application);
 ```
 
-**Solution:** Do not return primitive values from beans that are using scope that defines that object should be proxied.
+**Solution:** Wrap value in the object or class.
 
 #### ScopeIsNotRegisteredError
 It occurs when you're trying to assign non-registered scope to the bean. Example:

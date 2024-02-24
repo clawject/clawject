@@ -1,4 +1,10 @@
 import { ObjectFactory, ObjectFactoryResult } from './ObjectFactory';
+import { ErrorBuilder } from '../ErrorBuilder';
+
+/**
+ * @public
+ */
+export type ConversationId = string | number | boolean | bigint | Symbol | null;
 
 /**
  * The interface that represents a custom scope.
@@ -8,7 +14,10 @@ import { ObjectFactory, ObjectFactoryResult } from './ObjectFactory';
  *
  * @public
  */
-export interface CustomScope {
+export interface Scope {
+  registerConversationBeginCallback(callback: (conversationId: ConversationId) => Promise<void> | void): void;
+  registerConversationEndedCallback(callback: (conversationId: ConversationId) => Promise<void> | void): void;
+
   /**
    * Return the object with the given name from the underlying scope,
    * {@link ObjectFactory.getObject creating it}.
@@ -21,7 +30,7 @@ export interface CustomScope {
    * object if it is not present in the underlying storage mechanism
    * @returns ObjectFactoryResult - the desired object (never: `null` or `undefined`)
    */
-  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult;
+  get(conversationId: ConversationId, name: string, objectFactory: ObjectFactory): ObjectFactoryResult;
 
   /**
    * Remove the object with the given `name` from the underlying scope.
@@ -59,7 +68,7 @@ export interface CustomScope {
    * <b>Note:</b> that 'destruction' refers to automatic destruction of
    * the object as part of the scope's own lifecycle, not to the individual
    * scoped object having been explicitly removed by the application.
-   * If a scoped object gets removed via this facade's {@link CustomScope#remove remove}
+   * If a scoped object gets removed via this facade's {@link Scope#remove remove}
    * method, any registered destruction callback should be removed as well,
    * assuming that the removed object will be reused or manually destroyed.
    *
@@ -82,9 +91,24 @@ export interface CustomScope {
    *
    * Be careful with primitive values because they are not supported by JavaScript Proxies (at least for now),
    * and if bean with scope that returns `true` from this method will be created -
-   * error will be thrown {@link RuntimeErrors.PrimitiveCouldNotBeWrappedInProxyError}.
+   * error will be thrown {@link RuntimeErrors.CouldNotBeProxiedError}.
    *
    * @returns boolean `true` if a proxy should be injected, `false` otherwise.
    */
   useProxy?(): boolean;
 }
+
+/** @public */
+export type ScopeTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
+/** @public */
+export type ScopeValue = 'singleton' | 'transient' | string | number;
+/**
+ * Specifies the scope of Bean or Beans when applied on {@link Configuration @Configuration} level.
+ *
+ * @docs https://clawject.com/docs/fundamentals/scope
+ *
+ * @public
+ */
+export const Scope = (scope: ScopeValue): ScopeTarget => {
+  throw ErrorBuilder.usageWithoutConfiguredDI('@Scope');
+};

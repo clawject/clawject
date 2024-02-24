@@ -19,9 +19,9 @@ This method allows you to register a new [Custom Scope](/docs/guides/custom-scop
 Throws [DuplicateScopeError](/docs/errors#duplicatescopeerror) if the scope is already registered.
 
 ```ts
-import { CustomScope, ScopeRegister } from '@clawject/di';
+import { Scope, ScopeRegister } from '@clawject/di';
 
-class MyScope implements CustomScope { /* ... */ }
+class MyScope implements Scope { /* ... */ }
 
 ScopeRegister.registerScope('my-scope', MyScope);
 ```

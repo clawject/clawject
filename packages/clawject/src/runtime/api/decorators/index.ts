@@ -4,7 +4,7 @@ export { Bean, BeanConstructorFactory, BeanTarget } from './Bean';
 export { PreDestroy, PreDestroyTarget } from './PreDestroy';
 export { PostConstruct, PostConstructTarget } from './PostConstruct';
 export { Lazy, LazyTarget } from './Lazy';
-export { Scope, ScopeValue, ScopeTarget } from './Scope';
+// export { Scope, ScopeValue, ScopeTarget } from './Scope';
 export { Embedded, EmbeddedTarget } from './Embedded';
 export { Primary, PrimaryTarget } from './Primary';
 export { Qualifier, QualifierTarget } from './Qualifier';

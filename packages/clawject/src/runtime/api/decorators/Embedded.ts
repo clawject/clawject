@@ -6,7 +6,7 @@ export type EmbeddedTarget = PropertyDecorator & MethodDecorator;
 /**
  * When applied to {@link Bean} - all object members will be registered as a beans.
  *
- * @docs https://clawject.com/docs/base-concepts/embedded
+ * @docs https://clawject.com/docs/fundamentals/embedded
  *
  * @public
  */

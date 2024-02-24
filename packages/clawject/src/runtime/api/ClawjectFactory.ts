@@ -4,6 +4,7 @@ import { InstantiationConstructorParameters } from './InstantiationConstructorPa
 import { Utils } from '../Utils';
 import { ClawjectApplicationContext } from './ClawjectApplicationContext';
 import { ClawjectApplicationContextImpl } from '../ClawjectApplicationContextImpl';
+import { ContainerStorage } from '../container/ContainerStorage';
 
 /**
  * It's a factory class that creates a {@link ClawjectApplicationContext} instance.
@@ -37,6 +38,8 @@ export class ClawjectFactory {
     await container.init();
     //TODO some hooks with beans here
     await container.postInit();
+
+    ContainerStorage.registerContainer(container);
 
     return new ClawjectApplicationContextImpl(container);
   }

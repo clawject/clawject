@@ -37,7 +37,7 @@ export const Import: {
 };
 
 /**
- * Object that is produced by {@link Import} function.
+ * @internalApi Object that is produced by {@link Import} function.
  *
  * @public
  */

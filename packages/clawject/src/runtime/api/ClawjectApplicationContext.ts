@@ -8,19 +8,19 @@ export type PickFieldsWithType<T, U> = {
   [K in keyof T as T[K] extends U ? K : never]: T[K];
 };
 /**
- * Just a utility type.
+ * @internalApi Just a utility type.
  *
  * @public
  */
 export type FieldValues<T extends object> = T[keyof T];
 /**
- * Just a utility type.
+ * @internalApi Just a utility type.
  * @public
  */
 export type MergedObjects<U> =
   (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
 /**
- * Object that is produced by {@link ClawjectApplicationContext#getExposedBeans} function.
+ * @internalApi Object that is produced by {@link ClawjectApplicationContext#getExposedBeans} function.
  *
  * @public
  */

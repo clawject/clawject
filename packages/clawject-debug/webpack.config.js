@@ -9,6 +9,7 @@ export default {
   resolve: {
     extensions: ['.js', '.ts', '.mjs'],
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {

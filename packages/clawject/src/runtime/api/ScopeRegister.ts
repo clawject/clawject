@@ -1,4 +1,4 @@
-import { CustomScope } from './CustomScope';
+import { Scope } from './Scope';
 import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 
 /**
@@ -19,7 +19,7 @@ export class ScopeRegister {
    *
    * @docs https://clawject.com/docs/api/scope-register#scoperegisterregisterscope
    */
-  static registerScope(scopeName: string | number, scope: CustomScope): void {
+  static registerScope(scopeName: string | number, scope: Scope): void {
     InternalScopeRegister.registerScope(scopeName, scope);
   }
 

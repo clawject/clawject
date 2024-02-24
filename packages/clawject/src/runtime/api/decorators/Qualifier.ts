@@ -3,9 +3,9 @@ import { ErrorBuilder } from '../../ErrorBuilder';
 /** @public */
 export type QualifierTarget = PropertyDecorator & MethodDecorator;
 /**
- * Allows specifying custom bean name.
+ * Allows us to specify a name for a bean.
  *
- * @docs https://clawject.com/docs/base-concepts/qualifier
+ * @docs https://clawject.com/docs/fundamentals/qualifier
  *
  * @public
  */

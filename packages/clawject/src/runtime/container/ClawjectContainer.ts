@@ -5,8 +5,8 @@ import { MetadataStorage } from '../metadata/MetadataStorage';
 import { RuntimeErrors } from '../api/RuntimeErrors';
 
 export class ClawjectContainer {
-  private applicationConfigurationFactory = new ApplicationConfigurationFactory();
-  private applicationBeanFactory = new ApplicationBeanFactory(this.applicationConfigurationFactory);
+  public readonly applicationConfigurationFactory = new ApplicationConfigurationFactory();
+  public readonly applicationBeanFactory = new ApplicationBeanFactory(this.applicationConfigurationFactory);
 
   constructor(
     public readonly applicationClass: ClassConstructor<any>,

@@ -9,7 +9,7 @@ export { ExposeBeans, type ExposedBeans } from './runtime/api/ExposeBeans';
 
 export type { ObjectFactory, ObjectFactoryResult } from './runtime/api/ObjectFactory';
 
-export type { CustomScope } from './runtime/api/CustomScope';
+export { Scope } from './runtime/api/Scope';
 
 export { ClawjectFactory } from './runtime/api/ClawjectFactory';
 export type { ClawjectApplicationContext, MergedObjects, GetBeansResult, PickFieldsWithType, FieldValues } from './runtime/api/ClawjectApplicationContext';

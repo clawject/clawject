@@ -1,6 +1,7 @@
 import { ClawjectContainer } from './container/ClawjectContainer';
 import { ClassConstructor } from './api/ClassConstructor';
 import { ClawjectApplicationContext } from './api/ClawjectApplicationContext';
+import { ContainerStorage } from './container/ContainerStorage';
 
 export class ClawjectApplicationContextImpl<T extends ClassConstructor<any>> implements ClawjectApplicationContext<T> {
   constructor(
@@ -16,6 +17,8 @@ export class ClawjectApplicationContextImpl<T extends ClassConstructor<any>> imp
   }
 
   close(): Promise<void> {
+    ContainerStorage.removeContainer(this.container);
+
     return this.container.close();
   }
 }

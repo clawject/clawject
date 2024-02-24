@@ -37,6 +37,11 @@ export class Utils {
     return value !== null && (type === 'object' || type === 'function');
   };
 
+  static isFunction = (value: any): value is Function => {
+    const type = typeof value;
+    return value !== null && (type === 'function');
+  };
+
   static capitalizeFirstLetter = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1);
 
   static isPromise = <T>(value: MaybeAsync<T>): value is Promise<T> => {

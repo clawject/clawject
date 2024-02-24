@@ -10,8 +10,9 @@ import TabItem from '@theme/TabItem';
 
 ## @Lazy
 
-By default, Clawject creates all singleton beans eagerly when all configuration classes are instatiated.
+Indicates whether a bean is to be lazily initialized.
 
+By default, Clawject creates all singleton beans eagerly when all configuration classes are instantiated.
 However, there are cases when we need to create a bean,
 not at the context initialization, but only when we request it.
 
@@ -21,7 +22,7 @@ not at the context initialization, but only when we request it.
 - `@Lazy` decorator accepts optional boolean parameter that indicates is target will be lazy or not, so to make it eager, you can use `@Lazy(false)`.
 :::
 
-## Lazy on `@Configuration` class
+### Lazy on `@Configuration` class
 
 When we put `@Lazy` decorator on the `@Configuration` class,
 it indicates that all the beans that are declared in configuration should be loaded lazily.
@@ -63,7 +64,7 @@ const bar = await applicationContext.getExposedBean('bar');
 
 As we see, all beans are created only when we request them for the first time.
 
-## Lazy on Beans
+### Lazy on Beans
 
 We can also put `@Lazy` decorator over the bean declaration.
 
@@ -89,7 +90,7 @@ await applicationContext.getExposedBean('foo');
 // logs: Foo bean has been created
 ```
 
-## Combining @Lazy on @Configuration and Bean
+### Combining @Lazy on @Configuration and Bean
 
 You can safely combine `@Lazy` on `@Configuration` and on the bean level.
 

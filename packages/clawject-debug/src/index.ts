@@ -1,23 +1,17 @@
-import {Bean, ClawjectApplication, Configuration, Import, PostConstruct} from '@clawject/di';
+import {ObjectFactory, ObjectFactoryResult, Scope} from '@clawject/di';
 
-@Configuration
-class C {
-  imported = Import(Application);
-
-  @PostConstruct
-  pc(_2: 2) {
-
+class MyScope implements Scope {
+  @Scope('singleton')
+  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
+    throw new Error('Method not implemented.');
   }
-}
-
-@ClawjectApplication
-export class Application {
-  imported = Import(C);
-
-  @Bean _2 = 2 as const;
-
-  @PostConstruct
-  pc(_1: 1) {
-
+  remove(name: string): ObjectFactoryResult | null {
+    throw new Error('Method not implemented.');
+  }
+  registerDestructionCallback(name: string, callback: () => void): void {
+    throw new Error('Method not implemented.');
+  }
+  useProxy?(): boolean {
+    throw new Error('Method not implemented.');
   }
 }

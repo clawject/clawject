@@ -4,11 +4,10 @@ import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 /** @public */
 export type PreDestroyTarget = PropertyDecorator & MethodDecorator;
 /**
- * Allows invoking a decorated method or property with arrow function before context is cleared or bean is destroyed.
+ * Indicates that an annotated method or property with arrow function should be called
+ * before the application context will be closed or the bean will be destroyed.
  *
- * @docs https://clawject.com/docs/base-concepts/postconstruct-predestroy
- *
- * @see PostConstruct
+ * @docs https://clawject.com/docs/fundamentals/lifecycle#predestroy
  *
  * @public */
 export const PreDestroy: DecoratorWithoutArguments<PreDestroyTarget> = () => {

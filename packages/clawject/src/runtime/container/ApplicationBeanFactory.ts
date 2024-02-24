@@ -13,6 +13,7 @@ import { ApplicationBeanFinder } from './ApplicationBeanFinder';
 import { MaybeAsync } from '../types/MaybeAsync';
 import { Utils } from '../Utils';
 import { RuntimeErrors } from '../api/RuntimeErrors';
+import { ConversationId } from '../api/Scope';
 
 export class ApplicationBeanFactory {
   exposedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
@@ -22,8 +23,7 @@ export class ApplicationBeanFactory {
 
   constructor(
     private readonly applicationConfigurationFactory: ApplicationConfigurationFactory,
-  ) {
-  }
+  ) {}
 
   async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
     await this.createApplicationBeans(applicationMetadata);
@@ -73,6 +73,14 @@ export class ApplicationBeanFactory {
         applicationBean.objectFactory.getObject();
       }
     });
+  }
+
+  async onConversationBegin(conversationId: ConversationId): Promise<void> {
+
+  }
+
+  async onConversationEnded(conversationId: ConversationId): Promise<void> {
+
   }
 
   getExposedBean(beanName: string): Promise<any> {
