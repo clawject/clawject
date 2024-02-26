@@ -28,7 +28,10 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
 
     DecoratorRules.init();
 
+    const t0 = Date.now();
     const transformedSourceFile = processApplicationMode(compilationContext, context, sourceFile);
+    const t1 = Date.now();
+    Logger.debug('File: ' + sourceFile.fileName + ' processed in ' + (t1 - t0) + 'ms');
 
     if (!compilationContext.areErrorsHandled) {
       const addDiagnostics = transformerExtras?.addDiagnostic;

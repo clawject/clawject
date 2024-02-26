@@ -26,17 +26,6 @@ class MyScope implements Scope { /* ... */ }
 ScopeRegister.registerScope('my-scope', MyScope);
 ```
 
-#### `.unregisterScope()`
-
-This method allows you to unregister scope by name.
-Returns `true` if scope by given name existed and has been removed, or `false` if the scope does not exist.
-
-```ts
-import { ScopeRegister } from '@clawject/di';
-
-const hasBeenRegistered = ScopeRegister.unregisterScope('my-scope');
-```
-
 #### `.hasScope()`
 
 Check whether the scope with the given name is registered.

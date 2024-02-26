@@ -14,7 +14,7 @@ import { BeanExposingError } from '../compilation-context/messages/errors/BeanEx
 export class DiagnosticsBuilder {
   private static formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
     getCurrentDirectory: () => getCompilationContext().program.getCurrentDirectory(),
-    getCanonicalFileName: (fileName) => fileName,
+    getCanonicalFileName: (fileName) => getCompilationContext().program.getCanonicalFileName/*optional because in ts <5 there is no such program method*/?.(fileName) ?? fileName,
     getNewLine: () => '\n',
   };
 

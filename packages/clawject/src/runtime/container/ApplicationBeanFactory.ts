@@ -13,13 +13,16 @@ import { ApplicationBeanFinder } from './ApplicationBeanFinder';
 import { MaybeAsync } from '../types/MaybeAsync';
 import { Utils } from '../Utils';
 import { RuntimeErrors } from '../api/RuntimeErrors';
-import { ConversationId } from '../api/Scope';
+import { Scope } from '../api/Scope';
+import { InternalScopeRegister } from '../scope/InternalScopeRegister';
+import { DependencyInjectionValue } from './DependencyInjectionValue';
 
 export class ApplicationBeanFactory {
   exposedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
   applicationBeans: ApplicationBean[] = [];
   configurationIndexToBeanClassPropertyToApplicationBean = new Map<number, Map<string, ApplicationBean>>();
   applicationBeanFinder = new ApplicationBeanFinder(this.configurationIndexToBeanClassPropertyToApplicationBean);
+  scopeToScopedApplicationBeans = new Map<Scope, ApplicationBean[]>();
 
   constructor(
     private readonly applicationConfigurationFactory: ApplicationConfigurationFactory,
@@ -32,65 +35,41 @@ export class ApplicationBeanFactory {
   }
 
   async postInit(): Promise<void> {
-    const lifecycleBeans: ApplicationBean[] = [];
+    const singletonScope = InternalScopeRegister.getScope('singleton');
+    await this.initScopedBeans(singletonScope);
 
-    const regular = this.applicationBeans.map(async (applicationBean) => {
+    const lifecycleInit = this.applicationBeans.map(async (applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
-        lifecycleBeans.push(applicationBean);
-        return;
-      }
-
-      if (applicationBean.scopeName === 'singleton' && !applicationBean.lazy) {
-        await applicationBean.getValue();
+        if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.POST_CONSTRUCT].includes(applicationBean.beanClassProperty)) {
+          await applicationBean.getInjectionValue();
+        }
       }
     });
 
-    const lifecycle = lifecycleBeans.map(async (applicationBean) => {
-      if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.POST_CONSTRUCT].includes(applicationBean.beanClassProperty)) {
-        await applicationBean.objectFactory.getObject();
-      }
-    });
-
-    await Promise.all([...regular, ...lifecycle]);
+    await Promise.all(lifecycleInit);
   }
 
-  close(): void {
-    const lifecycleBeans = new Set<ApplicationBean>();
-
-    this.applicationBeans.forEach((applicationBean) => {
+  //TODO check lifecycle with scopes
+  async close(): Promise<void> {
+    await Promise.all(this.applicationBeans.map(async(applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
-        lifecycleBeans.add(applicationBean);
-        return;
+        if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.PRE_DESTROY].includes(applicationBean.beanClassProperty)) {
+          await applicationBean.getInjectionValue();
+        }
       }
-
-      const scopedObject = applicationBean.getScope().remove(applicationBean.name);
-
-      this.onLifecycle(scopedObject, LifecycleKind.PRE_DESTROY);
-    });
-
-    lifecycleBeans.forEach((applicationBean) => {
-      if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.PRE_DESTROY].includes(applicationBean.beanClassProperty)) {
-        applicationBean.objectFactory.getObject();
-      }
-    });
+    }));
   }
 
-  async onConversationBegin(conversationId: ConversationId): Promise<void> {
-
-  }
-
-  async onConversationEnded(conversationId: ConversationId): Promise<void> {
-
-  }
-
-  getExposedBean(beanName: string): Promise<any> {
+  async getExposedBean(beanName: string): Promise<any> {
     const exposedBeans = Utils.getValueSafe(this.exposedBeanNameToApplicationBeanDependency, beanName);
 
     if (exposedBeans === Utils.EMPTY_VALUE) {
       throw new RuntimeErrors.ExposedBeanNotFoundError(`No exposed bean found by exposed name: ${beanName}`);
     }
 
-    return exposedBeans.getValue();
+    const value = await exposedBeans.getValue();
+
+    return value.value;
   }
 
   async getExposedBeans(): Promise<Record<string, any>> {
@@ -149,12 +128,39 @@ export class ApplicationBeanFactory {
         );
         configurationIndexToBeanClassPropertyToApplicationBean.set(beanClassProperty, applicationBean);
         this.applicationBeans.push(applicationBean);
+
+        if (!applicationBean.isLifecycleFunction) {
+          const scope = applicationBean.getScope();
+          const scopedBeans = this.scopeToScopedApplicationBeans.get(scope) ?? [];
+
+          if (!this.scopeToScopedApplicationBeans.has(scope)) {
+            this.scopeToScopedApplicationBeans.set(scope, scopedBeans);
+          }
+
+          scopedBeans.push(applicationBean);
+        }
       });
 
       await Promise.all(initPromises);
     });
 
     await Promise.all(resultPromise);
+  }
+
+  async initScopedBeans(scope: Scope): Promise<void> {
+    const scopedBeans = this.scopeToScopedApplicationBeans.get(scope) ?? [];
+
+    await Promise.all(scopedBeans.map(async it => {
+      if (it.isLifecycleFunction) {
+        return;
+      }
+
+      if (it.lazy) {
+        return;
+      }
+
+      return it.getScopedBeanValue();
+    }));
   }
 
   private fillExposedBeans(applicationMetadata: RuntimeApplicationMetadata): void {
@@ -170,27 +176,30 @@ export class ApplicationBeanFactory {
       const objectFactory = new ObjectFactoryImpl(() => {
         const dependencies = applicationBean.dependencies?.map(it => it.getValue()) ?? [];
 
-        let instantiatedBean: any;
-
-        if (dependencies.some(Utils.isPromise)) {
-          instantiatedBean = Promise.all(dependencies).then((resolvedDependencies) => {
-            return factory(...resolvedDependencies);
-          });
-        } else {
-          instantiatedBean = factory(...dependencies);
-        }
-
-        if (!applicationBean.isLifecycleFunction) {
-          this.registerDestructionCallback(applicationBean, instantiatedBean);
-        }
-
-        this.onLifecycle(instantiatedBean, LifecycleKind.POST_CONSTRUCT);
-
-        return instantiatedBean;
+        return Promise.all(dependencies).then((resolvedDependencies) => {
+          return this.createBeanInstance(applicationBean, factory, resolvedDependencies);
+        });
       });
 
       applicationBean.init(objectFactory);
     }));
+  }
+
+  private createBeanInstance(applicationBean: ApplicationBean, factory: (...args: any[]) => any, dependencies: DependencyInjectionValue[]): any {
+    const result = factory(...dependencies.map(it => it.value));
+
+    if (Utils.isPromise(result)) {
+      return result.then((instance) => {
+        this.registerDestructionCallbackIfNeeded(applicationBean, instance);
+        this.onLifecycle(instance, LifecycleKind.POST_CONSTRUCT);
+        return instance;
+      });
+    }
+
+    this.registerDestructionCallbackIfNeeded(applicationBean, result);
+    this.onLifecycle(result, LifecycleKind.POST_CONSTRUCT);
+
+    return result;
   }
 
   private getBeanFactoryFunction(applicationBean: ApplicationBean): MaybeAsync<(...args: any[]) => any> {
@@ -217,12 +226,18 @@ export class ApplicationBeanFactory {
     }
   }
 
-  private registerDestructionCallback(applicationBean: ApplicationBean, instance: any): void {
+  private registerDestructionCallbackIfNeeded(applicationBean: ApplicationBean, instance: any): void {
+    if (applicationBean.isLifecycleFunction) {
+      return;
+    }
+
     const componentMetadata = MetadataStorage.getComponentMetadataByClassInstance(instance);
     const hasLifecyclePreDestroy = componentMetadata !== null && componentMetadata.lifecycle.PRE_DESTROY.length > 0;
 
     if (hasLifecyclePreDestroy) {
-      applicationBean.getScope().registerDestructionCallback(applicationBean.name, () => this.onLifecycle(instance, LifecycleKind.PRE_DESTROY));
+      applicationBean.getScope().registerDestructionCallback(applicationBean.name, () => {
+        this.onLifecycle(instance, LifecycleKind.PRE_DESTROY);
+      });
     }
   }
 

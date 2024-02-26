@@ -1,11 +1,9 @@
 import { Configuration } from '../../configuration/Configuration';
 import { RuntimeConfigurationMetadata } from '../../../../runtime/metadata/RuntimeConfigurationMetadata';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
-import { filterAndMap } from '../../utils/filterAndMap';
 import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExposedBeanMetadata, RuntimeApplicationMetadata } from '../../../../runtime/metadata/RuntimeApplicationMetadata';
 import { Application } from '../../application/Application';
 import { compact } from 'lodash';
-import { RuntimeBeanMetadata } from '../../../../runtime/metadata/MetadataTypes';
 import { MaybeResolvedDependency } from '../../dependency-resolver/MaybeResolvedDependency';
 
 export class RuntimeMetadataBuilder {
@@ -29,6 +27,10 @@ export class RuntimeMetadataBuilder {
     const beansMetadata: RuntimeConfigurationMetadata['beans'] = {};
 
     beans.forEach(bean => {
+      if (bean.nestedProperty !== null) {
+        return;
+      }
+
       if (bean.lifecycle.includes(LifecycleKind.POST_CONSTRUCT)) {
         lifecycleMetadata[LifecycleKind.POST_CONSTRUCT].push(bean.classMemberName);
       }

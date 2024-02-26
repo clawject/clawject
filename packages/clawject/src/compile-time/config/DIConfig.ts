@@ -7,4 +7,5 @@ export interface DIConfig {
   imports: {
     defaultExternal: boolean;
   }
+  logLevel: 'none' | 'error' | 'warn' | 'info' | 'debug' | 'verbose';
 }

@@ -14,9 +14,15 @@ Indicates whether a bean is to be lazily initialized.
 
 By default, Clawject creates all singleton beans eagerly when all configuration classes are instantiated.
 However, there are cases when we need to create a bean,
-not at the context initialization, but only when we request it.
+not at the context initialization, but only when the consumer of the bean needs it.
 
-:::tip Note that
+:::warning
+
+Be careful when `@Lazy` is applied to async beans with custom scope (e.g. `request`),
+it may cause that promise will be injected instead of actual value.
+:::
+
+:::tip
 - `Bean` level annotations have precedence over class level annotations.
 - `@Lazy` can be applied to `@Configuration` class or to the bean declaration.
 - `@Lazy` decorator accepts optional boolean parameter that indicates is target will be lazy or not, so to make it eager, you can use `@Lazy(false)`.

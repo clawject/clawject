@@ -9,5 +9,5 @@ export type ObjectFactoryResult = string | number | boolean | bigint | Symbol | 
  * @public
  */
 export interface ObjectFactory {
-  getObject(): ObjectFactoryResult;
+  getObject(): ObjectFactoryResult | Promise<ObjectFactoryResult>;
 }

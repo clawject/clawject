@@ -17,6 +17,7 @@ export class ConfigLoader {
     imports: {
       defaultExternal: true,
     },
+    logLevel: 'error',
   };
   static cachedConfig: DIConfig | null = null;
   static onConfigLoaded: ((configFilename: string) => void) | null = null;

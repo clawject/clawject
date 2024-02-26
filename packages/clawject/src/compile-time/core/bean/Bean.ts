@@ -6,10 +6,10 @@ import { Dependency } from '../dependency/Dependency';
 import { Entity } from '../Entity';
 import { LifecycleKind } from '../../../runtime/types/LifecycleKind';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
-import * as Case from 'case';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { CType } from '../type-system/CType';
 import { FileGraph } from '../file-graph/FileGraph';
+import { Utils } from '../../../runtime/Utils';
 
 export type BeanNode = ts.MethodDeclaration
   | ClassPropertyWithCallExpressionInitializer
@@ -74,7 +74,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
       return qualifiedName;
     }
 
-    return qualifiedName + Case.capital(this.nestedProperty);
+    return qualifiedName + Utils.capitalizeFirstLetter(this.nestedProperty);
   }
 
   isLifecycle(): boolean {

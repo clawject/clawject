@@ -1,29 +1,45 @@
-import { ConversationId, Scope } from '../api/Scope';
 import { ObjectFactory, ObjectFactoryResult } from '../api/ObjectFactory';
-import { Callback } from './Callback';
+import { Scope } from '../api/Scope';
+import { Utils } from '../Utils';
 
 export class SingletonScope implements Scope {
-  private scopedObjects = new Map<string, ObjectFactoryResult>();
+  private scopedInstances = new Map<string, ObjectFactoryResult>();
 
-  registerConversationBeginCallback(callback: (conversationId: ConversationId) => void | Promise<void>): void {}
-  registerConversationEndedCallback(callback: (conversationId: ConversationId) => void | Promise<void>): void {}
+  registerScopeBeginCallback(callback: () => void | Promise<void>): void {}
+  removeScopeBeginCallback(callback:() => Promise<void>): void {}
 
-  get(conversationId: ConversationId, name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
-    const instance = this.scopedObjects.get(name) ?? objectFactory.getObject();
-    this.scopedObjects.set(name, instance);
+  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
+    if (this.scopedInstances.has(name)) {
+      return this.scopedInstances.get(name)!;
+    }
 
-    return instance;
+    const object = objectFactory.getObject();
+
+    if (Utils.isPromise(object)) {
+      const promiseObject = object.then(resolvedObject => {
+        this.scopedInstances.set(name, resolvedObject);
+        return resolvedObject;
+      });
+
+      this.scopedInstances.set(name, promiseObject);
+
+      return promiseObject;
+    }
+
+    this.scopedInstances.set(name, object);
+
+    return object;
   }
-
-  registerDestructionCallback(name: string, callback: Callback): void {}
 
   remove(name: string): ObjectFactoryResult | null {
-    const instance = this.scopedObjects.get(name) ?? null;
+    const object = this.scopedInstances.get(name);
 
-    this.scopedObjects.delete(name);
+    this.scopedInstances.delete(name);
 
-    return instance;
+    return object ?? null;
   }
+
+  registerDestructionCallback(name: string, callback: () => void): void {}
 
   useProxy(): boolean {
     return false;

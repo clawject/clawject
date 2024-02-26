@@ -33,7 +33,6 @@ export class TypeComparator {
   }
 
   static compareType(source: ts.Type, target: ts.Type): boolean {
-    source;
     const typeChecker = getCompilationContext().typeChecker;
 
     const isAssignableByTypescript = typeChecker.isTypeAssignableTo(source, target);

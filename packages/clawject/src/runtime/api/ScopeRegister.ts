@@ -24,17 +24,6 @@ export class ScopeRegister {
   }
 
   /**
-   * Unregistering a scope.
-   *
-   * @returns `true` if scope by given name existed and has been removed, or `false` if the scope does not exist.
-   *
-   * @docs https://clawject.com/docs/api/scope-register#scoperegisterunregisterscope
-   * */
-  static unregisterScope(scopeName: string | number): boolean {
-    return InternalScopeRegister.unregisterScope(scopeName);
-  }
-
-  /**
    * Check whether the scope with the given name is registered.
    *
    * @returns `true` if scope by given name exists, or `false` if the scope does not exist.

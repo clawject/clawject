@@ -17,10 +17,6 @@ export class InternalScopeRegister {
     this.scopes.set(name, scope);
   }
 
-  static unregisterScope(name: string | number): boolean {
-    return this.scopes.delete(name);
-  }
-
   static getScope(name: string | number): Scope {
     return this.assureRegistered(name);
   }
@@ -29,7 +25,7 @@ export class InternalScopeRegister {
     return this.scopes.has(name);
   }
 
-  static assureRegistered(name: string | number): Scope | never {
+  private static assureRegistered(name: string | number): Scope | never {
     const scope = this.scopes.get(name);
 
     if (!scope) {

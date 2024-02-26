@@ -5,6 +5,7 @@ import { Value } from '../../../runtime/types/Value';
 import { CONSTANTS } from '../../../constants/index';
 import { processClassDeclaration } from './processClassDeclaration';
 import { getDecoratorVerificationErrors } from '../decorator-processor/getDecoratorVerificationErrors';
+import { Logger } from '../../logger/Logger';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
@@ -20,7 +21,10 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
       return ts.visitEachChild(node, visitor, tsContext);
     }
 
+    const label = `Get decorator verification errors, file: ${sourceFile.fileName}, nodeName: "${node.name?.getText()}"`;
+    Logger.verboseDuration(label);
     const decoratorVerificationErrors = getDecoratorVerificationErrors(node);
+    Logger.verboseDuration(label);
 
     //Skipping processing anything because of errors
     if (decoratorVerificationErrors.length !== 0) {

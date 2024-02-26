@@ -3,10 +3,12 @@ import { ApplicationBeanFactory } from './ApplicationBeanFactory';
 import { ApplicationConfigurationFactory } from './ApplicationConfigurationFactory';
 import { MetadataStorage } from '../metadata/MetadataStorage';
 import { RuntimeErrors } from '../api/RuntimeErrors';
+import { ScopeManager } from './ScopeManager';
 
 export class ClawjectContainer {
   public readonly applicationConfigurationFactory = new ApplicationConfigurationFactory();
   public readonly applicationBeanFactory = new ApplicationBeanFactory(this.applicationConfigurationFactory);
+  public readonly scopeManager = new ScopeManager(this.applicationBeanFactory);
 
   constructor(
     public readonly applicationClass: ClassConstructor<any>,
@@ -22,6 +24,7 @@ export class ClawjectContainer {
 
     await this.applicationConfigurationFactory.init(this.applicationClass, this.applicationClassConstructorParameters);
     await this.applicationBeanFactory.init(applicationMetadata);
+    this.scopeManager.init();
   }
 
   async postInit(): Promise<void> {
@@ -29,7 +32,8 @@ export class ClawjectContainer {
   }
 
   async close(): Promise<void> {
-    this.applicationBeanFactory.close();
+    await this.applicationBeanFactory.close();
+    this.scopeManager.close();
   }
 
   getExposedBean(beanName: string): Promise<any> {
