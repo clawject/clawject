@@ -128,7 +128,11 @@ export default {
       items: [
         'guides/injecting-collections',
         'guides/sharing-configurations',
-        'guides/creating-scope',
+        {
+          type: 'doc',
+          label: 'Creating Scope',
+          id: 'guides/creating-scope',
+        },
       ],
     },
     'errors',

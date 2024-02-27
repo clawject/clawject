@@ -11,6 +11,10 @@ for (let i = 0; i < max; i++) {
     constructorDependencies.push(`private class${j}: IClass${j}`);
   }
 
+  if (!fs.existsSync('src/benchmark')) {
+    fs.mkdirSync('src/benchmark');
+  }
+
   fs.writeFileSync(
     `src/benchmark/Class${i}.ts`,
     `
@@ -35,11 +39,11 @@ for (let i = 0; i < max; i++) {
 fs.writeFileSync(
   'src/benchmark/clawject.ts',
   `
-  import {Bean, Configuration} from '@clawject/di';
+  import {Bean, ClawjectApplication} from '@clawject/di';
   ${imports.join('\n')}
 
-  @Configuration
-  export class MainConfiguration {
+  @ClawjectApplication
+  export class MainApplication {
 
   ${beans.join('\n')}
   }

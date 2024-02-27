@@ -105,8 +105,9 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
 }
 
 function fillApplicationExposedBeans(application: Application, exposedBeans: Map<string, Dependency>): void {
+  const externalBeans = application.beansArray.filter(it => it.getExternalValue() && !it.isLifecycle());
+
   exposedBeans.forEach((dependency, propertyName) => {
-    const externalBeans = filterSet(application.beans, it => it.getExternalValue() && !it.isLifecycle());
     const resolvedDependency = DependencyResolver.resolveDependencies(dependency, externalBeans, null, application);
 
     application.exposedBeans.set(propertyName, resolvedDependency);

@@ -18,6 +18,7 @@ class ObjectTypeWrapper {
 }
 
 export class TypeComparator {
+  private static comparatorCache = new WeakMap<ts.Type, WeakMap<ts.Type, boolean>>();
   private static expandedObjectTypeCache = new WeakMap<ts.ObjectType, ObjectTypeWrapper[]>();
 
   static checkFlag(type: ts.Type, flag: ts.TypeFlags): boolean {
@@ -33,6 +34,24 @@ export class TypeComparator {
   }
 
   static compareType(source: ts.Type, target: ts.Type): boolean {
+    const cached = this.comparatorCache.get(source)?.get(target);
+
+    if (cached !== undefined) {
+      return cached;
+    }
+
+    const result = this._compareType(source, target);
+
+    if (!this.comparatorCache.has(source)) {
+      this.comparatorCache.set(source, new WeakMap());
+    }
+
+    this.comparatorCache.get(source)?.set(target, result);
+
+    return result;
+  }
+
+  private static _compareType(source: ts.Type, target: ts.Type): boolean {
     const typeChecker = getCompilationContext().typeChecker;
 
     const isAssignableByTypescript = typeChecker.isTypeAssignableTo(source, target);
@@ -177,34 +196,6 @@ export class TypeComparator {
 
     this.expandedObjectTypeCache.set(type, processedElements);
     return processedElements;
-  }
-
-  private static compareObjectTypes(source: ts.ObjectType, target: ts.ObjectType): boolean {
-    const typeChecker = getCompilationContext().typeChecker;
-
-    const targetSymbol = target.getSymbol() ?? target.aliasSymbol ?? target.symbol;
-    const sourceSymbol = source.getSymbol() ?? source.aliasSymbol ?? source.symbol;
-
-    const equalByDeclarations = this.compareDeclarationsBySymbol(sourceSymbol, targetSymbol);
-
-    if (!equalByDeclarations) {
-      return false;
-    }
-
-    if (this.isReferenceType(source) && this.isReferenceType(target)) {
-      const targetTypeArguments = typeChecker.getTypeArguments(target);
-      const sourceTypeArguments = typeChecker.getTypeArguments(source);
-
-      if (targetTypeArguments.length !== sourceTypeArguments.length) {
-        return false;
-      }
-
-      return targetTypeArguments.every((targetTypeArgument, index) => {
-        return this.compareType(sourceTypeArguments[index], targetTypeArgument);
-      });
-    }
-
-    return equalByDeclarations;
   }
 
   private static compareTupleTypes(source: ts.TupleType, target: ts.TupleType): boolean {

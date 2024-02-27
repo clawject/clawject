@@ -1,5 +1,6 @@
 import winston from 'winston';
 import { ConfigLoader } from '../config/ConfigLoader';
+import { performance } from 'perf_hooks';
 
 
 export class Logger {
@@ -40,24 +41,10 @@ export class Logger {
   }
 
   private static levelToLabelToDuration: Map<string, Map<string, number>> = new Map();
-
-  static infoDuration(label: string) {
-    this.withDuration('info', label);
-  }
-
-  static warnDuration(label: string) {
-    this.withDuration('warn', label);
-  }
-
-  static errorDuration(label: string) {
-    this.withDuration('error', label);
-  }
-
-  static debugDuration(label: string) {
-    this.withDuration('debug', label);
-  }
-
   static verboseDuration(label: string) {
+    if (this.logger.level !== 'verbose') {
+      return;
+    }
     this.withDuration('verbose', label);
   }
 
@@ -69,11 +56,11 @@ export class Logger {
     }
 
     if (!durationMap.has(label)) {
-      durationMap.set(label, Date.now());
+      durationMap.set(label, performance.now());
     } else {
       const start = durationMap.get(label);
       durationMap.delete(label);
-      const now = Date.now();
+      const now = performance.now();
       this[level](`Duration of ${label}: ${now - start}ms`);
     }
   }

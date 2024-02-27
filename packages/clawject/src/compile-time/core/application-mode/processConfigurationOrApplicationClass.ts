@@ -15,6 +15,7 @@ import { ApplicationDeclarationMetadata } from '../declaration-metadata/Applicat
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { CorruptedMetadataError } from '../../compilation-context/messages/errors/CorruptedMetadataError';
 import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
+import { Logger } from '../../logger/Logger';
 
 export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration, parentImportNode: ts.Node | null, parentConfiguration: Configuration | null): Configuration | null => {
   const registeredConfiguration = ConfigurationRepository.nodeToConfiguration.get(node);
@@ -29,8 +30,15 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
   const configuration = ConfigurationRepository.register(node);
 
   if (configurationDecoratorMetadata !== null || clawjectApplicationDecoratorMetadata !== null) {
+    const registerImportsLabel = `Registering imports (decorated class), file: ${node.getSourceFile().fileName}, class: ${node.name?.text}`;
+    Logger.verboseDuration(registerImportsLabel);
     registerImports(configuration);
+    Logger.verboseDuration(registerImportsLabel);
+
+    const registerBeansLabel = `Registering beans (decorated class), file: ${node.getSourceFile().fileName}, class: ${node.name?.text}`;
+    Logger.verboseDuration(registerBeansLabel);
     registerBeans(configuration);
+    Logger.verboseDuration(registerBeansLabel);
   } else {
     //This branch is for imported configurations
     const compilationMetadata = DeclarationMetadataParser.parse(node);
@@ -78,6 +86,8 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
     }, {} as Record<string, ts.ClassElement>);
 
     //Registering imports
+    const registerImportsLabel = `Registering imports (metadata class), file: ${node.getSourceFile().fileName}, class: ${node.name?.text}`;
+    Logger.verboseDuration(registerImportsLabel);
     typedMetadata.imports.forEach(it => {
       const classElementNode = classMemberNamesToNode[it.classPropertyName] as ts.ClassElement | undefined;
 
@@ -103,8 +113,11 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
 
       registerImportForClassElementNode(configuration, classElementNode, it.external);
     });
+    Logger.verboseDuration(registerImportsLabel);
 
     //Registering beans
+    const registerBeansLabel = `Registering beans (metadata class), file: ${node.getSourceFile().fileName}, class: ${node.name?.text}`;
+    Logger.verboseDuration(registerBeansLabel);
     typedMetadata.beans.forEach(beanDeclarationMetadata => {
       const classElementNode = classMemberNamesToNode[beanDeclarationMetadata.classPropertyName] as ts.ClassElement | undefined;
 
@@ -120,9 +133,13 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
 
       registerBeanFromDeclarationMetadata(configuration, classElementNode, beanDeclarationMetadata);
     });
+    Logger.verboseDuration(registerBeansLabel);
   }
 
+  const registerBeanDependenciesLabel = `Registering bean dependencies, file: ${node.getSourceFile().fileName}, class: ${node.name?.text}`;
+  Logger.verboseDuration(registerBeanDependenciesLabel);
   registerBeanDependencies(configuration);
+  Logger.verboseDuration(registerBeanDependenciesLabel);
 
   return configuration;
 };

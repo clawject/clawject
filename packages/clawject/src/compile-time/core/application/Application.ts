@@ -32,6 +32,7 @@ export class Application extends Entity<ts.ClassDeclaration> {
   resolvedImports = new Map<Configuration, ResolvedConfigurationImport>();
 
   private _beans: Set<Bean> | null = null;
+  private _beansArray: Bean[] | null = null;
   get beans(): Set<Bean> {
     if (this._beans === null) {
       const beans = new Set<Bean>();
@@ -45,6 +46,21 @@ export class Application extends Entity<ts.ClassDeclaration> {
       return beans;
     } else {
       return this._beans;
+    }
+  }
+  get beansArray(): Bean[] {
+    if (this._beansArray === null) {
+      const beans: Bean[] = [];
+      this._beansArray = beans;
+
+      this.forEachConfiguration(configuration => {
+        configuration.beanRegister.elements.forEach(bean => {
+          beans.push(bean);
+        });
+      });
+      return beans;
+    } else {
+      return this._beansArray;
     }
   }
 

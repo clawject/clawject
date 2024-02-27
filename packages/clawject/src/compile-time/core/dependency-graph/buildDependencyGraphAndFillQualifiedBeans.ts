@@ -5,14 +5,13 @@ import { CanNotRegisterBeanError } from '../../compilation-context/messages/erro
 import { BeanKind } from '../bean/BeanKind';
 import { Application } from '../application/Application';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
-import { filterSet } from '../utils/filterSet';
 
-export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Set<Bean>) => {
+export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[]) => {
   const compilationContext = getCompilationContext();
 
   beans.forEach(bean => {
     const beanParentConfiguration = bean.parentConfiguration;
-    const beanCandidates = filterSet(beans, it => {
+    const beanCandidates = beans.filter(it => {
       //Filtering out the bean itself
       if (it === bean) {
         return false;

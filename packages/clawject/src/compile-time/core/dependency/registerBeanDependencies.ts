@@ -7,18 +7,28 @@ import { DependencyResolvingError } from '../../compilation-context/messages/err
 import { Dependency } from './Dependency';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { CType } from '../type-system/CType';
+import { Logger } from '../../logger/Logger';
 
 export const registerBeanDependencies = (configuration: Configuration) => {
   configuration.beanRegister.elements.forEach(bean => {
     switch (bean.kind) {
-    case BeanKind.CLASS_CONSTRUCTOR:
+    case BeanKind.CLASS_CONSTRUCTOR: {
+      const label = `Registering bean dependencies (class constructor), file: ${bean.node.getSourceFile().fileName}, class: ${bean.node.name?.getText()}`;
+      Logger.verboseDuration(label);
       registerBeanDependenciesFromBeanConstructSignature(bean);
+      Logger.verboseDuration(label);
       break;
+    }
     case BeanKind.FACTORY_METHOD:
     case BeanKind.LIFECYCLE_METHOD:
     case BeanKind.FACTORY_ARROW_FUNCTION:
-    case BeanKind.LIFECYCLE_ARROW_FUNCTION:
+    case BeanKind.LIFECYCLE_ARROW_FUNCTION: {
+      const label = `Registering bean dependencies (call signature), file: ${bean.node.getSourceFile().fileName}, class: ${bean.node.name?.getText()}`;
+      Logger.verboseDuration(label);
       registerBeanDependenciesFromBeanCallSignature(bean);
+      Logger.verboseDuration(label);
+      break;
+    }
     }
   });
 };

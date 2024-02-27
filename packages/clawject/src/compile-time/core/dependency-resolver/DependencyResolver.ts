@@ -9,12 +9,10 @@ import { Application } from '../application/Application';
 export class DependencyResolver {
   static resolveDependencies(
     dependency: Dependency,
-    beansToSearch: Set<Bean>,
+    beansToSearch: Bean[],
     relatedBean: Bean | null,
     relatedApplication: Application,
   ): MaybeResolvedDependency {
-    const actualBeansToSearch = Array.from(beansToSearch);
-
     switch (true) {
     case dependency.cType.isEmptyValue():
       return new MaybeResolvedDependency(dependency);
@@ -22,10 +20,10 @@ export class DependencyResolver {
     case dependency.cType.isArray():
     case dependency.cType.isSet():
     case dependency.cType.isMapStringToAny():
-      return this.buildForCollectionOrArray(dependency, actualBeansToSearch);
+      return this.buildForCollectionOrArray(dependency, beansToSearch);
 
     default:
-      return this.buildForBaseType(dependency, actualBeansToSearch, relatedBean, relatedApplication);
+      return this.buildForBaseType(dependency, beansToSearch, relatedBean, relatedApplication);
     }
   }
 
