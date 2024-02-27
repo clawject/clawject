@@ -54,6 +54,8 @@ export default function Home(): JSX.Element {
     return <Layout description="TypeScript Dependency Injection Framework"/>;
   }
 
+  const isUkraine = subtitle === SUBTITLE_PHRASES[10];
+
   return (
     <Layout
       description="TypeScript Dependency Injection Framework"
@@ -73,7 +75,7 @@ export default function Home(): JSX.Element {
         </div>
 
         <div className={classNames(styles.logoContainer, 'margin-top--lg')}>
-          <div className={styles.logoBackground}/>
+          <div className={classNames(styles.logoBackground, isUkraine && styles.logoBackgroundUkraine)}/>
           <img className={classNames(styles.logo)} src="/img/logo.svg" alt="Clawject"/>
         </div>
       </div>

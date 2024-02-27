@@ -71,6 +71,10 @@
   filter: blur(50px) saturate(150%);
 }
 
+.logoBackgroundUkraine {
+  background: linear-gradient(180deg, rgb(0, 91, 187) 31%, rgb(255, 213, 0) 77%);
+}
+
 @keyframes LogoBGAnimation {
   0%{filter: blur(50px) saturate(150%)}
   50%{filter: blur(40px) saturate(200%)}
