@@ -5,4 +5,67 @@ hide_title: true
 
 ## Sharing configurations
 
-### ***TODO***
+It can be quite handy to share configurations between different projects.
+This can be done by creating a separate package that contains the configuration and then installing it in the projects that need it.
+
+Clawject provides a way to share `@Configuration` and `@ClawjectApplication` classes between different projects by generating metadata field on a target class type declaration.
+
+To make this work, you should [add **metadata transformer**](https://clawject.com/docs/setup#tsconfigjson) to your compilation process.
+
+### Example
+
+Let's say we have a `FooConfiguration` class that you want to share between different projects:
+
+```ts title="shared-package/foo-configuration.ts"
+import { Bean, Configuration } from '@clawject/di';
+import { Foo } from './foo';
+
+@Configuration
+export class FooConfiguration {
+  foo = Bean(Foo);
+}
+```
+
+If you have added the metadata transformer to your compilation process, compiled declaration file will contain a metadata field on the `FooConfiguration` class type declaration:
+
+```ts title="shared-package/dist/foo-configuration.d.ts"
+export declare class FooConfiguration {
+    foo: import("@clawject/di").BeanConstructorFactory<Foo, typeof Foo>;
+    /** This field is auto-generated, editing it could lead to unexpected behavior.*/
+    #___clawject_compile_time_metadata___: {
+        kind: 1;
+        version: 1;
+        external: null;
+        beans: [
+            {
+                kind: 2;
+                primary: false;
+                external: null;
+                qualifier: null;
+                nestedProperty: null;
+                classPropertyName: "foo";
+            }
+        ];
+        imports: [];
+    };
+}
+```
+
+Now you can install the `shared-package` in your project and import the `FooConfiguration` class into your `@ClawjectApplication` class, and request `Foo` bean that is defined in the `FooConfiguration` class:
+
+```ts title="app.ts"
+import { ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { Foo, FooConfiguration } from 'shared-package';
+
+@ClawjectApplication
+class App {
+  fooConfiguration = Import(FooConfiguration);
+
+  @PostConstruct
+  /* Foo bean is injected here */
+  init(foo: Foo) {
+    /* ... */
+  }
+}
+```
+That's it! Now you can share configurations between different projects.

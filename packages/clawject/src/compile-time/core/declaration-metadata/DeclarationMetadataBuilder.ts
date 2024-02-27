@@ -40,7 +40,7 @@ export class DeclarationMetadataBuilder {
     };
 
     const property = factory.createPropertyDeclaration(
-      [],
+      undefined,
       factory.createPrivateIdentifier(CompileTimeElement.COMPILE_TIME_METADATA),
       undefined,
       valueToASTType(metadata),

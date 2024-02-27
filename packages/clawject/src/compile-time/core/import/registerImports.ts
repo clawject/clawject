@@ -9,9 +9,20 @@ import { NotSupportedError } from '../../compilation-context/messages/errors/Not
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 import { CType } from '../type-system/CType';
 
+const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
+  [ts.SyntaxKind.AbstractKeyword, 'abstract'],
+  [ts.SyntaxKind.StaticKeyword, 'static'],
+  [ts.SyntaxKind.DeclareKeyword, 'declare'],
+  [ts.SyntaxKind.PrivateKeyword, 'private'],
+]);
+
 export const registerImports = (configuration: Configuration): void => {
   configuration.node.members.forEach(member => {
     if (isImportClassProperty(member)) {
+      if (!verifyModifiers(member, configuration)) {
+        return;
+      }
+
       registerImportForClassElementNode(configuration, member, getExternalValueFromNode(member));
     }
   });
@@ -131,4 +142,22 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   });
 
   configuration.importRegister.register(imp);
+}
+
+function verifyModifiers(node: ts.PropertyDeclaration, parentConfiguration: Configuration): boolean {
+  const compilationContext = getCompilationContext();
+  const restrictedModifier = node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
+
+  if (!restrictedModifier) {
+    return true;
+  }
+
+  compilationContext.report(new NotSupportedError(
+    `Import configuration declaration should not have modifier ${RESTRICTED_MODIFIERS.get(restrictedModifier.kind)}.`,
+    node.name,
+    parentConfiguration,
+    null
+  ));
+
+  return false;
 }

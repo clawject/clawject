@@ -20,14 +20,14 @@ Clawject provides a mechanism for creating custom scopes for scenarios such as t
 
 To create a custom scope, you should implement the `Scope` interface.
 
-In the following steps, we will implement `http-request` scope that
+In the following steps, we will implement `request` scope that
 is using [AsyncLocalStorage](https://nodejs.org/overview/async_context.html#class-asynclocalstorage)
 to assign and retrieve `httpRequestId`.
 
 ### Creating the server code
 
 First of all - let's define `HttpExecutionContext` class that will assign unique id to each http request,
-allows us to retrieve `currentRequestId`, and notify subscriber when http request is finished:
+allows us to retrieve `currentRequestId`, and notify listener when http request is finished:
 
 ```ts
 import http from 'node:http';
@@ -36,7 +36,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 export class HttpExecutionContext {
   private static idSeq = 0;
   private static asyncLocalStorage = new AsyncLocalStorage<number>();
-  private static declare requestEndSubscriber: (requestId: number) => void;
+  private static requestEndListener: ((requestId: number) => void) | null = null;
 
   static run(fn: () => void) {
     this.asyncLocalStorage.run(this.idSeq++, fn);
@@ -44,15 +44,15 @@ export class HttpExecutionContext {
 
   static getCurrentRequestId(): number {
     //For simplicity - let's assume that AsyncLocalStorage always returns a value
-    return this.asyncLocalStorage.getStore();
+    return this.asyncLocalStorage.getStore()!;
   }
 
   static onRequestEnd(): void {
-    this.requestEndSubscriber(this.getCurrentRequestId());
+    this.requestEndListener?.(this.getCurrentRequestId());
   }
 
-  static subscribeOnRequestEnd(subscriber: (requestId: number) => void): void {
-    this.requestEndSubscriber = subscriber;
+  static listenOnRequestEnd(callback: (requestId: number) => void): void {
+    this.requestEndListener = callback;
   }
 }
 

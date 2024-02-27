@@ -5,20 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.clawjectrc" beforeDir="false" afterPath="$PROJECT_DIR$/.clawjectrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/createBenchmark.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/createBenchmark.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/fillExposedBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processConfigurationOrApplicationClass.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processConfigurationOrApplicationClass.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application/Application.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application/Application.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-graph/buildDependencyGraphAndFillQualifiedBeans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-resolver/DependencyResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency-resolver/DependencyResolver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/registerBeanDependencies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/dependency/registerBeanDependencies.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/logger/Logger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/logger/Logger.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/sidebars.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/sidebars.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/declaration-metadata/DeclarationMetadataBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/declaration-metadata/DeclarationMetadataBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/import/registerImports.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/import/registerImports.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/core-concepts/type-system.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/fundamentals/clawject-application-context.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/clawject-application-context.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/fundamentals/scope-register.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/scope-register.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/guides/creating-scope.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/guides/creating-scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/guides/sharing-configurations.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/guides/sharing-configurations.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/setup.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/setup.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/src/docs-components/Setup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/src/docs-components/Setup.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +127,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="npm.run:tsc">
+  <component name="RunManager" selected="npm.run:upgradeClawject">
     <configuration name="test | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" singleton="false" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/src/test.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -182,8 +181,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.run:upgradeClawject" />
-        <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.run:tsc" />
+        <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.tscnode" />
         <item itemvalue="HTTP Request.test | #1" />
       </list>
@@ -268,7 +267,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/dist/index.js</url>
-          <line>84</line>
+          <line>59</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="81" />
         </line-breakpoint>
