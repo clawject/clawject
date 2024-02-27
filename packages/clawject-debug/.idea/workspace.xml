@@ -127,7 +127,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="npm.run:upgradeClawject">
+  <component name="RunManager" selected="npm.run:tsc">
     <configuration name="test | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" singleton="false" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/src/test.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -180,8 +180,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:tsc" />
+        <item itemvalue="npm.run:upgradeClawject" />
         <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.tscnode" />
         <item itemvalue="HTTP Request.test | #1" />
