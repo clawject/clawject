@@ -5,45 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.clawjectrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test.http" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/DependencyInjectionValue.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/ProxyBuilder.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/ScopeManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/config/ConfigLoader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/config/ConfigLoader.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/config/DIConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/config/DIConfig.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/config/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/config/schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplicationMode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processApplicationMode.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processClassDeclaration.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/processClassDeclaration.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/transformers/RuntimeMetadataBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/application-mode/transformers/RuntimeMetadataBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/bean/Bean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/CType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/CType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/core/type-system/TypeComparator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/logger/Logger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/logger/Logger.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/compile-time/ts-diagnostics/DiagnosticsBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/ClawjectApplicationContextImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/ClawjectApplicationContextImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/ClawjectFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/ClawjectFactory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/ObjectFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/ObjectFactory.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/Scope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/Scope.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/ScopeRegister.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/ScopeRegister.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBeanDependency.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBeanDependency.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBeanFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/ApplicationBeanFactory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/container/ClawjectContainer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/container/ClawjectContainer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/container/ContainerStorage.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/container/ConversationManager.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/InternalScopeRegister.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/InternalScopeRegister.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/SingletonScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/SingletonScope.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/scope/TransientScope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/scope/TransientScope.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/transformer/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../website/docs/fundamentals/lazy.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/lazy.mdx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../website/docs/fundamentals/scope-register.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/fundamentals/scope-register.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/docs/guides/custom-scopes.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/../website/docs/guides/creating-scope.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../website/sidebars.js" beforeDir="false" afterPath="$PROJECT_DIR$/../website/sidebars.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

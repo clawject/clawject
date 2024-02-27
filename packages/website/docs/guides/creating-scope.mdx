@@ -1,5 +1,6 @@
 ---
 title: Custom Scopes
+hide_title: true
 ---
 
 ```mdx-code-block
@@ -7,7 +8,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 ```
 
-Out of the box, Clawject provides 3 scopes: `singleton`, `transient` and `fresh`, but sometimes you may need to define your own scopes.
+## Creating scope
+
+Out of the box, Clawject provides 2 scopes: `singleton` and `transient`, but sometimes you may need to define your own scopes.
 
 For example, if you are developing an http server application,
 you may want to provide a separate instance of a particular bean or set of beans for each request.

@@ -128,7 +128,7 @@ export default {
       items: [
         'guides/injecting-collections',
         'guides/sharing-configurations',
-        'guides/custom-scopes',
+        'guides/creating-scope',
       ],
     },
     'errors',
