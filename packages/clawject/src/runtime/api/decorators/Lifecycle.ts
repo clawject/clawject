@@ -1,9 +1,12 @@
 import { ErrorBuilder } from '../../ErrorBuilder';
 
-import { DecoratorWithoutArguments } from './DecoratorTypes';
+import { DecoratorWithoutArguments, ModernClassFieldArrowFunctionDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 
 /** @public */
-export type LifecycleFunctionTarget = PropertyDecorator & MethodDecorator;
+export type LifecycleFunctionTarget = PropertyDecorator
+  & MethodDecorator
+  & ModernClassFieldArrowFunctionDecorator
+  & ModernClassMethodDecorator;
 /**
  * Indicates that an annotated method or property with arrow function should be called
  * after configuration or the bean has been constructed.

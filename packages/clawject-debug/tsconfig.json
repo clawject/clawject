@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": false,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
