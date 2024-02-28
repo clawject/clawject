@@ -5,26 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1194e168-346e-43e7-86ff-4d5b5fa7b8f1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/DecoratorTypes.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/InternalExternal.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Lifecycle.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/Scope.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/Scope.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Bean.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Bean.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/ClawjectApplication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/ClawjectApplication.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Conditional.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Conditional.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Configuration.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Configuration.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/DecoratorWithoutArguments.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Embedded.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Embedded.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/External.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Internal.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/DecoratorTypes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/DecoratorTypes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/InternalExternal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/InternalExternal.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Lazy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Lazy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/PostConstruct.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/PreDestroy.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Primary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Primary.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Qualifier.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Qualifier.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Scope.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Lifecycle.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/Lifecycle.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../clawject/src/runtime/api/decorators/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -135,7 +124,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="npm.run:tsc">
+  <component name="RunManager" selected="npm.run:upgradeClawject">
     <configuration name="test | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" singleton="false" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/src/test.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -188,8 +177,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:upgradeClawject" />
+        <item itemvalue="npm.run:tsc" />
         <item itemvalue="npm.run:webpack_hot" />
         <item itemvalue="npm.tscnode" />
         <item itemvalue="HTTP Request.test | #1" />

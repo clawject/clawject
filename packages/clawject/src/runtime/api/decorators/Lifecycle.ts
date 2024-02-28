@@ -1,11 +1,11 @@
 import { ErrorBuilder } from '../../ErrorBuilder';
 
-import { DecoratorWithoutArguments, ModernClassFieldArrowFunctionDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
+import { DecoratorWithoutArguments, ModernClassFieldDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 
 /** @public */
 export type LifecycleFunctionTarget = PropertyDecorator
   & MethodDecorator
-  & ModernClassFieldArrowFunctionDecorator
+  & ModernClassFieldDecorator
   & ModernClassMethodDecorator;
 /**
  * Indicates that an annotated method or property with arrow function should be called

@@ -1,6 +1,6 @@
 import { ObjectFactory, ObjectFactoryResult } from './ObjectFactory';
 import { ErrorBuilder } from '../ErrorBuilder';
-import { ModernClassDecorator, ModernClassFieldArrowFunctionDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './decorators/index';
+import { ModernClassDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './decorators';
 
 /**
  * The interface that represents a scope.
@@ -124,7 +124,6 @@ export type ScopeTarget = ClassDecorator
   & ModernClassDecorator
   & ModernClassFieldDecorator
   & ModernClassGetterDecorator
-  & ModernClassFieldArrowFunctionDecorator
   & ModernClassMethodDecorator
 /** @public */
 export type ScopeValue = 'singleton' | 'transient' | string | number;

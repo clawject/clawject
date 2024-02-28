@@ -1,6 +1,6 @@
 import { ErrorBuilder } from '../../ErrorBuilder';
 
-import { DecoratorWithoutArguments, ModernClassDecorator, ModernClassFieldArrowFunctionDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
+import { DecoratorWithoutArguments, ModernClassDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 
 /** @public */
 export type InternalExternalTarget = ClassDecorator
@@ -9,7 +9,6 @@ export type InternalExternalTarget = ClassDecorator
   & ModernClassDecorator
   & ModernClassFieldDecorator
   & ModernClassGetterDecorator
-  & ModernClassFieldArrowFunctionDecorator
   & ModernClassMethodDecorator
 
 /**

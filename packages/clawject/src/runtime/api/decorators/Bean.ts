@@ -1,14 +1,13 @@
 import { ClassConstructor } from '../ClassConstructor';
 import { ErrorBuilder } from '../../ErrorBuilder';
 import { RuntimeErrors } from '../RuntimeErrors';
-import { DecoratorWithoutArguments, ModernClassFieldArrowFunctionDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
+import { DecoratorWithoutArguments, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 
 /** @public */
 export type BeanTarget = PropertyDecorator
   & MethodDecorator
   & ModernClassFieldDecorator
   & ModernClassGetterDecorator
-  & ModernClassFieldArrowFunctionDecorator
   & ModernClassMethodDecorator;
 
 /** @public */

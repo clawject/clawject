@@ -1,6 +1,6 @@
 import { ErrorBuilder } from '../../ErrorBuilder';
 
-import { DecoratorWithoutArguments, ModernClassDecorator, ModernClassFieldArrowFunctionDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
+import { DecoratorWithoutArguments, ModernClassDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 
 /** @public */
 export type LazyTarget = ClassDecorator
@@ -9,7 +9,6 @@ export type LazyTarget = ClassDecorator
   & ModernClassDecorator
   & ModernClassFieldDecorator
   & ModernClassGetterDecorator
-  & ModernClassFieldArrowFunctionDecorator
   & ModernClassMethodDecorator
 
 /**

@@ -7,4 +7,4 @@ export { Qualifier } from './Qualifier';
 export { Configuration, ConfigurationTarget } from './Configuration';
 export { ClawjectApplication, ClawjectApplicationTarget } from './ClawjectApplication';
 export { External, Internal, InternalExternalTarget } from './InternalExternal';
-export { DecoratorWithoutArguments, ModernClassDecorator, ModernClassGetterDecorator, ModernClassFieldDecorator, ModernClassFieldArrowFunctionDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
+export { DecoratorWithoutArguments, ModernClassDecorator, ModernClassGetterDecorator, ModernClassFieldDecorator, ModernClassMethodDecorator } from './DecoratorTypes';

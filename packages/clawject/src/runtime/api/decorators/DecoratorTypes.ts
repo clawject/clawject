@@ -24,12 +24,6 @@ export type ModernClassGetterDecorator = (target: any, context: ClassGetterDecor
  */
 export type ModernClassFieldDecorator = (target: any, context: ClassFieldDecoratorContext) => void;
 /**
- * @internalApi Type declaration for a modern class field that holding arrow function decorator.
- *
- * @public
- */
-export type ModernClassFieldArrowFunctionDecorator = (target: (...args: any[]) => any, context: ClassFieldDecoratorContext) => void;
-/**
  * @internalApi Type declaration for a modern class method decorator.
  *
  * @public
