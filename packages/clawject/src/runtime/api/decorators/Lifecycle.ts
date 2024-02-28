@@ -11,7 +11,7 @@ export type LifecycleFunctionTarget = PropertyDecorator & MethodDecorator;
  * @docs https://clawject.com/docs/fundamentals/lifecycle#postconstruct
  *
  * @public */
-export const Lifecycle: DecoratorWithoutArguments<LifecycleFunctionTarget> = () => {
+export const PostConstruct: DecoratorWithoutArguments<LifecycleFunctionTarget> = () => {
   throw ErrorBuilder.usageWithoutConfiguredDI('@PostConstruct');
 };
 

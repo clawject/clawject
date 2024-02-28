@@ -1,5 +1,5 @@
 export { Bean, BeanConstructorFactory, BeanTarget } from './Bean';
-export { Lifecycle, PreDestroy, LifecycleFunctionTarget } from './Lifecycle';
+export { PostConstruct, PreDestroy, LifecycleFunctionTarget } from './Lifecycle';
 export { Lazy, LazyTarget } from './Lazy';
 export { Embedded } from './Embedded';
 export { Primary } from './Primary';
