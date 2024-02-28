@@ -1,7 +1,6 @@
 import { ErrorBuilder } from '../../ErrorBuilder';
+import { BeanTarget } from './Bean';
 
-/** @public */
-export type QualifierTarget = PropertyDecorator & MethodDecorator;
 /**
  * Allows us to specify a name for a bean.
  *
@@ -9,6 +8,6 @@ export type QualifierTarget = PropertyDecorator & MethodDecorator;
  *
  * @public
  */
-export const Qualifier: (value: string) => QualifierTarget = () => {
+export const Qualifier: (value: string) => BeanTarget = () => {
   throw ErrorBuilder.usageWithoutConfiguredDI('@Qualifier');
 };

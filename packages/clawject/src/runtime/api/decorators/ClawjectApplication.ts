@@ -1,8 +1,8 @@
-import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 import { ErrorBuilder } from '../../ErrorBuilder';
+import { DecoratorWithoutArguments, ModernClassDecorator } from './DecoratorTypes';
 
 /** @public */
-export type ClawjectApplicationTarget = ClassDecorator;
+export type ClawjectApplicationTarget = ClassDecorator & ModernClassDecorator;
 
 /**
  * Indicates that a target class is a {@link Configuration @Configuration} class and an entry point for the Clawject application.

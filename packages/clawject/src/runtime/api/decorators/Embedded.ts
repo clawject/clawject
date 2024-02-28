@@ -1,8 +1,8 @@
 import { ErrorBuilder } from '../../ErrorBuilder';
-import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 
-/** @public */
-export type EmbeddedTarget = PropertyDecorator & MethodDecorator;
+import { DecoratorWithoutArguments } from './DecoratorTypes';
+import { BeanTarget } from './Bean';
+
 /**
  * When applied to {@link Bean} - all object members will be registered as a beans.
  *
@@ -10,6 +10,6 @@ export type EmbeddedTarget = PropertyDecorator & MethodDecorator;
  *
  * @public
  */
-export const Embedded: DecoratorWithoutArguments<EmbeddedTarget> = () => {
+export const Embedded: DecoratorWithoutArguments<BeanTarget> = () => {
   throw ErrorBuilder.usageWithoutConfiguredDI('@Embedded');
 };

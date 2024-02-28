@@ -1,10 +1,15 @@
 import { ClassConstructor } from '../ClassConstructor';
 import { ErrorBuilder } from '../../ErrorBuilder';
-import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 import { RuntimeErrors } from '../RuntimeErrors';
+import { DecoratorWithoutArguments, ModernClassFieldArrowFunctionDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 
 /** @public */
-export type BeanTarget = PropertyDecorator & MethodDecorator;
+export type BeanTarget = PropertyDecorator
+  & MethodDecorator
+  & ModernClassFieldDecorator
+  & ModernClassGetterDecorator
+  & ModernClassFieldArrowFunctionDecorator
+  & ModernClassMethodDecorator;
 
 /** @public */
 export interface BeanConstructorFactory<T, C extends ClassConstructor<T>> {

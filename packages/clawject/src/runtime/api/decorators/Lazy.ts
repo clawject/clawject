@@ -1,8 +1,17 @@
 import { ErrorBuilder } from '../../ErrorBuilder';
-import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
+
+import { DecoratorWithoutArguments, ModernClassDecorator, ModernClassFieldArrowFunctionDecorator, ModernClassFieldDecorator, ModernClassGetterDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 
 /** @public */
-export type LazyTarget = PropertyDecorator & MethodDecorator & ClassDecorator;
+export type LazyTarget = ClassDecorator
+  & PropertyDecorator
+  & MethodDecorator
+  & ModernClassDecorator
+  & ModernClassFieldDecorator
+  & ModernClassGetterDecorator
+  & ModernClassFieldArrowFunctionDecorator
+  & ModernClassMethodDecorator
+
 /**
  * Indicates whether a bean is to be lazily initialized.
  *

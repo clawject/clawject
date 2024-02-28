@@ -1,8 +1,8 @@
-import { DecoratorWithoutArguments } from './DecoratorWithoutArguments';
 import { ErrorBuilder } from '../../ErrorBuilder';
+import { DecoratorWithoutArguments, ModernClassDecorator } from './DecoratorTypes';
 
 /** @public */
-export type ConfigurationTarget = ClassDecorator;
+export type ConfigurationTarget = ClassDecorator & ModernClassDecorator;
 /**
  * Indicates that a target class is a Configuration class, and can contains bean definitions, configuration imports.
  *
