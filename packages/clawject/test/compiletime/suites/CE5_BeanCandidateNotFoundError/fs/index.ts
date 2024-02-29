@@ -20,7 +20,7 @@ export class Aplication {
     num: number,
     str: string,
     sym: symbol,
-  ): any {}
+  ): Class { return new Class(num, str, sym) }
   @PostConstruct
   postConstruct(
     num: number,

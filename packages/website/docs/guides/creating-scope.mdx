@@ -10,252 +10,22 @@ import TabItem from '@theme/TabItem';
 
 ## Creating scope
 
-Out of the box, Clawject provides 2 scopes: `singleton` and `transient`, but sometimes you may need to define your own scopes.
+Out of the box, Clawject provides two scopes: `singleton` and `transient`, but sometimes you may need to define your own scopes.
 
 For example, if you are developing an http server application,
 you may want to provide a separate instance of a particular bean or set of beans for each request.
-Clawject provides a mechanism for creating custom scopes for scenarios such as this.
-
-## Creating a Scope Class
+Clawject provides a mechanism for creating **custom scopes** for scenarios such as this.
 
 To create a custom scope, you should implement the `Scope` interface.
 
 In the following steps, we will implement `request` scope that
-is using [AsyncLocalStorage](https://nodejs.org/overview/async_context.html#class-asynclocalstorage)
+is using [AsyncLocalStorage#run](https://nodejs.org/api/async_context.html#asynclocalstoragerunstore-callback-args)
 to assign and retrieve `httpRequestId`.
 
-### Creating the server code
+### Creating HttpExecutionContext
 
-First of all - let's define `HttpExecutionContext` class that will assign unique id to each http request,
-allows us to retrieve `currentRequestId`, and notify listener when http request is finished:
-
-```ts
-import http from 'node:http';
-import { AsyncLocalStorage } from 'node:async_hooks';
-
-export class HttpExecutionContext {
-  private static idSeq = 0;
-  private static asyncLocalStorage = new AsyncLocalStorage<number>();
-  private static requestEndListener: ((requestId: number) => void) | null = null;
-
-  static run(fn: () => void) {
-    this.asyncLocalStorage.run(this.idSeq++, fn);
-  }
-
-  static getCurrentRequestId(): number {
-    //For simplicity - let's assume that AsyncLocalStorage always returns a value
-    return this.asyncLocalStorage.getStore()!;
-  }
-
-  static onRequestEnd(): void {
-    this.requestEndListener?.(this.getCurrentRequestId());
-  }
-
-  static listenOnRequestEnd(callback: (requestId: number) => void): void {
-    this.requestEndListener = callback;
-  }
-}
-
-http.createServer((req, res) => {
-  HttpExecutionContext.run(() => {
-    setTimeout(() => {
-      res.end();
-      HttpExecutionContext.onRequestEnd();
-    }, 100);
-  });
-}).listen(8080);
-```
-
-### Managing the Scoped Objects and Callbacks
-One of the first things to consider when implementing a `Scope` class is how you will store
-and manage the scoped objects and destruction callbacks.
-This could be done using a Map or a dedicated class, for example.
-
-Now let's define our custom scope class:
-
-```ts
-class RequestScope implements Scope {
-  // requestId to Map of objectName to object
-  private scopedObjects = new Map<number, Map<string, any>>();
-  // requestId to Map of objectName to object destruction callback
-  private destructionCallbacks = new Map<number, Map<string, () => void>>();
-
-  /* ... */
-}
-```
-
-### Retrieving an Object from Scope
-To retrieve an object by name from our scope, let's implement the `get` method.
-Note that if the named object does not exist in the scope, this method must create and return a new object.
-
-In our implementation, we check to see if the named object is in our map under current requestId.
-If it is, we return it, and if not, we use the `ObjectFactory` to create a new object, add it to our map, and return it:
-
-```ts
-class RequestScope implements Scope {
-  /* ... */
-
-  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
-    const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-
-    const scopedObjects = this.scopedObjects.get(currentRequestId) ?? new Map<string, any>();
-    this.scopedObjects.set(currentRequestId, scopedObjects);
-
-    const scopedObject = scopedObjects.get(name) ?? objectFactory.getObject();
-    scopedObjects.set(name, scopedObject);
-
-    return scopedObject;
-  }
-}
-```
-
-### Registering a Destruction Callback
-We must also implement the registerDestructionCallback method.
-This method provides a callback that is to be executed when the named object is destroyed or if the scope
-itself is destroyed by the application:
-
-```ts
-class RequestScope implements Scope {
-  /* ... */
-
-  registerDestructionCallback(name: string, callback: () => void): void {
-    const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-    const scopedDestructionCallbacks = this.destructionCallbacks.get(currentRequestId) ?? new Map<string, () => void>();
-    this.destructionCallbacks.set(currentRequestId, scopedDestructionCallbacks);
-
-    scopedDestructionCallbacks.set(name, callback);
-  }
-}
-```
-
-### Removing an Object from the Scope
-Next, let's implement the remove method,
-which removes the named object from the scope and also removes its registered
-destruction callback, returning the removed object.
-
-Note that it is the **caller's (clawject) responsibility** to actually execute the callback and destroy the removed object.
-
-```ts
-class RequestScope implements Scope {
-  /* ... */
-
-  remove(name: string): ObjectFactoryResult | null {
-    const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-
-    const scopedObject = this.scopedObjects.get(currentRequestId)?.get(name) ?? null;
-
-    this.scopedObjects.get(currentRequestId)?.delete(name);
-    this.destructionCallbacks.get(currentRequestId)?.delete(name);
-
-    return scopedObject;
-  }
-}
-```
-
-### Destroying the Scope
-Finally, let's implement the `destroy` method, that will be called when `http-request` will be finished
-and which destroys the scope and all of its objects:
-
-```ts
-class RequestScope implements Scope {
-  constructor() {
-    HttpExecutionContext.subscribeOnRequestEnd(this.destroy)
-  }
-
-  private destroy = (requestId: number): void => {
-    this.scopedObjects.delete(requestId);
-    this.destructionCallbacks.get(requestId)?.forEach(callback => callback());
-  }
-
-  /* ... */
-}
-```
-
-### Registering the Scope
-
-To make the Clawject container aware of your new scope,
-you need to register it through the `registerScope` method on a `ContainerManager` instance.
-
-Let's take a look at this method's definition:
-
-```
-registerScope(scopeName: string, scope: Scope): void
-```
-
-The first parameter, scopeName, is used to identify/specify a scope by its unique name.
-The second parameter, scope, is an actual instance of the `Scope` implementation that you wish to register and use.
-
-Let's register our `RequestScope`:
-
-```ts
-ScopeRegister.registerScope('http-request', new RequestScope());
-```
-
-### Using the Custom Scope
-
-Now that we have registered our custom scope,
-we can apply it to any of our beans just as we would with any other
-bean that uses a scope other than singleton (the default scope) — by using the
-`@Scope` decorator and specifying our custom scope by name.
-
-`ScopedBean` class will assign a random value to its `scopedProperty` property
-that will be different for each request but identical in bounds of one request.
-
-#### How it works?
-
-When `ScopedBean` will be requested from the container -
-proxy will be injected instead of the actual bean instance,
-this proxy will ask `RequestScope` to get the bean instance, `RequestScope`
-will return or create bean that is associated with current request id.
-Because proxies are injected - no needs to rebuild the whole dependency tree,
-and other beans that is using `ScopedBean` will have own scope.
-
-```ts
-export class ScopedBean {
-  scopedProperty: number
-
-  constructor() {
-    this.scopedProperty = Math.random();
-  }
-}
-
-export class NonScopedBean {
-  constructor(private scopedBean: ScopedBean) {}
-
-  invoke(): void {
-    console.log(`scopedProperty of ScopedBean: ${this.scopedBean.scopedProperty}`);
-  }
-}
-
-export class ApplicationContext extends CatContext {
-  @Scope('http-request') scopedBean = Bean(ScopedBean);
-
-  nonScopedBean = Bean(NonScopedBean);
-}
-```
-
-## Now let's put everything together
-
-```ts title="index.ts"
-import http from 'node:http';
-import { ContainerManager } from '@clawject/di';
-import { HttpExecutionContext } from './HttpExecutionContext';
-import { ApplicationContext } from './ApplicationContext';
-
-const {
-  nonScopedBean,
-} = ContainerManager.init(ApplicationContext).getBeans();
-
-http.createServer((req, res) => {
-  HttpExecutionContext.run(() => {
-    setTimeout(() => {
-      nonScopedBean.invoke();
-      res.end();
-      HttpExecutionContext.onRequestEnd();
-    }, 100);
-  });
-}).listen(8080);
-```
+First of all - let's define `HttpExecutionContext` class that will store unique id to each http request and
+allows us to retrieve `getCurrentRequestId` in the context of c callback call:
 
 ```ts title="HttpExecutionContext.ts"
 import { AsyncLocalStorage } from 'node:async_hooks';
@@ -263,113 +33,421 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 export class HttpExecutionContext {
   private static idSeq = 0;
   private static asyncLocalStorage = new AsyncLocalStorage<number>();
-  private static declare requestEndSubscriber: (requestId: number) => void;
 
-  static run(fn: () => void) {
-    this.asyncLocalStorage.run(this.idSeq++, fn);
+  static run<T>(callback: () => T): T {
+    return this.asyncLocalStorage.run(this.idSeq++, callback);
   }
 
   static getCurrentRequestId(): number {
     //For simplicity - let's assume that AsyncLocalStorage always returns a value
-    return this.asyncLocalStorage.getStore();
-  }
-
-  static onRequestEnd(): void {
-    this.requestEndSubscriber(this.getCurrentRequestId());
-  }
-
-  static subscribeOnRequestEnd(subscriber: (requestId: number) => void): void {
-    this.requestEndSubscriber = subscriber;
+    return this.asyncLocalStorage.getStore()!;
   }
 }
 ```
 
+### Creating Scope implementation
+Now let's create `RequestScope` class that implements `Scope` interface:
+
 ```ts title="RequestScope.ts"
+import { Scope, ObjectFactory, ObjectFactoryResult } from '@clawject/di';
+
+export class RequestScope implements Scope {
+  static readonly instance = new RequestScope();
+  private constructor() {}
+
+  private beginCallbacks: (() => Promise<void>)[] = [];
+  private requestIdToNameToInstance = new Map<number, Map<string, any>>();
+  private destructionCallbacks = new Map<number, Map<string, () => void>>();
+
+  onScopeBegin(): Promise<void>
+  onScopeEnded(): Promise<void>
+  registerScopeBeginCallback(callback: () => Promise<void>): void
+  removeScopeBeginCallback(callback: () => Promise<void>): void
+  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult
+  remove(name: string): ObjectFactoryResult | null
+  registerDestructionCallback(name: string, callback: () => void): void
+  useProxy(): boolean
+}
+```
+
+Now let's implement each method
+
+#### `onScopeBegin`
+
+This method is not a part of `Scope` interface, so you can name and implement it as you wish.
+
+This method will be called when the scope is about to start, and it should execute and await all beginning callbacks that were registered via `Scope#registerScopeBeginCallback`.
+
+In our case, this method will be called at the start of each http request.
+
+```ts
+export class RequestScope implements Scope {
+  private beginCallbacks: (() => Promise<void>)[] = [];
+
+  async onScopeBegin(): Promise<void> {
+    await Promise.all(this.beginCallbacks.map(cb => cb()));
+  }
+}
+```
+
+It's crucial to call all registered callbacks and await them all before the scope begins,
+because some beans can be `async` and may require some initialization before the scope begins.
+
+#### `onScopeEnded`
+
+This method should be called when the scope is about to end.
+It should do a final cleanup and destroy all beans that were created during the scope's lifetime.
+This method should do the following:
+
+1. Execute and await all destruction callbacks that were registered via `Scope#registerDestructionCallback`
+2. Remove all beans that were created during the scope's lifetime from the underlying storage.
+3. Remove all destruction callbacks that were registered via `Scope#registerDestructionCallback`
+
+```ts
+import { HttpExecutionContext } from './HttpExecutionContext';
+
+export class RequestScope implements Scope {
+  private requestIdToNameToInstance = new Map<number, Map<string, any>>();
+  private destructionCallbacks = new Map<number, Map<string, () => void>>();
+
+  async onScopeEnded(): Promise<void> {
+    const requestId = HttpExecutionContext.getCurrentRequestId();
+    const destructionCallbacks = Array.from(this.destructionCallbacks.get(requestId)?.values() ?? []);
+
+    await Promise.all(destructionCallbacks.map(cb => cb()));
+
+    this.requestIdToNameToInstance.delete(requestId);
+    this.destructionCallbacks.delete(requestId);
+  }
+}
+```
+
+This method will be called at the end of each http request.
+
+#### `registerScopeBeginCallback`
+
+This method is a part of `Scope` interface, so you should implement it as it is defined in the interface.
+
+This method should register a callback that will be executed when the scope begins, but it should not execute the callback.
+Note that the callback is unique for each created application context, and will be called only for application contexts that are using this scope.
+
+```ts
+export class RequestScope implements Scope {
+  private beginCallbacks: (() => Promise<void>)[] = [];
+
+  registerScopeBeginCallback(callback: () => Promise<void>): void {
+    this.beginCallbacks.push(callback);
+  }
+}
+```
+
+#### `removeScopeBeginCallback`
+
+This method is a part of `Scope` interface, so you should implement it as it is defined in the interface.
+
+This method should remove a callback that was registered via `Scope#registerScopeBeginCallback`, it should not execute the callback.
+This method will be called only on application context shutdown.
+
+```ts
+export class RequestScope implements Scope {
+  private beginCallbacks: (() => Promise<void>)[] = [];
+
+  removeScopeBeginCallback(callback: () => Promise<void>): void {
+    this.beginCallbacks = this.beginCallbacks.filter(cb => cb !== callback);
+  }
+}
+```
+
+#### `get`
+
+This method is a part of `Scope` interface, so you should implement it as it is defined in the interface.
+
+This method should do the following:
+- Return an instance of a bean that is associated with the given name using `ObjectFactory` as a factory for creating the bean.
+- If the bean is not found in the underlying storage, it should create a new instance of the bean using the `ObjectFactory` and store it in the underlying storage.
+- If the bean is found in the underlying storage, it should return the instance of the bean from the underlying storage.
+- If after calling objectFactory.getObject() it receives a Promise,
+it should return a new promise that will resolve to the instance of the bean and store it in the underlying storage.
+When the promise resolves and `get` method will be called again with the same name - it should return the awaited value of the bean from the underlying storage.
+If a result of awaited value is also a Promise—it should store it and return it as a result of `get` method.
+
+```ts
+import { ObjectFactory, ObjectFactoryResult, Scope } from '@clawject/di';
+import { HttpExecutionContext } from './HttpExecutionContext';
+
+export class RequestScope implements Scope {
+    private requestIdToNameToInstance = new Map<number, Map<string, any>>();
+
+  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
+    const requestId = HttpExecutionContext.getCurrentRequestId();
+    let nameToInstance = this.requestIdToNameToInstance.get(requestId);
+    if (!nameToInstance) {
+      nameToInstance = new Map();
+      this.requestIdToNameToInstance.set(requestId, nameToInstance);
+    }
+
+    let object: any;
+
+    if (nameToInstance.has(name)) {
+      object = nameToInstance.get(name);
+    } else {
+      object = objectFactory.getObject();
+      if (object instanceof Promise) {
+        object = object.then(resolvedObject => {
+          nameToInstance!.set(name, resolvedObject);
+          return resolvedObject;
+        });
+      }
+      nameToInstance.set(name, object);
+    }
+
+    return object;
+  }
+}
+```
+
+#### `remove`
+
+This method is a part of `Scope` interface, so you should implement it as it is defined in the interface.
+
+This method should do the following:
+- Remove the bean associated with the given name from the underlying storage.
+- Return the instance of the bean that was removed from the underlying storage or `null` if the bean was not found in the underlying storage.
+
+```ts
+import { ObjectFactoryResult, Scope } from '@clawject/di';
+import { HttpExecutionContext } from './HttpExecutionContext';
+
+export class RequestScope implements Scope {
+  private requestIdToNameToInstance = new Map<number, Map<string, any>>();
+  private destructionCallbacks = new Map<number, Map<string, () => void>>();
+
+  remove(name: string): ObjectFactoryResult | null {
+    const requestId = HttpExecutionContext.getCurrentRequestId();
+
+    const instance = this.requestIdToNameToInstance.get(requestId)?.get(name);
+
+    this.destructionCallbacks.get(requestId)?.delete(name);
+    this.requestIdToNameToInstance.get(requestId)?.delete(name);
+
+    return instance ?? null;
+  }
+}
+```
+
+#### `registerDestructionCallback`
+
+This method is a part of `Scope` interface, so you should implement it as it is defined in the interface.
+
+This method should register a callback that will be executed when the scope ends, but it should not execute the callback.
+This method will be called by a container when a bean is being destroyed.
+
+```ts
+import { HttpExecutionContext } from './HttpExecutionContext';
+
+export class RequestScope implements Scope {
+  private destructionCallbacks = new Map<number, Map<string, () => void>>();
+
+  registerDestructionCallback(name: string, callback: () => void): void {
+    const requestId = HttpExecutionContext.getCurrentRequestId();
+    let nameToCallback = this.destructionCallbacks.get(requestId);
+    if (!nameToCallback) {
+      nameToCallback = new Map();
+      this.destructionCallbacks.set(requestId, nameToCallback);
+    }
+
+    nameToCallback.set(name, callback);
+  }
+}
+```
+
+#### `useProxy`
+
+This method is a part of `Scope` interface, so you should implement it as it is defined in the interface.
+Note that this method is optional, and you can omit it, default implementation will return `true`.
+
+This method should return `true` if the scope requires a proxy to be injected instead of the actual bean instance, and `false` otherwise.
+Note that in most of the cases you will need to inject proxies.
+
+```ts
+export class RequestScope implements Scope {
+  useProxy(): boolean {
+    return true;
+  }
+}
+```
+
+#### Put the pieces together
+
+```ts
 import { Scope, ObjectFactory, ObjectFactoryResult } from '@clawject/di';
 import { HttpExecutionContext } from './HttpExecutionContext';
 
 export class RequestScope implements Scope {
-  constructor() {
-    HttpExecutionContext.subscribeOnRequestEnd(this.destroy)
-  }
+  private constructor() {}
+  static readonly instance = new RequestScope();
 
-  // requestId to Map of objectName to object
-  private scopedObjects = new Map<number, Map<string, any>>();
-  // requestId to Map of objectName to object destruction callback
+  private beginCallbacks: (() => Promise<void>)[] = [];
+  private requestIdToNameToInstance = new Map<number, Map<string, any>>();
   private destructionCallbacks = new Map<number, Map<string, () => void>>();
 
-  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
-    const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-
-    const scopedObjects = this.scopedObjects.get(currentRequestId) ?? new Map<string, any>();
-    this.scopedObjects.set(currentRequestId, scopedObjects);
-
-    const scopedObject = scopedObjects.get(name) ?? objectFactory.getObject();
-    scopedObjects.set(name, scopedObject);
-
-    return scopedObject;
+  async onScopeBegin(): Promise<void> {
+    await Promise.all(this.beginCallbacks.map(cb => cb()));
   }
 
-  registerDestructionCallback(name: string, callback: () => void): void {
-    const currentRequestId = HttpExecutionContext.getCurrentRequestId();
-    const scopedDestructionCallbacks = this.destructionCallbacks.get(currentRequestId) ?? new Map<string, () => void>();
-    this.destructionCallbacks.set(currentRequestId, scopedDestructionCallbacks);
+  async onScopeEnded(): Promise<void> {
+    const requestId = HttpExecutionContext.getCurrentRequestId();
+    const destructionCallbacks = Array.from(this.destructionCallbacks.get(requestId)?.values() ?? []);
 
-    scopedDestructionCallbacks.set(name, callback);
+    await Promise.all(destructionCallbacks.map(cb => cb()));
+
+    this.requestIdToNameToInstance.delete(requestId);
+    this.destructionCallbacks.delete(requestId);
+  }
+
+  registerScopeBeginCallback(callback: () => Promise<void>): void {
+    this.beginCallbacks.push(callback);
+  }
+
+  removeScopeBeginCallback(callback: () => Promise<void>): void {
+    this.beginCallbacks = this.beginCallbacks.filter(cb => cb !== callback);
+  }
+
+  get(name: string, objectFactory: ObjectFactory): ObjectFactoryResult {
+    const requestId = HttpExecutionContext.getCurrentRequestId();
+    let nameToInstance = this.requestIdToNameToInstance.get(requestId);
+    if (!nameToInstance) {
+      nameToInstance = new Map();
+      this.requestIdToNameToInstance.set(requestId, nameToInstance);
+    }
+
+    let object: any;
+
+    if (nameToInstance.has(name)) {
+      object = nameToInstance.get(name);
+    } else {
+      object = objectFactory.getObject();
+      if (object instanceof Promise) {
+        object = object.then(resolvedObject => {
+          nameToInstance!.set(name, resolvedObject);
+          return resolvedObject;
+        });
+      }
+      nameToInstance.set(name, object);
+    }
+
+    return object;
   }
 
   remove(name: string): ObjectFactoryResult | null {
-    const currentRequestId = HttpExecutionContext.getCurrentRequestId();
+    const requestId = HttpExecutionContext.getCurrentRequestId();
 
-    const scopedObject = this.scopedObjects.get(currentRequestId)?.get(name) ?? null;
+    const instance = this.requestIdToNameToInstance.get(requestId)?.get(name);
 
-    this.scopedObjects.get(currentRequestId)?.delete(name);
-    this.destructionCallbacks.get(currentRequestId)?.delete(name);
+    this.destructionCallbacks.get(requestId)?.delete(name);
+    this.requestIdToNameToInstance.get(requestId)?.delete(name);
 
-    return scopedObject;
+    return instance ?? null;
   }
 
-  private destroy = (requestId: number): void => {
-    this.scopedObjects.delete(requestId);
-    this.destructionCallbacks.get(requestId)?.forEach(callback => callback());
+  registerDestructionCallback(name: string, callback: () => void): void {
+    const requestId = HttpExecutionContext.getCurrentRequestId();
+    let nameToCallback = this.destructionCallbacks.get(requestId);
+    if (!nameToCallback) {
+      nameToCallback = new Map();
+      this.destructionCallbacks.set(requestId, nameToCallback);
+    }
+
+    nameToCallback.set(name, callback);
   }
-}
-```
 
-```ts title="ScopedBean.ts"
-export class ScopedBean {
-  scopedProperty: number
-
-  constructor() {
-    this.scopedProperty = Math.random();
-  }
-}
-```
-
-```ts title="NonScopedBean.ts"
-import { ScopedBean } from './ScopedBean';
-
-export class NonScopedBean {
-  constructor(private scopedBean: ScopedBean) {}
-
-  invoke(): void {
-    console.log(`scopedProperty of ScopedBean: ${this.scopedBean.scopedProperty}`);
+  useProxy(): boolean {
+    return true;
   }
 }
 ```
 
-```ts title="ApplicationContext.ts"
-import { Bean, CatContext, Scope } from '@clawject/di';
-import { ScopedBean } from './ScopedBean';
-import { NonScopedBean } from './NonScopedBean';
+### Creating the server code
 
-interface ExternalBeans {
-  nonScopedBean: NonScopedBean
-}
+Now let's create a simple http server that will use our custom scope.
 
-export class ApplicationContext extends CatContext<ExternalBeans> {
-  @Scope('http-request') scopedBean = Bean(ScopedBean);
+To do this, we will use the `http` module from Node.js and the `HttpExecutionContext` class that we created earlier.
 
-  nonScopedBean = Bean(NonScopedBean);
+When a request is received, we will run the request handling code inside HttpExecutionContext's `run` method.
+
+Before any request handling code is executed, we will call `RequestScope#onScopeBegin` to initialize the scoped beans, and await initialization.
+
+After the request handling code is executed, we will call `RequestScope#onScopeEnded` to destroy the scoped beans, and await destruction.
+
+```ts title="main.ts"
+import http from 'node:http';
+import { HttpExecutionContext } from './HTTPExecutionContext';
+import { RequestScope } from './RequestScope';
+
+http.createServer((req, res) => {
+  HttpExecutionContext.run(async () => {
+    await RequestScope.instance.onScopeBegin();
+    /* request-handling */
+    await RequestScope.instance.onScopeEnded();
+  });
+}).listen(8080);
+```
+
+### Registering the Scope
+
+To make the Clawject container aware of your new scope,
+you need to register it through the `registerScope` method on a `ScopeRegister` class.
+
+Note that you should register your scope before creating the container.
+
+```ts
+import { ScopeRegister } from '@clawject/di';
+import { RequestScope } from './RequestScope';
+
+ScopeRegister.registerScope('request', RequestScope.instance);
+```
+
+### Using the Custom Scope
+
+Now we have registered our custom scope, and we can use it in our beans.
+
+Let's define `RequestStorage` class that can store arbitrary data for each http request:
+
+```ts title="RequestStorage.ts"
+export class RequestStorage {
+  private data = new Map<string, any>();
+
+  set(key: string, value: any): void {
+    this.data.set(key, value);
+  }
+
+  get(key: string): any {
+    return this.data.get(key);
+  }
 }
 ```
+
+Now let's define `request` bean that will be scoped to each http request:
+
+```ts title="Application.ts"
+import { Bean, ClawjectApplication, Scope } from '@clawject/di';
+import { RequestStorage } from './RequestStorage';
+
+@ClawjectApplication
+export class Application {
+  @Scope('request') requestStorage = Bean(RequestStorage)
+}
+```
+
+Now, when you inject RequestStorage into other beans (even singleton-scoped) – the proxy will be injected, and the actual instance of `RequestStorage` will be created and destroyed for each http request.
+
+```ts title="SomeService.ts"
+import { RequestStorage } from './RequestStorage';
+
+export class SomeService {
+  constructor(private requestStorage: RequestStorage) {}
+
+  /* ... */
+}
+```
+

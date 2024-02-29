@@ -26,7 +26,8 @@ export class ApplicationBeanFactory {
 
   constructor(
     private readonly applicationConfigurationFactory: ApplicationConfigurationFactory,
-  ) {}
+  ) {
+  }
 
   async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
     await this.createApplicationBeans(applicationMetadata);
@@ -49,13 +50,33 @@ export class ApplicationBeanFactory {
     await Promise.all(lifecycleInit);
   }
 
-  //TODO check lifecycle with scopes
   async close(): Promise<void> {
-    await Promise.all(this.applicationBeans.map(async(applicationBean) => {
+    await Promise.all(this.applicationBeans.map(async (applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
         if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.PRE_DESTROY].includes(applicationBean.beanClassProperty)) {
           await applicationBean.getInjectionValue();
         }
+      }
+    }));
+
+    await Promise.all(this.applicationBeans.map(bean => {
+      if (bean.isLifecycleFunction) {
+        return;
+      }
+
+      const beanScope = bean.getScope();
+      const removedScopedObject = beanScope.remove(bean.name);
+
+      if (removedScopedObject === null) {
+        return;
+      }
+
+      if (Utils.isPromise(removedScopedObject)) {
+        return removedScopedObject.then((resolvedObject) => {
+          this.onLifecycle(resolvedObject, LifecycleKind.PRE_DESTROY);
+        });
+      } else {
+        return this.onLifecycle(removedScopedObject, LifecycleKind.PRE_DESTROY);
       }
     }));
   }
@@ -76,7 +97,7 @@ export class ApplicationBeanFactory {
     const data = Promise.all(
       Array.from(this.exposedBeanNameToApplicationBeanDependency.entries())
         .map(async ([beanName, exposedBeans]) =>
-          [beanName, await exposedBeans.getValue()] as const
+          [beanName, (await exposedBeans.getValue()).value],
         ),
     );
 

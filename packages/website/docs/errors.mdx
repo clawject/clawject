@@ -105,9 +105,9 @@ class Application {
 Clawject will detect circular dependencies at compile-time and report this error in a readable way.
 
 **Solution:**
-- Redesign. When we have a circular dependency, it’s likely we have a design problem and that the responsibilities are not well separated.
+- Redesign. When you have a circular dependency, it’s likely there is a design problem and that the responsibilities are not well separated.
   Try to redesign the components properly so that their hierarchy is well-designed, and there is no need for circular dependencies.
-- If we can’t redesign the components, we can assign the instance after creation.
+- If you can’t redesign the components, it's possible to assign the instance after creation.
   It's not the best way, but it works.
   Note that field `b` in `A` will be available only after the creation of the bean `B`.
   Example:

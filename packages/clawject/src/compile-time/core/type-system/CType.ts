@@ -168,7 +168,6 @@ export class CType {
     return this.isCompatible(to);
   }
 
-  //TODO follow source-target pattern from TS
   isCompatible(to: CType): boolean {
     return TypeComparator.compareType(to.tsType, this.tsType);
   }

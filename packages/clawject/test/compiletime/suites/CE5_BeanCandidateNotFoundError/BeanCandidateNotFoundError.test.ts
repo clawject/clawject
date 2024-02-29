@@ -1,5 +1,5 @@
 import { Compiler } from '../../helpers/Compiler';
-import { getFile, matchDiagnostics } from '../../helpers/utils';
+import { debugDiagnostics, getFile, matchDiagnostics } from '../../helpers/utils';
 import expectedDiagnostic from './expectedDiagnostic.json';
 
 describe('BeanCandidateNotFoundError', () => {

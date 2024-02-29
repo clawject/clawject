@@ -34,7 +34,7 @@ const applicationContext = await ClawjectFactory.createApplicationContext(Applic
 ## Constructor-Based Dependency Injection
 
 In the case of constructor-based dependency injection,
-the container will invoke a constructor with arguments each representing a dependency we want to set.
+the container will invoke a constructor with arguments each representing a dependency that is required.
 
 Clawject resolves each argument primarily by type, followed by the name of the constructor parameter.
 Let's see the defining of a bean and its dependencies using Bean function call:
@@ -53,7 +53,7 @@ class Application {
 ```
 
 We're passing class constructor to the Bean function and assigning the result of function to the class property to define a bean;
-Bean name is a class property name to which we assign the result of the Bean function.
+Bean name is a class property name to which you assign the result of the Bean function.
 
 ## Bean scopes
 
@@ -65,7 +65,7 @@ and only creates a new one if it doesn't.
 If we're using the **transient scope**, the container returns a new bean instance for each bean request.
 
 Let's see how we can define a bean with the **transient** scope.
-We have two beans that require the **Baz** instance,
+Now we have two beans that require the **Baz** instance,
 for each of which the container creates a new instance of a **Baz** class.
 
 ```ts
@@ -92,7 +92,7 @@ class Application {
 You can read more about lazy beans here [@Lazy](/docs/fundamentals/lazy).
 
 By default, the container creates and configures all singleton beans during initialization.
-To avoid this, we can use the **lazy** decorator with on the bean configuration level:
+To avoid this, you can use the **@Lazy** decorator with on the bean configuration level:
 
 **foo** bean will only be initialized when it's first requested, and not at startup.
 

@@ -43,9 +43,6 @@ export class ComponentRepository {
     this.fileNameToLastComponentCounter.delete(fileName);
     components.forEach(component => {
       this.componentIdToComponent.delete(component.id);
-
-      //TODO clear from dep graph in application mode
-      // DependencyGraph.clearByConfiguration(configuration);
     });
   }
 

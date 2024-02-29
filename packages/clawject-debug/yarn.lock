@@ -41,7 +41,7 @@
     winston "^3.11.0"
 
 "@clawject/language-service@../../packages/language-service":
-  version "1.0.0"
+  version "1.0.1"
 
 "@clawject/object-storage@*":
   version "1.0.1"
