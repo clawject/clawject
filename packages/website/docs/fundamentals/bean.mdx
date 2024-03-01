@@ -244,12 +244,6 @@ class Application {
 
 ### Asynchronous Beans
 
-:::warning Be careful
-Asynchronous beans which **scope** is not **singleton** could lead to unexpected behavior.
-If such a bean is requested **after** application context initialization - promise could be injected instead of resolved value.
-Work in progress to provide a solution for this case.
-:::
-
 Sometimes you need to create a bean asynchronously, for example, when you need to fetch some data from the server to create a bean.
 To mark beans as asynchronous, you can just return `Promise` from factory-function, `async` method or just plain bean value.
 

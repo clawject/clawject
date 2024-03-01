@@ -6,6 +6,7 @@ export class CompilationContext {
   areErrorsHandled = false;
   languageServiceMode = false;
   private _contextualFileName: string | null = null;
+  private _cancellationToken: () => boolean = () => false;
   private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
   private _program: ts.Program | null = null;
@@ -30,6 +31,10 @@ export class CompilationContext {
     return this._contextualFileName;
   }
 
+  isCancellationRequested(): boolean {
+    return this._cancellationToken() ?? false;
+  }
+
   getAllMessages(): AbstractCompilationMessage[] {
     return Array.from(this.pathToMessages.values()).flat();
   }
@@ -45,6 +50,10 @@ export class CompilationContext {
 
   assignProgram(program: ts.Program | null): void {
     this._program = program;
+  }
+
+  assignCancellationToken(token: () => boolean): void {
+    this._cancellationToken = token;
   }
 
   assignContextualFileName(fileName: string | null): void {

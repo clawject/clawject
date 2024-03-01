@@ -12,7 +12,7 @@ ClawjectApplicationContext is an object that stores and manages configurations a
 Let's define a simple application with a single bean and try to expose it using [ExposeBeans function](/docs/fundamentals/expose-beans):
 
 ```typescript
-import {ClawjectApplication, ClawjectFactory, Bean, ExposeBeans} from '@clawject/di';
+import { ClawjectApplication, ClawjectFactory, Bean, ExposeBeans } from '@clawject/di';
 
 class Cat {
   constructor(
@@ -103,7 +103,7 @@ await applicationContext.close();
 Returns the exposed bean instance by the given name.
 
 ```typescript
-import {Bean, ClawjectApplication, ClawjectFactory, ExposeBeans} from "@clawject/di";
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from "@clawject/di";
 
 interface Foo { value: 'foo' }
 interface Bar { value: 'bar' }
@@ -128,7 +128,7 @@ console.log(exposedBean.value); // 'foo'
 Returns all exposed beans.
 
 ```typescript
-import {Bean, ClawjectApplication, ClawjectFactory, ExposeBeans} from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from '@clawject/di';
 
 interface Foo { value: 'foo' }
 interface Bar { value: 'bar' }
@@ -153,7 +153,7 @@ Closes the application context and destroys all beans.
 Functions annotated with `@PreDestroy` will be called for all beans.
 
 ```typescript
-import {Bean, ClawjectApplication, ClawjectFactory, PreDestroy} from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, PreDestroy } from '@clawject/di';
 
 class Foo {
   @PreDestroy

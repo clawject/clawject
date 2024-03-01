@@ -6,7 +6,7 @@ import { ModernClassDecorator, ModernClassFieldDecorator, ModernClassGetterDecor
  * The interface that represents a scope.
  * You should implement it if you want to create your own custom scope.
  *
- * @docs https://clawject.com/docs/advanced-concepts/custom-scopes
+ * @docs https://clawject.com/docs/guides/creating-scope
  *
  * @public
  */

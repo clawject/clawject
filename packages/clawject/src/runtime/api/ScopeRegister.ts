@@ -17,7 +17,7 @@ export class ScopeRegister {
    *
    * @throws RuntimeErrors.DuplicateScopeError If the scope with the same name was already registered.
    *
-   * @docs https://clawject.com/docs/api/scope-register#scoperegisterregisterscope
+   * @docs https://clawject.com/docs/fundamentals/scope-register#registerscope
    */
   static registerScope(scopeName: string | number, scope: Scope): void {
     InternalScopeRegister.registerScope(scopeName, scope);
@@ -28,7 +28,7 @@ export class ScopeRegister {
    *
    * @returns `true` if scope by given name exists, or `false` if the scope does not exist.
    *
-   * @docs https://clawject.com/docs/api/scope-register#scoperegisterhasscope
+   * @docs https://clawject.com/docs/fundamentals/scope-register#hasscope
    * */
   static hasScope(scopeName: string | number): boolean {
     return InternalScopeRegister.hasScope(scopeName);

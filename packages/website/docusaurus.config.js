@@ -17,21 +17,7 @@ const config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  plugins: [
-    // () => ({
-    //   name: 'shopify-worker-plugin',
-    //   configureWebpack() {
-    //     return {
-    //       output: {
-    //         globalObject: 'self',
-    //       },
-    //       plugins: [
-    //         new (require('@shopify/web-worker/webpack').WebWorkerPlugin)(),
-    //       ]
-    //     };
-    //   }
-    // }),
-  ],
+  plugins: [],
 
   trailingSlash: undefined,
 
@@ -93,6 +79,12 @@ const config = {
             sidebarId: 'docs',
             position: 'left',
             label: 'Docs',
+          },
+          {
+            position: 'left',
+            label: 'Try on StackBlitz',
+            to: 'https://todo.com',
+            className: 'header-stackblitz-link',
           },
           {
             href: 'https://github.com/clawject/clawject',

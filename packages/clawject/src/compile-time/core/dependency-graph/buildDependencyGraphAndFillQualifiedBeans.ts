@@ -9,7 +9,11 @@ import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[]) => {
   const compilationContext = getCompilationContext();
 
-  beans.forEach(bean => {
+  for (const bean of beans) {
+    if (getCompilationContext().isCancellationRequested()) {
+      break;
+    }
+
     const beanParentConfiguration = bean.parentConfiguration;
     const beanCandidates = beans.filter(it => {
       //Filtering out the bean itself
@@ -67,5 +71,5 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
         missingDependencies,
       ));
     }
-  });
+  }
 };

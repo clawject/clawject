@@ -15,6 +15,11 @@ The Scope of Bean is a way to define when Bean will be created and how it is man
 Clawject provides `@Scope` decorator to define a scope and have 3 built-in scopes:
 `singleton` and `transient`, default value is `singleton`.
 
+:::tip
+If you wish to implement your own scope, you can do it by implementing `Scope` interface.
+Read more about it in [Creating Scope](/docs/guides/creating-scope) section.
+:::
+
 ### Singleton scope *(default)*
 
 When you define a bean with the singleton scope, the container creates a single instance of that bean,

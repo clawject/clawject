@@ -21,8 +21,8 @@ export function ClawjectLanguageServicePlugin(modules: {
     LanguageServiceLogger.assignPluginInfo(info);
     Compiler.assignPluginInfo(info);
     ModificationTracker.assignPluginInfo(info);
-    // SemanticDiagnosticsBuilder.assignPluginInfo(info);
     LanguageService.assignPluginInfo(info);
+    getCompilationContext().assignCancellationToken(() => info.languageServiceHost.getCancellationToken?.().isCancellationRequested() ?? false);
 
     LanguageServiceLogger.log('Clawject language service plugin created');
 
