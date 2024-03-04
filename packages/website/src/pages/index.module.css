@@ -13,7 +13,20 @@
   margin-right: 5rem;
 }
 
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.textGradient {
+  color: var(--logo-bg-gradien-end);
+  background: -webkit-linear-gradient(left, var(--logo-bg-gradien-start), var(--logo-bg-gradien-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .heroSubtitle {
+  font-size: 1.2rem;
   width: 30rem;
 }
 
@@ -38,11 +51,11 @@
 }
 
 .typeAnimation {
+  margin-bottom: 1.5rem;
+
   font-size: 2.5rem;
   font-weight: 900;
   color: var(--logo-bg-gradien-end);
-  margin-bottom: 1.5rem;
-
   background: -webkit-linear-gradient(left, var(--logo-bg-gradien-start), var(--logo-bg-gradien-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

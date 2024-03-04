@@ -4,6 +4,8 @@ import { FileGraph } from '../compile-time/core/file-graph/FileGraph';
 import { cleanup } from '../compile-time/core/cleaner/cleanup';
 import { LanguageServiceCache } from './LanguageServiceCache';
 import { ModificationTracker } from './ModificationTracker';
+import { LanguageServiceLogger } from './LanguageServiceLogger';
+import { disposeLanguageService } from './disposeLanguageService';
 
 export class Compiler {
   static wasCompiled = false;
@@ -48,8 +50,13 @@ export class Compiler {
   }
 
   private static runCompilation(sourceFiles: tsServer.SourceFile[], program: tsServer.Program): void {
-    tsServer.transform(sourceFiles, [
-      ClawjectTransformer(() => program as any) as any, // It's needed because of usage of ts-expose-internals
-    ], program.getCompilerOptions());
+    try {
+      tsServer.transform(sourceFiles, [
+        ClawjectTransformer(() => program as any) as any, // It's needed because of usage of ts-expose-internals
+      ], program.getCompilerOptions());
+    } catch (error) {
+      LanguageServiceLogger.log('Error during compilation', error);
+      disposeLanguageService();
+    }
   }
 }

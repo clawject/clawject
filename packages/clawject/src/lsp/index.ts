@@ -2,12 +2,11 @@ import type tsServer from 'typescript/lib/tsserverlibrary';
 import { getCompilationContext } from '../transformer/getCompilationContext';
 import { Compiler } from './Compiler';
 import { LanguageServiceLogger } from './LanguageServiceLogger';
-import { cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { LanguageService } from './LanguageService';
-import { LanguageServiceCache } from './LanguageServiceCache';
 import { ModificationTracker } from './ModificationTracker';
 import { isTSVersionValid } from '../ts-version/isTSVersionValid';
 import { ConfigLoader } from '../compile-time/config/ConfigLoader';
+import { disposeLanguageService } from './disposeLanguageService';
 
 export function ClawjectLanguageServicePlugin(modules: {
   typescript: typeof import('typescript/lib/tsserverlibrary')
@@ -26,16 +25,6 @@ export function ClawjectLanguageServicePlugin(modules: {
 
     LanguageServiceLogger.log('Clawject language service plugin created');
 
-    const onDispose = () => {
-      LanguageServiceLogger.log('Clawject language service plugin disposed');
-      cleanupAll();
-      ConfigLoader.clear();
-      Compiler.wasCompiled = false;
-      LanguageServiceCache.clear();
-      ModificationTracker.clear();
-      LanguageService.configFileErrors = [];
-    };
-
     let fileWatcher: tsServer.FileWatcher | undefined = undefined;
 
     const fileWatcherCallback: tsServer.FileWatcherCallback = (fileName, eventKind, modifiedTime) => {
@@ -43,7 +32,7 @@ export function ClawjectLanguageServicePlugin(modules: {
         fileWatcher?.close();
       }
 
-      onDispose();
+      disposeLanguageService();
     };
 
     ConfigLoader.onConfigLoaded = (configFileName: string) => {
@@ -51,7 +40,7 @@ export function ClawjectLanguageServicePlugin(modules: {
       fileWatcher?.close();
 
       fileWatcher = info.serverHost.watchFile(configFileName, fileWatcherCallback);
-      onDispose();
+      disposeLanguageService();
     };
 
     if (!isTSVersionValid(tsServer.version)) {
@@ -64,11 +53,11 @@ export function ClawjectLanguageServicePlugin(modules: {
     return decorateLanguageService(info, {
       cleanupSemanticCache: () => {
         info.languageService.cleanupSemanticCache();
-        onDispose();
+        disposeLanguageService();
       },
       dispose: () => {
         info.languageService.dispose();
-        onDispose();
+        disposeLanguageService();
       },
       getSemanticDiagnostics: LanguageService.getSemanticDiagnostics,
     });

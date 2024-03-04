@@ -83,12 +83,12 @@
     "@types/lodash": "^4.14.202",
     "@types/node": "^17.0.42",
     "@types/semver": "^7.5.0",
-    "@types/ts-expose-internals": "npm:ts-expose-internals@5.3.2",
+    "@types/ts-expose-internals": "npm:ts-expose-internals@5.3.3",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "rollup": "^4.5.2",
     "ts-patch": "^3.0.2",
-    "typescript": "5.3.2",
+    "typescript": "5.3.3",
     "webpack": "^5.88.2"
   }
 }

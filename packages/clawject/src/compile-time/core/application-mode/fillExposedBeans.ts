@@ -7,7 +7,6 @@ import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 import { CType } from '../type-system/CType';
 import { BeanExposingError } from '../../compilation-context/messages/errors/BeanExposingError';
-import { filterSet } from '../utils/filterSet';
 
 export const fillExposedBeans = (application: Application): void => {
   const exposedBeans = new Map<string, Dependency>();

@@ -3,7 +3,6 @@ import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 import { ObjectFactoryImpl } from '../ObjectFactoryImpl';
 import { ObjectFactoryResult } from '../api/ObjectFactory';
 import { Scope } from '../api/Scope';
-import { Utils } from '../Utils';
 import { RuntimeErrors } from '../api/RuntimeErrors';
 import { BeanKind } from '../../compile-time/core/bean/BeanKind';
 import { ClassConstructor } from '../api/ClassConstructor';
