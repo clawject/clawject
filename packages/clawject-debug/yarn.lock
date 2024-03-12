@@ -25,7 +25,7 @@
     js-tokens "^4.0.0"
 
 "@clawject/di@../../dist/packages/clawject":
-  version "0.0.0"
+  version "0.0.0-alpha.4"
   dependencies:
     "@clawject/object-storage" "*"
     chalk "^4.1.2"

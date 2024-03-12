@@ -886,12 +886,12 @@ describe('TypeSystem', () => {
       counterA: number
     }
 
-    interface IB {
+    interface IB extends IA {
       ib: boolean,
       counterB: number
     }
 
-    interface IC extends IA, IB {
+    interface IC extends IB {
       ic: boolean,
       counterC: number
     }
@@ -1201,12 +1201,12 @@ describe('TypeSystem', () => {
       data: T
     }
 
-    interface IB<T> {
+    interface IB<T> extends IA<T> {
       ib: boolean,
       counterB: number
     }
 
-    interface IC<T> extends IA<T>, IB<T> {
+    interface IC<T> extends IB<T> {
       ic: boolean,
       counterC: number
     }
