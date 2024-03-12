@@ -13,7 +13,7 @@
     "run:webpack_prod": "webpack --config webpack.config.js --mode production",
     "run:language_service": "tsserver --logVerbosity verbose --traceToConsole",
     "postinstall": "ts-patch install",
-    "tscnode": "tsc && node dist/index.js"
+    "testTsNode": "tsx src/test.ts"
   },
   "dependencies": {
     "@clawject/di": "../../dist/packages/clawject",
@@ -26,9 +26,10 @@
     "cross-env": "^7.0.3",
     "html-webpack-plugin": "^5.5.3",
     "ts-loader": "^9.4.4",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "ts-patch": "^3.1.2",
-    "typescript": "5.3.3",
+    "tsx": "^4.7.1",
+    "typescript": "5.4.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"

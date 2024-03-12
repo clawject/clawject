@@ -60,6 +60,79 @@ export function ClawjectLanguageServicePlugin(modules: {
         disposeLanguageService();
       },
       getSemanticDiagnostics: LanguageService.getSemanticDiagnostics,
+      // Find references is not called
+      // findReferences(fileName: string, position: number): ts.ReferencedSymbol[] | undefined {
+      //   Compiler.ensureCompiled();
+      //   const original = info.languageService.findReferences(fileName, position) ?? [];
+      //
+      //   const applications = (Array.from(ApplicationRepository.fileNameToApplications.values()) ?? []).flat();
+      //   const application = applications[0];
+      //
+      //   if (!application) {
+      //     return original;
+      //   }
+      //
+      //   const references: ts.ReferencedSymbol[] = [];
+      //
+      //   application.beans.forEach(bean => {
+      //     if (!bean.nodeDetails.positionInRange(position)) {
+      //       return;
+      //     }
+      //
+      //     const baseDefinition = ts.GoToDefinition.createDefinitionInfo(
+      //       bean.node.symbol.valueDeclaration!,
+      //       getCompilationContext().typeChecker,
+      //       bean.node.symbol,
+      //       bean.node,
+      //     );
+      //     const beanDefinitionInfo: ts.ReferencedSymbolDefinitionInfo = {
+      //       ...baseDefinition,
+      //       displayParts: ts.nodeToDisplayParts(bean.node, bean.node.parent),
+      //     };
+      //     const beanReferences: ReferencedSymbolEntry[] = [];
+      //
+      //     const beanReferencesDependencies = Array.from(application.resolvedBeanDependencies.entries())
+      //       .filter(([it, deps]) => it !== bean)
+      //       .map(([it, deps]) => deps)
+      //       .flat()
+      //       .filter(it => it.qualifiedBean === bean);
+      //
+      //     if (beanReferencesDependencies.length === 0) {
+      //       return;
+      //     }
+      //
+      //     beanReferencesDependencies.forEach(dep => {
+      //       const dependency = dep.dependency;
+      //
+      //       const reference: ts.ReferencedSymbolEntry = {
+      //         textSpan: {
+      //           start: dependency.nodeDetails.startOffset,
+      //           length: dependency.nodeDetails.length,
+      //         },
+      //         fileName: dependency.node.getSourceFile().fileName,
+      //         isWriteAccess: false,
+      //         isDefinition: false,
+      //       };
+      //
+      //       beanReferences.push(reference);
+      //     });
+      //
+      //
+      //     if (beanReferences.length !== 0) {
+      //       references.push({
+      //         definition: beanDefinitionInfo,
+      //         references: beanReferences,
+      //       });
+      //     }
+      //   });
+      //
+      //   LanguageServiceLogger.log('findReferences', references);
+      //
+      //   return [
+      //     ...original,
+      //     ...references,
+      //   ];
+      // },
     });
   }
 

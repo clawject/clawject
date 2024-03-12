@@ -80,12 +80,12 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
-          {
-            position: 'left',
-            label: 'Try on StackBlitz',
-            to: 'https://todo.com',
-            className: 'header-stackblitz-link',
-          },
+          // {
+          //   position: 'left',
+          //   label: 'Try on StackBlitz',
+          //   to: 'https://todo.com',
+          //   className: 'header-stackblitz-link',
+          // },
           {
             href: 'https://github.com/clawject/clawject',
             position: 'right',

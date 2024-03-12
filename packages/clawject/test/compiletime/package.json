@@ -8,7 +8,8 @@
     "test:5.0": "yarn upgrade clawject typescript@5.0.* ts-patch@3.1.2 && ts-patch install && jest",
     "test:5.1": "yarn upgrade clawject typescript@5.1.* ts-patch@3.1.2 && ts-patch install && jest",
     "test:5.2": "yarn upgrade clawject typescript@5.2.* ts-patch@3.1.2 && ts-patch install && jest",
-    "test:5.3": "yarn upgrade clawject typescript@5.3.* ts-patch@3.1.2 && ts-patch install && jest"
+    "test:5.3": "yarn upgrade clawject typescript@5.3.* ts-patch@3.1.2 && ts-patch install && jest",
+    "test:5.4": "yarn upgrade clawject typescript@5.4.* ts-patch@3.1.2 && ts-patch install && jest"
   },
   "dependencies": {
     "@clawject/di": "../../../../dist/packages/clawject"
@@ -20,7 +21,7 @@
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
-    "ts-patch": "2.1.0",
-    "typescript": "4.8.*"
+    "ts-patch": "3.1.2",
+    "typescript": "5.4.*"
   }
 }

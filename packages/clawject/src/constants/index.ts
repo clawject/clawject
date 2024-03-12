@@ -1,7 +1,7 @@
 import upath from 'upath';
 
 /** this line is parsed by the build script */
-const TS_VERSION_RANGE = '>=4.8 <=5.3';
+const TS_VERSION_RANGE = '>=4.8 <=5.4';
 /** this line is replaced by the build script */
 const LIBRARY_VERSION = '0.0.0';
 

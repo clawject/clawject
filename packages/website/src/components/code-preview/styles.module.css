@@ -1,0 +1,6 @@
+.codeMessagePopover {
+  border-radius: 4px;
+  font-size: var(--ifm-code-font-size);
+  font-family: var(--ifm-font-family-monospace);
+  color: var(--code-message-text-color);
+}

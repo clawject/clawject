@@ -218,8 +218,8 @@ export class TypeComparator {
   }
 
   private static compareAnonymousAliasSymbols(source: ts.Type, target: ts.Type): boolean {
-    const targetSymbol = target.aliasSymbol;
-    const sourceSymbol = source.aliasSymbol;
+    const targetSymbol = target.aliasSymbol ?? target.getSymbol() ?? target.symbol;
+    const sourceSymbol = source.aliasSymbol ?? source.getSymbol() ?? source.symbol;
 
     if (!sourceSymbol || !targetSymbol) {
       return false;

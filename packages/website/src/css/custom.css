@@ -20,6 +20,12 @@
 
   --logo-bg-gradien-start: #FE6D73;
   --logo-bg-gradien-end: #A4609C;
+
+  --code-message-background: #FFF;
+}
+
+[data-theme='dark']:root {
+  --code-message-background: #393b40;
 }
 
 .header-github-link:hover {

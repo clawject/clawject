@@ -14,13 +14,13 @@ export class DependencyResolver {
     relatedApplication: Application,
   ): MaybeResolvedDependency {
     switch (true) {
-    case dependency.cType.isEmptyValue():
-      return new MaybeResolvedDependency(dependency);
-
-    case dependency.cType.isArray():
-    case dependency.cType.isSet():
-    case dependency.cType.isMapStringToAny():
-      return this.buildForCollectionOrArray(dependency, beansToSearch);
+    // case dependency.cType.isEmptyValue():
+    //   return new MaybeResolvedDependency(dependency);
+    //
+    // case dependency.cType.isArray():
+    // case dependency.cType.isSet():
+    // case dependency.cType.isMapStringToAny():
+    //   return this.buildForCollectionOrArray(dependency, beansToSearch);
 
     default:
       return this.buildForBaseType(dependency, beansToSearch, relatedBean, relatedApplication);
