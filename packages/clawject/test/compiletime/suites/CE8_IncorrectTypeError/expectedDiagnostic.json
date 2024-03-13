@@ -64,8 +64,8 @@
     ]
   },
   {
-    "messageText": "Incorrect type. Type 'union' not supported as a Bean type.",
-    "start": 341,
+    "messageText": "Incorrect type. Type 'void' not supported as a Bean type.",
+    "start": 346,
     "file": {
       "fileName": "/index.ts"
     },
@@ -81,7 +81,7 @@
   },
   {
     "messageText": "Incorrect type. Type 'void' not supported as a Bean type.",
-    "start": 404,
+    "start": 407,
     "file": {
       "fileName": "/index.ts"
     },
@@ -97,23 +97,7 @@
   },
   {
     "messageText": "Incorrect type. Type 'void' not supported as a Bean type.",
-    "start": 465,
-    "file": {
-      "fileName": "/index.ts"
-    },
-    "relatedInformation": [
-      {
-        "messageText": "'Application' is declared here.",
-        "start": 93,
-        "file": {
-          "fileName": "/index.ts"
-        }
-      }
-    ]
-  },
-  {
-    "messageText": "Incorrect type. Type 'void' not supported as a Bean type.",
-    "start": 521,
+    "start": 463,
     "file": {
       "fileName": "/index.ts"
     },
@@ -129,23 +113,7 @@
   },
   {
     "messageText": "Incorrect type. Type 'never' not supported as a Bean type.",
-    "start": 573,
-    "file": {
-      "fileName": "/index.ts"
-    },
-    "relatedInformation": [
-      {
-        "messageText": "'Application' is declared here.",
-        "start": 93,
-        "file": {
-          "fileName": "/index.ts"
-        }
-      }
-    ]
-  },
-  {
-    "messageText": "Incorrect type. Type 'union' not supported as a Bean type.",
-    "start": 639,
+    "start": 515,
     "file": {
       "fileName": "/index.ts"
     },
@@ -161,7 +129,7 @@
   },
   {
     "messageText": "Incorrect type. Type 'void' not supported as a Bean type.",
-    "start": 721,
+    "start": 596,
     "file": {
       "fileName": "/index.ts"
     },
@@ -177,7 +145,7 @@
   },
   {
     "messageText": "Incorrect type. Type 'void' not supported as a Bean type.",
-    "start": 796,
+    "start": 671,
     "file": {
       "fileName": "/index.ts"
     },
@@ -193,7 +161,7 @@
   },
   {
     "messageText": "Incorrect type. Type 'void' not supported as a Bean type.",
-    "start": 866,
+    "start": 741,
     "file": {
       "fileName": "/index.ts"
     },
@@ -209,23 +177,7 @@
   },
   {
     "messageText": "Incorrect type. Type 'never' not supported as a Bean type.",
-    "start": 932,
-    "file": {
-      "fileName": "/index.ts"
-    },
-    "relatedInformation": [
-      {
-        "messageText": "'Application' is declared here.",
-        "start": 93,
-        "file": {
-          "fileName": "/index.ts"
-        }
-      }
-    ]
-  },
-  {
-    "messageText": "Incorrect type. Type 'union' not supported as a Bean type.",
-    "start": 1012,
+    "start": 807,
     "file": {
       "fileName": "/index.ts"
     },
