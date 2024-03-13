@@ -268,17 +268,19 @@ export const Index = () => {
 
       <div className="container margin-top--lg">
         <div className="row">
-          <h1 className={classNames(styles.textGradient)}>
-            Built for developers convenience
-          </h1>
-          <p>
-            Clawject designed to make dependency injection and inversion of control in TypeScript as effortless,
-            clear and intuitive as possible.
-            <br/>
-            It allows define class dependencies in a declarative way, without the need to use injection tokens or any
-            other boilerplate,
-            especially when it comes to interfaces and generics.
-          </p>
+          <div className="col">
+            <h1 className={classNames(styles.textGradient)}>
+              Built for developers convenience
+            </h1>
+            <p>
+              Clawject designed to make dependency injection and inversion of control in TypeScript as effortless,
+              clear and intuitive as possible.
+              <br/>
+              It allows define class dependencies in a declarative way, without the need to use injection tokens or any
+              other boilerplate,
+              especially when it comes to interfaces and generics.
+            </p>
+          </div>
         </div>
 
         <div className="row">
