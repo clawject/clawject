@@ -148,13 +148,12 @@ class Application {
 
 Bean type is a type of value that bean will provide as a dependency for other beans.
 
-There are a few restrictions on bean value types: `symbol`, `undefined`, `void`, `null`, `never` type.
+There are a few restrictions on bean value types: `undefined`, `void`, `null` and `never` types.
 If you specify an invalid bean type, you will get compile-time error.
 
 ```ts
 @ClawjectApplication
 class Application {
-  @Bean symbol = Symbol();
   @Bean undefined = undefined;
   @Bean void: void = undefined;
   @Bean null = null;

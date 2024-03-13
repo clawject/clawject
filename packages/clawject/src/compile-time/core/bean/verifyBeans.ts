@@ -105,10 +105,6 @@ export function verifyBeanType(bean: Bean): void {
   case beanType.isNull():
     errorTypeName = 'null';
     break;
-
-  case beanType.isSymbol():
-    errorTypeName = 'symbol';
-    break;
   }
 
   if (errorTypeName !== null) {
