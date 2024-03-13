@@ -1,14 +1,15 @@
 import React from 'react';
 import { Highlight, ICodeMessage } from './types';
 import { CodePreviewHighlightLine } from './styles';
-import { Popover, Typography } from 'antd';
+import { Popover, Space, Typography } from 'antd';
 import styles from './styles.module.css';
-import classNames from 'classnames';
 
 interface Props {
   $parentContainerRef: React.RefObject<HTMLDivElement | null>;
   message: ICodeMessage;
 }
+
+const { Text } = Typography;
 
 export const CodeMessage: React.FC<Props> = ({$parentContainerRef, message}) => {
   const [highlight, setHighlight] = React.useState<Highlight | null>(null);
@@ -46,7 +47,34 @@ export const CodeMessage: React.FC<Props> = ({$parentContainerRef, message}) => 
       arrow={false}
       overlayClassName={styles.codeMessagePopover}
       content={(
-        message.message
+        <div className="container">
+          <div className="row">
+            { message.message }
+          </div>
+
+          { message.relatedMessages.map((relatedMessage, index) => {
+            return (
+              <div className="row" key={index}>
+                <a>
+                  {relatedMessage.link}
+                </a>
+                <Space />
+                :
+                {
+                  relatedMessage.highlightedPrefix && (
+                    <Text code>
+                      {relatedMessage.highlightedPrefix}
+                    </Text>
+                  )
+                }
+
+                <Text>
+                  {relatedMessage.message}
+                </Text>
+              </div>
+            );
+          }) }
+        </div>
       )}
     >
       <CodePreviewHighlightLine

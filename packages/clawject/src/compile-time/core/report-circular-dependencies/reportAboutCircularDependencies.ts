@@ -12,7 +12,7 @@ export const reportAboutCircularDependencies = (application: Application) => {
     }
 
     compilationContext.report(new CircularDependenciesError(
-      cycle[0].node.name,
+      cycle[0].node,
       cycle,
       application,
     ));

@@ -25,10 +25,10 @@ export const MessagePopover = styled.div`
 export const CodePreviewHighlightLine = styled.div<{ $highlight: Highlight }>`
   position: absolute;
   width: ${props => props.$highlight.width}px;
-  height: ${props => props.$highlight.height}px;
+  height: ${props => props.$highlight.height + 2}px;
   top: ${props => props.$highlight.top}px;
   left: ${props => props.$highlight.left}px;
-  border-bottom: 2px solid;
+  border-bottom: 1.5px solid;
   border-color: ${props => {
     switch (props.$highlight.level) {
     case 'info':
