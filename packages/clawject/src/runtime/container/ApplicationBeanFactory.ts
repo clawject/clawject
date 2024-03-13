@@ -26,8 +26,7 @@ export class ApplicationBeanFactory {
 
   constructor(
     private readonly applicationConfigurationFactory: ApplicationConfigurationFactory,
-  ) {
-  }
+  ) {}
 
   async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
     await this.createApplicationBeans(applicationMetadata);

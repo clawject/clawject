@@ -59,6 +59,8 @@
   },
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
+  "repository": "https://github.com/clawject/clawject",
+  "homepage": "https://clawject.com",
   "dependencies": {
     "@clawject/object-storage": "*",
     "chalk": "^4.1.2",

@@ -91,6 +91,10 @@ export class CType {
     return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Union);
   }
 
+  isBoolean(): boolean {
+    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Boolean);
+  }
+
   isVoidLike(): boolean {
     return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.VoidLike);
   }

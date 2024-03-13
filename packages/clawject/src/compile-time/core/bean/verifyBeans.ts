@@ -106,10 +106,6 @@ export function verifyBeanType(bean: Bean): void {
     errorTypeName = 'null';
     break;
 
-  case beanType.isUnion():
-    errorTypeName = 'union';
-    break;
-
   case beanType.isSymbol():
     errorTypeName = 'symbol';
     break;

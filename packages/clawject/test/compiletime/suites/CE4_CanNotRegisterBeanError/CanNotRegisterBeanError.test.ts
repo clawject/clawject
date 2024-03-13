@@ -23,14 +23,14 @@ describe('CanNotRegisterBeanError', () => {
         },
         relatedInformation: [
           {
-            messageText: 'Can not find Bean candidate for \'num\'.',
+            messageText: 'Cannot find a Bean candidate for \'num\'.',
             start: 113,
             file: {
               fileName: '/index.ts'
             }
           },
           {
-            messageText: 'Can not find Bean candidate for \'sym\'.',
+            messageText: 'Cannot find a Bean candidate for \'sym\'.',
             start: 130,
             file: {
               fileName: '/index.ts'
@@ -53,7 +53,7 @@ describe('CanNotRegisterBeanError', () => {
         },
         relatedInformation: [
           {
-            messageText: 'Can not find Bean candidate for \'str\'.',
+            messageText: 'Cannot find a Bean candidate for \'str\'.',
             start: 235,
             file: {
               fileName: '/index.ts'

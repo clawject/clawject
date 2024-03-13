@@ -82,7 +82,7 @@ export class BuildErrorFormatter {
 
     if (error instanceof CanNotRegisterBeanError) {
       const causes = error.missingCandidates.map(it => {
-        return `  Can not find Bean candidate for '${it.name}'. ${this.getPathWithPosition(it.nodeDetails)}`;
+        return `  Cannot find a Bean candidate for '${it.name}'. ${this.getPathWithPosition(it.nodeDetails)}`;
       });
 
       return [baseMessage, ...causes].join('\n');

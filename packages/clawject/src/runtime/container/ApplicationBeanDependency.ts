@@ -61,16 +61,16 @@ export class ApplicationBeanDependency {
     return new DependencyInjectionValue(metadata.value);
   }
 
-  private async getCollectionValue(metadata: ApplicationBeanDependencyCollectionMetadata): Promise<any> {
+  private async getCollectionValue(metadata: ApplicationBeanDependencyCollectionMetadata): Promise<DependencyInjectionValue> {
     if (metadata.kind === 'array' || metadata.kind === 'set') {
       const values = await Promise.all(metadata.metadata.map(it => this.getPlainValue(it)));
       const valuesArray = values.map(it => it.value);
 
       if (metadata.kind === 'array') {
-        return valuesArray;
+        return new DependencyInjectionValue(valuesArray);
       }
 
-      return new Set(valuesArray);
+      return new DependencyInjectionValue(new Set(valuesArray));
     }
 
     const mapEntries = await Promise.all(metadata.metadata.map(async it => {
@@ -90,6 +90,6 @@ export class ApplicationBeanDependency {
       ] as const;
     }));
 
-    return new Map(mapEntries);
+    return new DependencyInjectionValue(new Map(mapEntries));
   }
 }

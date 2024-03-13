@@ -36,7 +36,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
 
   if (argumentsLength > 0) {
     getCompilationContext().report(new NotSupportedError(
-      'Lifecycle elements could not have arguments outside of CatContext classes.',
+      'Lifecycle elements could not have arguments outside of Configuration classes.',
       node,
       null,
       null,

@@ -73,7 +73,7 @@ export class TypeComparator {
     }
 
     if (this.checkFlag(source, TypeFlags.Union)) {
-      return false;
+      return (source as ts.UnionType).types.every(it => this.compareType(it, target));
     }
 
     if (this.checkFlag(source, TypeFlags.Intersection) && this.checkFlag(target, TypeFlags.Intersection)) {

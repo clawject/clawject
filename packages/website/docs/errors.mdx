@@ -137,8 +137,8 @@ It occurs when the type of the bean is not supported by Clawject, here defined r
 ```ts
 @ClawjectApplication
 class Application {
-  @Bean unionBean(): string | number {
-    return 'Masya';
+  @Bean undefinedBean(): undefined {
+    return undefined;
   }
 }
 ```
@@ -150,8 +150,8 @@ class Value<T> {
 }
 @ClawjectApplication
 class Application {
-  @Bean wrappedUnion(): Value<string | number> {
-    return new Value('Masya');
+  @Bean undefinedBean(): Value<undefined> {
+    return new Value(undefined);
   }
 }
 ```
@@ -194,7 +194,7 @@ It occurs when the dependencies of bean could not be resolved. Examples:
 
 #### CE11: NotSupportedError
 It occurs when some feature is not supported by Clawject. Example:
-- Using `@PostConstruct` decorator on method with arguments outside CatContext class:
+- Using `@PostConstruct` decorator on method with arguments outside Configuration class:
   ```ts
   class Cat {
     @PostConstruct

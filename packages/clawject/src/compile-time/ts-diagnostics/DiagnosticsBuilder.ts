@@ -63,7 +63,7 @@ export class DiagnosticsBuilder {
 
     if (message instanceof CanNotRegisterBeanError) {
       const causes: ts.DiagnosticRelatedInformation[] = message.missingCandidates.map(it => ({
-        messageText: `Can not find Bean candidate for '${it.name}'.`,
+        messageText: `Cannot find a Bean candidate for '${it.name}'.`,
         start: it.nodeDetails.startOffset,
         length: it.nodeDetails.length,
         code: diagnosticsCode,

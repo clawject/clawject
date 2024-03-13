@@ -148,7 +148,7 @@ class Application {
 
 Bean type is a type of value that bean will provide as a dependency for other beans.
 
-There are a few restrictions on bean value types: `symbol`, `undefined`, `void`, `null`, `never` and `union` type.
+There are a few restrictions on bean value types: `symbol`, `undefined`, `void`, `null`, `never` type.
 If you specify an invalid bean type, you will get compile-time error.
 
 ```ts
@@ -159,7 +159,6 @@ class Application {
   @Bean void: void = undefined;
   @Bean null = null;
   @Bean never(): never { throw new Error('never'); }
-  @Bean union: string | number = 'union';
 }
 ```
 

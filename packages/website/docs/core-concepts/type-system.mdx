@@ -53,12 +53,13 @@ class Dog {
   }
 }
 
-function doMeow(animal: Cat): void {
-  animal.voice();
+class CatOwner {
+  constructor(private pet: Cat) {}
 }
 
 const dog = new Dog();
-doMeow(dog); // <- TypeScript will not complain about it
+
+const catOwner = new CatOwner(dog); // <- TypeScript will not complain about it
 ```
 
 But clawject will and report compile error about missing Bean declaration for `Cat`:
@@ -78,16 +79,15 @@ class Dog {
   }
 }
 
+class CatOwner {
+  constructor(private pet: Cat) {}
+}
+
 @ClawjectApplication
 class Application {
   dog = Bean(Dog);
 
-  @PostConstruct
-  doMeow(
-    animal: Cat // <- error will be reported here
-  ): void {
-    animal.voice();
-  }
+  catOwner = Bean(CatOwner); // <- Cannot find a Bean candidate for 'pet'.
 }
 ```
 
@@ -186,7 +186,7 @@ class Quux<T extends Baz> {
 
 @ClawjectApplication
 class Application {
-  /* The type of parameter `data` will be `unknown`, and clawject will not know what to inject here */
+  /* The type of parameter `data` will be `unknown` */
   foo = Bean(Foo);
 
   /* The type of parameter `data` will be `string` */
@@ -208,16 +208,16 @@ Clawject will treat `CacheImpl<T>` as an intersection of `CacheImpl<T>`, `ICache
 import { Customer } from './customer';
 import { Store } from './store';
 
-interface IReadOnlyCache<V> {
-  get(key: string): V | null;
+interface IReadOnlyCache<T> {
+  get(key: string): T | null;
 }
 
-interface ICache<V> extends IReadOnlyCache<V> {
-  set(key: string, value: V): void;
+interface ICache<T> extends IReadOnlyCache<T> {
+  set(key: string, value: T): void;
   clear(): void;
 }
 
-class CacheImpl<V> implements ICache<V> {
+class CacheImpl<T> implements ICache<T> {
   /* ... */
 }
 
@@ -263,15 +263,16 @@ interface IBaz { baz: string }
 
 @ClawjectApplication
 class Application {
-  @Bean fooAndBar: IFoo & IBar = { foo: 'fooValue', bar: 'barValue' }
-  @Bean fooAndBaz: IFoo & IBaz = { foo: 'fooValue', baz: 'bazValue' }
-  @Bean fooAndBarAndBaz: IFoo & IBar & IBaz = { foo: 'fooValue', bar: 'barValue', baz: 'bazValue' }
+  @Bean fooAndBarAndBaz: IFoo & IBar & IBaz = { foo: 'fooValue', bar: 'barValue', baz: 'bazValue' };
 
   @PostConstruct
   postConstruct(
-    dep0: IFoo & IBar, // <- "fooAndBar" will be injected
-    dep1: IFoo & IBaz, // <- "fooAndBaz" will be injected
-    dep2: IFoo & IBar & IBaz, // <- "fooAndBarAndBaz" will be injected
+    dep0: IFoo, // <- "fooAndBarAndBaz" will be injected
+    dep1: IBar, // <- "fooAndBarAndBaz" will be injected
+    dep2: IBar, // <- "fooAndBarAndBaz" will be injected
+    dep3: IFoo & IBar, // <- "fooAndBarAndBaz" will be injected
+    dep4: IFoo & IBaz, // <- "fooAndBarAndBaz" will be injected
+    dep5: IFoo & IBar & IBaz, // <- "fooAndBarAndBaz" will be injected
   ) {}
 }
 ```
