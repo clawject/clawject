@@ -53,6 +53,21 @@
   no-repeat;
 }
 
+.diagnostic-message-text-decoration-error {
+  text-decoration: underline red 2px;
+  text-underline-offset: 4px;
+}
+
+.diagnostic-message-text-decoration-warning {
+  text-decoration: underline orange 2px;
+  text-underline-offset: 4px;
+}
+
+.diagnostic-message-text-decoration-info {
+  text-decoration: underline blue 2px;
+  text-underline-offset: 4px;
+}
+
 /* You can override the default Infima variables here. */
 /*:root {*/
 /*  --ifm-color-primary: #D86190;*/

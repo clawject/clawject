@@ -5,9 +5,9 @@ import Link from '@docusaurus/Link';
 import React from 'react';
 import { ConfigProvider, theme } from 'antd';
 import { useColorMode } from '@docusaurus/theme-common';
-import CodeBlock from '@theme/CodeBlock';
-import { CodePreview } from '@site/src/components/code-preview/index';
-import { ICodeMessage } from '@site/src/components/code-preview/types';
+
+import { ICodeDiagnostic } from '@site/src/theme/CodeBlock/types';
+import CodeBlock from '@site/src/theme/CodeBlock';
 
 const WORDS = [
   'Declarative',
@@ -135,14 +135,14 @@ class Application {
   beanThatReturnsVoid(): void {}
 }
 `.trim();
-const diagnosticsMessages: ICodeMessage[] = [
+const diagnosticsMessages: ICodeDiagnostic[] = [
   {
     line: 2,
     start: 24,
     width: 18,
     level: 'error',
     message: 'CE5: Could not qualify bean candidate. Found 2 injection candidates.',
-    relatedMessages: [
+    relatedDiagnostics: [
       {
         link: 'main.ts(16,3)',
         highlightedPrefix: 'string1',
@@ -171,7 +171,7 @@ const diagnosticsMessages: ICodeMessage[] = [
     width: 16,
     level: 'error',
     message: 'CE4: Can not register Bean.',
-    relatedMessages: [
+    relatedDiagnostics: [
       {
         link: 'main.ts(2,25)',
         message: 'Cannot find a Bean candidate for \'someString\'.'
@@ -189,7 +189,7 @@ const diagnosticsMessages: ICodeMessage[] = [
     width: 16,
     level: 'error',
     message: 'CE7: Circular dependencies detected. baz → bar → quux → baz',
-    relatedMessages: [
+    relatedDiagnostics: [
       {
         link: 'main.ts(20,3)',
         highlightedPrefix: 'bar',
@@ -213,7 +213,7 @@ const diagnosticsMessages: ICodeMessage[] = [
     width: 4,
     level: 'error',
     message: 'CE8: Incorrect type. Type \'void\' not supported as a Bean type.',
-    relatedMessages: [
+    relatedDiagnostics: [
       {
         link: 'main.ts(17,7)',
         highlightedPrefix: 'Application',
@@ -222,7 +222,6 @@ const diagnosticsMessages: ICodeMessage[] = [
     ]
   },
 ];
-
 
 export const Index = () => {
   const {colorMode} = useColorMode();
@@ -315,11 +314,14 @@ export const Index = () => {
           </div>
 
           <div className="col">
-            <CodePreview
+            <CodeBlock
+              showLineNumbers
               title="main.ts"
-              code={diagnosticsCode}
-              messages={diagnosticsMessages}
-            />
+              language="ts"
+              diagnostics={diagnosticsMessages}
+            >
+              { diagnosticsCode }
+            </CodeBlock>
           </div>
 
         </div>
