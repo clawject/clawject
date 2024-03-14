@@ -4,11 +4,11 @@ import { usePrismTheme, useThemeConfig } from '@docusaurus/theme-common';
 import { containsLineNumbers, parseCodeBlockTitle, parseLanguage, parseLines, useCodeWordWrap, } from '@docusaurus/theme-common/internal';
 import { Highlight } from 'prism-react-renderer';
 import Line from '../Line';
-import CopyButton from '@theme/CodeBlock/CopyButton';
-import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
-import Container from '@theme/CodeBlock/Container';
+import CopyButton from '../CopyButton';
+import WordWrapButton from '../WordWrapButton';
+import Container from '../Container';
 import styles from './styles.module.css';
-import { CodeBlockProps } from '@site/src/theme/CodeBlock/types';
+import { CodeBlockProps } from '../types';
 import { useDiagnostics } from './useDiagnostics';
 
 // Prism languages are always lowercase

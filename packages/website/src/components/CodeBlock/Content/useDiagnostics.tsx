@@ -1,9 +1,9 @@
 import React, { RefObject, useEffect, useRef } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { ConfigProvider, Popover, Space, theme, Typography } from 'antd';
-import { ICodeDiagnostic } from '@site/src/theme/CodeBlock/types';
 import styles from './styles.module.css';
 import { useColorMode } from '@docusaurus/theme-common';
+import { ICodeDiagnostic } from '../types';
 
 const {Text} = Typography;
 

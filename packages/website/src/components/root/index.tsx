@@ -5,9 +5,9 @@ import Link from '@docusaurus/Link';
 import React from 'react';
 import { ConfigProvider, theme } from 'antd';
 import { useColorMode } from '@docusaurus/theme-common';
-
-import { ICodeDiagnostic } from '@site/src/theme/CodeBlock/types';
-import CodeBlock from '@site/src/theme/CodeBlock';
+import { ICodeDiagnostic } from '@site/src/components/CodeBlock/types';
+import CodeBlock from '@theme/CodeBlock';
+import { CodeBlockWithDiagnostics } from '@site/src/components/CodeBlock/index';
 
 const WORDS = [
   'Declarative',
@@ -314,14 +314,14 @@ export const Index = () => {
           </div>
 
           <div className="col">
-            <CodeBlock
+            <CodeBlockWithDiagnostics
               showLineNumbers
               title="main.ts"
               language="ts"
               diagnostics={diagnosticsMessages}
             >
               { diagnosticsCode }
-            </CodeBlock>
+            </CodeBlockWithDiagnostics>
           </div>
 
         </div>
