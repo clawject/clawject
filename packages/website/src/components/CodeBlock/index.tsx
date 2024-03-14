@@ -3,6 +3,7 @@ import useIsBrowser from '@docusaurus/useIsBrowser';
 import ElementContent from './Content/Element';
 import StringContent from './Content/String';
 import { CodeBlockProps } from './types';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 /**
  * Best attempt to make the children a plain string so it is copyable. If there
  * are react elements, we will not be able to copy the content, and it will
@@ -27,8 +28,12 @@ export function CodeBlockWithDiagnostics({children: rawChildren, ...props}: Code
   const CodeBlockComp =
     typeof children === 'string' ? StringContent : ElementContent;
   return (
-    <CodeBlockComp key={String(isBrowser)} {...props}>
-      {children}
-    </CodeBlockComp>
+    <BrowserOnly>
+      { () => (
+        <CodeBlockComp key={String(isBrowser)} {...props}>
+          {children}
+        </CodeBlockComp>
+      ) }
+    </BrowserOnly>
   );
 }
