@@ -1,3 +1,13 @@
+.codeDiagnosticsPopover {
+  font-size: var(--ifm-code-font-size);
+  font-family: var(--ifm-font-family-monospace);
+  color: var(--code-message-text-color);
+}
+
+.codeDiagnosticsLink {
+  font-family: var(--ifm-font-family-monospace);
+}
+
 /* Intentionally has zero specificity, so that to be able to override
 the background in custom CSS file due bug https://github.com/facebook/docusaurus/issues/3678 */
 :where(:root) {

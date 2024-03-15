@@ -82,7 +82,7 @@ function mapToJsxElement(element: Node, diagnostics: ICodeDiagnostic[], key: num
             {foundDiagnostic.relatedDiagnostics.map((relatedMessage, index) => {
               return (
                 <div className="row" key={index}>
-                  <a>
+                  <a className={styles.codeDiagnosticsLink}>
                     {relatedMessage.link}
                   </a>
                   <Space/>
