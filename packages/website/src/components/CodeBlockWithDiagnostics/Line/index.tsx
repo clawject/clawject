@@ -15,6 +15,7 @@ interface Props {
   lineDiagnostics: ICodeDiagnostic[];
 }
 
+
 function lineRenderer(line: Token[], getTokenProps: Props['getTokenProps']): React.ReactNode[] {
   return line.map((token, key) => (
     <span key={key} {...getTokenProps({token, key})} />
@@ -33,7 +34,13 @@ function mapCssToObject(style: string): Record<string, string> {
   }, {});
 }
 
-function mapToJsxElement(element: Node, diagnostics: ICodeDiagnostic[], key: number): React.ReactNode {
+let uniqKeyCounter = BigInt(0);
+
+function getNextKey() {
+  return (uniqKeyCounter++).toString();
+}
+
+function mapToJsxElement(element: Node, diagnostics: ICodeDiagnostic[]): React.ReactNode {
   if (element instanceof Text) {
     return element.textContent;
   }
@@ -59,16 +66,37 @@ function mapToJsxElement(element: Node, diagnostics: ICodeDiagnostic[], key: num
     }
 
     return acc;
-  }, {});
+  }, {} as Record<string, any>);
 
   const As = element.tagName.toLowerCase() as any;
 
-  const elementChild = Array.from(element.childNodes).map((it, index) => mapToJsxElement(it, diagnostics, key + index + 1));
+  const elementChild = Array.from(element.childNodes).map(it => mapToJsxElement(it, diagnostics));
 
-  if (foundDiagnostic) {
+  if (!foundDiagnostic) {
+    return (
+      <As
+        key={getNextKey()}
+        {...attributes}
+      >
+        { elementChild }
+      </As>
+    );
+  }
+
+  const elementToWrap = (
+    <As
+      key={getNextKey()}
+      {...attributes}
+      className={clsx(attributes.className, foundDiagnostic.highlightedRangeClassName)}
+    >
+      { elementChild }
+    </As>
+  );
+
+  if (foundDiagnostic.message) {
     return (
       <Popover
-        key={key}
+        key={getNextKey()}
         trigger="hover"
         placement={'right'}
         arrow={false}
@@ -104,23 +132,12 @@ function mapToJsxElement(element: Node, diagnostics: ICodeDiagnostic[], key: num
           </div>
         )}
       >
-        <As
-          {...attributes}
-        >
-          { elementChild }
-        </As>
+        {elementToWrap}
       </Popover>
     );
   }
 
-  return (
-    <As
-      key={key}
-      {...attributes}
-    >
-      { elementChild }
-    </As>
-  );
+  return elementToWrap;
 }
 
 const getTextNodeAtPosition = (root: Node, position: number) => {
@@ -184,20 +201,19 @@ export default function CodeBlockLine(props: Props) {
         range.setEnd(endNode.node, endNode.offset);
 
         const wrapper = document.createElement('span');
-        wrapper.classList.add(`diagnostic-message-text-decoration-${diagnostic.level}`);
         const diagnosticMessageAttribute = document.createAttribute('data-codeblock-diagnostic-message');
         diagnosticMessageAttribute.value = diagnosticIndex.toString();
         wrapper.attributes.setNamedItem(diagnosticMessageAttribute);
         wrapper.appendChild(range.extractContents());
         range.insertNode(wrapper);
 
-        newJsx.push(mapToJsxElement(lineElementCopy, lineDiagnostics, 0));
+        newJsx.push(mapToJsxElement(lineElementCopy, lineDiagnostics));
       }
     });
 
     setLineTokens(newJsx);
   }, [lineDiagnostics]);
-  const [_, cancel, reset] = useTimeoutFn(renderCallback);
+  const [_, cancel, reset] = useTimeoutFn(renderCallback, 50);
 
   useEffect(() => {
     if (!lineRef.current) {

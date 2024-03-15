@@ -140,7 +140,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
     line: 2,
     start: 24,
     width: 18,
-    level: 'error',
+    highlightedRangeClassName: 'textDecorationError',
     message: 'CE5: Could not qualify bean candidate. Found 2 injection candidates.',
     relatedDiagnostics: [
       {
@@ -169,7 +169,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
     line: 19,
     start: 2,
     width: 16,
-    level: 'error',
+    highlightedRangeClassName: 'textDecorationError',
     message: 'CE4: Can not register Bean.',
     relatedDiagnostics: [
       {
@@ -187,7 +187,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
     line: 21,
     start: 2,
     width: 16,
-    level: 'error',
+    highlightedRangeClassName: 'textDecorationError',
     message: 'CE7: Circular dependencies detected. baz → bar → quux → baz',
     relatedDiagnostics: [
       {
@@ -211,7 +211,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
     line: 25,
     start: 25,
     width: 4,
-    level: 'error',
+    highlightedRangeClassName: 'textDecorationError',
     message: 'CE8: Incorrect type. Type \'void\' not supported as a Bean type.',
     relatedDiagnostics: [
       {
@@ -220,6 +220,88 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
         message: 'is declared here.'
       }
     ]
+  },
+];
+
+const configurationsCode = `
+@Configuration
+class PetsConfiguration {
+  catRepository = Bean(Repository<Cat>);
+  dogRepository = Bean(Repository<Dog>);
+  foxRepository = Bean(Repository<Fox>);
+
+  catService = Bean(Service<Cat>);
+  dogService = Bean(Service<Dog>);
+  foxService = Bean(Service<Fox>);
+
+  @External petService = Bean(PetService);
+}
+`.trim();
+const configurationsMessages: ICodeDiagnostic[] = [
+  {
+    line: 1,
+    start: 0,
+    width: 14,
+    highlightedRangeClassName: 'textDecorationInfo',
+    message: 'Use @Configuration decorator to define single configuration',
+    relatedDiagnostics: []
+  },
+  {
+    line: 11,
+    start: 2,
+    width: 9,
+    highlightedRangeClassName: 'textDecorationInfo',
+    message: 'Specify visibility of beans outside of configuration class',
+    relatedDiagnostics: []
+  },
+];
+
+const externalizeIOCCode = `
+@Injectable()
+class PetService {
+  constructor(/* ... */) {}
+}
+
+@Configuration
+class PetConfiguration {
+  petService = Bean(PetService);
+  /* ... */
+}
+`.trim();
+const externalizeIOCMessages: ICodeDiagnostic[] = [
+  {
+    line: 1,
+    start: 0,
+    width: 13,
+    highlightedRangeClassName: 'textDecorationLineThroughRed',
+    relatedDiagnostics: []
+  },
+];
+
+const firstClassTypeSafetyCode = `
+@Injectable()
+class CatService {
+  constructor(
+    @Inject(InjectionTokens.NotCatRepository)
+    private catRepository: Repository<Cat>
+  ) {}
+}
+`.trim();
+const firstClassTypeSafetyMessages: ICodeDiagnostic[] = [
+  {
+    line: 1,
+    start: 0,
+    width: 13,
+    highlightedRangeClassName: 'textDecorationLineThroughRed',
+    relatedDiagnostics: []
+  },
+  {
+    line: 4,
+    start: 4,
+    width: 41,
+    message: 'Oops, wrong injection token. Clawject will inject dependencies only by type, so type safety is guaranteed',
+    highlightedRangeClassName: 'textDecorationError',
+    relatedDiagnostics: []
   },
 ];
 
@@ -288,6 +370,11 @@ export const Index = () => {
             <CodeBlock showLineNumbers title="Develop with Clawject" language="ts">
               {clawjectCode}
             </CodeBlock>
+            <p>
+              It's not only about the amount of code you write, but also about the clarity and readability of your code.
+              Imagine how much time Clawject can save you.
+              All this time can be used for more important things, like playing with your cat 🐈
+            </p>
           </div>
 
           <div className="col col--6">
@@ -300,7 +387,7 @@ export const Index = () => {
 
         <div className="row margin-top--lg">
 
-          <div className="col col--5">
+          <div className="col">
             <h2 className={classNames(styles.textGradient)}>
               In-editor diagnostics support
             </h2>
@@ -316,12 +403,89 @@ export const Index = () => {
           <div className="col">
             <CodeBlockWithDiagnostics
               showLineNumbers
-              title="main.ts"
               language="ts"
               diagnostics={diagnosticsMessages}
             >
               { diagnosticsCode }
             </CodeBlockWithDiagnostics>
+          </div>
+
+        </div>
+
+        <div className="row margin-top--lg">
+
+          <div className="col">
+            <CodeBlockWithDiagnostics
+              showLineNumbers
+              language="ts"
+              diagnostics={configurationsMessages}
+            >
+              {configurationsCode}
+            </CodeBlockWithDiagnostics>
+          </div>
+
+          <div className="col">
+            <h2 className={classNames(styles.textGradient)}>
+              Split your code by features
+            </h2>
+
+            <p>
+              Using @Configuration classes you can split your code by features.
+              Encapsulate beans and expose only needed to the container.
+              It will help you to keep your codebase clean and maintainable.
+            </p>
+          </div>
+
+        </div>
+
+        <div className="row margin-top--lg">
+
+          <div className="col">
+            <h2 className={classNames(styles.textGradient)}>
+              Externalize inversion of control
+            </h2>
+
+            <p>
+              Forgot about tons of decorators on your business logic classes,
+              with Clawject you can externalize inversion of control and keep your classes clean, readable
+              and focused on business logic.
+            </p>
+          </div>
+
+          <div className="col">
+            <CodeBlockWithDiagnostics
+              showLineNumbers
+              language="ts"
+              diagnostics={externalizeIOCMessages}
+            >
+              {externalizeIOCCode}
+            </CodeBlockWithDiagnostics>
+          </div>
+
+        </div>
+
+        <div className="row margin-top--lg">
+
+          <div className="col">
+            <CodeBlockWithDiagnostics
+              showLineNumbers
+              language="ts"
+              diagnostics={firstClassTypeSafetyMessages}
+            >
+              {firstClassTypeSafetyCode}
+            </CodeBlockWithDiagnostics>
+          </div>
+
+          <div className="col">
+            <h2 className={classNames(styles.textGradient)}>
+              First class type safety
+            </h2>
+
+            <p>
+              With Clawject - you will never have to worry about the injection tokens mismatch,
+              defining complex factory providers just because you want to use interfaces or generics –
+              Clawject will take care of it for you.
+            </p>
           </div>
 
         </div>

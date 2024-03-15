@@ -68,7 +68,7 @@ const config = {
       },
       navbar: {
         title: 'Clawject',
-        hideOnScroll: true,
+        hideOnScroll: false,
         logo: {
           alt: 'Clawject logo',
           src: 'img/logo.svg',

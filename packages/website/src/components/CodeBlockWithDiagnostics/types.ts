@@ -8,8 +8,8 @@ export interface ICodeDiagnostic {
   line: number;
   start: number;
   width: number;
-  level: 'info' | 'warning' | 'error';
-  message: string;
+  highlightedRangeClassName?: string;
+  message?: string;
   relatedDiagnostics: ICodeRelatedDiagnostic[];
 }
 

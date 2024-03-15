@@ -53,19 +53,22 @@
   no-repeat;
 }
 
-.diagnostic-message-text-decoration-error {
+.textDecorationError {
   text-decoration: underline red 2px;
   text-underline-offset: 4px;
 }
 
-.diagnostic-message-text-decoration-warning {
-  text-decoration: underline orange 2px;
+.textDecorationInfo {
+  background-color: var(--ifm-color-primary-lightest);
   text-underline-offset: 4px;
 }
 
-.diagnostic-message-text-decoration-info {
-  text-decoration: underline blue 2px;
-  text-underline-offset: 4px;
+[data-theme='dark'] .textDecorationInfo {
+  background-color: var(--ifm-color-primary-darkest);
+}
+
+.textDecorationLineThroughRed {
+  text-decoration: line-through red 2px;
 }
 
 /* You can override the default Infima variables here. */
@@ -84,7 +87,6 @@
 /*  --ifm-navbar-link-active-color: var(--ifm-link-color);*/
 
 /*  --ifm-footer-padding-horizontal: calc(var(--ifm-spacing-horizontal));*/
-/*  --ifm-footer-padding-vertical: calc(var(--ifm-spacing-vertical));*/
 /*}*/
 
 .footer__links {

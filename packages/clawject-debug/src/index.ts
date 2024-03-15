@@ -1,11 +1,12 @@
-import { Bean, ClawjectApplication, PostConstruct } from '@clawject/di';
+@Configuration
+class PetsConfiguration {
+  catRepository = Bean(Repository<Cat>);
+  dogRepository = Bean(Repository<Dog>);
+  foxRepository = Bean(Repository<Fox>);
 
-@ClawjectApplication
-class Application {
-  @Bean someSymbol = Symbol('someSymbol');
+  catService = Bean(Service<Cat>);
+  dogService = Bean(Service<Dog>);
+  foxService = Bean(Service<Fox>);
 
-  @PostConstruct
-  postConstruct(symbol: typeof this.someSymbol) {
-    console.log('Application started');
-  }
+  @External petService = Bean(PetService);
 }
