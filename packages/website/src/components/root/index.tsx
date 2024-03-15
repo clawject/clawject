@@ -159,7 +159,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
         message: 'is declared here.'
       },
       {
-        link: 'main.ts(17,7)',
+        link: 'main.ts(15,7)',
         highlightedPrefix: 'Application',
         message: 'is declared here.'
       }
@@ -177,7 +177,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
         message: 'Cannot find a Bean candidate for \'someString\'.'
       },
       {
-        link: 'main.ts(17,7)',
+        link: 'main.ts(15,7)',
         highlightedPrefix: 'Application',
         message: 'is declared here.'
       }
@@ -201,7 +201,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
         message: 'is declared here.'
       },
       {
-        link: 'main.ts(17,7)',
+        link: 'main.ts(15,7)',
         highlightedPrefix: 'Application',
         message: 'is declared here.'
       }
@@ -215,7 +215,7 @@ const diagnosticsMessages: ICodeDiagnostic[] = [
     message: 'CE8: Incorrect type. Type \'void\' not supported as a Bean type.',
     relatedDiagnostics: [
       {
-        link: 'main.ts(17,7)',
+        link: 'main.ts(15,7)',
         highlightedPrefix: 'Application',
         message: 'is declared here.'
       }
