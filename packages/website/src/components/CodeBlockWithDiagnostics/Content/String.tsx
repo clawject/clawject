@@ -3,13 +3,12 @@ import clsx from 'clsx';
 import { usePrismTheme, useThemeConfig } from '@docusaurus/theme-common';
 import { containsLineNumbers, parseCodeBlockTitle, parseLanguage, parseLines, useCodeWordWrap, } from '@docusaurus/theme-common/internal';
 import { Highlight } from 'prism-react-renderer';
-import Line from '../Line';
+import Line from '../Line/index';
 import CopyButton from '../CopyButton';
 import WordWrapButton from '../WordWrapButton';
 import Container from '../Container';
 import styles from './styles.module.css';
 import { CodeBlockProps } from '../types';
-import { useDiagnostics } from './useDiagnostics';
 
 // Prism languages are always lowercase
 // We want to fail-safe and allow both "php" and "PHP"
@@ -39,7 +38,6 @@ export default function CodeBlockString({
   );
   const prismTheme = usePrismTheme();
   const wordWrap = useCodeWordWrap();
-  useDiagnostics(diagnostics, wordWrap.codeBlockRef);
   // We still parse the metastring in case we want to support more syntax in the
   // future. Note that MDX doesn't strip quotes when parsing metastring:
   // "title=\"xyz\"" => title: "\"xyz\""
@@ -82,6 +80,7 @@ export default function CodeBlockString({
                     getTokenProps={getTokenProps}
                     classNames={lineClassNames[i]}
                     showLineNumbers={showLineNumbers}
+                    lineDiagnostics={diagnostics.filter(it => it.line === i + 1)}
                   />
                 ))}
               </code>

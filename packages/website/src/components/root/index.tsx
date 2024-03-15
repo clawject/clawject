@@ -5,9 +5,9 @@ import Link from '@docusaurus/Link';
 import React from 'react';
 import { ConfigProvider, theme } from 'antd';
 import { useColorMode } from '@docusaurus/theme-common';
-import { ICodeDiagnostic } from '@site/src/components/CodeBlock/types';
+import { ICodeDiagnostic } from '@site/src/components/CodeBlockWithDiagnostics/types';
 import CodeBlock from '@theme/CodeBlock';
-import { CodeBlockWithDiagnostics } from '@site/src/components/CodeBlock/index';
+import { CodeBlockWithDiagnostics } from '@site/src/components/CodeBlockWithDiagnostics';
 
 const WORDS = [
   'Declarative',
