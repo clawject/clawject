@@ -3,7 +3,7 @@
 
 ## Introduction 🚀
 
-Clawject is a full-stack, type-safe, declarative Dependency Injection framework for TypeScript
+Clawject is a full-stack, type-safe, declarative Dependency Injection framework for TypeScript.
 Clawject designed to make dependency injection and inversion of control in TypeScript as effortless,
 clear and intuitive as possible.
 It allows defining class dependencies in a declarative way, without the need to use injection tokens or any other boilerplate,
@@ -90,3 +90,7 @@ class Application {}
 - Supports both experimental and stable JavaScript decorators + no dependency on `reflect-metadata` library.
 - Minimal runtime overhead.
 - Clawject is not modifying your classes, not adding additional runtime fields, so it's safe to use it with any other library or framework.
+
+### License
+
+Clawject is [MIT licensed](https://github.com/clawject/clawject/blob/main/LICENSE).
