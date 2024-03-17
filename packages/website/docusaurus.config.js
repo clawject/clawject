@@ -89,16 +89,26 @@ const config = {
           {
             href: 'https://github.com/clawject/clawject',
             position: 'right',
-            className: 'header-github-link',
+            className: 'navbar-icon-link github-icon-link',
+            alt: 'Github repository link',
+          },
+          {
+            href: 'https://discord.gg/HVh4KMQf4T',
+            position: 'right',
+            className: 'navbar-icon-link discord-icon-link',
+            alt: 'Discord channel link',
           },
         ],
       },
       footer: {
         style: 'dark',
+        copyright: 'Copyright © 2023-2024 MIT by <a href="https://github.com/artem1458">Artem Korniev</a>',
         links: [
           {
-            label: 'Made with <3 by Artem Korniev',
-            href: 'https://github.com/artem1458',
+            html: '<a alt="Github repository link" href="https://github.com/clawject/clawject" class="footer-icon-link github-icon-link-white"></a>'
+          },
+          {
+            html: '<a alt="Discord channel link" href="https://discord.gg/HVh4KMQf4T" class="footer-icon-link discord-icon-link-white"></a>'
           },
         ],
       },
