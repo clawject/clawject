@@ -25,6 +25,7 @@ function reportAboutImports(application: Application): void {
       getCompilationContext().report(new ConfigurationAlreadyImportedInfo(
         importElement.node,
         allWithoutCurrent,
+        null,
         application,
       ));
     });

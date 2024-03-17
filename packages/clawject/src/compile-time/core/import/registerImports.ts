@@ -8,6 +8,7 @@ import { ConfigurationImportError } from '../../compilation-context/messages/err
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 import { CType } from '../type-system/CType';
+import { ConfigurationAlreadyImportedInfo } from '../../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
 
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.AbstractKeyword, 'abstract'],
@@ -70,7 +71,6 @@ export function registerImportForClassElementNode(configuration: Configuration, 
     return;
   }
 
-
   const constructSignature = constructSignatures[0];
 
   const importMemberSymbol = constructSignature.getReturnType().getSymbol();
@@ -131,6 +131,25 @@ export function registerImportForClassElementNode(configuration: Configuration, 
       null
     ));
 
+    return;
+  }
+
+  let wasAlreadyImported = false;
+
+  for (const importedConfigurationElement of configuration.importRegister.elements) {
+    if (importedConfigurationElement.resolvedConfiguration === processedConfigurationClass) {
+      wasAlreadyImported = true;
+      getCompilationContext().report(new ConfigurationAlreadyImportedInfo(
+        member,
+        [importedConfigurationElement],
+        configuration,
+        null,
+      ));
+      break;
+    }
+  }
+
+  if (wasAlreadyImported) {
     return;
   }
 

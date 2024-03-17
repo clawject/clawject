@@ -1,12 +1,26 @@
-@Configuration
-class PetsConfiguration {
-  catRepository = Bean(Repository<Cat>);
-  dogRepository = Bean(Repository<Dog>);
-  foxRepository = Bean(Repository<Fox>);
+import { Bean, ClawjectApplication, ExposeBeans, Scope } from '@clawject/di';
 
-  catService = Bean(Service<Cat>);
-  dogService = Bean(Service<Dog>);
-  foxService = Bean(Service<Fox>);
+class Foo {
+  static instantiationsCount = 0;
 
-  @External petService = Bean(PetService);
+  instantiationCount: number;
+
+  constructor() {
+    this.instantiationCount = ++Foo.instantiationsCount;
+  }
+}
+
+@ClawjectApplication
+class Application {
+  fooSingleton = Bean(Foo);
+  @Scope('singleton') fooSingletonExplicit = Bean(Foo);
+  @Scope('transient') fooTransient1 = Bean(Foo);
+  @Scope('transient') fooTransient2 = Bean(Foo);
+
+  exposed = ExposeBeans<{
+    fooSingleton: Foo,
+    fooSingletonExplicit: Foo,
+    fooTransient1: Foo,
+    fooTransient2: Foo,
+  }>();
 }

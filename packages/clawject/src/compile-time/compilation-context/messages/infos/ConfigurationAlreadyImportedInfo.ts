@@ -4,6 +4,7 @@ import { Import } from '../../../core/import/Import';
 import { Application } from '../../../core/application/Application';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { InfoCode } from '../InfoCode';
+import { Configuration } from '../../../core/configuration/Configuration';
 
 export class ConfigurationAlreadyImportedInfo extends AbstractCompilationMessage {
   public code = InfoCode.CI1;
@@ -14,9 +15,10 @@ export class ConfigurationAlreadyImportedInfo extends AbstractCompilationMessage
   constructor(
     place: ts.Node,
     otherImports: Import[],
-    relatedApplication: Application
+    relatedConfiguration: Configuration | null,
+    relatedApplication: Application | null,
   ) {
-    super(null, place, null, relatedApplication);
+    super(null, place, relatedConfiguration, relatedApplication);
 
     this.relatedImportsDetails = otherImports.map(it => getNodeDetails(it.node));
   }

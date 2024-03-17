@@ -1,6 +1,7 @@
 import { Compilation, Compiler } from 'webpack';
 import { getCompilationContext } from '../transformer/getCompilationContext';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
+import { compact } from 'lodash';
 
 const reportDIErrorsHook = (compilation: Compilation) => {
   const errors = getCompilationContext().errors;
@@ -9,7 +10,7 @@ const reportDIErrorsHook = (compilation: Compilation) => {
     return;
   }
 
-  const mapped = errors.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it));
+  const mapped = compact(errors.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it)));
   const formatted = DiagnosticsBuilder.diagnosticsToString(mapped);
 
   compilation.errors.push(formatted as any);

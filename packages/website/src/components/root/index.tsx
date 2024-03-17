@@ -8,6 +8,7 @@ import { useColorMode } from '@docusaurus/theme-common';
 import { ICodeDiagnostic } from '@site/src/components/CodeBlockWithDiagnostics/types';
 import CodeBlock from '@theme/CodeBlock';
 import { CodeBlockWithDiagnostics } from '@site/src/components/CodeBlockWithDiagnostics';
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint';
 
 const WORDS = [
   'Declarative',
@@ -406,23 +407,13 @@ export const Index = () => {
               language="ts"
               diagnostics={diagnosticsMessages}
             >
-              { diagnosticsCode }
+              {diagnosticsCode}
             </CodeBlockWithDiagnostics>
           </div>
 
         </div>
 
         <div className="row margin-top--lg">
-
-          <div className="col">
-            <CodeBlockWithDiagnostics
-              showLineNumbers
-              language="ts"
-              diagnostics={configurationsMessages}
-            >
-              {configurationsCode}
-            </CodeBlockWithDiagnostics>
-          </div>
 
           <div className="col">
             <h2 className={classNames(styles.textGradient)}>
@@ -434,6 +425,16 @@ export const Index = () => {
               Encapsulate beans and expose only needed to the container.
               It will help you to keep your codebase clean and maintainable.
             </p>
+          </div>
+
+          <div className="col">
+            <CodeBlockWithDiagnostics
+              showLineNumbers
+              language="ts"
+              diagnostics={configurationsMessages}
+            >
+              {configurationsCode}
+            </CodeBlockWithDiagnostics>
           </div>
 
         </div>
@@ -467,6 +468,18 @@ export const Index = () => {
         <div className="row margin-top--lg">
 
           <div className="col">
+            <h2 className={classNames(styles.textGradient)}>
+              First class type safety
+            </h2>
+
+            <p>
+              With Clawject - you will never have to worry about the injection tokens mismatch, type - is a source of truth.
+              Stop defining complex factory providers just because you want to use interfaces or generics –
+              Clawject will take care of it for you.
+            </p>
+          </div>
+
+          <div className="col">
             <CodeBlockWithDiagnostics
               showLineNumbers
               language="ts"
@@ -474,18 +487,6 @@ export const Index = () => {
             >
               {firstClassTypeSafetyCode}
             </CodeBlockWithDiagnostics>
-          </div>
-
-          <div className="col">
-            <h2 className={classNames(styles.textGradient)}>
-              First class type safety
-            </h2>
-
-            <p>
-              With Clawject - you will never have to worry about the injection tokens mismatch,
-              defining complex factory providers just because you want to use interfaces or generics –
-              Clawject will take care of it for you.
-            </p>
           </div>
 
         </div>

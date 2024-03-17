@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts, { compact } from 'typescript';
 import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { AbstractCompilationMessage, IRelatedConfigurationOrApplicationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
@@ -27,11 +27,15 @@ export class DiagnosticsBuilder {
       getCompilationContext().getMessages(fileName)
       : getCompilationContext().getAllMessages();
 
-    return messages
-      .map(it => this.compilationMessageToDiagnostic(it));
+    return compact(messages
+      .map(it => this.compilationMessageToDiagnostic(it)));
   }
 
-  static compilationMessageToDiagnostic(message: AbstractCompilationMessage): ts.Diagnostic {
+  static compilationMessageToDiagnostic(message: AbstractCompilationMessage): ts.Diagnostic | null {
+    if (message.type === MessageType.INFO && !getCompilationContext().languageServiceMode) {
+      return null;
+    }
+
     const diagnosticCategory = this.getDiagnosticCategory(message);
     const diagnosticsCode = this.getDiagnosticCode(message);
 

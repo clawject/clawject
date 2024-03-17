@@ -7,6 +7,7 @@ import { DecoratorRules } from '../compile-time/core/decorator-processor/Decorat
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
 import { getCompilationContext } from './getCompilationContext';
 import { Logger } from '../compile-time/logger/Logger';
+import { compact } from 'lodash';
 
 /** @public */
 const transformer = (program: ts.Program, config: unknown, transformerExtras?: TransformerExtras): ts.TransformerFactory<ts.SourceFile> => {
@@ -48,7 +49,7 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
         const errors = getCompilationContext().errors;
 
         if (errors.length > 0) {
-          const mapped = errors.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it));
+          const mapped = compact(errors.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it)));
           const formatted = DiagnosticsBuilder.diagnosticsToString(mapped);
 
           console.log(formatted);
