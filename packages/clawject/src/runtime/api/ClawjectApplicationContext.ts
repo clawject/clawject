@@ -54,5 +54,5 @@ export interface ClawjectApplicationContext<T extends ClassConstructor<any>> {
    * Closes the application context and destroys all beans.
    * Functions annotated with `@PreDestroy` will be called for all beans.
    * */
-  close(): Promise<void>;
+  destroy(): Promise<void>;
 }

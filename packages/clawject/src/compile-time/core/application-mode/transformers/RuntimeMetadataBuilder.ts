@@ -68,6 +68,11 @@ export class RuntimeMetadataBuilder {
       const beanDependencies: ApplicationBeanDependenciesMetadata[] = [];
 
       configuration.beanRegister.elements.forEach((bean) => {
+        // Skip nested beans
+        if (bean.embeddedParent !== null) {
+          return;
+        }
+
         const resolvedDependencies = application.resolvedBeanDependencies.get(bean) ?? [];
 
         const beanDependencyMetadata: (ApplicationBeanDependencyMetadata | null)[] = resolvedDependencies.map((resolvedDependency) => {

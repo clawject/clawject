@@ -1,4 +1,4 @@
-import { Bean, ClawjectApplication, ClawjectFactory, Embedded, ExposeBeans, Lazy, PostConstruct, Scope } from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans, Scope } from '@clawject/di';
 
 describe('Scope', () => {
   it('beans should be singleton and transient', async () => {

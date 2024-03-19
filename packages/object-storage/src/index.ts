@@ -1,5 +1,24 @@
 export class ClawjectObjectStorage {
-  private static store = new Map<string, object>();
+  private static StorageSymbol = Symbol.for('____ClawjectObjectStorage_76d37f0680b145159b563058a6cc0101____');
+
+  private static store: Map<string, object> = (() => {
+    const store = globalThis[this.StorageSymbol];
+
+    if (store) {
+      return store;
+    }
+
+    const newStore = new Map<string, object>();
+
+    Object.defineProperty(globalThis, this.StorageSymbol, {
+      enumerable: false,
+      value: newStore,
+      configurable: false,
+      writable: false,
+    });
+
+    return newStore;
+  })();
 
   static has(key: string): boolean {
     return this.store.has(key);

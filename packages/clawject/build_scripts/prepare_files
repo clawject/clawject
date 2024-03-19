@@ -13,5 +13,16 @@ packageJson.peerDependencies = {
   typescript: tsVersionRange
 };
 
+const cjsPackageJson = {
+  type: "commonjs",
+  version: libraryVersion,
+}
+const esmPackageJson = {
+  type: "module",
+  version: libraryVersion,
+}
+
 fs.writeFileSync('dist/package.json', JSON.stringify(packageJson, null, 2));
+fs.writeFileSync('dist/dist/cjs/package.json', JSON.stringify(cjsPackageJson, null, 2));
+fs.writeFileSync('dist/dist/esm/package.json', JSON.stringify(esmPackageJson, null, 2));
 fs.writeFileSync('src/constants/index.ts', constantsFile.replace(/LIBRARY_VERSION = '(.*)'/, `LIBRARY_VERSION = '${libraryVersion}'`));

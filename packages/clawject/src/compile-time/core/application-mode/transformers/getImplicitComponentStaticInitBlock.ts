@@ -1,10 +1,13 @@
-import ts, { factory } from 'typescript';
+import ts from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { addDoNotEditComment, DoNotEditElement } from './addDoNotEditComment';
+import { getCompilationContext } from '../../../../transformer/getCompilationContext';
+import { compact } from 'lodash';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
+  const factory = getCompilationContext().factory;
   const block = factory.createClassStaticBlockDeclaration(factory.createBlock(
     [
       factory.createExpressionStatement(factory.createCallExpression(
@@ -13,8 +16,8 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
           factory.createIdentifier('defineComponentMetadata')
         ),
         undefined,
-        [
-          factory.createThis(),
+        compact([
+          component.node.name,
           factory.createObjectLiteralExpression(
             [
               factory.createPropertyAssignment(
@@ -24,7 +27,7 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
             ],
             true
           ),
-        ]
+        ])
       ))
     ],
     true
@@ -34,6 +37,8 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
 };
 
 const getLifecycleConfigProperty = (component: Component): ts.ObjectLiteralExpression => {
+  const factory = getCompilationContext().factory;
+
   const lifecycleToClassElementNames: Record<LifecycleKind, string[]> = {
     [LifecycleKind.POST_CONSTRUCT]: [],
     [LifecycleKind.PRE_DESTROY]: [],

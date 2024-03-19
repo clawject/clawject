@@ -16,6 +16,15 @@ export class Compiler {
   }
 
   static ensureCompiled(): void {
+    try {
+      this._ensureCompiled();
+    } catch (error) {
+      LanguageServiceLogger.log('Error during compilation', error);
+      disposeLanguageService();
+    }
+  }
+
+  private static _ensureCompiled(): void {
     const pluginInfo = this.pluginInfo;
     if (!pluginInfo) {
       return;

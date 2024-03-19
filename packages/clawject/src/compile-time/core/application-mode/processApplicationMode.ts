@@ -6,6 +6,7 @@ import { CONSTANTS } from '../../../constants/index';
 import { processClassDeclaration } from './processClassDeclaration';
 import { getDecoratorVerificationErrors } from '../decorator-processor/getDecoratorVerificationErrors';
 import { Logger } from '../../logger/Logger';
+import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
 export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
@@ -32,7 +33,7 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
       return node;
     }
 
-    const transformedNode = processClassDeclaration(node, shouldAddInternalImport);
+    const transformedNode = processClassDeclaration(node, tsContext, shouldAddInternalImport);
 
     return ts.visitEachChild(transformedNode, visitor, tsContext);
   };
@@ -49,7 +50,7 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
     updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
   }
 
-  return ts.factory.updateSourceFile(
+  return getCompilationContext().factory.updateSourceFile(
     sourceFile,
     updatedStatements,
     sourceFile.isDeclarationFile,

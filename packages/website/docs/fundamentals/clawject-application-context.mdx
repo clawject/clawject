@@ -83,7 +83,7 @@ class Application {
   }
 
   @PreDestroy
-  onClose(dbConnection: DBConnection) {
+  onDestroy(dbConnection: DBConnection) {
     dbConnection.close();
     console.log('DBConnection closed');
   }
@@ -92,7 +92,7 @@ class Application {
 const applicationContext = await ClawjectFactory.createApplicationContext(Application);
 // Will print 'DBConnection initialized'
 
-await applicationContext.close();
+await applicationContext.destroy();
 // Will print 'DBConnection closed'
 ```
 
@@ -147,9 +147,9 @@ const exposedBeans = await application.getExposedBeans();
 console.log(exposedBeans); // { exposedBean1: { value: 'foo' }, exposedBean2: { value: 'bar' } }
 ```
 
-#### `.close()`
+#### `.destroy()`
 
-Closes the application context and destroys all beans.
+Destroys the application context and destroys all beans.
 Functions annotated with `@PreDestroy` will be called for all beans.
 
 ```typescript
@@ -157,7 +157,7 @@ import { Bean, ClawjectApplication, ClawjectFactory, PreDestroy } from '@clawjec
 
 class Foo {
   @PreDestroy
-  destroy() {
+  preDestroy() {
     console.log('destroy foo');
   }
 }
@@ -167,13 +167,13 @@ class Application {
   foo = Bean(Foo);
 
   @PreDestroy
-  destroy() {
+  preDestroy() {
     console.log('destroy application');
   }
 }
 
 const application = await ClawjectFactory.createApplicationContext(Application);
-await application.close();
+await application.destroy();
 // prints: 'destroy foo'
 // prints: 'destroy application'
 ```

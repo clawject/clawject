@@ -14,41 +14,12 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
       break;
     }
 
-    const beanParentConfiguration = bean.parentConfiguration;
-    const beanCandidates = beans.filter(it => {
-      //Filtering out the bean itself
-      if (it === bean) {
-        return false;
-      }
+    //Skipping beans that are embedded (really embedded)
+    if (bean.embeddedParent !== null) {
+      break;
+    }
 
-      if (it.isLifecycle()) {
-        return false;
-      }
-
-      //Accepting all beans from the current configuration
-      if (it.parentConfiguration === beanParentConfiguration) {
-        return true;
-      }
-
-      if(!it.getExternalValue()) {
-        return false;
-      }
-
-      const itConfiguration = it.parentConfiguration;
-      const resolvedConfigurationImport = application.resolvedImports.get(itConfiguration);
-
-      if (!resolvedConfigurationImport) {
-        return true;
-      }
-
-      const isItImportedAsExternal =  resolvedConfigurationImport.getExternalValue();
-
-      if (isItImportedAsExternal) {
-        return true;
-      }
-
-      return resolvedConfigurationImport.imports.some(imported => beanParentConfiguration.importRegister.hasElement(imported));
-    });
+    const beanCandidates = getBeanCandidates(bean, beans, application);
     const missingDependencies: Dependency[] = [];
 
     bean.dependencies.forEach(dependency => {
@@ -73,3 +44,51 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
     }
   }
 };
+
+function getBeanCandidates(bean: Bean, beans: Bean[], application: Application): Bean[] {
+  const beanParentConfiguration = bean.parentConfiguration;
+
+  if (bean.dependencies.size === 0) {
+    return [];
+  }
+
+  return beans.filter(it => {
+    //Filtering out the bean itself
+    if (it === bean) {
+      return false;
+    }
+
+    //Filtering out beans that are embeddeds from current bean
+    if (it.embeddedParent === bean) {
+      return false;
+    }
+
+    if (it.isLifecycle()) {
+      return false;
+    }
+
+    //Accepting all beans from the current configuration
+    if (it.parentConfiguration === beanParentConfiguration) {
+      return true;
+    }
+
+    if(!it.getExternalValue()) {
+      return false;
+    }
+
+    const itConfiguration = it.parentConfiguration;
+    const resolvedConfigurationImport = application.resolvedImports.get(itConfiguration);
+
+    if (!resolvedConfigurationImport) {
+      return true;
+    }
+
+    const isItImportedAsExternal =  resolvedConfigurationImport.getExternalValue();
+
+    if (isItImportedAsExternal) {
+      return true;
+    }
+
+    return resolvedConfigurationImport.imports.some(imported => beanParentConfiguration.importRegister.hasElement(imported));
+  });
+}

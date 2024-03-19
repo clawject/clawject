@@ -15,7 +15,7 @@ export class ClawjectApplicationContextImpl<T extends ClassConstructor<any>> imp
     return this.container.getExposedBeans();
   }
 
-  close(): Promise<void> {
-    return this.container.close();
+  destroy(): Promise<void> {
+    return this.container.destroy();
   }
 }

@@ -30,6 +30,7 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   primary = false;
   dependencies = new Set<Dependency>();
   //Only when bean is annotated with @Embedded
+  embeddedParent: Bean | null = null;
   nestedProperty: string | null = null;
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();

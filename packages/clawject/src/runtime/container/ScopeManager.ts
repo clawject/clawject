@@ -18,7 +18,7 @@ export class ScopeManager {
     }
   }
 
-  close(): void {
+  destroy(): void {
     const scopeToScopedApplicationBeans = this.applicationBeanFactory.scopeToScopedApplicationBeans;
 
     for (const [scope] of scopeToScopedApplicationBeans) {

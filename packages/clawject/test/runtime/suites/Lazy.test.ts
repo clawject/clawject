@@ -1,4 +1,4 @@
-import { Bean, ClawjectApplication, ClawjectFactory, Embedded, ExposeBeans, Lazy } from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans, Lazy } from '@clawject/di';
 
 describe('Lazy', () => {
   it('should lazily instantiate beans', async () => {

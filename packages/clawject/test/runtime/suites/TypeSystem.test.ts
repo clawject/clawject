@@ -99,7 +99,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.calledOnceWithExactly(expectedObject)).toBe(true);
@@ -202,7 +202,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.calledOnceWithExactly(expectedObject)).toBe(true);
@@ -305,7 +305,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.calledOnceWithExactly(expectedObject)).toBe(true);
@@ -468,7 +468,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.calledOnceWithExactly(expectedObject)).toBe(true);
@@ -617,7 +617,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.firstCall.firstArg).toEqual(expectedObject);
@@ -866,7 +866,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.firstCall.firstArg).toEqual(expectedObjectLifecycle);
@@ -1180,7 +1180,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.firstCall.firstArg).toEqual(expectedObjectLifecycle);
@@ -2616,7 +2616,7 @@ describe('TypeSystem', () => {
 
     expect(dependencyHolder).toEqual(expectedObject);
 
-    await application.close();
+    await application.destroy();
 
     expect(postConstructSpy.calledOnce).toBe(true);
     expect(preDestroySpy.firstCall.firstArg).toEqual(expectedObjectLifecycle);

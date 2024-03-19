@@ -16,8 +16,19 @@ import { NotSupportedError } from '../../compilation-context/messages/errors/Not
 import { CorruptedMetadataError } from '../../compilation-context/messages/errors/CorruptedMetadataError';
 import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
 import { Logger } from '../../logger/Logger';
+import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
 
 export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration, parentImportNode: ts.Node | null, parentConfiguration: Configuration | null): Configuration | null => {
+  if (!node.name) {
+    getCompilationContext().report(new IncorrectNameError(
+      'Configuration or application class must have a name.',
+      node,
+      parentConfiguration,
+      null,
+    ));
+    return null;
+  }
+
   const registeredConfiguration = ConfigurationRepository.nodeToConfiguration.get(node);
 
   if (registeredConfiguration) {

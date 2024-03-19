@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@clawject/object-storage@*":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@clawject/object-storage/-/object-storage-1.0.1.tgz#ea338922ee7ffdaa5c5b868c4eccbe5a763ffdda"
-  integrity sha512-3eXYNWZY+9wREuos1xo7xI9UKoJ6bbLu2ZiTsaAPWEHl+tmi+9ZyQjWJixGCOgnC1Pjz4Kw4CepL8efWR1vzYA==
+"@clawject/object-storage@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@clawject/object-storage/-/object-storage-1.0.3.tgz#f96510e7b3a1761475769967316c0b6325514a5e"
+  integrity sha512-HXII4GdEeL19V1E5S17nzmPVjV2KaGMXuZOd6QbpVuyN1ZXgtS359J46HuUDeZpQ6jGDKVxZXo4waM7w+lDBSw==
 
 "@colors/colors@1.6.0", "@colors/colors@^1.6.0":
   version "1.6.0"
@@ -339,10 +339,10 @@
   resolved "https://registry.yarnpkg.com/@types/triple-beam/-/triple-beam-1.3.5.tgz#74fef9ffbaa198eb8b588be029f38b00299caa2c"
   integrity sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==
 
-"@types/ts-expose-internals@npm:ts-expose-internals@5.4.2":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-5.4.2.tgz#55dd94686d7acbec3c14b5b20249f8cf8a19e049"
-  integrity sha512-pRx+jsQj5BVM+YaE6f/evvT0iaBzH7RTDQwWDTSUmBwo0p4ZgdPqoc0sd8K4mfFMvMhrhDHqrkR1ltW1qJUCvg==
+"@types/ts-expose-internals@npm:ts-expose-internals@5.0.X":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-5.0.4.tgz#fdc9220ca1fee9fe670a0258dd1be3179d26118a"
+  integrity sha512-niaAe46hnkr/XGfnyoWCkeADBWXbKlvoBl87ztUgmXqVTKfbbcLGxARlsZpzIamk9BKFKA6sryfTQKX8eRQHBQ==
 
 "@webassemblyjs/ast@1.11.6", "@webassemblyjs/ast@^1.11.5":
   version "1.11.6"

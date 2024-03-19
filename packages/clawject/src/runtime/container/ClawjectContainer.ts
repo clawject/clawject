@@ -31,9 +31,9 @@ export class ClawjectContainer {
     await this.applicationBeanFactory.postInit();
   }
 
-  async close(): Promise<void> {
-    await this.applicationBeanFactory.close();
-    this.scopeManager.close();
+  async destroy(): Promise<void> {
+    await this.applicationBeanFactory.destroy();
+    this.scopeManager.destroy();
   }
 
   getExposedBean(beanName: string): Promise<any> {

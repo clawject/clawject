@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "target": "ES5",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": false,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,

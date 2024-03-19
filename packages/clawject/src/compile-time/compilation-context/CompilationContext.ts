@@ -10,6 +10,7 @@ export class CompilationContext {
   private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
   private _program: ts.Program | null = null;
+  private _factory: ts.NodeFactory | null = null;
 
   get program(): ts.Program {
     if (!this._program) {
@@ -17,6 +18,14 @@ export class CompilationContext {
     }
 
     return this._program;
+  }
+
+  get factory(): ts.NodeFactory {
+    if (!this._factory) {
+      throw new Error('Factory is not assigned, it is an internal error, please report it on github');
+    }
+
+    return this._factory;
   }
 
   get typeChecker(): ts.TypeChecker {
@@ -50,6 +59,10 @@ export class CompilationContext {
 
   assignProgram(program: ts.Program | null): void {
     this._program = program;
+  }
+
+  assignFactory(factory: ts.NodeFactory | null): void {
+    this._factory = factory;
   }
 
   assignCancellationToken(token: () => boolean): void {

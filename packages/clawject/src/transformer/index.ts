@@ -25,6 +25,7 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
   return context => sourceFile => {
     compilationContext.assignProgram(program);
     compilationContext.assignContextualFileName(sourceFile.fileName);
+    compilationContext.assignFactory(context.factory);
     cleanup(sourceFile.fileName);
 
     DecoratorRules.init();

@@ -1,4 +1,4 @@
-import ts, { factory } from 'typescript';
+import ts from 'typescript';
 import { Configuration } from '../../configuration/Configuration';
 import { Application } from '../../application/Application';
 import { valueToASTExpression } from '../../ts/utils/valueToASTExpression';
@@ -8,8 +8,11 @@ import { filterLibraryModifiers } from '../../ts/utils/filterLibraryModifiers';
 import { BeanNode } from '../../bean/Bean';
 import { BeanKind } from '../../bean/BeanKind';
 import { RuntimeMetadataBuilder } from './RuntimeMetadataBuilder';
+import { getCompilationContext } from '../../../../transformer/getCompilationContext';
+import { compact } from 'lodash';
 
-export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclaration, configuration: Configuration, application: Application | null): ts.ClassDeclaration => {
+export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclaration, configuration: Configuration, application: Application | null): ts.ClassDeclaration | ts.ClassLikeDeclaration => {
+  const factory = getCompilationContext().factory;
   const runtimeMetadata = RuntimeMetadataBuilder.metadata(configuration, application);
   const metadataDefinitionMethod = application !== null ? 'defineApplicationMetadata' : 'defineConfigurationMetadata';
   const staticInitBlock = factory.createClassStaticBlockDeclaration(factory.createBlock(
@@ -20,10 +23,10 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
           factory.createIdentifier(metadataDefinitionMethod)
         ),
         undefined,
-        [
-          ts.factory.createThis(),
+        compact([
+          node.name,
           valueToASTExpression(runtimeMetadata)
-        ]
+        ]),
       ))
     ],
     true
@@ -42,7 +45,7 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
     case BeanKind.LIFECYCLE_METHOD: {
       const typedNode = bean.node as ts.MethodDeclaration;
 
-      return ts.factory.updateMethodDeclaration(
+      return factory.updateMethodDeclaration(
         typedNode,
         filterLibraryModifiers(typedNode.modifiers),
         undefined,
@@ -62,7 +65,7 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
       const typedNode = bean.node as ts.PropertyDeclaration | ts.GetAccessorDeclaration;
 
       if (ts.isGetAccessorDeclaration(typedNode)) {
-        return ts.factory.updateGetAccessorDeclaration(
+        return factory.updateGetAccessorDeclaration(
           typedNode,
           filterLibraryModifiers(typedNode.modifiers),
           typedNode.name,
@@ -72,7 +75,7 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
         );
       }
 
-      return ts.factory.updatePropertyDeclaration(
+      return factory.updatePropertyDeclaration(
         typedNode,
         filterLibraryModifiers(typedNode.modifiers),
         typedNode.name,

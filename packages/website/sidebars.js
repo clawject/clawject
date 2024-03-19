@@ -136,6 +136,6 @@ export default {
       ],
     },
     'errors',
-    'sponsor-us',
+    'support',
   ],
 };

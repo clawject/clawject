@@ -96,14 +96,16 @@ describe('Import', () => {
         private bazValue: boolean
       ) {}
 
-      barConfiguration = Import(Promise.resolve(BarConfiguration), () => [42] as const);
+      // no `as const` because typescript 5.0 can't infer it correctly
+      barConfiguration = Import(Promise.resolve(BarConfiguration), () => [42] as [number]);
 
       baz = Bean(Baz);
     }
 
     @ClawjectApplication
     class Application {
-      bazConfiguration = Import(Promise.resolve(BazConfiguration), async() => [false] as const);
+      // no `as const` because typescript 5.0 can't infer it correctly
+      bazConfiguration = Import(Promise.resolve(BazConfiguration), async() => [false] as [boolean]);
 
       exposed = ExposeBeans<{ foo: Foo; bar: Bar; baz: Baz }>();
     }

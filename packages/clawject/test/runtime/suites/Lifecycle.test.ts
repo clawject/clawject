@@ -76,7 +76,7 @@ describe('Lifecycle', () => {
 
     expect(preDestroySpy.notCalled).toBe(true);
 
-    await application.close();
+    await application.destroy();
 
     expect(preDestroySpy.callCount).toBe(8);
     expect(preDestroySpy.getCall(0).calledWithExactly('application', 2, 0)).toBe(true);

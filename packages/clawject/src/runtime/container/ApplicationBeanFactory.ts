@@ -49,7 +49,7 @@ export class ApplicationBeanFactory {
     await Promise.all(lifecycleInit);
   }
 
-  async close(): Promise<void> {
+  async destroy(): Promise<void> {
     await Promise.all(this.applicationBeans.map(async (applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
         if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.PRE_DESTROY].includes(applicationBean.beanClassProperty)) {

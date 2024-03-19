@@ -10,7 +10,7 @@ import { processImplicitComponents } from './processImplicitComponents';
 import { Value } from '../../../runtime/types/Value';
 import { Logger } from '../../logger/Logger';
 
-export const processClassDeclaration = (node: ts.ClassDeclaration, shouldAddInternalImport: Value<boolean>): ts.Node => {
+export const processClassDeclaration = (node: ts.ClassDeclaration, transformationContext: ts.TransformationContext, shouldAddInternalImport: Value<boolean>): ts.Node => {
   const configurationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Configuration);
   const clawjectApplicationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.ClawjectApplication);
 

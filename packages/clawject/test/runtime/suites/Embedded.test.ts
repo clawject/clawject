@@ -45,4 +45,47 @@ describe('Embedded', () => {
 
     expect(exposed).toEqual(expected);
   });
+
+  it('should ignore self embedded properties', async() => {
+    //Given
+    type EmbeddedBean = {
+      embeddedString: string;
+      nonEmbeddedString: string;
+    }
+
+    @ClawjectApplication
+    class Application {
+      @Bean nonEmbeddedString = 'nonEmbeddedStringValue';
+
+      @Bean @Embedded embeddedBean(
+        dep0: string
+      ): EmbeddedBean {
+        return { embeddedString: 'embeddedStringValue', nonEmbeddedString: dep0 };
+      }
+
+      exposed = ExposeBeans<{
+        nonEmbeddedString: string,
+        embeddedBeanEmbeddedString: string,
+        embeddedBeanNonEmbeddedString: string,
+        embeddedBean: EmbeddedBean,
+      }>();
+    }
+
+    //When
+    const application = await ClawjectFactory.createApplicationContext(Application);
+    const exposed = await application.getExposedBeans();
+
+    //Then
+    const expected = {
+      nonEmbeddedString: 'nonEmbeddedStringValue',
+      embeddedBeanEmbeddedString: 'embeddedStringValue',
+      embeddedBeanNonEmbeddedString: 'nonEmbeddedStringValue',
+      embeddedBean: {
+        embeddedString: 'embeddedStringValue',
+        nonEmbeddedString: 'nonEmbeddedStringValue',
+      },
+    };
+
+    expect(exposed).toEqual(expected);
+  });
 });

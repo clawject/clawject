@@ -1,26 +1,29 @@
-import { Bean, ClawjectApplication, ExposeBeans, Scope } from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, Embedded, ExposeBeans } from '@clawject/di';
 
-class Foo {
-  static instantiationsCount = 0;
-
-  instantiationCount: number;
-
-  constructor() {
-    this.instantiationCount = ++Foo.instantiationsCount;
-  }
+type EmbeddedBean = {
+  embeddedString: string;
+  nonEmbeddedString: string;
 }
 
 @ClawjectApplication
 class Application {
-  fooSingleton = Bean(Foo);
-  @Scope('singleton') fooSingletonExplicit = Bean(Foo);
-  @Scope('transient') fooTransient1 = Bean(Foo);
-  @Scope('transient') fooTransient2 = Bean(Foo);
+  @Bean nonEmbeddedString = 'nonEmbeddedStringValue';
+
+  @Bean @Embedded embeddedBean(
+    dep0: string
+  ): EmbeddedBean {
+    return { embeddedString: 'embeddedStringValue', nonEmbeddedString: dep0 };
+  }
 
   exposed = ExposeBeans<{
-    fooSingleton: Foo,
-    fooSingletonExplicit: Foo,
-    fooTransient1: Foo,
-    fooTransient2: Foo,
+    embeddedBeanEmbeddedString: string,
+    embeddedBeanNonEmbeddedString: string,
+    nonEmbeddedString: string,
+    embeddedBean: EmbeddedBean,
   }>();
 }
+
+const application = await ClawjectFactory.createApplicationContext(Application);
+const exposed = await application.getExposedBeans();
+
+console.log(exposed);

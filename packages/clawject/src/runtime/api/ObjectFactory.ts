@@ -1,5 +1,5 @@
 /** @public */
-export type ObjectFactoryResult = string | number | boolean | bigint | Symbol | object;
+export type ObjectFactoryResult = string | number | boolean | bigint | symbol | object;
 
 /**
  * Defines a factory which can return an Object instance when invoked.

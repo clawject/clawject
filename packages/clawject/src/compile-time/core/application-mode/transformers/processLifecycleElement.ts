@@ -1,4 +1,4 @@
-import ts, { factory } from 'typescript';
+import ts from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
@@ -89,7 +89,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   component.lifecycleRegister.register(componentLifecycle);
 
   if (ts.isMethodDeclaration(node)) {
-    return factory.updateMethodDeclaration(
+    return compilationContext.factory.updateMethodDeclaration(
       node,
       node.modifiers?.filter(modifier => !isDecoratorFromLibrary(modifier, undefined)),
       undefined,
@@ -102,7 +102,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     );
   }
 
-  return factory.updatePropertyDeclaration(
+  return compilationContext.factory.updatePropertyDeclaration(
     node,
     node.modifiers?.filter(modifier => !isDecoratorFromLibrary(modifier, undefined)),
     node.name,

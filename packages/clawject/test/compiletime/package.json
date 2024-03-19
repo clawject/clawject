@@ -3,8 +3,6 @@
   "version": "0.0.1",
   "type": "commonjs",
   "scripts": {
-    "test:4.8": "yarn upgrade clawject typescript@4.8.* ts-patch@2.1.0 && ts-patch install && jest",
-    "test:4.9": "yarn upgrade clawject typescript@4.9.* ts-patch@2.1.0 && ts-patch install && jest",
     "test:5.0": "yarn upgrade clawject typescript@5.0.* ts-patch@3.1.2 && ts-patch install && jest",
     "test:5.1": "yarn upgrade clawject typescript@5.1.* ts-patch@3.1.2 && ts-patch install && jest",
     "test:5.2": "yarn upgrade clawject typescript@5.2.* ts-patch@3.1.2 && ts-patch install && jest",

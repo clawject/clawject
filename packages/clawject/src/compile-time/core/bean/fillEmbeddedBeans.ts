@@ -14,18 +14,18 @@ export const fillEmbeddedBeans = (
   // Needed because we're modifying an original collection
   const beans = new Set(configuration.beanRegister.elements);
 
-  beans.forEach((rootBean) => {
+  beans.forEach((embeddedParent) => {
     const compilationContext = getCompilationContext();
-    const embeddedDecorator = extractDecoratorMetadata(rootBean.node, DecoratorKind.Embedded);
+    const embeddedDecorator = extractDecoratorMetadata(embeddedParent.node, DecoratorKind.Embedded);
 
     if (embeddedDecorator === null) {
       return;
     }
 
-    if (rootBean.kind === BeanKind.CLASS_CONSTRUCTOR) {
+    if (embeddedParent.kind === BeanKind.CLASS_CONSTRUCTOR) {
       compilationContext.report(new NotSupportedError(
         '@Embedded decorator is not allowed for class constructor beans.',
-        rootBean.node,
+        embeddedParent.node,
         configuration,
         null,
       ));
@@ -33,10 +33,10 @@ export const fillEmbeddedBeans = (
     }
 
     const typeChecker = compilationContext.typeChecker;
-    const rootBeanNode = rootBean.node;
+    const rootBeanNode = embeddedParent.node;
     let type = typeChecker.getTypeAtLocation(rootBeanNode);
 
-    if (rootBean.kind === BeanKind.FACTORY_METHOD || rootBean.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
+    if (embeddedParent.kind === BeanKind.FACTORY_METHOD || embeddedParent.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
       const callSignatures = typeChecker.getTypeAtLocation(rootBeanNode).getCallSignatures();
 
       if (callSignatures.length !== 1) {
@@ -61,13 +61,14 @@ export const fillEmbeddedBeans = (
 
     typeProperties.forEach(propertySymbol => {
       const bean = new Bean({
-        classMemberName: rootBean.classMemberName,
+        classMemberName: embeddedParent.classMemberName,
         parentConfiguration: configuration,
-        node: rootBean.node,
-        kind: rootBean.kind,
+        node: embeddedParent.node,
+        kind: embeddedParent.kind,
         nestedProperty: propertySymbol.name,
-        external: rootBean.external,
-        primary: rootBean.primary,
+        external: embeddedParent.external,
+        primary: embeddedParent.primary,
+        embeddedParent: embeddedParent,
       });
       bean.registerType(new CType(typeChecker.getTypeOfSymbol(propertySymbol)));
       configuration.beanRegister.register(bean);

@@ -14,7 +14,6 @@
           "mkdir -p dist/dist/cjs",
           "mkdir -p dist/dist/esm",
 
-          "sh build_scripts/create_package_json",
           "node build_scripts/prepare_files",
 
           "tsc --p tsconfig.cjs.json",
