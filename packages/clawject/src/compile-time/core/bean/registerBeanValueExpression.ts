@@ -2,7 +2,7 @@ import ts, { GetAccessorDeclaration } from 'typescript';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
-import { getBeanLazyExpressionValue } from './getBeanLazyExpressionValue';
+import { getLazyExpressionValue } from './getLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
@@ -22,7 +22,7 @@ export const registerBeanValueExpression = (
     external: getExternalValueFromNode(classElement) ?? null,
   });
 
-  bean.lazyExpression.value = getBeanLazyExpressionValue(bean);
+  bean.lazyExpression.value = getLazyExpressionValue(bean.node);
   bean.scopeExpression.value = getBeanScopeExpressionValue(bean);
   bean.conditionExpression.value = getBeanConditionExpressionValue(bean);
   bean.qualifier = getBeanQualifierValue(bean);

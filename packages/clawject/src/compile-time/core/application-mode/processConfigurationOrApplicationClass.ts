@@ -122,7 +122,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
         return;
       }
 
-      registerImportForClassElementNode(configuration, classElementNode, it.external);
+      registerImportForClassElementNode(configuration, classElementNode, it.external, null);
     });
     Logger.verboseDuration(registerImportsLabel);
 

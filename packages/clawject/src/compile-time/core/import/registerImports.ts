@@ -9,6 +9,7 @@ import { NotSupportedError } from '../../compilation-context/messages/errors/Not
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 import { CType } from '../type-system/CType';
 import { ConfigurationAlreadyImportedInfo } from '../../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
+import { getLazyExpressionValue } from '../bean/getLazyExpressionValue';
 
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
   [ts.SyntaxKind.AbstractKeyword, 'abstract'],
@@ -24,12 +25,12 @@ export const registerImports = (configuration: Configuration): void => {
         return;
       }
 
-      registerImportForClassElementNode(configuration, member, getExternalValueFromNode(member));
+      registerImportForClassElementNode(configuration, member, getExternalValueFromNode(member), getLazyExpressionValue(member));
     }
   });
 };
 
-export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration, externalValue: boolean | null): void {
+export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration, externalValue: boolean | null, lazyValue: ts.Expression | null): void {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
   let importType = new CType(nodeType);
@@ -159,6 +160,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
     resolvedConfiguration: processedConfigurationClass,
     external: externalValue,
   });
+  imp.lazyExpression.value = lazyValue;
 
   configuration.importRegister.register(imp);
 }

@@ -11,6 +11,7 @@ export interface RuntimeBeanMetadata {
 
 export interface RuntimeImportMetadata {
   classPropertyName: string;
+  lazy: boolean | null;
 }
 
 export interface RuntimeLifecycleMetadata {

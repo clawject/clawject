@@ -1,6 +1,3 @@
-![npm_version](https://img.shields.io/npm/v/%40clawject/di?style=flat-square&color=ff7aa7)
-![license](https://img.shields.io/npm/l/%40clawject%2Fdi?style=flat-square)
-
 ## Introduction 🚀
 
 Clawject is a full-stack, type-safe, declarative Dependency Injection framework for TypeScript.
@@ -10,6 +7,11 @@ It allows defining class dependencies in a declarative way, without the need to 
 especially when it comes to interfaces and generics.
 
 Check out [Clawject website](https://clawject.com/) for more details and [installation guide](https://clawject.com/docs/setup).
+
+<hr />
+
+![npm_version](https://img.shields.io/npm/v/%40clawject/di?style=flat-square&color=ff7aa7)
+![license](https://img.shields.io/npm/l/%40clawject%2Fdi?style=flat-square)
 
 ### Code with clawject
 

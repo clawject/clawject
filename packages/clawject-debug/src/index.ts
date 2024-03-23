@@ -1,29 +1,11 @@
-import { Bean, ClawjectApplication, ClawjectFactory, Embedded, ExposeBeans } from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, Configuration, Embedded, ExposeBeans, Import, Lazy } from '@clawject/di';
 
-type EmbeddedBean = {
-  embeddedString: string;
-  nonEmbeddedString: string;
-}
+@Configuration
+class Conf {}
 
 @ClawjectApplication
 class Application {
-  @Bean nonEmbeddedString = 'nonEmbeddedStringValue';
-
-  @Bean @Embedded embeddedBean(
-    dep0: string
-  ): EmbeddedBean {
-    return { embeddedString: 'embeddedStringValue', nonEmbeddedString: dep0 };
-  }
-
-  exposed = ExposeBeans<{
-    embeddedBeanEmbeddedString: string,
-    embeddedBeanNonEmbeddedString: string,
-    nonEmbeddedString: string,
-    embeddedBean: EmbeddedBean,
-  }>();
+  @Lazy(false) imp = Import(Conf);
 }
 
 const application = await ClawjectFactory.createApplicationContext(Application);
-const exposed = await application.getExposedBeans();
-
-console.log(exposed);

@@ -300,7 +300,7 @@
 "@clawject/di@../../../../dist/packages/clawject":
   version "0.0.0"
   dependencies:
-    "@clawject/object-storage" "*"
+    "@clawject/object-storage" "^1.0.3"
     chalk "^4.1.2"
     cosmiconfig "^7.0.1"
     cosmiconfig-typescript-loader "^5.0.0"
@@ -313,10 +313,10 @@
     upath "^2.0.1"
     winston "^3.11.0"
 
-"@clawject/object-storage@*":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@clawject/object-storage/-/object-storage-1.0.0.tgz#9d6becf89f0e280a348300ab765c1b99304b491f"
-  integrity sha512-j40r5U3LWqUcDNssmxj/Mu/xGtSj56Jm+Sq/QJyQUlkDEqYrEo3ksFOn+KjBC+F3IQ5qKS6OFeGidxfQJLz/fw==
+"@clawject/object-storage@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@clawject/object-storage/-/object-storage-1.0.3.tgz#f96510e7b3a1761475769967316c0b6325514a5e"
+  integrity sha512-HXII4GdEeL19V1E5S17nzmPVjV2KaGMXuZOd6QbpVuyN1ZXgtS359J46HuUDeZpQ6jGDKVxZXo4waM7w+lDBSw==
 
 "@colors/colors@1.6.0", "@colors/colors@^1.6.0":
   version "1.6.0"

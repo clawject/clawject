@@ -4,6 +4,10 @@ import { ConfigurationAlreadyImportedInfo } from '../../compilation-context/mess
 import { ConfigLoader } from '../../config/ConfigLoader';
 
 export function reportApplicationInfoAndWarnings(application: Application): void {
+  if (getCompilationContext().languageServiceMode) {
+    return;
+  }
+
   reportAboutImports(application);
 }
 

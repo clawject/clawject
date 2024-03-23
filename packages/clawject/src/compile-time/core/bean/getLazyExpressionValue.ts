@@ -1,10 +1,9 @@
 import ts, { factory } from 'typescript';
-import { Bean } from './Bean';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 
-export const getBeanLazyExpressionValue = (element: Bean): ts.Expression => {
-  const decoratorMetadata = extractDecoratorMetadata(element.node, DecoratorKind.Lazy);
+export const getLazyExpressionValue = (node: ts.Node): ts.Expression => {
+  const decoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Lazy);
 
   if (decoratorMetadata === null) {
     return factory.createNull();

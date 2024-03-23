@@ -48,7 +48,10 @@ export class RuntimeMetadataBuilder {
     });
 
     imports.forEach(it => {
-      importsMetadata.push({classPropertyName: it.classMemberName});
+      importsMetadata.push({
+        classPropertyName: it.classMemberName,
+        lazy: it.lazyExpression.getAndDisposeSafe() as any ?? false,
+      });
     });
 
     return {
