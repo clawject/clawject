@@ -1,0 +1,78 @@
+name: "🐛 Bug Report"
+description: "Something works not as expected 🤔"
+labels: ["bug"]
+assignees:
+  - artem1458
+body:
+  - type: input
+    id: title
+    validations:
+      required: true
+    attributes:
+      label: Title
+      description: A clear and concise description of what the bug is.
+      placeholder: e.g. "Compilation fails with error X"
+
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks for taking the time to fill out this bug report 🩷**
+
+        If you are not sure that your issue is a bug, you could:
+        - Read general [errors page](https://clawject.com/docs/errors)
+        - Use [Discord](https://discord.gg/HVh4KMQf4T) to ask a question
+        ---
+
+  - type: textarea
+    id: current_behaviour
+    validations:
+      required: true
+    attributes:
+      label: Current behaviour
+      description: How the issue manifests?
+
+  - type: input
+    id: minimal_reproducible_example
+    validations:
+      required: true
+    attributes:
+      label: Minimal reproducible example
+      description: |
+        An URL to some Git repository/StackBlitz/CodeSandbox project that reproduces your issue.
+        [What is a minimum reproduction?](https://minimum-reproduction.wtf)
+
+  - type: textarea
+    id: steps_to_reproduce
+    validations:
+      required: false
+    attributes:
+      label: Steps to reproduce
+
+  - type: textarea
+    id: expected_behaviour
+    validations:
+      required: true
+    attributes:
+      label: Expected behaviour
+      description: A clear and concise description of what you expected to happened (or code)
+
+  - type: input
+    id: clawject_version
+    validations:
+      required: false
+    attributes:
+      label: Clawject version
+      placeholder: 1.0.1
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+  - type: textarea
+    id: additional_information
+    validations:
+      required: false
+    attributes:
+      label: Additional information
+      description: Any additional information, configuration or data that might be helpful to reproduce the issue, eg. stack traces, logs, related issues, os version, package manager, IDE, etc.
