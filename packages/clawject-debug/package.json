@@ -15,8 +15,8 @@
     "postinstall": "ts-patch install"
   },
   "dependencies": {
-    "@clawject/di": "../../dist/packages/clawject",
-    "@clawject/language-service": "../../packages/language-service",
+    "@clawject/di": "../clawject/dist",
+    "@clawject/language-service": "../language-service",
     "dts-bundle-generator": "^9.2.4"
   },
   "devDependencies": {

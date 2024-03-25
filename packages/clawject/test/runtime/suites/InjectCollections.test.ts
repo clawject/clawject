@@ -5,7 +5,7 @@ describe('InjectCollections', () => {
     //Given
     type TA = { ta: number }
     interface IA { ia: number }
-    class CA { static counter = 0; ca = CA.counter++ }
+    class CA { static counter = 0; ca = CA.counter++; }
 
     class DependencyHolder {
       constructor(

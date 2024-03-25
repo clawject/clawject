@@ -27,7 +27,7 @@ export function ClawjectLanguageServicePlugin(modules: {
 
     let fileWatcher: tsServer.FileWatcher | undefined = undefined;
 
-    const fileWatcherCallback: tsServer.FileWatcherCallback = (fileName, eventKind, modifiedTime) => {
+    const fileWatcherCallback: tsServer.FileWatcherCallback = (fileName, eventKind) => {
       if (eventKind === tsServer.FileWatcherEventKind.Deleted) {
         fileWatcher?.close();
       }

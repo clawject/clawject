@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans, PostConstruct, PreDestroy } from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, PostConstruct, PreDestroy } from '@clawject/di';
 
 describe('Lifecycle', () => {
   it('should run lifecycle method for beans and configurations', async () => {

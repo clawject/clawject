@@ -4,7 +4,10 @@
   ],
   "ignorePatterns": [
     "!**/*",
-    "test/**/*"
+    "node_modules/",
+    "dist/",
+    "test/compiletime/suites/*/fs/**/",
+    "*.js"
   ],
   "overrides": [
     {

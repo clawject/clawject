@@ -125,7 +125,7 @@ describe('BaseInjection', () => {
     const applicationContext = await ClawjectFactory.createApplicationContext(ApplicationContext);
 
     //Then
-    const exposedBeans = await applicationContext.getExposedBeans();
+    await applicationContext.getExposedBeans();
     const allBeans = new Map<string, any>(Object.entries(await applicationContext.getExposedBeans()));
 
     expect(allBeans.get('strProperty')).toBe('strProperty');

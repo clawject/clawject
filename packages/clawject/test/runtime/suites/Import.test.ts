@@ -1,4 +1,4 @@
-import { Bean, ClawjectApplication, ClawjectFactory, Configuration, ExposeBeans, Import, PostConstruct, PreDestroy } from '@clawject/di';
+import { Bean, ClawjectApplication, ClawjectFactory, Configuration, ExposeBeans, Import } from '@clawject/di';
 
 describe('Import', () => {
   it('should Import configurations', async () => {

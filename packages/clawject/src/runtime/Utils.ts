@@ -1,12 +1,12 @@
-import { ClawjectObjectStorage } from '@clawject/object-storage';
 import { ClassConstructor } from './api/ClassConstructor';
 import { MaybeAsync } from './types/MaybeAsync';
 import { InstantiationConstructorParameters } from './api/InstantiationConstructorParameters';
+import { ObjectStorage } from './ObjectStorage';
 
 export class Utils {
 
   static createVersionedStorageOrGetIfExisted = <T>(key: string, version: number, defaultValue: T): T => {
-    const storages = ClawjectObjectStorage.getOrSetIfNotPresent(key, new Map<number, T>());
+    const storages = ObjectStorage.getOrSetIfNotPresent(key, new Map<number, T>());
 
     let storage = storages.get(version);
 

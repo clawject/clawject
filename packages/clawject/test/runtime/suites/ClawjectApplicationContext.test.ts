@@ -3,9 +3,9 @@ import { Bean, ClawjectApplication, ClawjectFactory, ExposeBeans } from '@clawje
 describe('ClawjectApplicationContext', () => {
   it('should get all exposed beans', async() => {
     //Given
-    class A { static counter = 0; name = 'a'; instantiation = A.counter++ }
-    class B { static counter = 0; name = 'b'; instantiation = B.counter++ }
-    class C { static counter = 0; name = 'c'; instantiation = C.counter++ }
+    class A { static counter = 0; name = 'a'; instantiation = A.counter++; }
+    class B { static counter = 0; name = 'b'; instantiation = B.counter++; }
+    class C { static counter = 0; name = 'c'; instantiation = C.counter++; }
 
     interface Exposed0 {
       a: A;
@@ -40,9 +40,9 @@ describe('ClawjectApplicationContext', () => {
 
   it('should get exposed beans by name', async() => {
     //Given
-    class A { static counter = 0; name = 'a'; instantiation = A.counter++ }
-    class B { static counter = 0; name = 'b'; instantiation = B.counter++ }
-    class C { static counter = 0; name = 'c'; instantiation = C.counter++ }
+    class A { static counter = 0; name = 'a'; instantiation = A.counter++; }
+    class B { static counter = 0; name = 'b'; instantiation = B.counter++; }
+    class C { static counter = 0; name = 'c'; instantiation = C.counter++; }
 
     interface Exposed0 {
       a: A;

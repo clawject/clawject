@@ -1,4 +1,5 @@
-export class ClawjectObjectStorage {
+export class ObjectStorage {
+  //NEVER CHANGE THIS VALUE
   private static StorageSymbol = Symbol.for('____ClawjectObjectStorage_76d37f0680b145159b563058a6cc0101____');
 
   private static store: Map<string, object> = (() => {

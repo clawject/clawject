@@ -10,8 +10,9 @@ Check out [Clawject website](https://clawject.com/) for more details and [instal
 
 <hr />
 
-![npm_version](https://img.shields.io/npm/v/%40clawject/di?style=flat-square&color=ff7aa7)
-![license](https://img.shields.io/npm/l/%40clawject%2Fdi?style=flat-square)
+[![npm_version](https://img.shields.io/npm/v/%40clawject/di?style=flat-square&color=ff7aa7)](https://www.npmjs.com/package/@clawject/di)
+[![license](https://img.shields.io/npm/l/%40clawject%2Fdi?style=flat-square)](https://github.com/clawject/clawject/blob/main/LICENSE)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=flat-square)](https://conventionalcommits.org)
 
 ### Code with clawject
 

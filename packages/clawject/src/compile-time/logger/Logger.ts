@@ -10,7 +10,7 @@ export class Logger {
       winston.format.align(),
       winston.format.timestamp({ format: 'DD/MM/YYYY, HH:mm:ss' }),
       winston.format.label({ label: '[clawject]' }),
-      winston.format.printf(({ level, message, meta, label, timestamp }) => {
+      winston.format.printf(({ level, message, label, timestamp }) => {
         return `${label} - ${timestamp} [${level}] ${message}`;
       })
     ),

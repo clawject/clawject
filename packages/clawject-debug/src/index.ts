@@ -5,7 +5,9 @@ class Conf {}
 
 @ClawjectApplication
 class Application {
-  @Lazy(false) imp = Import(Conf);
+  @Bean dataa= 123;
+
+  imp = Import(Conf);
 }
 
 const application = await ClawjectFactory.createApplicationContext(Application);

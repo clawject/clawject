@@ -3,9 +3,9 @@ import { Bean, ClawjectApplication, ClawjectFactory, Configuration, ExposeBeans,
 describe('ExposeBeans', () => {
   it('should expose beans', async() => {
     //Given
-    class A { static counter = 0; name = 'a'; generation = A.counter++ }
-    class B { static counter = 0; name = 'b'; generation = B.counter++ }
-    class C { static counter = 0; name = 'c'; generation = C.counter++ }
+    class A { static counter = 0; name = 'a'; generation = A.counter++; }
+    class B { static counter = 0; name = 'b'; generation = B.counter++; }
+    class C { static counter = 0; name = 'c'; generation = C.counter++; }
 
     interface Exposed {
       a: A;
@@ -37,9 +37,9 @@ describe('ExposeBeans', () => {
 
   it('should expose beans and combine exposed beans to one object', async() => {
     //Given
-    class A { static counter = 0; name = 'a'; generation = A.counter++ }
-    class B { static counter = 0; name = 'b'; generation = B.counter++ }
-    class C { static counter = 0; name = 'c'; generation = C.counter++ }
+    class A { static counter = 0; name = 'a'; generation = A.counter++; }
+    class B { static counter = 0; name = 'b'; generation = B.counter++; }
+    class C { static counter = 0; name = 'c'; generation = C.counter++; }
 
     interface Exposed0 {
       a: A;
@@ -74,9 +74,9 @@ describe('ExposeBeans', () => {
 
   it('should expose beans from nested configurations', async() => {
     //Given
-    class A { static counter = 0; name = 'a'; generation = A.counter++ }
-    class B { static counter = 0; name = 'b'; generation = B.counter++ }
-    class C { static counter = 0; name = 'c'; generation = C.counter++ }
+    class A { static counter = 0; name = 'a'; generation = A.counter++; }
+    class B { static counter = 0; name = 'b'; generation = B.counter++; }
+    class C { static counter = 0; name = 'c'; generation = C.counter++; }
 
     interface Exposed {
       a: A;
@@ -121,9 +121,9 @@ describe('ExposeBeans', () => {
 
   it('should expose collections of beans', async() => {
     //Given
-    class A { static counter = 0; name = 'a'; generation = A.counter++ }
-    class B { static counter = 0; name = 'b'; generation = B.counter++ }
-    class C { static counter = 0; name = 'c'; generation = C.counter++ }
+    class A { static counter = 0; name = 'a'; generation = A.counter++; }
+    class B { static counter = 0; name = 'b'; generation = B.counter++; }
+    class C { static counter = 0; name = 'c'; generation = C.counter++; }
 
     interface Exposed {
       a: A[];
@@ -173,9 +173,9 @@ describe('ExposeBeans', () => {
 
   it('should expose beans when beans async', async() => {
     //Given
-    class A { static counter = 0; name = 'a'; generation = A.counter++ }
-    class B { static counter = 0; name = 'b'; generation = B.counter++ }
-    class C { static counter = 0; name = 'c'; generation = C.counter++ }
+    class A { static counter = 0; name = 'a'; generation = A.counter++; }
+    class B { static counter = 0; name = 'b'; generation = B.counter++; }
+    class C { static counter = 0; name = 'c'; generation = C.counter++; }
 
     interface Exposed {
       a: A;

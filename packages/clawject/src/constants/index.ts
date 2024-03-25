@@ -2,15 +2,12 @@ import upath from 'upath';
 
 /** this line is parsed by the build script */
 const TS_VERSION_RANGE = '>=5.0 <=5.4';
-/** this line is replaced by the build script */
-const LIBRARY_VERSION = '0.0.0';
 
 export const CONSTANTS = {
   libraryName: '@clawject/di',
   libraryImportName: '$clawject_di',
   packageRootDir: upath.resolve(__dirname, '../../../'),
   typeReferenceTablePath: upath.resolve(__dirname, '../../types/index.d.ts'),
-  libraryVersion: LIBRARY_VERSION,
   tsVersionRange: TS_VERSION_RANGE,
 };
 
