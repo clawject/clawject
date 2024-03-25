@@ -4,15 +4,6 @@ labels: ["bug"]
 assignees:
   - artem1458
 body:
-  - type: input
-    id: title
-    validations:
-      required: true
-    attributes:
-      label: Title
-      description: A clear and concise description of what the bug is.
-      placeholder: e.g. "Compilation fails with error X"
-
   - type: markdown
     attributes:
       value: |
