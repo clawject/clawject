@@ -7,7 +7,6 @@
     "test": "yarn test:compiletime && yarn test:runtime",
     "test:compiletime": "sh scripts/test_compiletime.sh",
     "test:runtime": "sh scripts/test_runtime.sh",
-    "postinstall": "patch-package",
     "postversion": "node scripts/prepare_files"
   },
   "keywords": [
@@ -107,7 +106,6 @@
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "patch-package": "^8.0.0",
     "rollup": "^4.13.0",
     "ts-patch": "^3.1.2",
     "tslib": "^2.6.2",
