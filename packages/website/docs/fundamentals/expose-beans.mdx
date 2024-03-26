@@ -12,6 +12,10 @@ Clawject will validate the beans that are being exposed and will report an error
 
 Exposed beans are resolved same as [bean dependencies are resolved](/docs/fundamentals/bean#how-dependencies-are-resolved).
 
+:::warning Note that
+[@Internal](/docs/fundamentals/internal-external#internal) beans **can not** be exposed from the container.
+:::
+
 ### Usage
 
 Let's say you have a `@ClawjectApplication` class and you want to expose a bean from it.
