@@ -1,13 +1,21 @@
-import { Bean, ClawjectApplication, ClawjectFactory, Configuration, Embedded, ExposeBeans, Import, Lazy } from '@clawject/di';
+import { Bean, ClawjectApplication, ExposeBeans } from '@clawject/di';
 
-@Configuration
-class Conf {}
+class IFoo {}
+class Foo implements IFoo {}
+
+interface Exposed3 {
+  str: string;
+  num: number;
+}
 
 @ClawjectApplication
 class Application {
-  @Bean dataa= 123;
+  foo = Bean(Foo);
 
-  imp = Import(Conf);
+  @Bean num1 = 1;
+  @Bean num2 = 2;
+
+  exposed1 = ExposeBeans<{ foo: Foo }>();
+  exposed2 = ExposeBeans<{ foo: IFoo }>();
+  exposed3 = ExposeBeans<Exposed3>();
 }
-
-const application = await ClawjectFactory.createApplicationContext(Application);

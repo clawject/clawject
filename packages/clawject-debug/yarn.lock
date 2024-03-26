@@ -45,7 +45,6 @@
 "@clawject/di@../clawject/dist":
   version "0.0.0"
   dependencies:
-    "@clawject/object-storage" "^1.0.3"
     cosmiconfig "^9.0.0"
     cosmiconfig-typescript-loader "^5.0.0"
     csv-parse "^5.5.5"
@@ -60,11 +59,6 @@
 
 "@clawject/language-service@../language-service":
   version "1.0.1"
-
-"@clawject/object-storage@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@clawject/object-storage/-/object-storage-1.0.3.tgz#f96510e7b3a1761475769967316c0b6325514a5e"
-  integrity sha512-HXII4GdEeL19V1E5S17nzmPVjV2KaGMXuZOd6QbpVuyN1ZXgtS359J46HuUDeZpQ6jGDKVxZXo4waM7w+lDBSw==
 
 "@colors/colors@1.5.0":
   version "1.5.0"

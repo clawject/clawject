@@ -1,28 +1,58 @@
 [
   {
     "messageText": "Could not expose beans. Duplicate declaration of exposed beans property detected.",
-    "start": 221,
+    "start": 312,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'foo' is declared here.",
-        "start": 204,
+        "start": 295,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'foo' is declared here.",
-        "start": 246,
+        "start": 337,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'Application' is declared here.",
-        "start": 143,
+        "start": 197,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not expose beans. Could not find suitable bean candidates for 2 elements.",
+    "start": 366,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'str' is declared here.",
+        "start": 139,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'num' is declared here.",
+        "start": 154,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'Application' is declared here.",
+        "start": 197,
         "file": {
           "fileName": "/index.ts"
         }

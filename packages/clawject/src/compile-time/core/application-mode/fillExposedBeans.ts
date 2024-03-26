@@ -7,21 +7,29 @@ import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 import { CType } from '../type-system/CType';
 import { BeanExposingError } from '../../compilation-context/messages/errors/BeanExposingError';
+import { ClassPropertyWithExpressionInitializer } from '../ts/types';
+
+class ExposedBean {
+  constructor(
+    public readonly dependency: Dependency,
+    public readonly symbol: ts.Symbol,
+    public readonly exposeDeclaration: ClassPropertyWithExpressionInitializer,
+  ) {}
+}
 
 export const fillExposedBeans = (application: Application): void => {
-  const exposedBeans = new Map<string, Dependency>();
-  const dependencyToSymbol = new Map<Dependency, ts.Symbol>();
+  const exposedBeans = new Map<string, ExposedBean>();
 
   application.rootConfiguration.node.members.forEach(member => {
     if (isExposeBeansClassProperty(member)) {
-      fillExposedBeansForClassElementNode(application, member, exposedBeans, dependencyToSymbol);
+      fillExposedBeansForClassElementNode(application, member, exposedBeans);
     }
   });
 
   fillApplicationExposedBeans(application, exposedBeans);
 };
 
-function fillExposedBeansForClassElementNode(application: Application, member: ts.PropertyDeclaration, exposedBeans: Map<string, Dependency>, dependencyToSymbol: Map<Dependency, ts.Symbol>): void {
+function fillExposedBeansForClassElementNode(application: Application, member: ClassPropertyWithExpressionInitializer, exposedBeans: Map<string, ExposedBean>): void {
   const typeChecker = getCompilationContext().typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
   const callSignatures = nodeType.getCallSignatures();
@@ -59,7 +67,7 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
   beansType.getProperties().forEach(property => {
     const propertyName = property.getName();
     const propertyDeclaration = property.valueDeclaration;
-    const exposedBeanDependency = exposedBeans.get(propertyName);
+    const alreadyExposedBean = exposedBeans.get(propertyName);
 
     if (!propertyDeclaration) {
       getCompilationContext().report(new TypeQualifyError(
@@ -71,8 +79,8 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
       return;
     }
 
-    if (exposedBeanDependency) {
-      const duplicatedExposedPropertySymbol = exposedBeanDependency.getNodeSafe()?.symbol;
+    if (alreadyExposedBean) {
+      const duplicatedExposedPropertySymbol = alreadyExposedBean.dependency.getNodeSafe()?.symbol;
 
       if (duplicatedExposedPropertySymbol) {
         duplicatedExposedProperties.push(duplicatedExposedPropertySymbol);
@@ -89,8 +97,9 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
     dependency.node = propertyDeclaration as ts.PropertyDeclaration;
     dependency.parameterName = propertyName;
     dependency.cType = symbolCType;
-    exposedBeans.set(propertyName, dependency);
-    dependencyToSymbol.set(dependency, property);
+
+    const exposedBean = new ExposedBean(dependency, property, member);
+    exposedBeans.set(propertyName, exposedBean);
   });
 
   if (duplicatedExposedProperties.length !== 0) {
@@ -103,12 +112,35 @@ function fillExposedBeansForClassElementNode(application: Application, member: t
   }
 }
 
-function fillApplicationExposedBeans(application: Application, exposedBeans: Map<string, Dependency>): void {
+function fillApplicationExposedBeans(application: Application, exposedBeans: Map<string, ExposedBean>): void {
   const externalBeans = application.beansArray.filter(it => it.getExternalValue() && !it.isLifecycle());
+  const notResolvedExposings = new Map<ClassPropertyWithExpressionInitializer, ExposedBean[]>();
 
   exposedBeans.forEach((dependency, propertyName) => {
-    const resolvedDependency = DependencyResolver.resolveDependencies(dependency, externalBeans, null, application);
+    const resolvedDependency = DependencyResolver.resolveDependencies(dependency.dependency, externalBeans, null, application);
 
     application.exposedBeans.set(propertyName, resolvedDependency);
+
+    if (!resolvedDependency.isResolved()) {
+      const notResolved = notResolvedExposings.get(dependency.exposeDeclaration) ?? [];
+      notResolved.push(dependency);
+
+      if (!notResolvedExposings.has(dependency.exposeDeclaration)) {
+        notResolvedExposings.set(dependency.exposeDeclaration, notResolved);
+      }
+    }
+  });
+
+  notResolvedExposings.forEach((notExposedElements, exposeDeclaration) => {
+    if (notExposedElements.length === 0) {
+      return;
+    }
+
+    getCompilationContext().report(new BeanExposingError(
+      `Could not find suitable bean candidates for ${notExposedElements.length} elements.`,
+      exposeDeclaration.initializer,
+      notExposedElements.map(it => it.dependency.node.symbol),
+      application,
+    ));
   });
 }
