@@ -1,21 +1,56 @@
-import { Bean, ClawjectApplication, ExposeBeans } from '@clawject/di';
+import { Column, DataSource, Entity, PrimaryGeneratedColumn, Repository } from 'typeorm';
+import { Bean, External, ClawjectApplication, Configuration, Import, PostConstruct } from '@clawject/di';
 
-class IFoo {}
-class Foo implements IFoo {}
+enum UserGroup {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 
-interface Exposed3 {
-  str: string;
-  num: number;
+@Entity()
+class User {
+  @PrimaryGeneratedColumn()
+    id: number;
+
+  @Column()
+    firstName: string;
+
+  @Column()
+    lastName: string;
+
+  @Column()
+    email: string;
+
+  @Column()
+    group: UserGroup;
+}
+
+@Configuration
+@External
+class DatabaseConfiguration {
+  @Bean dataSource = (): Promise<DataSource> => {
+    const dataSource = new DataSource({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'test',
+    });
+
+    return dataSource.initialize();
+  };
+
+  @Bean userRepository = (dataSource: DataSource) => dataSource.getRepository(User);
 }
 
 @ClawjectApplication
 class Application {
-  foo = Bean(Foo);
+  databaseConfiguration = Import(DatabaseConfiguration);
 
-  @Bean num1 = 1;
-  @Bean num2 = 2;
+  @PostConstruct
+  init(
+    userRepository: Repository<User>
+  ) {
 
-  exposed1 = ExposeBeans<{ foo: Foo }>();
-  exposed2 = ExposeBeans<{ foo: IFoo }>();
-  exposed3 = ExposeBeans<Exposed3>();
+  }
 }

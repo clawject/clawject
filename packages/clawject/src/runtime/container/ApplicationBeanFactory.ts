@@ -58,7 +58,7 @@ export class ApplicationBeanFactory {
       }
     }));
 
-    await Promise.all(this.applicationBeans.map(bean => {
+    await Promise.all(this.applicationBeans.map(async bean => {
       if (bean.isLifecycleFunction) {
         return;
       }
@@ -70,13 +70,7 @@ export class ApplicationBeanFactory {
         return;
       }
 
-      if (Utils.isPromise(removedScopedObject)) {
-        return removedScopedObject.then((resolvedObject) => {
-          this.onLifecycle(resolvedObject, LifecycleKind.PRE_DESTROY);
-        });
-      } else {
-        return this.onLifecycle(removedScopedObject, LifecycleKind.PRE_DESTROY);
-      }
+      await this.onLifecycle(await removedScopedObject, LifecycleKind.PRE_DESTROY);
     }));
   }
 
@@ -193,31 +187,22 @@ export class ApplicationBeanFactory {
     await Promise.all(this.applicationBeans.map(async (applicationBean) => {
       const factory = await this.getBeanFactoryFunction(applicationBean);
 
-      const objectFactory = new ObjectFactoryImpl(() => {
+      const objectFactory = new ObjectFactoryImpl(async () => {
         const dependencies = applicationBean.dependencies?.map(it => it.getValue()) ?? [];
 
-        return Promise.all(dependencies).then((resolvedDependencies) => {
-          return this.createBeanInstance(applicationBean, factory, resolvedDependencies);
-        });
+        const resolvedDependencies = await Promise.all(dependencies);
+        return this.createBeanInstance(applicationBean, factory, resolvedDependencies);
       });
 
       applicationBean.init(objectFactory);
     }));
   }
 
-  private createBeanInstance(applicationBean: ApplicationBean, factory: (...args: any[]) => any, dependencies: DependencyInjectionValue[]): any {
-    const result = factory(...dependencies.map(it => it.value));
-
-    if (Utils.isPromise(result)) {
-      return result.then((instance) => {
-        this.registerDestructionCallbackIfNeeded(applicationBean, instance);
-        this.onLifecycle(instance, LifecycleKind.POST_CONSTRUCT);
-        return instance;
-      });
-    }
+  private async createBeanInstance(applicationBean: ApplicationBean, factory: (...args: any[]) => any, dependencies: DependencyInjectionValue[]): Promise<any> {
+    const result = await factory(...dependencies.map(it => it.value));
 
     this.registerDestructionCallbackIfNeeded(applicationBean, result);
-    this.onLifecycle(result, LifecycleKind.POST_CONSTRUCT);
+    await this.onLifecycle(result, LifecycleKind.POST_CONSTRUCT);
 
     return result;
   }
@@ -255,15 +240,17 @@ export class ApplicationBeanFactory {
     const hasLifecyclePreDestroy = componentMetadata !== null && componentMetadata.lifecycle.PRE_DESTROY.length > 0;
 
     if (hasLifecyclePreDestroy) {
-      applicationBean.getScope().registerDestructionCallback(applicationBean.name, () => {
-        this.onLifecycle(instance, LifecycleKind.PRE_DESTROY);
+      applicationBean.getScope().registerDestructionCallback(applicationBean.name, async() => {
+        await this.onLifecycle(instance, LifecycleKind.PRE_DESTROY);
       });
     }
   }
 
-  private onLifecycle(beanInstance: any, lifecycleKind: LifecycleKind): void {
-    MetadataStorage.getComponentMetadataByClassInstance(beanInstance)?.lifecycle[lifecycleKind].forEach(methodName => {
-      beanInstance[methodName]();
-    });
+  private async onLifecycle(beanInstance: any, lifecycleKind: LifecycleKind): Promise<void> {
+    await Promise.all(
+      MetadataStorage.getComponentMetadataByClassInstance(beanInstance)?.lifecycle[lifecycleKind].map(async methodName => {
+        await (beanInstance[methodName] as Function).call(beanInstance);
+      }) ?? [],
+    );
   }
 }

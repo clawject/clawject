@@ -17,7 +17,8 @@
   "dependencies": {
     "@clawject/di": "../clawject/dist",
     "@clawject/language-service": "../language-service",
-    "dts-bundle-generator": "^9.2.4"
+    "dts-bundle-generator": "^9.2.4",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@types/webpack": "^5.28.5",
