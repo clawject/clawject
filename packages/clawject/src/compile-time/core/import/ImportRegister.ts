@@ -1,9 +1,9 @@
 import { Configuration } from '../configuration/Configuration';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
 import { Import } from './Import';
-import { PropertyDeclaration } from 'typescript';
+import type * as ts from 'typescript';
 
-export class ImportRegister extends AbstractElementRegister<Import, PropertyDeclaration> {
+export class ImportRegister extends AbstractElementRegister<Import, ts.PropertyDeclaration> {
   constructor(
     public parent: Configuration,
   ) {

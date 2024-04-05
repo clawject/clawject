@@ -1,4 +1,4 @@
-import ts, { compact } from 'typescript';
+import type * as ts from 'typescript';
 import { AbstractCompilationMessage, IRelatedConfigurationOrApplicationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
 import { CircularDependenciesError } from '../compilation-context/messages/errors/CircularDependenciesError';
@@ -10,6 +10,7 @@ import { MessageType } from '../compilation-context/messages/MessageType';
 import { ConfigurationAlreadyImportedInfo } from '../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
 import { BeanExposingError } from '../compilation-context/messages/errors/BeanExposingError';
 import { Context } from '../compilation-context/Context';
+import { compact } from 'lodash';
 
 export class DiagnosticsBuilder {
   private static formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
@@ -19,7 +20,7 @@ export class DiagnosticsBuilder {
   };
 
   static diagnosticsToString(diagnostics: ts.Diagnostic[]): string {
-    return ts.formatDiagnosticsWithColorAndContext(diagnostics, this.formatDiagnosticsHost);
+    return Context.ts.formatDiagnosticsWithColorAndContext(diagnostics, this.formatDiagnosticsHost);
   }
 
   static getDiagnostics(fileName?: string): ts.Diagnostic[] {
@@ -179,11 +180,11 @@ export class DiagnosticsBuilder {
   private static getDiagnosticCategory(message: AbstractCompilationMessage): ts.DiagnosticCategory {
     switch (message.type) {
     case MessageType.INFO:
-      return ts.DiagnosticCategory.Suggestion;
+      return Context.ts.DiagnosticCategory.Suggestion;
     case MessageType.WARNING:
-      return ts.DiagnosticCategory.Warning;
+      return Context.ts.DiagnosticCategory.Warning;
     case MessageType.ERROR:
-      return ts.DiagnosticCategory.Error;
+      return Context.ts.DiagnosticCategory.Error;
     }
   }
 
@@ -195,7 +196,7 @@ export class DiagnosticsBuilder {
       length: nodeDetails.length,
       start: nodeDetails.startOffset,
       file: this.getSourceFile(relatedConfigurationMetadata.fileName),
-      category: ts.DiagnosticCategory.Message,
+      category: Context.ts.DiagnosticCategory.Message,
       code: 0,
     };
   }

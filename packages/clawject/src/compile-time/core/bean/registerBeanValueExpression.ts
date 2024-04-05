@@ -1,4 +1,4 @@
-import ts, { GetAccessorDeclaration } from 'typescript';
+import type * as ts from 'typescript';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
 import { Configuration } from '../configuration/Configuration';
@@ -12,7 +12,7 @@ import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 
 export const registerBeanValueExpression = (
   configuration: Configuration,
-  classElement: ts.PropertyDeclaration | GetAccessorDeclaration,
+  classElement: ts.PropertyDeclaration | ts.GetAccessorDeclaration,
 ): void => {
   const bean = new Bean({
     classMemberName: classElement.name.getText(),

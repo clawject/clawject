@@ -1,4 +1,4 @@
-import ts, { factory } from 'typescript';
+import type * as ts from 'typescript';
 import { isLifecycleMethodBean } from '../ts/predicates/isLifecycleMethodBean';
 import { isDecoratorFromLibrary } from '../decorator-processor/isDecoratorFromLibrary';
 import { getDecorators } from '../ts/utils/getDecorators';
@@ -39,7 +39,7 @@ export function processImplicitComponents(
     return node;
   }
 
-  return factory.updateClassDeclaration(
+  return Context.factory.updateClassDeclaration(
     node,
     node.modifiers,
     node.name,

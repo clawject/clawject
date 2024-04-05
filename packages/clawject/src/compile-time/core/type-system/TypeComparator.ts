@@ -1,4 +1,4 @@
-import ts, { ObjectFlags, TypeFlags } from 'typescript';
+import type * as ts from 'typescript';
 import { get } from 'lodash';
 import { isNotEmpty } from '../utils/isNotEmpty';
 import { ConfigLoader } from '../../config/ConfigLoader';
@@ -8,8 +8,7 @@ class ObjectTypeWrapper {
   constructor(
     public typeSymbol: ts.Symbol | undefined,
     public typeArguments: ts.Type[],
-  ) {
-  }
+  ) {}
 
   equals(other: ObjectTypeWrapper): boolean {
     return this.typeSymbol === other.typeSymbol &&
@@ -31,7 +30,7 @@ export class TypeComparator {
   }
 
   static isReferenceType(type: ts.Type): type is ts.TypeReference {
-    return this.checkObjectFlag(type, ObjectFlags.Reference);
+    return this.checkObjectFlag(type, Context.ts.ObjectFlags.Reference);
   }
 
   static compareType(source: ts.Type, target: ts.Type): boolean {
@@ -63,41 +62,41 @@ export class TypeComparator {
       return false;
     }
 
-    if (this.checkFlag(source, TypeFlags.Any) || this.checkFlag(target, TypeFlags.Any)) {
+    if (this.checkFlag(source, Context.ts.TypeFlags.Any) || this.checkFlag(target, Context.ts.TypeFlags.Any)) {
       return true;
     }
 
-    if (this.checkFlag(source, TypeFlags.Unknown) || this.checkFlag(target, TypeFlags.Unknown)) {
+    if (this.checkFlag(source, Context.ts.TypeFlags.Unknown) || this.checkFlag(target, Context.ts.TypeFlags.Unknown)) {
       return true;
     }
 
-    if (this.checkFlag(source, TypeFlags.Union)) {
+    if (this.checkFlag(source, Context.ts.TypeFlags.Union)) {
       return (source as ts.UnionType).types.every(it => this.compareType(it, target));
     }
 
-    if (this.checkFlag(source, TypeFlags.Intersection) && this.checkFlag(target, TypeFlags.Intersection)) {
+    if (this.checkFlag(source, Context.ts.TypeFlags.Intersection) && this.checkFlag(target, Context.ts.TypeFlags.Intersection)) {
       return (target as ts.IntersectionType).types.every(targetType => {
         return (source as ts.IntersectionType).types.some(sourceType => this.compareType(sourceType, targetType));
       });
     }
 
-    if (this.checkFlag(target, TypeFlags.Union)) {
+    if (this.checkFlag(target, Context.ts.TypeFlags.Union)) {
       return (target as ts.UnionType).types.some(it => this.compareType(source, it));
     }
 
-    if (this.checkFlag(target, TypeFlags.Intersection)) {
+    if (this.checkFlag(target, Context.ts.TypeFlags.Intersection)) {
       return (target as ts.IntersectionType).types.every(it => this.compareType(source, it));
     }
 
-    if (this.checkFlag(source, TypeFlags.Intersection)) {
+    if (this.checkFlag(source, Context.ts.TypeFlags.Intersection)) {
       return (source as ts.IntersectionType).types.some(it => this.compareType(it, target));
     }
 
-    if (this.checkFlag(source, TypeFlags.Primitive) !== this.checkFlag(target, TypeFlags.Primitive)) {
+    if (this.checkFlag(source, Context.ts.TypeFlags.Primitive) !== this.checkFlag(target, Context.ts.TypeFlags.Primitive)) {
       return false;
     }
 
-    if (this.checkObjectFlag(source, ObjectFlags.Anonymous) || this.checkObjectFlag(target, ObjectFlags.Anonymous)) {
+    if (this.checkObjectFlag(source, Context.ts.ObjectFlags.Anonymous) || this.checkObjectFlag(target, Context.ts.ObjectFlags.Anonymous)) {
       return this.compareAnonymousAliasSymbols(source, target);
     }
 
@@ -105,7 +104,7 @@ export class TypeComparator {
       return this.compareTupleTypes(source as ts.TupleType, target as ts.TupleType);
     }
 
-    if (this.checkFlag(source, TypeFlags.Object) && this.checkFlag(target, TypeFlags.Object)) {
+    if (this.checkFlag(source, Context.ts.TypeFlags.Object) && this.checkFlag(target, Context.ts.TypeFlags.Object)) {
       const expandedSourceTypes = this.getExpandedObjectType(source as ts.ObjectType);
       const expandedTargetTypes = this.getExpandedObjectType(target as ts.ObjectType);
 
@@ -124,7 +123,7 @@ export class TypeComparator {
 
     const baseType = type as ts.TypeReference;
     const baseTypeArguments = Context.typeChecker.getTypeArguments(baseType).filter(it => {
-      return !ts.isThisTypeParameter(it);
+      return !Context.ts.isThisTypeParameter(it);
     });
     const baseTypeSymbol = baseType.getSymbol();
     const processedElements: ObjectTypeWrapper[] = [];
@@ -142,7 +141,7 @@ export class TypeComparator {
       }
 
       typeSymbol.getDeclarations()?.forEach(declaration => {
-        if (ts.isClassDeclaration(declaration) || ts.isInterfaceDeclaration(declaration)) {
+        if (Context.ts.isClassDeclaration(declaration) || Context.ts.isInterfaceDeclaration(declaration)) {
           const typeArgumentsMap = new Map<ts.Symbol, ts.Type | null>();
           declaration.typeParameters?.forEach((it, i) => {
             typeArgumentsMap.set(it.symbol, typeArguments[i] ?? null);
@@ -154,7 +153,7 @@ export class TypeComparator {
             const memberSymbol = Context.typeChecker.getTypeAtLocation(member).getSymbol();
             const memberTypeArguments = member.typeArguments?.map(it => {
               const type = Context.typeChecker.getTypeAtLocation(it);
-              if (ts.isThisTypeParameter(type)) {
+              if (Context.ts.isThisTypeParameter(type)) {
                 return;
               }
 

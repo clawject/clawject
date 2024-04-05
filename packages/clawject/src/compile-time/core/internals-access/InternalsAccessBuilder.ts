@@ -1,6 +1,7 @@
-import ts, { factory } from 'typescript';
+import type * as ts from 'typescript';
 import upath from 'upath';
 import { CONSTANTS } from '../../../constants';
+import { Context } from '../../compilation-context/Context';
 
 export enum InternalElementKind {
   ApplicationManager = 'ApplicationManager',
@@ -28,22 +29,22 @@ export class InternalsAccessBuilder {
       'runtime/___internal___',
     );
 
-    return factory.createImportDeclaration(
+    return Context.factory.createImportDeclaration(
       undefined,
-      factory.createImportClause(
+      Context.factory.createImportClause(
         false,
         undefined,
-        factory.createNamespaceImport(this.currentIdentifier)
+        Context.factory.createNamespaceImport(this.currentIdentifier)
       ),
-      factory.createStringLiteral(importSpecifierPath),
+      Context.factory.createStringLiteral(importSpecifierPath),
       undefined
     );
   }
 
   static internalPropertyAccessExpression(elementKind: InternalElementKind): ts.PropertyAccessExpression {
-    return factory.createPropertyAccessExpression(
+    return Context.factory.createPropertyAccessExpression(
       this.currentIdentifier,
-      factory.createIdentifier(elementKind)
+      Context.factory.createIdentifier(elementKind)
     );
   }
 }

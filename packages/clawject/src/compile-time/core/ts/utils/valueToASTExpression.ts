@@ -1,14 +1,15 @@
-import ts, { factory } from 'typescript';
+import type * as ts from 'typescript';
 import { isArray, isObject } from 'lodash';
 import { createBoolean } from './createBoolean';
+import { Context } from '../../../compilation-context/Context';
 
 export const valueToASTExpression = (value: any): ts.Expression => {
   if (typeof value === 'string') {
-    return factory.createStringLiteral(value);
+    return Context.factory.createStringLiteral(value);
   }
 
   if (typeof value === 'number') {
-    return factory.createNumericLiteral(value);
+    return Context.factory.createNumericLiteral(value);
   }
 
   if (typeof value === 'boolean') {
@@ -16,14 +17,14 @@ export const valueToASTExpression = (value: any): ts.Expression => {
   }
 
   if (value === null) {
-    return factory.createNull();
+    return Context.factory.createNull();
   }
 
   if (value === undefined) {
-    return factory.createIdentifier('undefined');
+    return Context.factory.createIdentifier('undefined');
   }
 
-  if (ts.isExpression(value)) {
+  if (Context.ts.isExpression(value)) {
     return value;
   }
 
@@ -32,18 +33,18 @@ export const valueToASTExpression = (value: any): ts.Expression => {
       return valueToASTExpression(value);
     });
 
-    return factory.createArrayLiteralExpression(elements, true);
+    return Context.factory.createArrayLiteralExpression(elements, true);
   }
 
   if (isObject(value)) {
     const values = Object.entries(value).map(([key, value]) => {
-      return factory.createPropertyAssignment(
-        factory.createIdentifier(key),
+      return Context.factory.createPropertyAssignment(
+        Context.factory.createIdentifier(key),
         valueToASTExpression(value)
       );
     });
 
-    return factory.createObjectLiteralExpression(values, true);
+    return Context.factory.createObjectLiteralExpression(values, true);
   }
 
   throw new Error(`Unsupported value type: ${typeof value}, value: ${value}`);

@@ -1,8 +1,8 @@
+import type * as ts from 'typescript';
 import { Entity } from '../Entity';
 import { Configuration } from '../configuration/Configuration';
 import { PropertyDeclaration } from 'typescript';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
-import type * as ts from 'typescript';
 
 export class Import extends Entity<PropertyDeclaration> {
   declare id: string;

@@ -18,6 +18,7 @@
     "@clawject/di": "../clawject/dist",
     "@clawject/language-service": "../language-service",
     "dts-bundle-generator": "^9.2.4",
+    "mobx": "^6.12.3",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

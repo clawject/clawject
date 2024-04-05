@@ -1,7 +1,7 @@
+import type * as ts from 'typescript';
 import { Configuration } from '../configuration/Configuration';
 import { BeanKind } from './BeanKind';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
-import ts, { GetAccessorDeclaration } from 'typescript';
 import { ClassPropertyWithCallExpressionInitializer } from '../ts/types';
 import { CType } from '../type-system/CType';
 import { Bean } from './Bean';
@@ -80,7 +80,7 @@ export function fillBeanType(configuration: Configuration, bean: Bean) {
   }
 
   if (bean.kind === BeanKind.VALUE_EXPRESSION) {
-    const typedBeanNode = bean.node as ts.PropertyDeclaration | GetAccessorDeclaration;
+    const typedBeanNode = bean.node as ts.PropertyDeclaration | ts.GetAccessorDeclaration;
     const elementType = typeChecker.getTypeAtLocation(typedBeanNode);
 
     bean.registerType(new CType(elementType));

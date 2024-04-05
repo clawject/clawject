@@ -1,4 +1,4 @@
-import ts, { factory } from 'typescript';
+import type * as ts from 'typescript';
 import { DeclarationMetadataKind } from './DeclarationMetadata';
 import { CompileTimeElement } from './CompileTimeElement';
 import { Configuration } from '../configuration/Configuration';
@@ -8,6 +8,7 @@ import { ConfigurationDeclarationMetadata } from './ConfigurationDeclarationMeta
 import { valueToASTType } from '../ts/utils/valueToASTType';
 import { addDoNotEditComment, DoNotEditElement } from '../application-mode/transformers/addDoNotEditComment';
 import { mapSetToArray } from '../utils/mapSetToArray';
+import { Context } from '../../compilation-context/Context';
 
 export class DeclarationMetadataBuilder {
   private static METADATA_VERSION = 1;
@@ -39,9 +40,9 @@ export class DeclarationMetadataBuilder {
       })),
     };
 
-    const property = factory.createPropertyDeclaration(
+    const property = Context.factory.createPropertyDeclaration(
       undefined,
-      factory.createPrivateIdentifier(CompileTimeElement.COMPILE_TIME_METADATA),
+      Context.factory.createPrivateIdentifier(CompileTimeElement.COMPILE_TIME_METADATA),
       undefined,
       valueToASTType(metadata),
       undefined
