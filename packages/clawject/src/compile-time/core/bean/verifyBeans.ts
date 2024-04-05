@@ -1,22 +1,22 @@
 import { IncorrectTypeError } from '../../compilation-context/messages/errors/IncorrectTypeError';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { DuplicateNameError } from '../../compilation-context/messages/errors/DuplicateNameError';
 import { BeanKind } from './BeanKind';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Application } from '../application/Application';
+import { Context } from '../../compilation-context/Context';
 
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
-  [ts.SyntaxKind.AbstractKeyword, 'abstract'],
-  [ts.SyntaxKind.StaticKeyword, 'static'],
-  [ts.SyntaxKind.DeclareKeyword, 'declare'],
-  [ts.SyntaxKind.PrivateKeyword, 'private'],
+  [Context.ts.SyntaxKind.AbstractKeyword, 'abstract'],
+  [Context.ts.SyntaxKind.StaticKeyword, 'static'],
+  [Context.ts.SyntaxKind.DeclareKeyword, 'declare'],
+  [Context.ts.SyntaxKind.PrivateKeyword, 'private'],
 ]);
 
 export const verifyBeans = (configuration: Configuration): void => {
@@ -64,8 +64,7 @@ export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[], application:
     }
 
     if (duplicatedBeans.length > 0) {
-      const compilationContext = getCompilationContext();
-      compilationContext.report(new DuplicateNameError(
+      Context.report(new DuplicateNameError(
         null,
         bean.node.name,
         beanParentConfiguration,
@@ -78,7 +77,6 @@ export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[], application:
 
 export function verifyBeanType(bean: Bean): void {
   const parentConfiguration = bean.parentConfiguration;
-  const compilationContext = getCompilationContext();
 
   if (bean.isLifecycle()) {
     // Lifecycle methods can return anything
@@ -114,7 +112,7 @@ export function verifyBeanType(bean: Bean): void {
       typeNode = (bean.node as ClassPropertyWithArrowFunctionInitializer).initializer.type;
     }
 
-    compilationContext.report(new IncorrectTypeError(
+    Context.report(new IncorrectTypeError(
       `Type '${errorTypeName}' not supported as a Bean type.`,
       typeNode ?? bean.node,
       parentConfiguration,
@@ -126,14 +124,13 @@ export function verifyBeanType(bean: Bean): void {
 
 
 function verifyName(bean: Bean): void {
-  const compilationContext = getCompilationContext();
   const name = bean.node.name;
 
   if (isStaticallyKnownPropertyName(name)) {
     return;
   }
 
-  compilationContext.report(new NotStaticallyKnownError(
+  Context.report(new NotStaticallyKnownError(
     'Bean element should have statically known name.',
     bean.node.name,
     bean.parentConfiguration,
@@ -143,14 +140,13 @@ function verifyName(bean: Bean): void {
 }
 
 function verifyModifiers(bean: Bean): void {
-  const compilationContext = getCompilationContext();
   const restrictedModifier = bean.node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
 
   if (!restrictedModifier) {
     return;
   }
 
-  compilationContext.report(new NotSupportedError(
+  Context.report(new NotSupportedError(
     `Bean declaration should not have modifier ${RESTRICTED_MODIFIERS.get(restrictedModifier.kind)}.`,
     bean.node.name,
     bean.parentConfiguration,
@@ -160,9 +156,8 @@ function verifyModifiers(bean: Bean): void {
 }
 
 function verifyBeanInitializers(bean: Bean): void {
-  const compilationContext = getCompilationContext();
 
-  if (!ts.isPropertyDeclaration(bean.node)) {
+  if (!Context.ts.isPropertyDeclaration(bean.node)) {
     return;
   }
 
@@ -177,7 +172,7 @@ function verifyBeanInitializers(bean: Bean): void {
       return;
     }
 
-    compilationContext.report(new MissingInitializerError(
+    Context.report(new MissingInitializerError(
       null,
       bean.node,
       bean.parentConfiguration,

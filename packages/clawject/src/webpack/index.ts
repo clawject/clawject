@@ -1,10 +1,10 @@
 import { Compilation, Compiler } from 'webpack';
-import { getCompilationContext } from '../transformer/getCompilationContext';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
 import { compact } from 'lodash';
+import { Context } from '../compile-time/compilation-context/Context';
 
 const reportDIErrorsHook = (compilation: Compilation) => {
-  const errors = getCompilationContext().errors;
+  const errors = Context.errors;
 
   if (errors.length === 0) {
     return;
@@ -20,7 +20,7 @@ const reportDIErrorsHook = (compilation: Compilation) => {
 export class ClawjectWebpackPlugin {
   apply(compiler: Compiler) {
     compiler.hooks.afterEnvironment.tap(ClawjectWebpackPlugin.name, () => {
-      getCompilationContext().areErrorsHandled = true;
+      Context.areErrorsHandled = true;
     });
     compiler.hooks.afterEmit.tap(ClawjectWebpackPlugin.name, reportDIErrorsHook);
   }

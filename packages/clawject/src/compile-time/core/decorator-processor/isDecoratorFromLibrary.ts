@@ -1,13 +1,14 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { getNodeSourceDescriptor } from '../ts/utils/getNodeSourceDescriptor';
 import { DecoratorKind, DecoratorKinds } from './DecoratorKind';
+import { Context } from '../../compilation-context/Context';
 
 export function isDecoratorFromLibrary(decorator: ts.ModifierLike, kind: DecoratorKind | undefined): boolean {
-  if (!ts.isDecorator(decorator)) {
+  if (!Context.ts.isDecorator(decorator)) {
     return false;
   }
 
-  if (ts.isIdentifier(decorator.expression)) {
+  if (Context.ts.isIdentifier(decorator.expression)) {
     const nodeSourceDescriptors = getNodeSourceDescriptor(decorator.expression);
 
     if (nodeSourceDescriptors === null) {
@@ -17,7 +18,7 @@ export function isDecoratorFromLibrary(decorator: ts.ModifierLike, kind: Decorat
     return nodeSourceDescriptors.every(it => it.isLibraryNode && checkName(it.originalName, kind));
   }
 
-  if (ts.isCallExpression(decorator.expression)) {
+  if (Context.ts.isCallExpression(decorator.expression)) {
     const nodeSourceDescriptors = getNodeSourceDescriptor(decorator.expression.expression);
 
     if (nodeSourceDescriptors === null) {

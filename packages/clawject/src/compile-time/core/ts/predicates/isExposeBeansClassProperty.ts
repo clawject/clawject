@@ -1,10 +1,11 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { ClassPropertyWithExpressionInitializer } from '../types';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
+import { Context } from '../../../compilation-context/Context';
 
 export const isExposeBeansClassProperty = (node: ts.Node): node is ClassPropertyWithExpressionInitializer =>
-  ts.isPropertyDeclaration(node) && hasExportBeansClassProperty(node);
+  Context.ts.isPropertyDeclaration(node) && hasExportBeansClassProperty(node);
 
 
 function hasExportBeansClassProperty(node: ts.PropertyDeclaration): boolean {
@@ -16,7 +17,7 @@ function hasExportBeansClassProperty(node: ts.PropertyDeclaration): boolean {
 
   initializer = unwrapExpressionFromRoundBrackets(initializer);
 
-  if (!ts.isCallExpression(initializer)) {
+  if (!Context.ts.isCallExpression(initializer)) {
     return false;
   }
 

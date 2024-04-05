@@ -4,8 +4,8 @@ import { DecoratorTarget } from './DecoratorTarget';
 import path from 'path';
 import { parse } from 'csv-parse/sync';
 import { ArgsCount } from './extractDecoratorMetadata';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { DecoratorParent } from './DecoratorParent';
+import { Context } from '../../compilation-context/Context';
 
 export class DecoratorRules {
   private static wasInitialized = false;
@@ -25,17 +25,17 @@ export class DecoratorRules {
     }
 
     this.targetMatrix = csvToCompatibilityMatrix<DecoratorKind, DecoratorTarget>(
-      getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorTargets.csv')) ?? ''
+      Context.program.readFile?.(path.join(__dirname, 'csv/DecoratorTargets.csv')) ?? ''
     );
     this.parentMatrix = csvToCompatibilityMatrix<DecoratorKind, DecoratorParent>(
-      getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorParents.csv')) ?? ''
+      Context.program.readFile?.(path.join(__dirname, 'csv/DecoratorParents.csv')) ?? ''
     );
-    this.compatibilityToOtherDecoratorsMatrix =  csvToCompatibilityMatrix<DecoratorKind, DecoratorKind>(
-      getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorCompatibility.csv')) ?? ''
+    this.compatibilityToOtherDecoratorsMatrix = csvToCompatibilityMatrix<DecoratorKind, DecoratorKind>(
+      Context.program.readFile?.(path.join(__dirname, 'csv/DecoratorCompatibility.csv')) ?? ''
     );
 
-    const fileContent = getCompilationContext().program.readFile?.(path.join(__dirname, 'csv/DecoratorArguments.csv')) ?? '';
-    const values = parse(
+    const fileContent = Context.program.readFile?.(path.join(__dirname, 'csv/DecoratorArguments.csv')) ?? null;
+    const values = fileContent === null ? [] : parse(
       fileContent,
       {columns: true}
     ) as Record<string, string>[];

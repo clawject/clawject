@@ -1,9 +1,8 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { BeanKind } from './BeanKind';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { getLazyExpressionValue } from './getLazyExpressionValue';
 import { getBeanScopeExpressionValue } from './getBeanScopeExpressionValue';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
@@ -11,14 +10,14 @@ import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { getBeanQualifierValue } from './getBeanQualifierValue';
 import { getBeanConditionExpressionValue } from './getBeanConditionExpressionValue';
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
+import { Context } from '../../compilation-context/Context';
 
 export const registerBeanFactoryMethod = (
   configuration: Configuration,
   classElement: ts.MethodDeclaration,
 ): void => {
-  const compilationContext = getCompilationContext();
   if (classElement.body === undefined) {
-    compilationContext.report(new MissingInitializerError(
+    Context.report(new MissingInitializerError(
       'Method Bean should have a body.',
       classElement.name,
       configuration,

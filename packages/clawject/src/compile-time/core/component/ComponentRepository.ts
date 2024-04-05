@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Component } from './Component';
 import { unquoteString } from '../utils/unquoteString';
 

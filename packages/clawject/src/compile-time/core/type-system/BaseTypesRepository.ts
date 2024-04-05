@@ -1,8 +1,8 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { CONSTANTS } from '../../../constants';
 import { ___TypeReferenceTable___ } from '../../../runtime/api/___TypeReferenceTable___';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { CType } from './CType';
+import { Context } from '../../compilation-context/Context';
 
 type BaseTypes = {
   CArray: CType;
@@ -26,16 +26,14 @@ export class BaseTypesRepository {
       return;
     }
 
-    const compilationContext = getCompilationContext();
-
-    const libraryDeclarationFile = compilationContext.program.getSourceFile(CONSTANTS.typeReferenceTablePath);
+    const libraryDeclarationFile = Context.program.getSourceFile(CONSTANTS.typeReferenceTablePath);
 
     if (!libraryDeclarationFile) {
-      throw new Error(`${CONSTANTS.libraryName} library declaration file (${CONSTANTS.typeReferenceTablePath}) not found\n${JSON.stringify(compilationContext.program.getSourceFiles().map(it => it.fileName), null, 2)}\n`);
+      throw new Error(`${CONSTANTS.libraryName} library declaration file (${CONSTANTS.typeReferenceTablePath}) not found\n${JSON.stringify(Context.program.getSourceFiles().map(it => it.fileName), null, 2)}\n`);
     }
 
     const typeTableDeclaration = libraryDeclarationFile.statements
-      .find((it): it is ts.InterfaceDeclaration => ts.isInterfaceDeclaration(it) && it.name.getText() === '___TypeReferenceTable___');
+      .find((it): it is ts.InterfaceDeclaration => Context.ts.isInterfaceDeclaration(it) && it.name.getText() === '___TypeReferenceTable___');
 
     if (!typeTableDeclaration) {
       throw new Error(`${CONSTANTS.libraryName} type table declaration not found`);
@@ -49,13 +47,13 @@ export class BaseTypesRepository {
       }, {} as Record<keyof ___TypeReferenceTable___, ts.TypeElement>);
 
     this.baseTypes = {
-      CArray: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Array'])),
-      CSet: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Set'])),
-      CMap: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Map'])),
-      CMapStringToAny: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
-      CImportedConfiguration: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
-      CBeanConstructorFactory: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
-      CPromise: new CType(compilationContext.typeChecker.getTypeAtLocation(typesMap['Promise'])),
+      CArray: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Array'])),
+      CSet: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Set'])),
+      CMap: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Map'])),
+      CMapStringToAny: new CType(Context.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
+      CImportedConfiguration: new CType(Context.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
+      CBeanConstructorFactory: new CType(Context.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
+      CPromise: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Promise'])),
     };
   }
 

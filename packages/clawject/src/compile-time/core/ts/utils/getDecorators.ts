@@ -1,7 +1,6 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
+import { Context } from '../../../compilation-context/Context';
 
 export const getDecorators = (node: ts.Node): ts.Decorator[] => {
-  const decorators = ts.canHaveDecorators(node) ? [...(ts.getDecorators(node) ?? [])] : [];
-
-  return decorators;
+  return Context.ts.canHaveDecorators(node) ? [...(Context.ts.getDecorators(node) ?? [])] : [];
 };

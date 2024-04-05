@@ -1,6 +1,7 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { DecoratorMetadata, extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
+import { Context } from '../../../compilation-context/Context';
 
 export const getExternalValueFromNode = (node: ts.Node): boolean | null => {
   const externalDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.External);
@@ -22,11 +23,11 @@ function getValueFromMetadata(metadata: DecoratorMetadata | null, decoratorKind:
 
   const expression = args[0];
 
-  if (expression.kind === ts.SyntaxKind.TrueKeyword) {
+  if (expression.kind === Context.ts.SyntaxKind.TrueKeyword) {
     return decoratorKind === DecoratorKind.External;
   }
 
-  if (expression.kind === ts.SyntaxKind.FalseKeyword) {
+  if (expression.kind === Context.ts.SyntaxKind.FalseKeyword) {
     return decoratorKind !== DecoratorKind.External;
   }
 

@@ -1,8 +1,9 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
+import { Context } from '../../../compilation-context/Context';
 
 export const isPropertyWithArrowFunction = (node: ts.Node): boolean => {
-  if (!ts.isPropertyDeclaration(node)) {
+  if (!Context.ts.isPropertyDeclaration(node)) {
     return false;
   }
 
@@ -10,5 +11,5 @@ export const isPropertyWithArrowFunction = (node: ts.Node): boolean => {
     return false;
   }
 
-  return ts.isArrowFunction(unwrapExpressionFromRoundBrackets(node.initializer));
+  return Context.ts.isArrowFunction(unwrapExpressionFromRoundBrackets(node.initializer));
 };

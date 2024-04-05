@@ -2,7 +2,7 @@ import ts, { PropertyDeclaration, GetAccessorDeclaration } from 'typescript';
 import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
-import { getCompilationContext } from '../../../../transformer/getCompilationContext';
+import { Context } from '../../../compilation-context/Context';
 
 export const isBeanValueExpression = (
   node: ts.Node
@@ -22,7 +22,7 @@ export const isBeanValueExpression = (
   }
 
   if (node.initializer === undefined) {
-    getCompilationContext().report(new MissingInitializerError(
+    Context.report(new MissingInitializerError(
       null,
       node,
       null,

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 import { verifyDecorators } from './verifyDecorators';
@@ -13,6 +13,7 @@ import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
 import { DecoratorKind } from './DecoratorKind';
 import { getDecorators } from '../ts/utils/getDecorators';
 import { isImportClassProperty } from '../ts/predicates/isImportClassProperty';
+import { Context } from '../../compilation-context/Context';
 
 export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): AbstractCompilationMessage[] => {
   const errors: AbstractCompilationMessage[] = [];
@@ -50,9 +51,9 @@ export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): Abstr
       return;
     }
 
-    if (ts.isMethodDeclaration(it) || isPropertyWithArrowFunction(it)) {
+    if (Context.ts.isMethodDeclaration(it) || isPropertyWithArrowFunction(it)) {
       errors.push(...verifyDecorators(it, DecoratorTarget.ClassFunction, decoratorParent));
-    } else if (ts.isPropertyDeclaration(it)) {
+    } else if (Context.ts.isPropertyDeclaration(it)) {
       errors.push(...verifyDecorators(it, DecoratorTarget.ClassProperty, decoratorParent));
     }
   });

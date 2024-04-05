@@ -1,14 +1,15 @@
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import ts, { ObjectFlags, TypeFlags } from 'typescript';
 import { get } from 'lodash';
 import { isNotEmpty } from '../utils/isNotEmpty';
 import { ConfigLoader } from '../../config/ConfigLoader';
+import { Context } from '../../compilation-context/Context';
 
 class ObjectTypeWrapper {
   constructor(
     public typeSymbol: ts.Symbol | undefined,
     public typeArguments: ts.Type[],
-  ) {}
+  ) {
+  }
 
   equals(other: ObjectTypeWrapper): boolean {
     return this.typeSymbol === other.typeSymbol &&
@@ -52,9 +53,7 @@ export class TypeComparator {
   }
 
   private static _compareType(source: ts.Type, target: ts.Type): boolean {
-    const typeChecker = getCompilationContext().typeChecker;
-
-    const isAssignableByTypescript = typeChecker.isTypeAssignableTo(source, target);
+    const isAssignableByTypescript = Context.typeChecker.isTypeAssignableTo(source, target);
 
     if (ConfigLoader.get().typeSystem === 'structural') {
       return isAssignableByTypescript;
@@ -102,7 +101,7 @@ export class TypeComparator {
       return this.compareAnonymousAliasSymbols(source, target);
     }
 
-    if (typeChecker.isTupleType(source) || typeChecker.isTupleType(target)) {
+    if (Context.typeChecker.isTupleType(source) || Context.typeChecker.isTupleType(target)) {
       return this.compareTupleTypes(source as ts.TupleType, target as ts.TupleType);
     }
 
@@ -123,10 +122,8 @@ export class TypeComparator {
       return cached;
     }
 
-    const typeChecker = getCompilationContext().typeChecker;
-
     const baseType = type as ts.TypeReference;
-    const baseTypeArguments = typeChecker.getTypeArguments(baseType).filter(it => {
+    const baseTypeArguments = Context.typeChecker.getTypeArguments(baseType).filter(it => {
       return !ts.isThisTypeParameter(it);
     });
     const baseTypeSymbol = baseType.getSymbol();
@@ -154,9 +151,9 @@ export class TypeComparator {
           const heritageClausesMembers = declaration.heritageClauses?.map(it => it.types).flat() ?? [];
 
           heritageClausesMembers.forEach(member => {
-            const memberSymbol = typeChecker.getTypeAtLocation(member).getSymbol();
+            const memberSymbol = Context.typeChecker.getTypeAtLocation(member).getSymbol();
             const memberTypeArguments = member.typeArguments?.map(it => {
-              const type = typeChecker.getTypeAtLocation(it);
+              const type = Context.typeChecker.getTypeAtLocation(it);
               if (ts.isThisTypeParameter(type)) {
                 return;
               }
@@ -199,14 +196,12 @@ export class TypeComparator {
   }
 
   private static compareTupleTypes(source: ts.TupleType, target: ts.TupleType): boolean {
-    const typeChecker = getCompilationContext().typeChecker;
-
-    if (!typeChecker.isTupleType(source) || !typeChecker.isTupleType(target)) {
+    if (!Context.typeChecker.isTupleType(source) || !Context.typeChecker.isTupleType(target)) {
       return false;
     }
 
-    const targetTypeArguments = typeChecker.getTypeArguments(target);
-    const sourceTypeArguments = typeChecker.getTypeArguments(source);
+    const targetTypeArguments = Context.typeChecker.getTypeArguments(target);
+    const sourceTypeArguments = Context.typeChecker.getTypeArguments(source);
 
     if (targetTypeArguments.length !== sourceTypeArguments.length) {
       return false;

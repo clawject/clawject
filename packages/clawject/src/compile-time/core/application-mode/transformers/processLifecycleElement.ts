@@ -1,9 +1,8 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { isDecoratorFromLibrary } from '../../decorator-processor/isDecoratorFromLibrary';
 import { isStaticallyKnownPropertyName } from '../../ts/predicates/isStaticallyKnownPropertyName';
-import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 import { IncorrectNameError } from '../../../compilation-context/messages/errors/IncorrectNameError';
 import { getNameFromNodeOrNull } from '../../ts/utils/getNameFromNodeOrNull';
 import { ComponentLifecycle } from '../../component-lifecycle/ComponentLifecycle';
@@ -12,10 +11,9 @@ import { extractDecoratorMetadata } from '../../decorator-processor/extractDecor
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
 import { NotSupportedError } from '../../../compilation-context/messages/errors/NotSupportedError';
 import { NotStaticallyKnownError } from '../../../compilation-context/messages/errors/NotStaticallyKnownError';
+import { Context } from '../../../compilation-context/Context';
 
 export function processLifecycleElement(node: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer, component: Component): ts.ClassElement {
-  const compilationContext = getCompilationContext();
-
   const lifecycles = new Set<LifecycleKind>();
 
   const postConstructDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.PostConstruct);
@@ -35,7 +33,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   const argumentsLength = getArgumentsLength(node);
 
   if (argumentsLength > 0) {
-    getCompilationContext().report(new NotSupportedError(
+    Context.report(new NotSupportedError(
       'Lifecycle elements could not have arguments outside of Configuration classes.',
       node,
       null,
@@ -46,7 +44,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   }
 
   if (!node.name) {
-    getCompilationContext().report(new IncorrectNameError(
+    Context.report(new IncorrectNameError(
       'Lifecycle element should have a name.',
       node,
       null,
@@ -57,7 +55,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   }
 
   if (!isStaticallyKnownPropertyName(node.name)) {
-    getCompilationContext().report(new NotStaticallyKnownError(
+    Context.report(new NotStaticallyKnownError(
       'Lifecycle element should have statically known name.',
       node,
       null,
@@ -70,7 +68,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
   const classMemberName = getNameFromNodeOrNull(node);
 
   if (classMemberName === null) {
-    compilationContext.report(new NotStaticallyKnownError(
+    Context.report(new NotStaticallyKnownError(
       'Lifecycle element should have statically known name.',
       node,
       null,
@@ -88,8 +86,8 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
 
   component.lifecycleRegister.register(componentLifecycle);
 
-  if (ts.isMethodDeclaration(node)) {
-    return compilationContext.factory.updateMethodDeclaration(
+  if (Context.ts.isMethodDeclaration(node)) {
+    return Context.factory.updateMethodDeclaration(
       node,
       node.modifiers?.filter(modifier => !isDecoratorFromLibrary(modifier, undefined)),
       undefined,
@@ -102,7 +100,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
     );
   }
 
-  return compilationContext.factory.updatePropertyDeclaration(
+  return Context.factory.updatePropertyDeclaration(
     node,
     node.modifiers?.filter(modifier => !isDecoratorFromLibrary(modifier, undefined)),
     node.name,
@@ -113,7 +111,7 @@ export function processLifecycleElement(node: ts.MethodDeclaration | ClassProper
 }
 
 function getArgumentsLength(node: ts.MethodDeclaration | ClassPropertyWithArrowFunctionInitializer): number {
-  if (ts.isMethodDeclaration(node)) {
+  if (Context.ts.isMethodDeclaration(node)) {
     return node.parameters.length;
   }
 

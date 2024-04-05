@@ -1,14 +1,13 @@
-import ts from 'typescript';
-import { CompilationContext } from '../../compilation-context/CompilationContext';
+import type * as ts from 'typescript';
+import { Context } from '../../compilation-context/Context';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
 import { Value } from '../../../runtime/types/Value';
 import { CONSTANTS } from '../../../constants/index';
 import { processClassDeclaration } from './processClassDeclaration';
 import { getDecoratorVerificationErrors } from '../decorator-processor/getDecoratorVerificationErrors';
 import { Logger } from '../../logger/Logger';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 
-export const processApplicationMode = (compilationContext: CompilationContext, tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
+export const processApplicationMode = (tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
   if (sourceFile.isDeclarationFile) {
     return sourceFile;
@@ -18,8 +17,8 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
   InternalsAccessBuilder.setCurrentIdentifier(tsContext.factory.createUniqueName(CONSTANTS.libraryImportName));
 
   const visitor = (node: ts.Node): ts.Node => {
-    if (!ts.isClassDeclaration(node)) {
-      return ts.visitEachChild(node, visitor, tsContext);
+    if (!Context.ts.isClassDeclaration(node)) {
+      return Context.ts.visitEachChild(node, visitor, tsContext);
     }
 
     const label = `Get decorator verification errors, file: ${sourceFile.fileName}, nodeName: "${node.name?.getText()}"`;
@@ -29,18 +28,18 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
 
     //Skipping processing anything because of errors
     if (decoratorVerificationErrors.length !== 0) {
-      decoratorVerificationErrors.forEach(it => compilationContext.report(it));
+      decoratorVerificationErrors.forEach(it => Context.report(it));
       return node;
     }
 
     const transformedNode = processClassDeclaration(node, tsContext, shouldAddInternalImport);
 
-    return ts.visitEachChild(transformedNode, visitor, tsContext);
+    return Context.ts.visitEachChild(transformedNode, visitor, tsContext);
   };
 
-  const transformedFile = ts.visitNode(sourceFile, visitor) as ts.SourceFile;
+  const transformedFile = Context.ts.visitNode(sourceFile, visitor) as ts.SourceFile;
 
-  if (compilationContext.languageServiceMode) {
+  if (Context.languageServiceMode) {
     return sourceFile;
   }
 
@@ -50,7 +49,7 @@ export const processApplicationMode = (compilationContext: CompilationContext, t
     updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());
   }
 
-  return getCompilationContext().factory.updateSourceFile(
+  return Context.factory.updateSourceFile(
     sourceFile,
     updatedStatements,
     sourceFile.isDeclarationFile,

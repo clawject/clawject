@@ -1,12 +1,12 @@
 import { Configuration } from '../configuration/Configuration';
 import { Entity } from '../Entity';
-import ts from 'typescript';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import type * as ts from 'typescript';
 import { UnexpectedError } from '../../compilation-context/messages/errors/UnexpectedError';
 import { DependencyGraph } from '../dependency-graph/DependencyGraph';
 import { Bean } from '../bean/Bean';
 import { MaybeResolvedDependency } from '../dependency-resolver/MaybeResolvedDependency';
 import { ResolvedConfigurationImport } from './ResolvedConfigurationImport';
+import { Context } from '../../compilation-context/Context';
 
 export class Application extends Entity<ts.ClassDeclaration> {
   constructor(
@@ -92,7 +92,7 @@ export class Application extends Entity<ts.ClassDeclaration> {
         const resolvedConfiguration = elements[i].resolvedConfiguration;
 
         if (resolvedConfiguration === null) {
-          getCompilationContext().report(new UnexpectedError(
+          Context.report(new UnexpectedError(
             'No resolved configuration found in import.',
             this.node,
             null,

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { getNameFromNodeOrNull } from './getNameFromNodeOrNull';
 
 export interface LineColumn {

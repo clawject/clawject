@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { BeanRegister } from '../bean/BeanRegister';
 import { Entity } from '../Entity';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';

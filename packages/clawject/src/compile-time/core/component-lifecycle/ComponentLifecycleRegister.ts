@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Component } from '../component/Component';
 import { AbstractElementRegister } from '../element-register/AbstractElementRegister';
 import { ComponentLifecycle } from './ComponentLifecycle';

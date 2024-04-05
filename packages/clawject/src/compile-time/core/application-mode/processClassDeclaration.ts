@@ -1,14 +1,14 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { processConfigurationOrApplicationClass } from './processConfigurationOrApplicationClass';
 import { transformConfigurationOrApplicationClass } from './transformers/transformConfigurationOrApplicationClass';
 import { ApplicationRepository } from '../application/ApplicationRepository';
 import { processApplication } from './processApplication';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { processImplicitComponents } from './processImplicitComponents';
 import { Value } from '../../../runtime/types/Value';
 import { Logger } from '../../logger/Logger';
+import { Context } from '../../compilation-context/Context';
 
 export const processClassDeclaration = (node: ts.ClassDeclaration, transformationContext: ts.TransformationContext, shouldAddInternalImport: Value<boolean>): ts.Node => {
   const configurationDecoratorMetadata = extractDecoratorMetadata(node, DecoratorKind.Configuration);
@@ -37,7 +37,7 @@ export const processClassDeclaration = (node: ts.ClassDeclaration, transformatio
       Logger.verboseDuration(label);
     }
 
-    if (getCompilationContext().languageServiceMode) {
+    if (Context.languageServiceMode) {
       return node;
     }
 

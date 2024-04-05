@@ -1,56 +1,29 @@
-import { Column, DataSource, Entity, PrimaryGeneratedColumn, Repository } from 'typeorm';
-import { Bean, External, ClawjectApplication, Configuration, Import, PostConstruct } from '@clawject/di';
+import { Bean, ClawjectApplication } from '@clawject/di';
 
-enum UserGroup {
-  ADMIN = 'admin',
-  USER = 'user',
+class Cat {}
+
+interface ReadOnlyRepository<T> { /*...*/ }
+
+interface Repository<T> extends ReadOnlyRepository<T> { /*...*/ }
+
+class HttpRepository<T> implements Repository<T> { /*...*/ }
+
+class ReadCatsService {
+  constructor(
+    private repository: ReadOnlyRepository<Cat>
+  ) {}
 }
 
-@Entity()
-class User {
-  @PrimaryGeneratedColumn()
-    id: number;
-
-  @Column()
-    firstName: string;
-
-  @Column()
-    lastName: string;
-
-  @Column()
-    email: string;
-
-  @Column()
-    group: UserGroup;
-}
-
-@Configuration
-@External
-class DatabaseConfiguration {
-  @Bean dataSource = (): Promise<DataSource> => {
-    const dataSource = new DataSource({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'test',
-    });
-
-    return dataSource.initialize();
-  };
-
-  @Bean userRepository = (dataSource: DataSource) => dataSource.getRepository(User);
+class WriteCatsService {
+  constructor(
+    private repository: Repository<Cat>
+  ) {}
 }
 
 @ClawjectApplication
 class Application {
-  databaseConfiguration = Import(DatabaseConfiguration);
+  httpCatsRepository = Bean(HttpRepository<Cat>);
 
-  @PostConstruct
-  init(
-    userRepository: Repository<User>
-  ) {
-
-  }
+  readCatsService = Bean(ReadCatsService);
+  writeCatsService = Bean(WriteCatsService);
 }

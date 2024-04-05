@@ -1,9 +1,8 @@
 import { CircularDependenciesError } from '../../compilation-context/messages/errors/CircularDependenciesError';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { Application } from '../application/Application';
+import { Context } from '../../compilation-context/Context';
 
 export const reportAboutCircularDependencies = (application: Application) => {
-  const compilationContext = getCompilationContext();
   const cycles = application.dependencyGraph.getCycle();
 
   cycles.forEach((cycle) => {
@@ -11,7 +10,7 @@ export const reportAboutCircularDependencies = (application: Application) => {
       return;
     }
 
-    compilationContext.report(new CircularDependenciesError(
+    Context.report(new CircularDependenciesError(
       cycle[0].node,
       cycle,
       application,

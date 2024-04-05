@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { registerImportForClassElementNode, registerImports } from '../import/registerImports';
 import { registerBeans } from '../bean/registerBeans';
@@ -10,17 +10,17 @@ import { DeclarationMetadataKind } from '../declaration-metadata/DeclarationMeta
 import { ConfigurationDeclarationMetadata } from '../declaration-metadata/ConfigurationDeclarationMetadata';
 import { registerBeanFromDeclarationMetadata } from '../bean/registerBeanFromDeclarationMetadata';
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { ApplicationDeclarationMetadata } from '../declaration-metadata/ApplicationDeclarationMetadata';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { CorruptedMetadataError } from '../../compilation-context/messages/errors/CorruptedMetadataError';
 import { registerBeanDependencies } from '../dependency/registerBeanDependencies';
 import { Logger } from '../../logger/Logger';
 import { IncorrectNameError } from '../../compilation-context/messages/errors/IncorrectNameError';
+import { Context } from '../../compilation-context/Context';
 
 export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration, parentImportNode: ts.Node | null, parentConfiguration: Configuration | null): Configuration | null => {
   if (!node.name) {
-    getCompilationContext().report(new IncorrectNameError(
+    Context.report(new IncorrectNameError(
       'Configuration or application class must have a name.',
       node,
       parentConfiguration,
@@ -59,7 +59,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
     }
 
     if (parentImportNode !== null && compilationMetadata === null) {
-      getCompilationContext().report(new NotSupportedError(
+      Context.report(new NotSupportedError(
         'Only configuration and application classes can be imported in this context.',
         parentImportNode,
         parentConfiguration,
@@ -73,12 +73,12 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
     }
 
     if (compilationMetadata instanceof AbstractCompilationMessage) {
-      getCompilationContext().report(compilationMetadata);
+      Context.report(compilationMetadata);
       return null;
     }
 
     if (compilationMetadata.kind !== DeclarationMetadataKind.CONFIGURATION && compilationMetadata.kind !== DeclarationMetadataKind.APPLICATION) {
-      getCompilationContext().report(new NotSupportedError(
+      Context.report(new NotSupportedError(
         'Only configuration and application classes are supported here.',
         parentImportNode ?? node,
         parentConfiguration,
@@ -103,7 +103,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
       const classElementNode = classMemberNamesToNode[it.classPropertyName] as ts.ClassElement | undefined;
 
       if (classElementNode === undefined) {
-        getCompilationContext().report(new CorruptedMetadataError(
+        Context.report(new CorruptedMetadataError(
           `No class member declared in metadata found ${it.classPropertyName}.`,
           node,
           parentConfiguration,
@@ -112,8 +112,8 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
         return;
       }
 
-      if (!ts.isPropertyDeclaration(classElementNode)) {
-        getCompilationContext().report(new CorruptedMetadataError(
+      if (!Context.ts.isPropertyDeclaration(classElementNode)) {
+        Context.report(new CorruptedMetadataError(
           'Import element declared in metadata must be a property declaration.',
           classElementNode,
           parentConfiguration,
@@ -133,7 +133,7 @@ export const processConfigurationOrApplicationClass = (node: ts.ClassDeclaration
       const classElementNode = classMemberNamesToNode[beanDeclarationMetadata.classPropertyName] as ts.ClassElement | undefined;
 
       if (classElementNode === undefined) {
-        getCompilationContext().report(new CorruptedMetadataError(
+        Context.report(new CorruptedMetadataError(
           `No class member declared in metadata found ${beanDeclarationMetadata.classPropertyName}.`,
           node,
           parentConfiguration,

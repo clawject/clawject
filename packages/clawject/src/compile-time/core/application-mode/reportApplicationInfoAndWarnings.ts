@@ -1,10 +1,10 @@
 import { Application } from '../application/Application';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { ConfigurationAlreadyImportedInfo } from '../../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
 import { ConfigLoader } from '../../config/ConfigLoader';
+import { Context } from '../../compilation-context/Context';
 
 export function reportApplicationInfoAndWarnings(application: Application): void {
-  if (getCompilationContext().languageServiceMode) {
+  if (Context.languageServiceMode) {
     return;
   }
 
@@ -26,7 +26,7 @@ function reportAboutImports(application: Application): void {
     externalImports.forEach((importElement) => {
       const allWithoutCurrent = externalImports.filter((it) => it !== importElement);
 
-      getCompilationContext().report(new ConfigurationAlreadyImportedInfo(
+      Context.report(new ConfigurationAlreadyImportedInfo(
         importElement.node,
         allWithoutCurrent,
         null,

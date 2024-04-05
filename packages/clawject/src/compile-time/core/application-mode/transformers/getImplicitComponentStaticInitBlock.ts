@@ -1,13 +1,13 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Component } from '../../component/Component';
 import { LifecycleKind } from '../../../../runtime/types/LifecycleKind';
 import { InternalElementKind, InternalsAccessBuilder } from '../../internals-access/InternalsAccessBuilder';
 import { addDoNotEditComment, DoNotEditElement } from './addDoNotEditComment';
-import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 import { compact } from 'lodash';
+import { Context } from '../../../compilation-context/Context';
 
 export const getImplicitComponentStaticInitBlock = (component: Component): ts.ClassStaticBlockDeclaration => {
-  const factory = getCompilationContext().factory;
+  const factory = Context.factory;
   const block = factory.createClassStaticBlockDeclaration(factory.createBlock(
     [
       factory.createExpressionStatement(factory.createCallExpression(
@@ -37,7 +37,7 @@ export const getImplicitComponentStaticInitBlock = (component: Component): ts.Cl
 };
 
 const getLifecycleConfigProperty = (component: Component): ts.ObjectLiteralExpression => {
-  const factory = getCompilationContext().factory;
+  const factory = Context.factory;
 
   const lifecycleToClassElementNames: Record<LifecycleKind, string[]> = {
     [LifecycleKind.POST_CONSTRUCT]: [],

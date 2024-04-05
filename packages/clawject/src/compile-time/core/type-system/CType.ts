@@ -1,7 +1,7 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { TypeComparator } from './TypeComparator';
 import { BaseTypesRepository } from './BaseTypesRepository';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { Context } from '../../compilation-context/Context';
 
 export class CType {
   private static EMPTY_SET = new Set<string>();
@@ -11,7 +11,7 @@ export class CType {
   get relatedFileNames(): Set<string> {
     // If we are not in language service mode,
     // we don't need to calculate related files because tsc watch mode handling all file graph this for us.
-    if (!getCompilationContext().languageServiceMode) {
+    if (!Context.languageServiceMode) {
       return CType.EMPTY_SET;
     }
 
@@ -31,12 +31,12 @@ export class CType {
   }
 
   private fillRelatedFiles(type: ts.Type, relatedFileNames: Set<string>): void {
-    if (TypeComparator.checkFlag(type, ts.TypeFlags.UnionOrIntersection)) {
+    if (TypeComparator.checkFlag(type, Context.ts.TypeFlags.UnionOrIntersection)) {
       const unionOrIntersectionType = type as ts.UnionOrIntersectionType;
       unionOrIntersectionType.types.forEach(it => this.fillRelatedFiles(it, relatedFileNames));
     }
 
-    if (TypeComparator.checkFlag(type, ts.TypeFlags.Object)) {
+    if (TypeComparator.checkFlag(type, Context.ts.TypeFlags.Object)) {
       const expandedObjectTypes = TypeComparator.getExpandedObjectType(type as ts.ObjectType);
 
       expandedObjectTypes.forEach(it => {
@@ -77,46 +77,46 @@ export class CType {
 
   getTypeArguments(): CType[] | null {
     if (TypeComparator.isReferenceType(this.tsType)) {
-      return getCompilationContext().typeChecker.getTypeArguments(this.tsType).map(it => new CType(it));
+      return Context.typeChecker.getTypeArguments(this.tsType).map(it => new CType(it));
     }
 
     return null;
   }
 
   isUnionOrIntersection(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.UnionOrIntersection);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.UnionOrIntersection);
   }
 
   isUnion(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Union);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Union);
   }
 
   isBoolean(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Boolean);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Boolean);
   }
 
   isVoidLike(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.VoidLike);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.VoidLike);
   }
 
   isUndefined(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Undefined);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Undefined);
   }
 
   isVoid(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Null);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Null);
   }
 
   isNull(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Null);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Null);
   }
 
   isNever(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.Never);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Never);
   }
 
   isSymbol(): boolean {
-    return TypeComparator.checkFlag(this.tsType, ts.TypeFlags.ESSymbol);
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.ESSymbol);
   }
 
   isArray(): boolean {
@@ -140,8 +140,7 @@ export class CType {
   }
 
   getPromisedType(): CType | null {
-    const typeChecker = getCompilationContext().typeChecker;
-    const promisedType = typeChecker.getPromisedTypeOfPromise(this.tsType);
+    const promisedType = Context.typeChecker.getPromisedTypeOfPromise(this.tsType);
 
     if (!promisedType) {
       return null;

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Configuration } from '../configuration/Configuration';
 import { BeanDeclarationMetadata } from '../declaration-metadata/ConfigurationDeclarationMetadata';
 import { Bean, BeanNode } from './Bean';

@@ -1,15 +1,13 @@
-import ts from 'typescript';
-import { getCompilationContext } from './getCompilationContext';
+import type * as ts from 'typescript';
 import { ConfigurationRepository } from '../compile-time/core/configuration/ConfigurationRepository';
 import { DeclarationMetadataBuilder } from '../compile-time/core/declaration-metadata/DeclarationMetadataBuilder';
 import { ApplicationRepository } from '../compile-time/core/application/ApplicationRepository';
+import { Context } from '../compile-time/compilation-context/Context';
 
 /** @public */
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {
-  const compilationContext = getCompilationContext();
-
   return context => (sourceFile): ts.SourceFile => {
-    compilationContext.assignProgram(program);
+    Context.assignProgram(program);
 
     if (!ConfigurationRepository.fileNameToConfigurations.has(sourceFile.fileName) && !ApplicationRepository.fileNameToApplications.has(sourceFile.fileName)) {
       return sourceFile;
@@ -17,12 +15,12 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
 
     const visitor = (node: ts.Node): ts.Node => {
       if (!node.original) {
-        return ts.visitEachChild(node, visitor, context);
+        return Context.ts.visitEachChild(node, visitor, context);
       }
 
       let transformedNode = node;
 
-      if (ts.isClassDeclaration(node)) {
+      if (Context.ts.isClassDeclaration(node)) {
         const configuration = ConfigurationRepository.nodeToConfiguration
           .get(node.original as ts.ClassDeclaration);
         const application = ApplicationRepository.nodeToApplication.get(node.original as ts.ClassDeclaration);
@@ -37,7 +35,7 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
         }
 
         if (metadata) {
-          transformedNode = ts.factory.updateClassDeclaration(
+          transformedNode = Context.factory.updateClassDeclaration(
             node,
             node.modifiers,
             node.name,
@@ -51,10 +49,10 @@ const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> 
         }
       }
 
-      return ts.visitEachChild(transformedNode, visitor, context);
+      return Context.ts.visitEachChild(transformedNode, visitor, context);
     };
 
-    return ts.visitNode(sourceFile, visitor) as ts.SourceFile;
+    return Context.ts.visitNode(sourceFile, visitor) as ts.SourceFile;
   };
 };
 

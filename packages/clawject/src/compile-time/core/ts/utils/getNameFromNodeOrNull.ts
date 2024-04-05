@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { isNamedDeclaration } from '../predicates/isNamedDeclaration';
 
 export const getNameFromNodeOrNull = (declaration: ts.Node): string | null => {

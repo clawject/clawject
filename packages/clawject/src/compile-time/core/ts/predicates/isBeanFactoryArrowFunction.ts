@@ -1,15 +1,15 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { ClassPropertyWithArrowFunctionInitializer } from '../types';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { extractDecoratorMetadata } from '../../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../../decorator-processor/DecoratorKind';
-import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
+import { Context } from '../../../compilation-context/Context';
 
 export const isBeanFactoryArrowFunction = (
   node: ts.Node
 ): node is ClassPropertyWithArrowFunctionInitializer => {
-  if (!ts.isPropertyDeclaration(node)) {
+  if (!Context.ts.isPropertyDeclaration(node)) {
     return false;
   }
 
@@ -20,7 +20,7 @@ export const isBeanFactoryArrowFunction = (
   }
 
   if (node.initializer === undefined) {
-    getCompilationContext().report(new MissingInitializerError(
+    Context.report(new MissingInitializerError(
       null,
       node,
       null,
@@ -29,5 +29,5 @@ export const isBeanFactoryArrowFunction = (
     return false;
   }
 
-  return ts.isArrowFunction(unwrapExpressionFromRoundBrackets(node.initializer));
+  return Context.ts.isArrowFunction(unwrapExpressionFromRoundBrackets(node.initializer));
 };

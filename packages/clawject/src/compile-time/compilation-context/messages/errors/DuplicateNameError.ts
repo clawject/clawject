@@ -1,6 +1,6 @@
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { ErrorCode } from '../ErrorCode';
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Configuration } from '../../../core/configuration/Configuration';
 import { Bean } from '../../../core/bean/Bean';
 import { NodeDetails } from '../../../core/ts/utils/getNodeDetails';

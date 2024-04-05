@@ -1,5 +1,4 @@
 import ts, { compact } from 'typescript';
-import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { AbstractCompilationMessage, IRelatedConfigurationOrApplicationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
 import { CircularDependenciesError } from '../compilation-context/messages/errors/CircularDependenciesError';
@@ -10,11 +9,12 @@ import { DuplicateNameError } from '../compilation-context/messages/errors/Dupli
 import { MessageType } from '../compilation-context/messages/MessageType';
 import { ConfigurationAlreadyImportedInfo } from '../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
 import { BeanExposingError } from '../compilation-context/messages/errors/BeanExposingError';
+import { Context } from '../compilation-context/Context';
 
 export class DiagnosticsBuilder {
   private static formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
-    getCurrentDirectory: () => getCompilationContext().program.getCurrentDirectory(),
-    getCanonicalFileName: (fileName) => getCompilationContext().program.getCanonicalFileName/*optional because in ts <5 there is no such program method*/?.(fileName) ?? fileName,
+    getCurrentDirectory: () => Context.program.getCurrentDirectory(),
+    getCanonicalFileName: (fileName) => Context.program.getCanonicalFileName(fileName),
     getNewLine: () => '\n',
   };
 
@@ -24,15 +24,15 @@ export class DiagnosticsBuilder {
 
   static getDiagnostics(fileName?: string): ts.Diagnostic[] {
     const messages = fileName ?
-      getCompilationContext().getMessages(fileName)
-      : getCompilationContext().getAllMessages();
+      Context.getMessages(fileName)
+      : Context.getAllMessages();
 
     return compact(messages
       .map(it => this.compilationMessageToDiagnostic(it)));
   }
 
   static compilationMessageToDiagnostic(message: AbstractCompilationMessage): ts.Diagnostic | null {
-    if (message.type === MessageType.INFO && !getCompilationContext().languageServiceMode) {
+    if (message.type === MessageType.INFO && !Context.languageServiceMode) {
       return null;
     }
 
@@ -56,7 +56,7 @@ export class DiagnosticsBuilder {
         });
       });
 
-      if (getCompilationContext().languageServiceMode) {
+      if (Context.languageServiceMode) {
         const firstMember = message.cycleMembers[0];
         messageDetails = [...message.cycleMembers, firstMember].map(it => it.beanName)
           .join(' → ');
@@ -205,11 +205,11 @@ export class DiagnosticsBuilder {
       return undefined;
     }
 
-    return getCompilationContext().program.getSourceFile(fileName);
+    return Context.program.getSourceFile(fileName);
   }
 
   private static getDiagnosticCode(message: AbstractCompilationMessage): any {
-    if (getCompilationContext().languageServiceMode) {
+    if (Context.languageServiceMode) {
       return 0;
     } else {
       return `(clawject ${message.code})`;

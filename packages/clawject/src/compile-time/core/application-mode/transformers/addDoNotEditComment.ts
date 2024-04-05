@@ -1,4 +1,5 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
+import { Context } from '../../../compilation-context/Context';
 
 export enum DoNotEditElement {
   STATIC_INIT_BLOCK = 'STATIC_INIT_BLOCK',
@@ -17,9 +18,9 @@ export const addDoNotEditComment = <T extends ts.Node> (node: T, element: DoNotE
     break;
   }
 
-  return ts.addSyntheticLeadingComment(
+  return Context.ts.addSyntheticLeadingComment(
     node,
-    ts.SyntaxKind.MultiLineCommentTrivia,
+    Context.ts.SyntaxKind.MultiLineCommentTrivia,
     `* ${message}`,
     true
   );

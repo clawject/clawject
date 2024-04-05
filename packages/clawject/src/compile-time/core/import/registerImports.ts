@@ -1,8 +1,7 @@
 import { Configuration } from '../configuration/Configuration';
 import { isImportClassProperty } from '../ts/predicates/isImportClassProperty';
 import { Import } from './Import';
-import ts from 'typescript';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import type * as ts from 'typescript';
 import { processConfigurationOrApplicationClass } from '../application-mode/processConfigurationOrApplicationClass';
 import { ConfigurationImportError } from '../../compilation-context/messages/errors/ConfigurationImportError';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
@@ -10,12 +9,13 @@ import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
 import { CType } from '../type-system/CType';
 import { ConfigurationAlreadyImportedInfo } from '../../compilation-context/messages/infos/ConfigurationAlreadyImportedInfo';
 import { getLazyExpressionValue } from '../bean/getLazyExpressionValue';
+import { Context } from '../../compilation-context/Context';
 
 const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
-  [ts.SyntaxKind.AbstractKeyword, 'abstract'],
-  [ts.SyntaxKind.StaticKeyword, 'static'],
-  [ts.SyntaxKind.DeclareKeyword, 'declare'],
-  [ts.SyntaxKind.PrivateKeyword, 'private'],
+  [Context.ts.SyntaxKind.AbstractKeyword, 'abstract'],
+  [Context.ts.SyntaxKind.StaticKeyword, 'static'],
+  [Context.ts.SyntaxKind.DeclareKeyword, 'declare'],
+  [Context.ts.SyntaxKind.PrivateKeyword, 'private'],
 ]);
 
 export const registerImports = (configuration: Configuration): void => {
@@ -31,8 +31,7 @@ export const registerImports = (configuration: Configuration): void => {
 };
 
 export function registerImportForClassElementNode(configuration: Configuration, member: ts.PropertyDeclaration, externalValue: boolean | null, lazyValue: ts.Expression | null): void {
-  const typeChecker = getCompilationContext().typeChecker;
-  const nodeType = typeChecker.getTypeAtLocation(member);
+  const nodeType = Context.typeChecker.getTypeAtLocation(member);
   let importType = new CType(nodeType);
   importType = importType.getPromisedType() ?? importType;
 
@@ -40,7 +39,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   const constructor = properties.find(it => it.getName() === 'constructor');
 
   if (!constructor) {
-    getCompilationContext().report(new ConfigurationImportError(
+    Context.report(new ConfigurationImportError(
       'Import must have a constructor property.',
       member,
       configuration,
@@ -49,11 +48,11 @@ export function registerImportForClassElementNode(configuration: Configuration, 
     return;
   }
 
-  const constructorType = typeChecker.getTypeOfSymbol(constructor);
+  const constructorType = Context.typeChecker.getTypeOfSymbol(constructor);
   const constructSignatures = constructorType.getConstructSignatures();
 
   if (constructSignatures.length === 0) {
-    getCompilationContext().report(new ConfigurationImportError(
+    Context.report(new ConfigurationImportError(
       'No imported class construct signatures found.',
       member,
       configuration,
@@ -63,7 +62,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   }
 
   if (constructSignatures.length !== 1) {
-    getCompilationContext().report(new ConfigurationImportError(
+    Context.report(new ConfigurationImportError(
       'Imported class mush have only 1 construct signature.',
       member,
       configuration,
@@ -77,7 +76,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   const importMemberSymbol = constructSignature.getReturnType().getSymbol();
 
   if (!importMemberSymbol) {
-    getCompilationContext().report(new ConfigurationImportError(
+    Context.report(new ConfigurationImportError(
       'Could not resolve import symbol.',
       member,
       configuration,
@@ -89,7 +88,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   const importMemberDeclarations = importMemberSymbol.getDeclarations() ?? [];
 
   if (importMemberDeclarations.length === 0) {
-    getCompilationContext().report(new ConfigurationImportError(
+    Context.report(new ConfigurationImportError(
       'No import signatures found.',
       member,
       configuration,
@@ -98,10 +97,10 @@ export function registerImportForClassElementNode(configuration: Configuration, 
     return;
   }
 
-  const importMemberClassDeclarations = importMemberDeclarations.filter(ts.isClassDeclaration);
+  const importMemberClassDeclarations = importMemberDeclarations.filter(Context.ts.isClassDeclaration);
 
   if (importMemberClassDeclarations.length === 0) {
-    getCompilationContext().report(new ConfigurationImportError(
+    Context.report(new ConfigurationImportError(
       'No imported class construct signatures found.',
       member,
       configuration,
@@ -111,7 +110,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   }
 
   if (importMemberClassDeclarations.length !== 1) {
-    getCompilationContext().report(new ConfigurationImportError(
+    Context.report(new ConfigurationImportError(
       'Imported class mush have only 1 construct signature.',
       member,
       configuration,
@@ -125,7 +124,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   const processedConfigurationClass = processConfigurationOrApplicationClass(importMemberClassDeclaration, member, configuration);
 
   if (processedConfigurationClass === null) {
-    getCompilationContext().report(new NotSupportedError(
+    Context.report(new NotSupportedError(
       'Only configuration and application classes can be imported in this context.',
       member,
       configuration,
@@ -140,7 +139,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
   for (const importedConfigurationElement of configuration.importRegister.elements) {
     if (importedConfigurationElement.resolvedConfiguration === processedConfigurationClass) {
       wasAlreadyImported = true;
-      getCompilationContext().report(new ConfigurationAlreadyImportedInfo(
+      Context.report(new ConfigurationAlreadyImportedInfo(
         member,
         [importedConfigurationElement],
         configuration,
@@ -166,7 +165,7 @@ export function registerImportForClassElementNode(configuration: Configuration, 
 }
 
 function verifyModifiers(node: ts.PropertyDeclaration, parentConfiguration: Configuration): boolean {
-  const compilationContext = getCompilationContext();
+  const compilationContext = Context;
   const restrictedModifier = node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
 
   if (!restrictedModifier) {

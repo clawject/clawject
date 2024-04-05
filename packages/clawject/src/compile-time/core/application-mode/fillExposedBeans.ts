@@ -1,13 +1,13 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Application } from '../application/Application';
 import { isExposeBeansClassProperty } from '../ts/predicates/isExposeBeansClassProperty';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { Dependency } from '../dependency/Dependency';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 import { CType } from '../type-system/CType';
 import { BeanExposingError } from '../../compilation-context/messages/errors/BeanExposingError';
 import { ClassPropertyWithExpressionInitializer } from '../ts/types';
+import { Context } from '../../compilation-context/Context';
 
 class ExposedBean {
   constructor(
@@ -30,12 +30,12 @@ export const fillExposedBeans = (application: Application): void => {
 };
 
 function fillExposedBeansForClassElementNode(application: Application, member: ClassPropertyWithExpressionInitializer, exposedBeans: Map<string, ExposedBean>): void {
-  const typeChecker = getCompilationContext().typeChecker;
+  const typeChecker = Context.typeChecker;
   const nodeType = typeChecker.getTypeAtLocation(member);
   const callSignatures = nodeType.getCallSignatures();
 
   if (callSignatures.length !== 1) {
-    getCompilationContext().report(new TypeQualifyError(
+    Context.report(new TypeQualifyError(
       `Could not resolve exposed beans signature. Exposed beans property must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
       member,
       null,
@@ -52,7 +52,7 @@ function fillExposedBeansForClassElementNode(application: Application, member: C
   const beansProperty = properties.find(it => it.getName() === 'beans');
 
   if (!beansProperty) {
-    getCompilationContext().report(new TypeQualifyError(
+    Context.report(new TypeQualifyError(
       'Could not resolve export beans type.',
       member,
       null,
@@ -70,7 +70,7 @@ function fillExposedBeansForClassElementNode(application: Application, member: C
     const alreadyExposedBean = exposedBeans.get(propertyName);
 
     if (!propertyDeclaration) {
-      getCompilationContext().report(new TypeQualifyError(
+      Context.report(new TypeQualifyError(
         'Could not resolve export beans type.',
         member,
         null,
@@ -103,7 +103,7 @@ function fillExposedBeansForClassElementNode(application: Application, member: C
   });
 
   if (duplicatedExposedProperties.length !== 0) {
-    getCompilationContext().report(new BeanExposingError(
+    Context.report(new BeanExposingError(
       'Duplicate declaration of exposed beans property detected.',
       member,
       duplicatedExposedProperties,
@@ -136,7 +136,7 @@ function fillApplicationExposedBeans(application: Application, exposedBeans: Map
       return;
     }
 
-    getCompilationContext().report(new BeanExposingError(
+    Context.report(new BeanExposingError(
       `Could not find suitable bean candidates for ${notExposedElements.length} elements.`,
       exposeDeclaration.initializer,
       notExposedElements.map(it => it.dependency.node.symbol),

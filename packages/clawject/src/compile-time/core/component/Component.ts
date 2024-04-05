@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { ComponentLifecycleRegister } from '../component-lifecycle/ComponentLifecycleRegister';
 import { Entity } from '../Entity';
 

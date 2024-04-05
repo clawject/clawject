@@ -1,12 +1,12 @@
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { ComponentRepository } from '../component/ComponentRepository';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { BaseTypesRepository } from '../type-system/BaseTypesRepository';
 import { FileGraph } from '../file-graph/FileGraph';
 import { ApplicationRepository } from '../application/ApplicationRepository';
+import { Context } from '../../compilation-context/Context';
 
 export const cleanup = (fileName: string): void => {
-  getCompilationContext().clearMessagesByFileName(fileName);
+  Context.clearMessagesByFileName(fileName);
 
   ApplicationRepository.clearByFileName(fileName);
   ComponentRepository.clearByContextualFileName(fileName);
@@ -15,7 +15,7 @@ export const cleanup = (fileName: string): void => {
 };
 
 export const cleanupAll = (): void => {
-  getCompilationContext().clear();
+  Context.clear();
   ConfigurationRepository.clear();
   ApplicationRepository.clear();
   ComponentRepository.clear();

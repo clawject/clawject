@@ -1,18 +1,20 @@
-import ts from 'typescript';
+import * as ts from 'typescript';
 import { MessageType } from './messages/MessageType';
 import { AbstractCompilationMessage } from './messages/AbstractCompilationMessage';
 
-export class CompilationContext {
-  areErrorsHandled = false;
-  languageServiceMode = false;
-  private _contextualFileName: string | null = null;
-  private _cancellationToken: () => boolean = () => false;
-  private pathToMessages = new Map<string, AbstractCompilationMessage[]>();
+export class Context {
+  static areErrorsHandled = false;
+  static languageServiceMode = false;
+  private static _contextualFileName: string | null = null;
+  private static _cancellationToken: () => boolean = () => false;
+  private static pathToMessages = new Map<string, AbstractCompilationMessage[]>();
 
-  private _program: ts.Program | null = null;
-  private _factory: ts.NodeFactory | null = null;
+  private static _program: ts.Program | null = null;
+  private static _factory: ts.NodeFactory | null = null;
 
-  get program(): ts.Program {
+  static ts: typeof ts = ts;
+
+  static get program(): ts.Program {
     if (!this._program) {
       throw new Error('Program is not assigned, most likely you didn\'t add transformer to your tsconfig.json or webpack configuragtion');
     }
@@ -20,7 +22,7 @@ export class CompilationContext {
     return this._program;
   }
 
-  get factory(): ts.NodeFactory {
+  static get factory(): ts.NodeFactory {
     if (!this._factory) {
       throw new Error('Factory is not assigned, it is an internal error, please report it on github');
     }
@@ -28,11 +30,11 @@ export class CompilationContext {
     return this._factory;
   }
 
-  get typeChecker(): ts.TypeChecker {
+  static get typeChecker(): ts.TypeChecker {
     return this.program.getTypeChecker();
   }
 
-  get contextualFileName(): string {
+  static get contextualFileName(): string {
     if (!this._contextualFileName) {
       throw new Error('Current file is not assigned in compilation context, it is an internal error, please report it on github https://github.com/clawject/clawject/issues/new.');
     }
@@ -40,40 +42,40 @@ export class CompilationContext {
     return this._contextualFileName;
   }
 
-  isCancellationRequested(): boolean {
+  static isCancellationRequested(): boolean {
     return this._cancellationToken() ?? false;
   }
 
-  getAllMessages(): AbstractCompilationMessage[] {
+  static getAllMessages(): AbstractCompilationMessage[] {
     return Array.from(this.pathToMessages.values()).flat();
   }
 
-  getMessages(fileName: string): AbstractCompilationMessage[] {
+  static getMessages(fileName: string): AbstractCompilationMessage[] {
     return this.pathToMessages.get(fileName) ?? [];
   }
 
-  get errors(): AbstractCompilationMessage[] {
+  static get errors(): AbstractCompilationMessage[] {
     return Array.from(this.pathToMessages.values()).flat()
       .filter(it => it.type === MessageType.ERROR);
   }
 
-  assignProgram(program: ts.Program | null): void {
+  static assignProgram(program: ts.Program | null): void {
     this._program = program;
   }
 
-  assignFactory(factory: ts.NodeFactory | null): void {
+  static assignFactory(factory: ts.NodeFactory | null): void {
     this._factory = factory;
   }
 
-  assignCancellationToken(token: () => boolean): void {
+  static assignCancellationToken(token: () => boolean): void {
     this._cancellationToken = token;
   }
 
-  assignContextualFileName(fileName: string | null): void {
+  static assignContextualFileName(fileName: string | null): void {
     this._contextualFileName = fileName;
   }
 
-  report(message: AbstractCompilationMessage): void {
+  static report(message: AbstractCompilationMessage): void {
     const messagesByPath = this.pathToMessages.get(message.contextualFileName) ?? [];
     messagesByPath.push(message);
 
@@ -82,11 +84,11 @@ export class CompilationContext {
     }
   }
 
-  clearMessagesByFileName(fileName: string): void {
+  static clearMessagesByFileName(fileName: string): void {
     this.pathToMessages.delete(fileName);
   }
 
-  clear(): void {
+  static clear(): void {
     this.pathToMessages.clear();
   }
 }

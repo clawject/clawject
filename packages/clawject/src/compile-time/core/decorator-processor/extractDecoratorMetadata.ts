@@ -1,8 +1,9 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { DecoratorKind } from './DecoratorKind';
 import { getDecorators } from '../ts/utils/getDecorators';
 import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';
 import { DecoratorRules } from './DecoratorRules';
+import { Context } from '../../compilation-context/Context';
 
 export interface DecoratorMetadata {
   kind: DecoratorKind;
@@ -27,7 +28,7 @@ export const extractDecoratorMetadata = (node: ts.Node, decorator: DecoratorKind
 
   let args: ts.Expression[] = [];
 
-  if (ts.isCallExpression(decoratorNode.expression)) {
+  if (Context.ts.isCallExpression(decoratorNode.expression)) {
     args = Array.from(decoratorNode.expression.arguments);
   }
 

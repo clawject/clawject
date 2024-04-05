@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Configuration } from './Configuration';
 import { unquoteString } from '../utils/unquoteString';
 import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';

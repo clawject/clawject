@@ -1,12 +1,12 @@
-import ts from 'typescript';
+import type ts from 'typescript';
 import { Configuration } from '../../core/configuration/Configuration';
 import { ErrorCode } from './ErrorCode';
 import { MessageType } from './MessageType';
 import { getNodeDetails, NodeDetails } from '../../core/ts/utils/getNodeDetails';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { Application } from '../../core/application/Application';
 import { WarningCode } from './WarningCode';
 import { InfoCode } from './InfoCode';
+import { Context } from '../Context';
 
 export interface IRelatedConfigurationOrApplicationMetadata {
   name: string;
@@ -59,7 +59,7 @@ export abstract class AbstractCompilationMessage {
       ? this.getRelatedConfigurationMetadata(relatedApplication.rootConfiguration)
       : null;
 
-    this.contextualFileName = getCompilationContext().contextualFileName;
+    this.contextualFileName = Context.contextualFileName;
   }
 
   private getRelatedConfigurationMetadata(relatedConfiguration: Configuration | null): IRelatedConfigurationOrApplicationMetadata | null {

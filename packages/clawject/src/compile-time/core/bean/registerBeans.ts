@@ -14,9 +14,9 @@ import { Configuration } from '../configuration/Configuration';
 import { fillEmbeddedBeans } from './fillEmbeddedBeans';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { fillBeanTypes } from './fillBeanTypes';
+import { Context } from '../../compilation-context/Context';
 
 //TODO Consider resolve type of class element, and based on type resolve bean kind, also make less bean kinds
 export function registerBeans(configuration: Configuration): void {
@@ -46,7 +46,7 @@ export function registerBeans(configuration: Configuration): void {
     const beanMetadata = extractDecoratorMetadata(classElement, DecoratorKind.Bean);
 
     if (beanMetadata !== null) {
-      getCompilationContext().report(new NotSupportedError(
+      Context.report(new NotSupportedError(
         'Unknown Bean target.',
         classElement,
         configuration,

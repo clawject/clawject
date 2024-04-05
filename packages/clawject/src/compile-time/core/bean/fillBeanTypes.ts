@@ -1,11 +1,11 @@
 import { Configuration } from '../configuration/Configuration';
 import { BeanKind } from './BeanKind';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import ts, { GetAccessorDeclaration } from 'typescript';
 import { ClassPropertyWithCallExpressionInitializer } from '../ts/types';
 import { CType } from '../type-system/CType';
 import { Bean } from './Bean';
+import { Context } from '../../compilation-context/Context';
 
 export const fillBeanTypes = (configuration: Configuration) => {
   configuration.beanRegister.elements.forEach(bean => {
@@ -14,15 +14,14 @@ export const fillBeanTypes = (configuration: Configuration) => {
 };
 
 export function fillBeanType(configuration: Configuration, bean: Bean) {
-  const compilationContext = getCompilationContext();
-  const typeChecker = compilationContext.typeChecker;
+  const typeChecker = Context.typeChecker;
 
   if (bean.kind === BeanKind.FACTORY_METHOD || bean.kind === BeanKind.FACTORY_ARROW_FUNCTION) {
     const beanType = typeChecker.getTypeAtLocation(bean.node);
     const callSignatures = beanType.getCallSignatures();
 
     if (callSignatures.length !== 1) {
-      compilationContext.report(new TypeQualifyError(
+      Context.report(new TypeQualifyError(
         `Could not resolve bean factory signature. Bean must have exactly 1 call signature, found ${callSignatures.length} signatures.`,
         bean.node,
         configuration,
@@ -49,7 +48,7 @@ export function fillBeanType(configuration: Configuration, bean: Bean) {
     const factoryProperty = beanCType.tsType.getProperty('factory');
 
     if (!factoryProperty) {
-      compilationContext.report(new TypeQualifyError(
+      Context.report(new TypeQualifyError(
         'Could not resolve bean factory type, try to use factory-method Bean instead.',
         typedBeanNode,
         configuration,
@@ -63,7 +62,7 @@ export function fillBeanType(configuration: Configuration, bean: Bean) {
     const callSignatures = factoryType.getCallSignatures();
 
     if (callSignatures.length !== 1) {
-      compilationContext.report(new TypeQualifyError(
+      Context.report(new TypeQualifyError(
         'Could not resolve bean factory call signature, try to use factory-method Bean instead.',
         typedBeanNode,
         configuration,

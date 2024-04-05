@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { IDProvider } from './utils/IDProvider';
 import { WeakNodeHolder } from './WeakNodeHolder';
 

@@ -1,8 +1,8 @@
-import ts from 'typescript';
 import { isTSVersionValid } from '../ts-version/isTSVersionValid';
+import { Context } from '../compile-time/compilation-context/Context';
 
 export const verifyTSVersion = () => {
-  if (!isTSVersionValid(ts.version)) {
-    throw new Error(`clawject: incompatible typescript version - '${ts.version}', you can disable this error check by setting 'unsafeTSVersion' flag in clawject config file.`);
+  if (!isTSVersionValid(Context.ts.version)) {
+    throw new Error(`clawject: incompatible typescript version - '${Context.ts.version}', you can disable this error check by setting 'unsafeTSVersion' flag in clawject config file.`);
   }
 };

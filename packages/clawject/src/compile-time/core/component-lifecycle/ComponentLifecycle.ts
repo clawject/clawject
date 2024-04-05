@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Entity } from '../Entity';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { LifecycleKind } from '../../../runtime/types/LifecycleKind';

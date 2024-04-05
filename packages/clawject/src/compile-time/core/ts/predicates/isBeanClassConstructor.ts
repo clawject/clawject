@@ -1,10 +1,11 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { ClassPropertyWithCallExpressionInitializer } from '../types';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
+import { Context } from '../../../compilation-context/Context';
 
 export const isBeanClassConstructor = (node: ts.Node): node is ClassPropertyWithCallExpressionInitializer =>
-  ts.isPropertyDeclaration(node) && hasBeanCallExpression(node);
+  Context.ts.isPropertyDeclaration(node) && hasBeanCallExpression(node);
 
 function hasBeanCallExpression(node: ts.PropertyDeclaration): boolean {
   let initializer = node.initializer;
@@ -15,7 +16,7 @@ function hasBeanCallExpression(node: ts.PropertyDeclaration): boolean {
 
   initializer = unwrapExpressionFromRoundBrackets(initializer);
 
-  if (!ts.isCallExpression(initializer)) {
+  if (!Context.ts.isCallExpression(initializer)) {
     return false;
   }
 

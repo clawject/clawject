@@ -8,7 +8,7 @@ import { processLifecycleElement } from './transformers/processLifecycleElement'
 import { isLifecycleArrowFunctionBean } from '../ts/predicates/isLifecycleArrowFunctionBean';
 import { getImplicitComponentStaticInitBlock } from './transformers/getImplicitComponentStaticInitBlock';
 import { Value } from '../../../runtime/types/Value';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
+import { Context } from '../../compilation-context/Context';
 
 export function processImplicitComponents(
   node: ts.ClassDeclaration,
@@ -35,7 +35,7 @@ export function processImplicitComponents(
     return it;
   });
 
-  if (component === null || getCompilationContext().languageServiceMode) {
+  if (component === null || Context.languageServiceMode) {
     return node;
   }
 

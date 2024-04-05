@@ -1,6 +1,7 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
+import { Context } from '../../../compilation-context/Context';
 
 export const isStaticallyKnownPropertyName = (node: ts.PropertyName): boolean => {
   //Not supporting private identifiers because decorators can't be applied to them.
-  return ts.isIdentifier(node);
+  return Context.ts.isIdentifier(node);
 };

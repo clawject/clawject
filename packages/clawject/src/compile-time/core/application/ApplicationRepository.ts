@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Application } from './Application';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { Configuration } from '../configuration/Configuration';

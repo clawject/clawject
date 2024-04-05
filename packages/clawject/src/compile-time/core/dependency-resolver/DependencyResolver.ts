@@ -2,9 +2,9 @@ import { Bean } from '../bean/Bean';
 import { MaybeResolvedDependency } from './MaybeResolvedDependency';
 import { Dependency } from '../dependency/Dependency';
 import { BeanCandidateNotFoundError } from '../../compilation-context/messages/errors/BeanCandidateNotFoundError';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { getPossibleBeanCandidates } from '../utils/getPossibleBeanCandidates';
 import { Application } from '../application/Application';
+import { Context } from '../../compilation-context/Context';
 
 export class DependencyResolver {
   static resolveDependencies(
@@ -59,15 +59,14 @@ export class DependencyResolver {
     }
 
     if (matchedByTypeAndPrimary.length > 1) {
-      const error = new BeanCandidateNotFoundError(
+      Context.report(new BeanCandidateNotFoundError(
         `Found ${matchedByTypeAndPrimary.length} Primary injection candidates.`,
         dependency.node,
         relatedBean,
         [],
         matchedByTypeAndPrimary,
         relatedApplication,
-      );
-      getCompilationContext().report(error);
+      ));
       return resolvedDependency;
     }
 
@@ -137,7 +136,7 @@ export class DependencyResolver {
       byType,
     ] = getPossibleBeanCandidates(dependency.parameterName, dependency.cType, beansToSearch);
 
-    getCompilationContext().report(new BeanCandidateNotFoundError(
+    Context.report(new BeanCandidateNotFoundError(
       `Found ${byName.length + byType.length} injection candidates.`,
       dependency.node,
       bean,

@@ -1,4 +1,5 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
+import { Context } from '../../../compilation-context/Context';
 
 export const createBoolean = (value: boolean): ts.BooleanLiteral => value ?
-  ts.factory.createTrue() : ts.factory.createFalse();
+  Context.ts.factory.createTrue() : Context.ts.factory.createFalse();

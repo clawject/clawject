@@ -3,9 +3,9 @@ import { cosmiconfigSync } from 'cosmiconfig';
 import { TypeScriptLoader } from 'cosmiconfig-typescript-loader';
 import { Validator } from 'jsonschema';
 import schema from './schema.json';
-import { getCompilationContext } from '../../transformer/getCompilationContext';
 import { LanguageService } from '../../lsp/LanguageService';
 import { merge } from 'lodash';
+import { Context } from '../compilation-context/Context';
 
 export class ConfigLoader {
   private static defaultConfig: DIConfig = {
@@ -52,7 +52,7 @@ export class ConfigLoader {
     const validator = new Validator();
 
     const validatorResult = validator.validate(config, schema, {
-      throwError: !getCompilationContext().languageServiceMode,
+      throwError: !Context.languageServiceMode,
     });
 
     validatorResult.errors.map(it => {

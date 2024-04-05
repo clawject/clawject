@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { Entity } from '../Entity';
 import { CType } from '../type-system/CType';
 

@@ -1,16 +1,14 @@
 import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanKind } from '../bean/BeanKind';
 import { Application } from '../application/Application';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
+import { Context } from '../../compilation-context/Context';
 
 export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[]) => {
-  const compilationContext = getCompilationContext();
-
   for (const bean of beans) {
-    if (getCompilationContext().isCancellationRequested()) {
+    if (Context.isCancellationRequested()) {
       break;
     }
 
@@ -34,7 +32,7 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
     });
 
     if (missingDependencies.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
-      compilationContext.report(new CanNotRegisterBeanError(
+      Context.report(new CanNotRegisterBeanError(
         null,
         bean.node,
         bean.parentConfiguration,
@@ -72,7 +70,7 @@ function getBeanCandidates(bean: Bean, beans: Bean[], application: Application):
       return true;
     }
 
-    if(!it.getExternalValue()) {
+    if (!it.getExternalValue()) {
       return false;
     }
 
@@ -83,7 +81,7 @@ function getBeanCandidates(bean: Bean, beans: Bean[], application: Application):
       return true;
     }
 
-    const isItImportedAsExternal =  resolvedConfigurationImport.getExternalValue();
+    const isItImportedAsExternal = resolvedConfigurationImport.getExternalValue();
 
     if (isItImportedAsExternal) {
       return true;

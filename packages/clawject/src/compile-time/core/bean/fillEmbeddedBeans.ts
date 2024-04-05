@@ -1,12 +1,12 @@
 import { Bean } from './Bean';
 import { Configuration } from '../configuration/Configuration';
-import { getCompilationContext } from '../../../transformer/getCompilationContext';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
 import { extractDecoratorMetadata } from '../decorator-processor/extractDecoratorMetadata';
 import { DecoratorKind } from '../decorator-processor/DecoratorKind';
 import { BeanKind } from './BeanKind';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { CType } from '../type-system/CType';
+import { Context } from '../../compilation-context/Context';
 
 export const fillEmbeddedBeans = (
   configuration: Configuration,
@@ -15,7 +15,6 @@ export const fillEmbeddedBeans = (
   const beans = new Set(configuration.beanRegister.elements);
 
   beans.forEach((embeddedParent) => {
-    const compilationContext = getCompilationContext();
     const embeddedDecorator = extractDecoratorMetadata(embeddedParent.node, DecoratorKind.Embedded);
 
     if (embeddedDecorator === null) {
@@ -23,7 +22,7 @@ export const fillEmbeddedBeans = (
     }
 
     if (embeddedParent.kind === BeanKind.CLASS_CONSTRUCTOR) {
-      compilationContext.report(new NotSupportedError(
+      Context.report(new NotSupportedError(
         '@Embedded decorator is not allowed for class constructor beans.',
         embeddedParent.node,
         configuration,
@@ -32,7 +31,7 @@ export const fillEmbeddedBeans = (
       return;
     }
 
-    const typeChecker = compilationContext.typeChecker;
+    const typeChecker = Context.typeChecker;
     const rootBeanNode = embeddedParent.node;
     let type = typeChecker.getTypeAtLocation(rootBeanNode);
 
@@ -40,7 +39,7 @@ export const fillEmbeddedBeans = (
       const callSignatures = typeChecker.getTypeAtLocation(rootBeanNode).getCallSignatures();
 
       if (callSignatures.length !== 1) {
-        compilationContext.report(new TypeQualifyError(
+        Context.report(new TypeQualifyError(
           `Could not resolve bean factory signature. Bean must have exactly one 1 signature, found ${callSignatures.length} signatures.`,
           rootBeanNode,
           configuration,

@@ -1,41 +1,43 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import type { TransformerExtras } from 'ts-patch';
 import { verifyTSVersion } from './verifyTSVersion';
 import { processApplicationMode } from '../compile-time/core/application-mode/processApplicationMode';
 import { cleanup, cleanupAll } from '../compile-time/core/cleaner/cleanup';
 import { DecoratorRules } from '../compile-time/core/decorator-processor/DecoratorRules';
 import { DiagnosticsBuilder } from '../compile-time/ts-diagnostics/DiagnosticsBuilder';
-import { getCompilationContext } from './getCompilationContext';
 import { Logger } from '../compile-time/logger/Logger';
 import { compact } from 'lodash';
+import { Context } from '../compile-time/compilation-context/Context';
 
 /** @public */
 const transformer = (program: ts.Program, config: unknown, transformerExtras?: TransformerExtras): ts.TransformerFactory<ts.SourceFile> => {
+  if (transformerExtras) {
+    Context.ts = transformerExtras.ts;
+  }
+
   if (process.env['CLAWJECT_TEST_MODE'] === 'true') {
     //Needed to clean up state between tests
     cleanupAll();
   }
 
-  const compilationContext = getCompilationContext();
-
-  if (!compilationContext.languageServiceMode) {
+  if (!Context.languageServiceMode) {
     verifyTSVersion();
   }
 
   return context => sourceFile => {
-    compilationContext.assignProgram(program);
-    compilationContext.assignContextualFileName(sourceFile.fileName);
-    compilationContext.assignFactory(context.factory);
+    Context.assignProgram(program);
+    Context.assignContextualFileName(sourceFile.fileName);
+    Context.assignFactory(context.factory);
     cleanup(sourceFile.fileName);
 
     DecoratorRules.init();
 
     const t0 = Date.now();
-    const transformedSourceFile = processApplicationMode(compilationContext, context, sourceFile);
+    const transformedSourceFile = processApplicationMode(context, sourceFile);
     const t1 = Date.now();
     Logger.debug('File: ' + sourceFile.fileName + ' processed in ' + (t1 - t0) + 'ms');
 
-    if (!compilationContext.areErrorsHandled) {
+    if (!Context.areErrorsHandled) {
       const addDiagnostics = transformerExtras?.addDiagnostic;
 
       if (addDiagnostics) {
@@ -44,10 +46,10 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
         semanticDiagnostics.forEach(it => {
           transformerExtras?.addDiagnostic(it);
         });
-      } else if (compilationContext.errors.length > 0) {
+      } else if (Context.errors.length > 0) {
         //Falling back to throwing error from the compiler,
         // if ts-patch is not used - in watch mode it will finish a process
-        const errors = getCompilationContext().errors;
+        const errors = Context.errors;
 
         if (errors.length > 0) {
           const mapped = compact(errors.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it)));
@@ -59,7 +61,7 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
       }
     }
 
-    compilationContext.assignContextualFileName(null);
+    Context.assignContextualFileName(null);
 
     return transformedSourceFile;
   };

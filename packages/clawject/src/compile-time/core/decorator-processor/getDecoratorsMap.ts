@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { DecoratorKind, DecoratorKinds } from './DecoratorKind';
 import { getDecorators } from '../ts/utils/getDecorators';
 import { isDecoratorFromLibrary } from './isDecoratorFromLibrary';

@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { getDecoratorsMap } from './getDecoratorsMap';
 import { DecoratorTarget } from './DecoratorTarget';
 import { DecoratorRules } from './DecoratorRules';
@@ -9,6 +9,7 @@ import { IncorrectArgumentsLengthError } from '../../compilation-context/message
 import { AbstractCompilationMessage } from '../../compilation-context/messages/AbstractCompilationMessage';
 import { DecoratorParent } from './DecoratorParent';
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
+import { Context } from '../../compilation-context/Context';
 
 export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget, decoratorParent: DecoratorParent | null): AbstractCompilationMessage[] => {
   const errors: AbstractCompilationMessage[] = [];
@@ -103,7 +104,7 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
 
     //Will check arguments count
     let args: ts.Expression[] = [];
-    if (ts.isCallExpression(decoratorNode.expression)) {
+    if (Context.ts.isCallExpression(decoratorNode.expression)) {
       args = Array.from(decoratorNode.expression.arguments);
     }
 
@@ -149,11 +150,11 @@ export const verifyDecorators = (node: ts.Node, decoratorTarget: DecoratorTarget
       }
 
       if (
-        !ts.isStringLiteral(arg) &&
-        !ts.isNumericLiteral(arg) &&
-        !ts.isBooleanLiteral(arg) &&
-        !ts.isObjectLiteralExpression(arg) &&
-        !ts.isArrayLiteralExpression(arg)
+        !Context.ts.isStringLiteral(arg) &&
+        !Context.ts.isNumericLiteral(arg) &&
+        !Context.ts.isBooleanLiteral(arg) &&
+        !Context.ts.isObjectLiteralExpression(arg) &&
+        !Context.ts.isArrayLiteralExpression(arg)
       ) {
         errors.push(new NotStaticallyKnownError(
           `Argument #${index} should be statically known literal.`,

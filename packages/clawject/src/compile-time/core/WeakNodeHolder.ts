@@ -1,5 +1,6 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { getNodeDetails, NodeDetails } from './ts/utils/getNodeDetails';
+import { Context } from '../compilation-context/Context';
 
 export class WeakNodeHolder<N extends ts.Node = ts.Node> {
   constructor(node?: N) {
@@ -41,7 +42,7 @@ export class WeakNodeHolder<N extends ts.Node = ts.Node> {
   public set node(node: N) {
     this._nodeRef = new WeakRef(node);
     this._nodeDetails = getNodeDetails(node);
-    this._nameNodeDetails = ts.isNamedDeclaration(node) ? getNodeDetails(node.name) : null;
+    this._nameNodeDetails = Context.ts.isNamedDeclaration(node) ? getNodeDetails(node.name) : null;
     this._hasBeenSet = true;
   }
 

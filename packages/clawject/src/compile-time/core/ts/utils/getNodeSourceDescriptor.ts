@@ -1,8 +1,8 @@
-import ts from 'typescript';
+import type * as ts from 'typescript';
 import { CONSTANTS } from '../../../../constants';
 import { isNamedDeclaration } from '../predicates/isNamedDeclaration';
-import { getCompilationContext } from '../../../../transformer/getCompilationContext';
 import upath from 'upath';
+import { Context } from '../../../compilation-context/Context';
 
 export interface INodeSource {
   fileName: string;
@@ -12,16 +12,14 @@ export interface INodeSource {
 }
 
 export const getNodeSourceDescriptor = (node: ts.Node): INodeSource[] | null => {
-  const compilationContext = getCompilationContext();
-  const typeChecker = compilationContext.typeChecker;
-  const symbol = typeChecker.getSymbolAtLocation(node);
+  const symbol = Context.typeChecker.getSymbolAtLocation(node);
 
   if (!symbol) {
     return null;
   }
 
   try {
-    const originalSymbol = symbol.valueDeclaration ? symbol : typeChecker.getAliasedSymbol(symbol);
+    const originalSymbol = symbol.valueDeclaration ? symbol : Context.typeChecker.getAliasedSymbol(symbol);
     const declarations = originalSymbol.getDeclarations() ?? [];
 
     if (declarations.length === 0) {
