@@ -1,0 +1,291 @@
+---
+title: "Clawject: Simplifying Dependency Injection in TypeScript"
+slug: simplifying-dependency-injection-in-typescript
+authors:
+  - name: Artem Korniev
+    url: https://github.com/artem1458
+    image_url: https://avatars.githubusercontent.com/u/33227963?v=4
+tags: [typescript, nodejs, oop]
+image: "https://clawject.com/img/blog/cover_1.jpg"
+hide_table_of_contents: false
+---
+
+<img src="/img/blog/cover_1.jpg" alt="Clawject logo hovering under mountains"  />
+
+## Outline
+
+Greetings, I'm the creator of [Clawject](https://clawject.com/), a dependency injection framework for TypeScript. I'm here to introduce you to the world of effortless and type-safe dependency injection.
+
+Have you ever thought that dependency injection in TypeScript could be easier?
+
+**Meet Clawject, the first truly type-safe dependency injection framework for TypeScript.**
+
+<!-- truncate -->
+
+You diligently write types, interfaces, generics, and all of that to ensure type safety, but it all comes to an end if you mix up an injection token.
+
+```ts
+@Injectable()
+class CatsService {
+  constructor(
+  	@Inject(InjectionTokens.DogsRepository)
+  	private catsRepository: Repository<Cat>
+  ) {}
+}
+```
+
+TypeScript will compile this code without any errors, it will execute, and you'll only find out at runtime that instead of cats, you're getting dogs. Dogs are also great, but in this case, we specifically need cats.
+
+Now, let's define `CatsService`  with Clawject.
+
+```ts
+class CatsService {
+  constructor(
+  	private catsRepository: Repository<Cat>
+  ) {}
+}
+```
+
+As you can see, Clawject doesn't require you to attach the `@Injectable` decorator to the class or specify what exactly you want to inject. Instead, Clawject will take the type of your dependency and find the appropriate implementation at compile time.
+
+If we wanted to avoid attaching the `@Injectable` decorator to the class **without** Clawject, you would use something like a [Factory providers](https://docs.nestjs.com/fundamentals/custom-providers#factory-providers-usefactory), but this is quite inconvenient. It requires changes if the class constructor changes and still leaves room for error by mixing up injection tokens. *Besides, it's just not elegant.*
+
+```ts
+const InjectionTokens = {
+  DogsRepository: Symbol('dogsRepository'),
+  CatsRepository: Symbol('catsRepository')
+}
+
+class CatsService {
+  constructor(
+  	private catsRepository: Repository<Cat>
+  ) {}
+}
+
+@Module({
+  providers: [
+    {
+      provide: InjectionTokens.DogsRepository,
+      useClass: Repository
+    },
+    {
+      provide: InjectionTokens.CatsRepository,
+      useClass: Repository
+    },
+    {
+      provide: CatsService,
+      useFactory: (catsRepository: Repository<Cat>) =>
+      	new CatsService(catsRepository),
+      		  /*Oops, wrong injection token...*/
+      inject: [InjectionTokens.DogsRepository]
+    }
+  ],
+})
+export class Application {}
+```
+
+Now, let's take a look at how you can create a `CatsService` **with** Clawject.
+
+```ts
+class CatsService {
+  constructor(
+  	private catsRepository: Repository<Cat>
+  ) {}
+}
+
+@ClawjectApplication
+class Application {
+  dogsRepository = Bean(Repository<Dog>);
+  catsRepository = Bean(Repository<Cat>);
+
+  catsService = Bean(CatsService);
+}
+```
+
+**And that's it! ✨**
+
+Clawject will resolve all dependencies based on types and notify you of errors such as missing dependencies, circular dependencies, and more, at compile time and directly in your favorite IDE!
+
+<img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r4qj71g0vvprxpoxidmd.png" alt="Clawject in-editor errors demonstration"  />
+
+## Unleash the power of polymorphism with Clawject
+
+Clawject works great with classes, interfaces, types, generics, and type inheritance, allowing you to describe dependencies very flexibly and simply.
+
+Let's declare an `interface ReadOnlyRepository<T>`, `interface Repository<T>`, and a `class HttpRepository<T>` that implements both of these interfaces:
+
+```ts
+interface ReadOnlyRepository<T> { /*...*/ }
+
+interface Repository<T> extends ReadOnlyRepository<T> { /*...*/ }
+
+class HttpRepository<T> implements Repository<T> { /*...*/ }
+```
+
+We've created a polymorphic class and interfaces that allow reading and writing entities with the type `<T>`.
+
+Now, let's declare the following services: `ReadCatsService` and `WriteCatsService`.
+
+```ts
+class ReadCatsService {
+  constructor(
+    private repository: ReadOnlyRepository<Cat>
+  ) {}
+}
+
+class WriteCatsService {
+  constructor(
+    private repository: Repository<Cat>
+  ) {}
+}
+```
+
+As you can see, we simply state that we need dependencies of types `ReadOnlyRepository<Cat>` and `Repository<Cat>`, and we don't care about the specific implementation that will be injected.
+
+Now, let's declare the `Application` class and our `Beans`.
+
+```ts
+@ClawjectApplication
+class Application {
+  httpCatsRepository = Bean(HttpRepository<Cat>);
+
+  readCatsService = Bean(ReadCatsService);
+  writeCatsService = Bean(WriteCatsService);
+}
+```
+
+As you can see, Clawject understands that the class `HttpRepository<Cat>` implements the interfaces `ReadOnlyRepository<Cat>` and `Repository<Cat>`, and will inject the `httpCatsRepository` bean instance as a dependency in both services.
+
+If we were to do something similar with a more *classical* library, we would have to write a lot of boilerplate and non-type-safe code.
+
+```ts
+const InjectionTokens = {
+  ReadOnlyCatsRepository: Symbol('ReadOnlyCatsRepository'),
+  CatsRepository: Symbol('CatsRepository'),
+  HttpCatsRepository: Symbol('HttpCatsRepository'),
+}
+
+@Injectable()
+class ReadCatsService {
+  constructor(
+      @Inject(InjectionTokens.ReadOnlyCatsRepository)
+      private repository: ReadOnlyRepository<Cat>
+  ) {}
+}
+
+@Injectable()
+class WriteCatsService {
+  constructor(
+      @Inject(InjectionTokens.CatsRepository)
+      private repository: Repository<Cat>
+  ) {}
+}
+
+@Module({
+  providers: [
+    {
+      useClass: HttpRepository,
+      provide: InjectionTokens.HttpCatsRepository,
+    },
+    {
+      provide: InjectionTokens.ReadOnlyCatsRepository,
+      useExisting: InjectionTokens.HttpCatsRepository,
+    },
+    {
+      provide: InjectionTokens.CatsRepository,
+      useExisting: InjectionTokens.HttpCatsRepository,
+    },
+    ReadCatsService,
+    WriteCatsService,
+  ],
+})
+class Application {}
+```
+
+## Clean domain objects
+
+The philosophy of Clawject revolves around the idea that dependency injection should be an **external architectural layer**, while all domain objects should describe their dependencies without any framework references.
+
+Clawject allows you to extract absolutely all DI-related things from your classes, simplifying your code and reducing the probability of mistakes. Because Clawject is a very external component, you can work with any classes from external libraries just as easily as with your own.
+
+Let's imagine we have an npm package called `data-access`.
+
+```ts
+/* node_modules/data-access/repositories.d.ts */
+
+export interface Repository<T> { /*...*/ }
+export declare class HttpRepository<T> implements Repository<T> {
+  private readonly baseUrl;
+  constructor(baseUrl: string);
+}
+```
+
+Now, let's declare the `CatsService` that uses the repository from `data-access` package.
+
+```ts
+/* src/cat/CatsService.ts */
+
+import { Repository } from 'data-access';
+import { Cat } from './models/Cat';
+
+class CatsService {
+  constructor(
+  	private repository: Repository<Cat>
+  ) {}
+}
+```
+
+Now, let's declare beans for our classes.
+
+```ts
+/* src/Application.ts */
+
+import { HttpRepository } from 'data-access';
+import { Cat } from './cat/models/Cat';
+import { CatsService } from './cat/CatsService';
+
+@ClawjectApplication
+class Application {
+  @Bean catsApiBaseUrl = '/api/cat';
+
+  httpCatsRepository = Bean(HttpRepository<Cat>);
+  catsService = Bean(CatsService);
+}
+```
+
+As you can see, the classes remain clean and literally know nothing about being part of a dependency injection container. Moreover, you don't need to manually write factory functions to keep your classes clean and framework-independent.
+
+## Split container by features
+
+Clawject allows you to break down parts of the container into separate classes and even [share them via npm packages](https://clawject.com/docs/guides/sharing-configurations).
+
+Let's declare the `CatsConfiguration` class, which will contain beans related only to cats.
+
+```ts
+@Configuration
+export class CatsConfiguration {
+  @Bean apiBaseUrl = '/api/cat';
+
+  httpCatsRepository = Bean(HttpRepository<Cat>);
+  catsService = Bean(CatsService);
+}
+```
+
+Now we can import the configuration classes into our `Application` class or other configuration classes.
+
+```ts
+import { CatsConfiguration } from './cat/CatsConfiguration';
+import { DogsConfiguration } from './dog/DogsConfiguration';
+import { BirdsConfiguration } from './bird/BirdsConfiguration';
+
+@ClawjectApplication
+class Application {
+  catsConfiguration = Import(CatsConfiguration);
+  dogsConfiguration = Import(DogsConfiguration);
+  birdsConfiguration = Import(BirdsConfiguration);
+}
+```
+
+Clawject will assemble the entire container, instantiate all classes with the necessary dependencies, and inform you in a very developer-friendly manner if anything is missing.
+
+**Thanks for reading this article. If you're interested, visit [Clawject's website](https://clawject.com/) for more examples and learn how to install and use it in your project.**

@@ -1,29 +1,18 @@
-import { Bean, ClawjectApplication } from '@clawject/di';
+import { Bean, ClawjectApplication, Configuration, Import, Internal } from '@clawject/di';
 
-class Cat {}
-
-interface ReadOnlyRepository<T> { /*...*/ }
-
-interface Repository<T> extends ReadOnlyRepository<T> { /*...*/ }
-
-class HttpRepository<T> implements Repository<T> { /*...*/ }
-
-class ReadCatsService {
-  constructor(
-    private repository: ReadOnlyRepository<Cat>
-  ) {}
+@Configuration
+class AConfiguration {
+  @Bean data = 42;
 }
-
-class WriteCatsService {
-  constructor(
-    private repository: Repository<Cat>
-  ) {}
+@Configuration
+class BConfiguration {
+  @Bean data = 42;
 }
 
 @ClawjectApplication
 class Application {
-  httpCatsRepository = Bean(HttpRepository<Cat>);
-
-  readCatsService = Bean(ReadCatsService);
-  writeCatsService = Bean(WriteCatsService);
+  @Internal aConfiguartion = Import(AConfiguration);
+  @Internal bConfiguartion = Import(BConfiguration);
 }
+
+
