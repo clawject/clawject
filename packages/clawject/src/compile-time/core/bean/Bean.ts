@@ -81,4 +81,8 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   isLifecycle(): boolean {
     return this.kind === BeanKind.LIFECYCLE_METHOD || this.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION;
   }
+
+  isPreDefined(): boolean {
+    return this.kind === BeanKind.PRE_DEFINED;
+  }
 }

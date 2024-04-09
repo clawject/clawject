@@ -17,6 +17,7 @@
   "dependencies": {
     "@clawject/di": "../clawject/dist",
     "@clawject/language-service": "../language-service",
+    "@nest/core": "^4.5.4",
     "dts-bundle-generator": "^9.2.4",
     "mobx": "^6.12.3",
     "typeorm": "^0.3.20"

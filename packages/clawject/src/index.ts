@@ -16,3 +16,6 @@ export type { InstantiationConstructorParameters } from './runtime/api/Instantia
 export { ClawjectFactory } from './runtime/api/ClawjectFactory';
 
 export type { ___TypeReferenceTable___ } from './runtime/api/___TypeReferenceTable___';
+
+export type { ApplicationContext } from './runtime/api/clawject-dependency/ApplicationContext';
+export type { ConfigurationRef } from './runtime/api/clawject-dependency/ConfigurationRef';

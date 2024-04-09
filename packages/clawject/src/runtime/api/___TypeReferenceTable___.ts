@@ -1,5 +1,7 @@
 import { ImportedConfiguration } from './Import';
 import { BeanConstructorFactory } from './decorators/index';
+import { ApplicationContext } from './clawject-dependency/ApplicationContext';
+import { ConfigurationRef } from './clawject-dependency/ConfigurationRef';
 
 /**
  * @internalApi It's a part of API used by clawject internally,
@@ -12,7 +14,9 @@ export interface ___TypeReferenceTable___ {
   Set: ReadonlySet<any> | Set<any>;
   Map: ReadonlyMap<any, any> | Map<any, any>;
   MapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
+  Promise: Promise<any> | PromiseLike<any>;
   ImportedConfiguration: ImportedConfiguration<any, any>;
   BeanConstructorFactory: BeanConstructorFactory<any, any>;
-  Promise: Promise<any> | PromiseLike<any>;
+  ApplicationContext: ApplicationContext;
+  ConfigurationRef: ConfigurationRef;
 }

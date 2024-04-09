@@ -1,18 +1,8 @@
-import { Bean, ClawjectApplication, Configuration, Import, Internal } from '@clawject/di';
+declare const Controller: (target: any, context: ClassDecoratorContext) => void;
 
-@Configuration
-class AConfiguration {
-  @Bean data = 42;
+@Controller
+export class  A {
+  get data(): string {
+    return 'data';
+  }
 }
-@Configuration
-class BConfiguration {
-  @Bean data = 42;
-}
-
-@ClawjectApplication
-class Application {
-  @Internal aConfiguartion = Import(AConfiguration);
-  @Internal bConfiguartion = Import(BConfiguration);
-}
-
-

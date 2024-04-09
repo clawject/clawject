@@ -29,4 +29,9 @@ export const enum BeanKind {
    * @PostConstruct @PreDestroy lifecycleArrowFunction = (): any => {}
    * */
   LIFECYCLE_ARROW_FUNCTION = 6,
+
+  /**
+   * Used for pre-defined beans like `ApplicationContext`, `ConfigurationRef`, etc.
+   * */
+  PRE_DEFINED = 7
 }

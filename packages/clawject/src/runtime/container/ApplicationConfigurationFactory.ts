@@ -5,7 +5,7 @@ import { MaybeAsync } from '../types/MaybeAsync';
 import { Utils } from '../Utils';
 
 export class ApplicationConfigurationFactory {
-  private applicationConfigurations: ApplicationConfiguration[] = [];
+  public readonly applicationConfigurations: ApplicationConfiguration[] = [];
 
   async init(
     applicationClass: ClassConstructor<any>,

@@ -15,6 +15,16 @@ export namespace RuntimeErrors {
   }
 
   /** @public */
+  export class NoSuchBeanDefinitionError extends Error {
+    override name = 'NoSuchBeanDefinitionError' as const;
+  }
+
+  /** @public */
+  export class AmbiguousBeanDefinitionError extends Error {
+    override name = 'AmbiguousBeanDefinitionError' as const;
+  }
+
+  /** @public */
   export class CorruptedMetadataError extends Error {
     override name = 'CorruptedMetadataError' as const;
   }
