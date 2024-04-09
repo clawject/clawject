@@ -27,6 +27,14 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "runtime/___internal___": ["dist/types/runtime/___internal___/index.d.ts"],
+      "webpack": ["dist/types/webpack/index.d.ts"],
+      "transformer": ["dist/types/transformer/index.d.ts"],
+      "transformer/metadata": ["dist/types/transformer/metadata.d.ts"]
+    }
+  },
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
