@@ -3,7 +3,6 @@
   "version": "1.0.1",
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
-  "private": false,
   "exports": {
     ".": {
       "require": "./index.js",

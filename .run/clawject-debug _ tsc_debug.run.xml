@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="clawject-debug &gt; tsc:debug" type="js.build_tools.npm" nameIsGenerated="true">
+    <package-json value="$PROJECT_DIR$/clawject-debug/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="tsc:debug" />
+    </scripts>
+    <node-interpreter value="project" />
+    <node-options value="-r ts-node/register --no-warnings" />
+    <envs>
+      <env name="CLAWJECT_DEBUG_MODE" value="a605c4e7fe80432fb637fabef15263b1" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

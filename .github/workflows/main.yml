@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    paths:
+      - 'packages/**/src/**' # Trigger deploy on dir change
+    branches:
+      - main
+  workflow_dispatch: # Trigger deploy manually
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+      - name: Set git to use LF
+        working-directory: ./
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: npx nx run lint
+
+      - name: Build
+        run: npx nx run-many --target=build
+
+      - name: Test
+        run: npx nx run-many --target=test

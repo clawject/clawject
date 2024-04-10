@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+      - name: Set git to use LF
+        working-directory: ./
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: npx nx run lint
+
+      - name: Build
+        run: npx nx run-many --target=build
+
+      - name: Test
+        run: npx nx run-many --target=test
+
+  release:
+    needs:
+      - tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.CLAWJECT_DI_RELEASE }}
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Setup git user
+        run: |
+          git config --local user.email "artemkakornev1@gmail.com"
+          git config --local user.name "Artem Korniev"
+
+      - name: Print nx Environment Info
+        run: npx nx report
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.CLAWJECT_DI_RELEASE }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+        run: npx nx release

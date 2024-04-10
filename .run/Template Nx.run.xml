@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" type="NxRunConfigurationType">
+    <option name="nx-projects" value="" />
+    <option name="nx-targets" value="" />
+    <option name="nx-target-configuration" value="" />
+    <envs>
+      <env name="NODE_OPTIONS" value="-r ts-node/register --no-warnings" />
+    </envs>
+    <option name="arguments" value="" />
+    <method v="2" />
+  </configuration>
+</component>

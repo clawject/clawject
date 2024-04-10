@@ -1,0 +1,15 @@
+{
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@clawject/core/*": ["./packages/core/dist/*"],
+      "@clawject/di": ["./packages/di/dist"],
+      "@clawject/di/*": ["./packages/di/dist/*"],
+      "@clawject/nest/*": ["./packages/nest/dist/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

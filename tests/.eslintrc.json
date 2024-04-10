@@ -1,0 +1,18 @@
+{
+  "extends": ["../.eslintrc.base.json"],
+  "ignorePatterns": ["!**/*", "**/suites/*/fs/**/"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
+  ]
+}

@@ -3,7 +3,7 @@ name: Deploy website to GitHub Pages
 on:
   push:
     paths:
-      - 'packages/website/**' # Trigger deploy on website changes
+      - 'website/**' # Trigger deploy on website changes
     branches:
       - main
   workflow_dispatch: # Trigger deploy manually
@@ -11,7 +11,7 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: packages/website
+    working-directory: website
 
 jobs:
   deploy:

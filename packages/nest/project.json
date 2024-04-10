@@ -1,0 +1,34 @@
+{
+  "name": "nest",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/nest/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "{projectRoot}/dist",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "ts-patch": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "commands": [
+          "ts-patch install -s"
+        ]
+      }
+    },
+    "build": {
+      "executor": "./packages/nx-build-plugin:typescript",
+      "cache": false,
+      "dependsOn": ["ts-patch", "di:build"],
+      "options": {
+        "tsconfig": "packages/nest/tsconfig.lib.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "nx-build-plugin",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/nx-build-plugin/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}
