@@ -1,0 +1,23 @@
+{
+  "name": "@clawject/nest",
+  "version": "0.0.1",
+  "scripts": {
+    "ts-patch": "ts-patch install -s"
+  },
+  "dependencies": {
+    "@clawject/di": "*",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^10",
+    "@nestjs/core": "^10",
+    "ts-patch": "^3.2.1",
+    "typescript": "5.5.3"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10",
+    "@nestjs/core": "^10"
+  },
+  "type": "commonjs",
+  "main": "src/index.ts"
+}

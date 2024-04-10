@@ -1,0 +1,39 @@
+{
+  "name": "tests_di_compiletime",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tests/di_compiletime",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": "tests/di_compiletime",
+        "commands": [
+          "nx run tests_di_compiletime:test:prepare",
+          "node ../runTest.js 5.0",
+          "node ../runTest.js 5.1",
+          "node ../runTest.js 5.2",
+          "node ../runTest.js 5.3",
+          "node ../runTest.js 5.4",
+          "node ../runTest.js 5.5"
+        ]
+      }
+    },
+    "test:prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": "tests/di_compiletime",
+        "commands": [
+          "yarn cache clean",
+          "yarn --cwd ../../ run registry:init",
+          "yarn remove @clawject/di",
+          "yarn add @clawject/di",
+          "yarn --cwd ../../ run registry:stop"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "types": ["jest", "node"]
+  },
+  "include": ["helpers", "suites/**/*.test.ts"],
+  "exclude": ["node_modules", "suites/**/fs/**/*"]
+}

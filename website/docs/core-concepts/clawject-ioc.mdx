@@ -1,0 +1,107 @@
+---
+title: 'Clawject IoC Container'
+hide_title: true
+tags:
+  - ioc
+  - di
+  - container
+  - bean
+  - scope
+  - lazy
+---
+
+## Clawject IoC Container
+
+An IoC container is a common characteristic of frameworks that implement IoC.
+
+In Clawject, class defined with **`@ClawjectApplication`** decorator is a representation of the single IoC container.
+The Clawject container is responsible for instantiating, configuring and assembling objects known as Beans,
+as well as managing their life cycles.
+
+Right now Clawject provides one way to manage IoC containers. **`ClawjectFactory`** class.
+
+Here is the way to initialize the container:
+
+```ts
+import { ClawjectApplication, ClawjectFactory } from '@clawject/di';
+
+@ClawjectApplication
+class Application {}
+
+const applicationContext = await ClawjectFactory.createApplicationContext(Application)
+```
+
+## Constructor-Based Dependency Injection
+
+In the case of constructor-based dependency injection,
+the container will invoke a constructor with arguments each representing a dependency that is required.
+
+Clawject resolves each argument primarily by type, followed by the name of the constructor parameter.
+Let's see the defining of a bean and its dependencies using Bean function call:
+
+```ts
+class Bar {}
+class Foo {
+  constructor(private bar: Bar) {}
+}
+
+@ClawjectApplication
+class Application {
+  foo = Bean(Foo)
+  bar = Bean(Bar)
+}
+```
+
+We're passing class constructor to the Bean function and assigning the result of function to the class property to define a bean;
+Bean name is a class property name to which you assign the result of the Bean function.
+
+## Bean scopes
+
+You can read more about scopes here [@Scope](/docs/fundamentals/scope).
+
+For a bean with the default **singleton scope**,
+Clawject first checks if instance of the bean already created,
+and only creates a new one if it doesn't.
+If we're using the **transient scope**, the container returns a new bean instance for each bean request.
+
+Let's see how we can define a bean with the **transient** scope.
+Now we have two beans that require the **Baz** instance,
+for each of which the container creates a new instance of a **Baz** class.
+
+```ts
+class Baz {}
+class Bar {
+  constructor(private baz: Baz) {}
+}
+class Foo {
+  constructor(private baz: Baz) {}
+}
+
+@ClawjectApplication
+class Application {
+  foo = Bean(Foo)
+  bar = Bean(Bar)
+
+  @Scope('transient')
+  baz = Bean(Baz)
+}
+```
+
+## Lazy Initialized Beans
+
+You can read more about lazy beans here [@Lazy](/docs/fundamentals/lazy).
+
+By default, the container creates and configures all singleton beans during initialization.
+To avoid this, you can use the **@Lazy** decorator with on the bean configuration level:
+
+**foo** bean will only be initialized when it's first requested, and not at startup.
+
+```ts
+class Foo {}
+
+@ClawjectApplication
+class Application {
+  @Lazy
+  foo = Bean(Foo)
+}
+```

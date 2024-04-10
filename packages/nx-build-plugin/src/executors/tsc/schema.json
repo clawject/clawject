@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "Tsc executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "tsconfig": {
+      "type": "string",
+      "description": "Path to the tsconfig file"
+    },
+    "additionalEntryPoints": {
+      "type": "array",
+      "description": "Additional entry points",
+      "items": {
+        "type": "object",
+        "properties": {
+          "route": {
+            "type": "string",
+            "description": "Path to the entry point"
+          },
+          "filePath": {
+            "type": "string",
+            "description": "File path without extension"
+          }
+        }
+      }
+    },
+    "extractApi": {
+      "type": "boolean",
+      "description": "Flag to extract API"
+    },
+    "generateExportsFields": {
+      "type": "boolean",
+      "description": "Flag to generate exports fields"
+    },
+    "copyFiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "glob": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "glob"
+        ]
+      }
+    }
+  },
+  "required": [
+    "tsconfig"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "extends": ["./tsconfig.json", "../../tsconfig.lib.json"],
+  "compilerOptions": {
+    "plugins": [
+      { "transform": "@clawject/di/transformer" },
+      { "transform": "@clawject/di/transformer/metadata", "afterDeclarations": true }
+    ]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}

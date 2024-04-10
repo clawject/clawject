@@ -1,0 +1,43 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "main",
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      }
+    }
+  ],
+  "release": {
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": false
+      }
+    },
+    "version": {
+      "conventionalCommits": true,
+      "generatorOptions": {
+        "packageRoot": "packages/{projectName}"
+      }
+    },
+    "git": {
+      "commit": false,
+      "tag": true
+    },
+    "projects": ["packages/core", "packages/di"]
+  },
+  "targetDefaults": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "packages/{projectName}/dist"
+      }
+    }
+  }
+}

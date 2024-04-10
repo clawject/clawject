@@ -1,0 +1,10 @@
+[
+  {
+    "messageText": "Decorator error. @Qualifier from '@clawject/di' requires argument at position 0 to be statically known.",
+    "start": 130,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": []
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@clawject/core/*": ["./packages/core/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

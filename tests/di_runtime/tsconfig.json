@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "strict": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "plugins": [
+      {
+        "transform": "@clawject/di/transformer"
+      }
+    ]
+  },
+  "include": ["helpers", "suites/**/*.test.ts"]
+}

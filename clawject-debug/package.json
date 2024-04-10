@@ -1,0 +1,31 @@
+{
+  "name": "clawject-debug",
+  "version": "0.0.0",
+  "scripts": {
+    "ts-patch": "ts-patch install -s",
+    "tsc": "tsc",
+    "tsc:debug": "ts-node --project ./tsconfig.debug.json ./scripts/debug.ts",
+    "upgrade": "yarn cache clean && yarn --cwd ../ run registry:start && yarn run upgrade:clawject && yarn --cwd ../ run registry:stop",
+    "upgrade:clawject": "yarn remove @clawject/di @clawject/language-service && yarn add @clawject/di @clawject/language-service && yarn run ts-patch"
+  },
+  "dependencies": {
+    "@clawject/di": "^0.0.0",
+    "@clawject/language-service": "^1.0.1",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^10",
+    "@nestjs/core": "^10",
+    "cross-env": "^7.0.3",
+    "exec-sh": "^0.4.0",
+    "pm2": "^5.3.1",
+    "readline": "^1.3.0",
+    "ts-node": "^10.9.2",
+    "ts-patch": "^3.2.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "5.5.3"
+  },
+  "type": "commonjs",
+  "main": "src/index.ts",
+  "packageManager": "yarn@4.2.2"
+}

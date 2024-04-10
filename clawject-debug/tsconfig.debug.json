@@ -1,0 +1,23 @@
+{
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "transpileOnly": false,
+    "compilerOptions": {
+      "plugins": []
+    }
+  },
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@clawject/core/*": ["../packages/core/src/*"],
+      "@clawject/di": ["../packages/di/src"],
+      "@clawject/di/*": ["../packages/di/src/*"],
+      "@clawject/nest/*": ["../packages/nest/src/*"]
+    },
+    "plugins": [
+      { "transform": "@clawject/di/transformer" },
+      { "transform": "@clawject/di/transformer/metadata", "afterDeclarations": true }
+    ]
+  },
+  "include": ["src/**/*.ts"]
+}

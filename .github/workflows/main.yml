@@ -1,0 +1,118 @@
+name: Release
+
+on:
+  push:
+    paths:
+      - 'packages/**/src/**' # Trigger deploy on dir change
+    branches:
+      - main
+  workflow_dispatch: # Trigger deploy manually
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: npx nx run lint
+
+      - name: Build
+        run: npx nx run-many --target=build
+
+      - name: Upload built files
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ./packages/*/dist
+
+  tests:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        ts-version: [ '5.0', '5.1', '5.2', '5.3', '5.4', '5.5' ]
+
+    steps:
+      - name: Set git to use LF
+        if: ${{ matrix.os == 'windows-latest' }}
+        working-directory: ./
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Download built files
+        uses: actions/download-artifact@v4
+        with:
+          path: ./packages
+          name: dist
+
+      - name: Run local registry
+        shell: bash
+        run: yarn run registry:start
+
+
+      - name: Publish to local registry
+        shell: bash
+        run: yarn run publish:local
+
+      - name: Run tests
+        shell: bash
+        env:
+          TS_VERSION: ${{ matrix.ts-version }}
+        run: yarn run test
+
+#  release:
+#    needs: tests
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#      actions: read
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Setup Environment
+#        uses: ./.github/actions/setup-environment
+#
+#      - name: Install dependencies
+#        run: yarn install --frozen-lockfile
+#
+#      - name: Build
+#        run: npx nx run-many --target=build
+#
+#      - name: Set git user
+#        run: |
+#          git config --global user.email "artemkakornev1@gmail.com"
+#          git config --global user.name "artem1458"
+#
+#      - name: Publish release
+#        run: npx nx release
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.CLAWJECT_GH_RELEASE }}

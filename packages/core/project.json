@@ -1,0 +1,28 @@
+{
+  "name": "core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/core/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "./packages/nx-build-plugin:typescript",
+      "cache": true,
+      "options": {
+        "tsconfig": "packages/core/tsconfig.json",
+        "copyFiles": [
+          {
+            "from": "README.md",
+            "to": "./README.md",
+            "glob": false
+          }
+        ]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "{projectRoot}/dist"
+      }
+    }
+  }
+}

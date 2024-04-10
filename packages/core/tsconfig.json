@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "node",
+      "ts-expose-internals"
+    ],
+    "paths": {}
+  },
+  "include": ["src/**/*.ts"]
+}

@@ -1,0 +1,17 @@
+name: Setup Environment
+description: Setup the environment for the project.
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Setup Yarn
+      shell: bash
+      run: corepack enable
+
+    - name: Cache Yarn
+      uses: ./.github/actions/cache-yarn

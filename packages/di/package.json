@@ -1,0 +1,44 @@
+{
+  "name": "@clawject/di",
+  "version": "1.0.7",
+  "keywords": [
+    "dependency-injection",
+    "framework",
+    "javascript-framework",
+    "typescript-framework",
+    "di",
+    "ioc",
+    "inversion-of-control",
+    "typescript",
+    "ts",
+    "webpack",
+    "rollup",
+    "lsp",
+    "language-server"
+  ],
+  "license": "MIT",
+  "author": "Artem Korniev artemkakornev1@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clawject/clawject.git"
+  },
+  "homepage": "https://clawject.com",
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/clawject"
+  },
+  "dependencies": {
+    "@clawject/core": "1.0.7",
+    "tslib": "^2.6.2"
+  },
+  "devDependencies": {
+    "ts-patch": "^3.2.1",
+    "typescript": "5.5.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "nx": {
+    "includedScripts": []
+  }
+}

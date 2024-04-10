@@ -1,0 +1,38 @@
+{
+  "name": "di",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/di/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "./packages/nx-build-plugin:typescript",
+      "cache": true,
+      "dependsOn": ["core:build"],
+      "options": {
+        "tsconfig": "packages/di/tsconfig.json",
+        "additionalEntryPoints": [
+          { "route": "lsp", "filePath": "lsp/index" },
+          { "route": "runtime/___internal___", "filePath": "runtime/___internal___/index" },
+          { "route": "webpack", "filePath": "webpack/index" },
+          { "route": "transformer", "filePath": "transformer/index" },
+          { "route": "transformer/metadata", "filePath": "transformer/metadata/index" }
+        ],
+        "extractApi": true,
+        "generateExportsFields": true,
+        "copyFiles": [
+          {
+            "from": "../../README.md",
+            "to": "./README.md",
+            "glob": false
+          }
+        ]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "{projectRoot}/dist"
+      }
+    }
+  }
+}
