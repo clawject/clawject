@@ -1448,7 +1448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:1.0.7, @clawject/core@workspace:packages/core":
+"@clawject/core@npm:1.1.0, @clawject/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@clawject/core@workspace:packages/core"
   dependencies:
@@ -1481,7 +1481,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@clawject/di@workspace:packages/di"
   dependencies:
-    "@clawject/core": "npm:1.0.7"
+    "@clawject/core": "npm:1.1.0"
     ts-patch: "npm:^3.2.1"
     tslib: "npm:^2.6.2"
     typescript: "npm:5.5.3"
