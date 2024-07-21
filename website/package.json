@@ -34,7 +34,7 @@
     "@docusaurus/tsconfig": "^3.3.2",
     "@types/lodash": "^4.14.202",
     "@types/react-dom": "^18.2.22",
-    "typescript": "5.2.2"
+    "typescript": "5.5.3"
   },
   "browserslist": {
     "production": [
@@ -50,5 +50,6 @@
   },
   "engines": {
     "node": ">=18.0"
-  }
+  },
+  "packageManager": "yarn@4.2.2"
 }
