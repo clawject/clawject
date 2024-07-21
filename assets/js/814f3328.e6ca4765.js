@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[2535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Clawject: Simplifying Dependency Injection in TypeScript","permalink":"/blog/simplifying-dependency-injection-in-typescript","unlisted":false}]}')}}]);
