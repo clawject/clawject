@@ -1,3 +1,14 @@
+## 1.1.1 (2024-07-22)
+
+
+### 🩹 Fixes
+
+- **di:** remove getting text from node ([13b7245e](https://github.com/clawject/clawject/commit/13b7245e))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.1.0 (2024-07-21)
 
 
