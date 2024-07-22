@@ -49,14 +49,9 @@ import { Bean, ClawjectApplication, ClawjectFactory, PostConstruct, Qualifier } 
 
 @ClawjectApplication
 class Application {
-  @Bean foo: undefined = undefined;
+  @Bean static foo = 42;
 
-  @PostConstruct
-  postConstruct(
-    foo: number | undefined
-  ) {
-    console.log(foo);
-  }
+  @Bean bar = (foo: number) => foo + 42;
 }
 
 

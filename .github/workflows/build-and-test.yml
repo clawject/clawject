@@ -1,4 +1,4 @@
-name: Release
+name: Build and Test
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - 'packages/**/src/**' # Trigger deploy on dir change
     branches:
       - main
+  pull_request: # Trigger deploy on PR
   workflow_dispatch: # Trigger deploy manually
 
 jobs:

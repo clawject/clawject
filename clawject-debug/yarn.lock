@@ -34,9 +34,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:*":
-  version: 0.0.0
-  resolution: "@clawject/core@npm:0.0.0"
+"@clawject/core@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@clawject/core@npm:1.1.0"
   dependencies:
     cosmiconfig: "npm:^9.0.0"
     cosmiconfig-typescript-loader: "npm:^5.0.0"
@@ -45,31 +45,29 @@ __metadata:
     jsonschema: "npm:^1.4.1"
     lodash: "npm:^4.17.21"
     semver: "npm:^7.6.0"
-    tslib: "npm:^2.6.2"
     upath: "npm:^2.0.1"
     winston: "npm:^3.12.0"
   peerDependencies:
     typescript: ">=5.0 <=5.5"
-  checksum: 10c0/ebeee2e0c0c29cac2b6b1518b90afd9c9a8267d2c5ff16be694a6a7d3ae8f7474920da2cfb1750a91989548507630ceff4cd3b53b1f9252ace93764cf8b9e8e7
+  checksum: 10c0/4f3294946719b6031c93f99628726391acbde623c8c6ce8861e2aadede3a3c7592021527d0e57831977213149f068245c4b8b6df6286942bfbc4099be9486a32
   languageName: node
   linkType: hard
 
-"@clawject/di@npm:^0.0.0":
-  version: 0.0.0
-  resolution: "@clawject/di@npm:0.0.0"
+"@clawject/di@npm:1.1.0, @clawject/di@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@clawject/di@npm:1.1.0"
   dependencies:
-    "@clawject/core": "npm:*"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/195a6a32ec3bd7d86d05166889d04379a932e9d384cc5b72417463ce60042144d0d7b641fb86095b1f3f8f2500dd3cb17d3db5d3be49260b4b1eeb6216942cc5
+    "@clawject/core": "npm:1.1.0"
+  checksum: 10c0/b1a2730880e925dc41275d59a61b1682702f8b491a98205bea70e8d69ace6f3b0aa3101ea0eb74a8433d2456113153102cc9c7231cb5dd7a5ab7e807939f530e
   languageName: node
   linkType: hard
 
-"@clawject/language-service@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@clawject/language-service@npm:1.0.1"
-  peerDependencies:
-    "@clawject/di": "*"
-  checksum: 10c0/c0df796377a2ed325c2f28917bbeeca6bac19bea83a44cce57dd0e5fd0b327bd2f474b0a3bf6f98c1f988152fc4923ae2fd23ed5a8b61b445ca91b1e3f264455
+"@clawject/language-service@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@clawject/language-service@npm:1.1.0"
+  dependencies:
+    "@clawject/di": "npm:1.1.0"
+  checksum: 10c0/b92f685eb8ff36864957ba7c1ae875747b1e4653da32a8ba0f5438e0da19bcaa49bf98b5e037050ef31e08513abb2c468d58eef5a14279277c51754a4abdde2a
   languageName: node
   linkType: hard
 
@@ -728,8 +726,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "clawject-debug@workspace:."
   dependencies:
-    "@clawject/di": "npm:^0.0.0"
-    "@clawject/language-service": "npm:^1.0.1"
+    "@clawject/di": "npm:^1.1.0"
+    "@clawject/language-service": "npm:^1.1.0"
     "@nestjs/common": "npm:^10"
     "@nestjs/core": "npm:^10"
     cross-env: "npm:^7.0.3"
@@ -2895,13 +2893,6 @@ __metadata:
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 10c0/e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.6.2":
-  version: 2.6.3
-  resolution: "tslib@npm:2.6.3"
-  checksum: 10c0/2598aef53d9dbe711af75522464b2104724d6467b26a60f2bdac8297d2b5f1f6b86a71f61717384aa8fd897240467aaa7bcc36a0700a0faf751293d1331db39a
   languageName: node
   linkType: hard
 

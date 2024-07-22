@@ -1,0 +1,14 @@
+{
+  "name": "language-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/language-service",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "{projectRoot}"
+      }
+    }
+  }
+}

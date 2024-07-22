@@ -31,7 +31,7 @@
       "commit": false,
       "tag": true
     },
-    "projects": ["packages/core", "packages/di"]
+    "projects": ["packages/core", "packages/di", "packages/language-service"]
   },
   "targetDefaults": {
     "nx-release-publish": {

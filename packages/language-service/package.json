@@ -1,6 +1,6 @@
 {
   "name": "@clawject/language-service",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
   "exports": {
@@ -10,7 +10,7 @@
       "default": "./index.mjs"
     }
   },
-  "peerDependencies": {
-    "@clawject/di": "*"
+  "dependencies": {
+    "@clawject/di": "1.1.0"
   }
 }

@@ -1477,13 +1477,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@clawject/di@npm:*, @clawject/di@workspace:packages/di":
+"@clawject/di@npm:*, @clawject/di@npm:1.1.0, @clawject/di@workspace:packages/di":
   version: 0.0.0-use.local
   resolution: "@clawject/di@workspace:packages/di"
   dependencies:
     "@clawject/core": "npm:1.1.0"
     ts-patch: "npm:^3.2.1"
-    tslib: "npm:^2.6.2"
     typescript: "npm:5.5.3"
   languageName: unknown
   linkType: soft
@@ -1491,8 +1490,8 @@ __metadata:
 "@clawject/language-service@workspace:packages/language-service":
   version: 0.0.0-use.local
   resolution: "@clawject/language-service@workspace:packages/language-service"
-  peerDependencies:
-    "@clawject/di": "*"
+  dependencies:
+    "@clawject/di": "npm:1.1.0"
   languageName: unknown
   linkType: soft
 

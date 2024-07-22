@@ -28,8 +28,7 @@
     "url": "https://buymeacoffee.com/clawject"
   },
   "dependencies": {
-    "@clawject/core": "1.1.0",
-    "tslib": "^2.6.2"
+    "@clawject/core": "1.1.0"
   },
   "devDependencies": {
     "ts-patch": "^3.2.1",
