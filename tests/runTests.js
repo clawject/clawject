@@ -4,7 +4,7 @@ const path = require('path');
 const {readdir} = require('fs').promises;
 
 (async () => {
-  const tsVersion = process.env['TS_VERSION'];
+  const tsVersion = process.env['TS_VERSION'] || '5.5';
 
   if (!tsVersion) {
     console.error('TS_VERSION environment variable is not set');
@@ -27,9 +27,10 @@ const {readdir} = require('fs').promises;
     const packageJson = require(packageJsonPath);
 
     const clawjectPackages = Object.keys(packageJson.dependencies || {}).filter(dep => dep.startsWith('@clawject/'));
-    const clawjectPackagesToInstall = clawjectPackages.map(dep => `${dep}@latest`).join(' ');
+    const clawjectPackagesToInstall = clawjectPackages.map(dep => `${dep}`).join(' ');
     const commands = [
       'rm -rf node_modules',
+      `yarn remove ${clawjectPackages.join(' ')}`,
       'yarn',
       `yarn add ${clawjectPackagesToInstall} typescript@${tsVersion} ts-patch@3.2.1`,
       'yarn run ts-patch install -s',

@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "type": "commonjs",
   "devDependencies": {
-    "@types/memwatch-next": "^0",
     "@typescript/vfs": "^1.5.3",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.3",
@@ -12,6 +11,6 @@
   },
   "packageManager": "yarn@4.2.2",
   "dependencies": {
-    "@clawject/di": "latest"
+    "@clawject/di": "^1.1.0"
   }
 }

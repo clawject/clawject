@@ -28,7 +28,7 @@
       }
     },
     "git": {
-      "commit": false,
+      "commit": true,
       "tag": true
     },
     "projects": ["packages/core", "packages/di", "packages/language-service"]

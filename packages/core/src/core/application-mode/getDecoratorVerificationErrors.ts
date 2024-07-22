@@ -6,10 +6,6 @@ import { DecoratorVerifier } from '../decorators/DecoratorVerifier';
 export const getDecoratorVerificationErrors = (node: ts.ClassDeclaration): AbstractCompilationMessage[] => {
   const classErrors = DecoratorVerifier.invoke(node);
 
-  if (node.getText().includes('class A ')) {
-    classErrors;
-  }
-
   if (classErrors.length > 0) {
     return classErrors;
   }

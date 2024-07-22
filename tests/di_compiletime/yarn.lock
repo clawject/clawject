@@ -412,9 +412,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:1.0.7":
-  version: 1.0.7
-  resolution: "@clawject/core@npm:1.0.7"
+"@clawject/core@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@clawject/core@npm:1.1.0"
   dependencies:
     cosmiconfig: "npm:^9.0.0"
     cosmiconfig-typescript-loader: "npm:^5.0.0"
@@ -423,22 +423,20 @@ __metadata:
     jsonschema: "npm:^1.4.1"
     lodash: "npm:^4.17.21"
     semver: "npm:^7.6.0"
-    tslib: "npm:^2.6.2"
     upath: "npm:^2.0.1"
     winston: "npm:^3.12.0"
   peerDependencies:
     typescript: ">=5.0 <=5.5"
-  checksum: 10c0/07fc8b555d030bf98ebe44f8e989a698a7bbfe70d4de50080f6b8937f2d7d43892518f0b4acafd7a0617cca67a3a16b7aa088e700ca144281f264b7fdc458717
+  checksum: 10c0/4f3294946719b6031c93f99628726391acbde623c8c6ce8861e2aadede3a3c7592021527d0e57831977213149f068245c4b8b6df6286942bfbc4099be9486a32
   languageName: node
   linkType: hard
 
-"@clawject/di@npm:latest":
-  version: 1.0.7
-  resolution: "@clawject/di@npm:1.0.7"
+"@clawject/di@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@clawject/di@npm:1.1.0"
   dependencies:
-    "@clawject/core": "npm:1.0.7"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/0301f9ea93e8489edb86353dffcfe9671eac2581d5fe10c12856571aeadedf53c7e55537acb08089a1ea404c4846a46bd57b7e6da652c4bbdd8b2d1d00776b76
+    "@clawject/core": "npm:1.1.0"
+  checksum: 10c0/b1a2730880e925dc41275d59a61b1682702f8b491a98205bea70e8d69ace6f3b0aa3101ea0eb74a8433d2456113153102cc9c7231cb5dd7a5ab7e807939f530e
   languageName: node
   linkType: hard
 
@@ -899,13 +897,6 @@ __metadata:
   dependencies:
     "@types/istanbul-lib-report": "npm:*"
   checksum: 10c0/1647fd402aced5b6edac87274af14ebd6b3a85447ef9ad11853a70fd92a98d35f81a5d3ea9fcb5dbb5834e800c6e35b64475e33fcae6bfa9acc70d61497c54ee
-  languageName: node
-  linkType: hard
-
-"@types/memwatch-next@npm:^0":
-  version: 0.3.6
-  resolution: "@types/memwatch-next@npm:0.3.6"
-  checksum: 10c0/f2715f0e72550cc8df48f7ae278f841ef9a3ca59f68df2a7e88ff59a788262ec393c87aad904183362cebda0d002a8782f1f09140921814ef4f88c41dc4d8bbf
   languageName: node
   linkType: hard
 
@@ -3759,8 +3750,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tests_di_compiletime@workspace:."
   dependencies:
-    "@clawject/di": "npm:latest"
-    "@types/memwatch-next": "npm:^0"
+    "@clawject/di": "npm:^1.1.0"
     "@typescript/vfs": "npm:^1.5.3"
     jest: "npm:^29.7.0"
     ts-jest: "npm:^29.2.3"
@@ -3857,13 +3847,6 @@ __metadata:
     ts-patch: bin/ts-patch.js
     tspc: bin/tspc.js
   checksum: 10c0/c214e0218f905c6445830821d400280c9b127fa41f2984bbad59c1f19eda7b6a0529457af7bc6d80fdfa38289207d5b5e2f40912c33758a243ca2064ed0aa137
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.6.2":
-  version: 2.6.3
-  resolution: "tslib@npm:2.6.3"
-  checksum: 10c0/2598aef53d9dbe711af75522464b2104724d6467b26a60f2bdac8297d2b5f1f6b86a71f61717384aa8fd897240467aaa7bcc36a0700a0faf751293d1331db39a
   languageName: node
   linkType: hard
 
