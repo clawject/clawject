@@ -5,12 +5,13 @@
     "ts-patch": "ts-patch install -s",
     "tsc": "tsc",
     "tsc:debug": "ts-node --project ./tsconfig.debug.json ./scripts/debug.ts",
+    "run:compiled": "yarn run tsc && node dist",
     "upgrade": "yarn cache clean && yarn --cwd ../ run registry:start && yarn --cwd ../ run publish:local && yarn run upgrade:clawject && yarn --cwd ../ run registry:stop",
     "upgrade:clawject": "yarn remove @clawject/di @clawject/language-service && yarn add @clawject/di @clawject/language-service && yarn run ts-patch"
   },
   "dependencies": {
-    "@clawject/di": "^1.1.0",
-    "@clawject/language-service": "^1.1.0",
+    "@clawject/di": "^1.1.1",
+    "@clawject/language-service": "^1.1.1",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {

@@ -50,18 +50,10 @@ export class Application extends Entity<ts.ClassDeclaration> {
   }
   get beansArray(): Bean[] {
     if (this._beansArray === null) {
-      const beans: Bean[] = [];
-      this._beansArray = beans;
-
-      this.forEachConfiguration(configuration => {
-        configuration.beanRegister.elements.forEach(bean => {
-          beans.push(bean);
-        });
-      });
-      return beans;
-    } else {
-      return this._beansArray;
+      this._beansArray = Array.from(this.beans);
     }
+
+    return this._beansArray;
   }
 
   exposedBeans = new Map<string, MaybeResolvedDependency>();

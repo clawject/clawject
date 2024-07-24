@@ -1,61 +1,45 @@
-// import { Bean, ClassConstructor, ClawjectApplication, Configuration, Import, Internal, Qualifier } from "@clawject/di";
-//
-// class Foo {}
-//
-// class Bar {
-//   constructor(data) {}
-// }
-//
-// @Configuration
-// class FooConfiguration {
-//
-// }
-//
-// const a = 123
-//
-// @Configuration
-// class BarConfiguration {
-//   fooConfiguration = Import(FooConfiguration);
-//
-//   @Bean @Bean data = 123;
-//   bar = Bean(Bar);
-// }
-//
-// @ClawjectApplication
-// class App {
-//   barConfiguration = Import(BarConfiguration);
-// }
-// const AnyMockingLibrary = {} as any;
-//
-// const TestConfiguration: (configurationClass: ClassConstructor<any>) => ClassDecorator = {} as any;
-// //ParentConfigurationClass is optional and needed when needs to specify the parent configuration class in which the base bean is defined
-// const MockBean: (parentConfigurationClass?: ClassConstructor<any>) => PropertyDecorator & MethodDecorator = {} as any;
-//
-// @TestConfiguration(App)
-// class TestApp {
-//
-//   //TODO Importing other test configurations
-//   //TODO Defining regular beans
-//
-//   @MockBean()
-//     //TODO Possible to create as factory function or property or getter, but without dependencies
-//     //TODO Scope
-//     //TODO Qualifier
-//     foo = AnyMockingLibrary.mock(Foo);
-// }
-//
+import { Bean, ClawjectApplication, ClawjectFactory, Configuration, ExposeBeans, Import } from "@clawject/di";
 
-import { Bean, ClawjectApplication, ClawjectFactory, PostConstruct, Qualifier } from '@clawject/di';
+class Foo {
+  static instantiationCount = 0;
 
-interface A {}
-class B implements A {}
+  counter = Foo.instantiationCount++;
 
-@ClawjectApplication
-export class Application {
-  b = Bean(B);
+  constructor() {
+    console.log('Foo instantiated');
+    console.log(this.counter);
+  }
 }
 
+@Configuration
+class ToBeImported {
+  foo = Bean(Foo);
+}
 
-(async () => {
-  await ClawjectFactory.createApplicationContext(Application);
+@Configuration
+class Bar {
+  toBeImported = Import(ToBeImported);
+}
+
+@ClawjectApplication
+class Application1 {
+  toBeImported = Import(ToBeImported);
+  bar = Import(Bar);
+
+  exposed = ExposeBeans<{ foo: Foo }>();
+}
+
+@ClawjectApplication
+class Application2 {
+  bar = Import(Bar);
+  toBeImported = Import(ToBeImported);
+
+  exposed = ExposeBeans<{ foo: Foo }>();
+}
+
+(async() => {
+  const application1 = await ClawjectFactory.createApplicationContext(Application1);
+  const exposed1 = await application1.getExposedBeans();
+  const application2 = await ClawjectFactory.createApplicationContext(Application2);
+  const exposed2 = await application2.getExposedBeans();
 })()

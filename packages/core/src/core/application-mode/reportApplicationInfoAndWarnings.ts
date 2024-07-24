@@ -4,7 +4,7 @@ import { ConfigLoader } from '../../config/ConfigLoader';
 import { Context } from '../../compilation-context/Context';
 
 export function reportApplicationInfoAndWarnings(application: Application): void {
-  if (Context.languageServiceMode) {
+  if (!Context.languageServiceMode) {
     return;
   }
 

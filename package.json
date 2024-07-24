@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "nx run-many --target=lint",
     "test": "node tests/runTests.js",
+    "build": "nx run-many --target=build",
     "registry:start": "ts-node scripts/registry",
     "registry:stop": "ts-node scripts/registry/stop",
     "release": "nx release --skip-publish",

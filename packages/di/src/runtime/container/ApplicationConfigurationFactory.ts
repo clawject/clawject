@@ -6,13 +6,18 @@ import { Utils } from '../Utils';
 
 export class ApplicationConfigurationFactory {
   private applicationConfigurations: ApplicationConfiguration[] = [];
+  private indexToConfigurationClass = new Map<number, ClassConstructor<any>>();
+  private configurationClassToApplicationConfiguration = new Map<ClassConstructor<any>, ApplicationConfiguration>();
+
+  private lastConfigurationId = 0;
+  private configurationClassToId = new Map<ClassConstructor<any>, number>();
 
   async init(
     applicationClass: ClassConstructor<any>,
     applicationClassConstructorParameters: any[],
   ): Promise<void> {
     const visited = new Set<ClassConstructor<any>>();
-    const firstApplicationConfiguration = new ApplicationConfiguration(applicationClass, applicationClassConstructorParameters);
+    const firstApplicationConfiguration = this.buildApplicationConfiguration(applicationClass, applicationClassConstructorParameters);
     const stack = [firstApplicationConfiguration];
 
     while (stack.length > 0) {
@@ -70,19 +75,46 @@ export class ApplicationConfigurationFactory {
 
       configurationClasses.forEach((it) => {
         if (!visited.has(it.constructor)) {
-          stack.push(new ApplicationConfiguration(it.constructor, it.args));
+          stack.push(this.buildApplicationConfiguration(it.constructor, it.args));
         }
       });
     }
 
     this.applicationConfigurations.forEach((applicationConfiguration, index) => {
-      applicationConfiguration.init(index);
+      const configurationClass = applicationConfiguration.classConstructor;
+      const configurationId = this.configurationClassToId.get(configurationClass) ?? this.lastConfigurationId++;
+
+      if (!this.configurationClassToId.has(configurationClass)) {
+        this.configurationClassToId.set(configurationClass, configurationId);
+      }
+
+      applicationConfiguration.init(index, configurationId);
+
+      this.indexToConfigurationClass.set(index, configurationClass);
     });
   }
 
   public mapConfigurations<T>(callback: (applicationConfiguration: ApplicationConfiguration) => T): T[] {
-    return this.applicationConfigurations.map((applicationConfiguration) => {
+    return Array.from(this.configurationClassToApplicationConfiguration.values()).map((applicationConfiguration) => {
       return callback(applicationConfiguration);
     });
+  }
+
+  public getConfigurationByIndex(index: number): ApplicationConfiguration {
+    if (!this.applicationConfigurations[index]) {
+      throw new Error(`No configuration found for index ${index}`);
+    }
+
+    return this.applicationConfigurations[index];
+  }
+
+  private buildApplicationConfiguration(...args: ConstructorParameters<typeof ApplicationConfiguration>): ApplicationConfiguration {
+    const applicationConfiguration = this.configurationClassToApplicationConfiguration.get(args[0]) ??  new ApplicationConfiguration(...args);
+
+    if (!this.configurationClassToApplicationConfiguration.has(args[0])) {
+      this.configurationClassToApplicationConfiguration.set(args[0], applicationConfiguration);
+    }
+
+    return applicationConfiguration;
   }
 }
