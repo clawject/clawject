@@ -22,18 +22,18 @@ export default {
       label: 'Configuration 🔮',
       id: 'configuration',
     },
-    {
-      type: 'category',
-      label: 'Integrations',
-      collapsed: true,
-      items: [
-        {
-          type: 'doc',
-          label: 'Nest',
-          id: 'integrations/nestjs',
-        }
-      ]
-    },
+    // {
+    //   type: 'category',
+    //   label: 'Integrations',
+    //   collapsed: true,
+    //   items: [
+    //     {
+    //       type: 'doc',
+    //       label: 'Nest',
+    //       id: 'integrations/nestjs',
+    //     }
+    //   ]
+    // },
     {
       type: 'category',
       label: 'Core Concepts',

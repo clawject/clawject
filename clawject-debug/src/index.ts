@@ -47,11 +47,12 @@
 
 import { Bean, ClawjectApplication, ClawjectFactory, PostConstruct, Qualifier } from '@clawject/di';
 
-@ClawjectApplication
-class Application {
-  @Bean static foo = 42;
+interface A {}
+class B implements A {}
 
-  @Bean bar = (foo: number) => foo + 42;
+@ClawjectApplication
+export class Application {
+  b = Bean(B);
 }
 
 

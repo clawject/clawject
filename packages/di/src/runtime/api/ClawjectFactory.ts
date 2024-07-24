@@ -17,14 +17,16 @@ import { InternalScopeRegister } from '../scope/InternalScopeRegister';
  * @public
  * */
 export class ClawjectFactoryStatic {
+  private readonly scopeRegister: InternalScopeRegister;
   private constructor(
     private beanProcessors: BeanProcessor[],
     private scopes: Map<string | number, Scope>,
-  ) {}
+  ) {
+    this.scopeRegister = new InternalScopeRegister(scopes);
+  }
 
   public static readonly instance = new ClawjectFactoryStatic([], InternalScopeRegister.global.scopes);
 
-  private readonly scopeRegister = new InternalScopeRegister(this.scopes);
 
   /**
    * Creates a {@link ClawjectApplicationContext} instance.

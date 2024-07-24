@@ -18,18 +18,25 @@ It occurs when the name of the element is empty.
 
 **Solution:** Add name to the element.
 
-#### CE2: DuplicateDecoratorError
-It occurs when the element has more than one same decorator.
-Example:
+#### CE2: DecoratorError
+It can occur when decorators applied incorrectly. Example:
+
 ```ts
 @ClawjectApplication
+@Bean //<- Bean cannot be applied to the class
 class Application {
-  @Bean
-  @Bean
+  //Duplicate decorators
+  @Bean @Bean
   cat = new Cat();
+
+  //Bean cannot be combined with PostConstruct
+  @Bean @PostConstruct
+  dog(): Dog {
+    return new Dog();
+  }
 }
 ```
-**Solution:** Remove extra decorators.
+**Solution:** Fix such issues.
 
 #### CE3: TypeQualifyError
 It occurs when Clawject can't qualify a type of element or return type of method or function.
@@ -156,19 +163,41 @@ class Application {
 }
 ```
 
-#### CE9: IncorrectArgumentsLengthError
-It occurs when required arguments count not match requirements. Example:
+#### CE9: CorruptedMetadataError
+It occurs when class metadata is corrupted.
+It was altered manually or by some other tool.
+It can appear only in declaration files.
 
-```ts
-@ClawjectApplication
-class Application {
-  @Qualifier() cat = Bean(Cat)
+Example:
+```ts title="application.d.ts"
+export declare class Application {
+  foo: number;
+  bar: (foo: number) => number;
+  #_clawject_metadata: MyOwnDeclaredMetadata;
 }
+
+interface MyOwnDeclaredMetadata {
+  kind: 3;
+  version: 42;
+  ///...
+}
+
+declare namespace ClawjectMetadata_1 {
+  export type Application_1 = {
+    kind: 2;
+    version: 1;
+    external: null;
+    beans: [
+      { kind: 4; primary: false; external: null; qualifier: null; nestedProperty: null; classPropertyName: "foo"; },
+      { kind: 3; primary: false; external: null; qualifier: null; nestedProperty: null; classPropertyName: "bar"; }
+    ];
+    imports: [];
+  };
+}
+
 ```
 
-In this example - `@Qualifier` decorator requires exactly one argument to be passed, but it was not provided, so Clawject will report error.
-
-**Solution:** Pass required arguments count.
+**Solution:** Do not edit generated files, regenerate declaration file.
 
 #### CE10: DependencyResolvingError
 It occurs when the dependencies of bean could not be resolved. Examples:
@@ -303,26 +332,6 @@ It occurs when value or name in some part of the code is not statically known. E
   ```
 
 **Solution:** Use only statically known values and names when it's required.
-
-#### CE15: CorruptedMetadataError
-It occurs when class metadata is corrupted, it was altered manually or by some other tool.
-It can appear only in declaration files.
-Example:
-```ts title="application.d.ts"
-export declare class Application {
-    /** This field is auto-generated, editing it could lead to unexpected behavior.*/
-    #___clawject_compile_time_metadata___: {
-        kind: 2;
-        AdditionalPropertyAddedByUserOrTool: string;
-        version: 1;
-        external: null;
-        beans: [];
-        imports: [];
-    };
-}
-```
-
-**Solution:** Do not edit generated files, regenerate declaration file.
 
 ### Runtime
 Runtime errors are regular JavaScript errors that can be thrown during the application execution.

@@ -13,12 +13,24 @@ tags:
 
 The Clawject Language Service provides code editors (VSCode, WebStorm, etc.) with a way to get compile-time errors, suggestions
 about Beans, Configurations, Imports, etc.
+It will help you to write code faster and with fewer errors.
 
-[Clawject package](https://www.npmjs.com/package/@clawject/di) provides language service plugin itself,
-but it can't be used directly because TypeScript not allows using language services that are not package itself,
-so `@clawject/language-service` package have `@clawject/di` as a peer-dependency and re-exporting its language service,
-so you shouldn't worry about versions compatibility, `@clawject/language-service` will always have single version
-and just re-use `@clawject/di` language service.
+:::tip
+Hover on underlined code to see diagnostics
+:::
+
+import {CodeBlockWithDiagnostics} from '../src/components/CodeBlockWithDiagnostics';
+import {diagnosticsCode, diagnosticsMessages} from '../src/components/root';
+
+
+<CodeBlockWithDiagnostics
+  showLineNumbers
+  title="main.ts"
+  language="ts"
+  diagnostics={diagnosticsMessages}
+>
+  {diagnosticsCode}
+</CodeBlockWithDiagnostics>
 
 ### Installation
 

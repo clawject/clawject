@@ -8,13 +8,13 @@ export enum ErrorCode {
   CE6 = 'CE6',
   CE7 = 'CE7',
   CE8 = 'CE8',
-  CE9 = 'CE9', // Free
+  CE9 = 'CE9',
   CE10 = 'CE10',
   CE11 = 'CE11',
   CE12 = 'CE12',
   CE13 = 'CE13',
   CE14 = 'CE14',
   CE15 = 'CE15',
-  CE16 = 'CE16',
-  CE17 = 'CE17', // free
+  CE16 = 'CE16', // Free
+  CE17 = 'CE17', // Free
 }

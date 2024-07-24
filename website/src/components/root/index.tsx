@@ -108,7 +108,7 @@ class PrimitivesService {
 class Application {}
 `.trim();
 
-const diagnosticsCode = `
+export const diagnosticsCode = `
 class Foo {
   constructor(baz: Baz, someString: string) {}
 }
@@ -136,7 +136,7 @@ class Application {
   beanThatReturnsVoid(): void {}
 }
 `.trim();
-const diagnosticsMessages: ICodeDiagnostic[] = [
+export const diagnosticsMessages: ICodeDiagnostic[] = [
   {
     line: 2,
     start: 24,
