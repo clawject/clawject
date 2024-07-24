@@ -1,3 +1,14 @@
+## 1.1.2 (2024-07-24)
+
+
+### 🩹 Fixes
+
+- **di:** beans and configuration classes instantiated multiple when they should not ([63663079](https://github.com/clawject/clawject/commit/63663079))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.1.1 (2024-07-22)
 
 
