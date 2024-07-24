@@ -412,9 +412,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@clawject/core@npm:1.1.1"
+"@clawject/core@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@clawject/core@npm:1.1.2"
   dependencies:
     cosmiconfig: "npm:^9.0.0"
     cosmiconfig-typescript-loader: "npm:^5.0.0"
@@ -427,16 +427,16 @@ __metadata:
     winston: "npm:^3.12.0"
   peerDependencies:
     typescript: ">=5.0 <=5.5"
-  checksum: 10c0/8fc9516e95e85716f04395a41ca8151901e0514b8ee52479706eadb8ce1ba64e0704fdfe69ee776aa7b80a2c0eb11f3d5ba9b04a03ad77e7eec2d08f6086a9de
+  checksum: 10c0/5db41443c085790e9929d02862eb488c02a8485e46f18a87c315c626ba2f70d1b22c8ca2a54e400fa4a2fb8480d4516be6e25c6e5f9b0666f3a351fc55b75a1f
   languageName: node
   linkType: hard
 
-"@clawject/di@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@clawject/di@npm:1.1.1"
+"@clawject/di@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@clawject/di@npm:1.1.2"
   dependencies:
-    "@clawject/core": "npm:1.1.1"
-  checksum: 10c0/5b664a12d649bc6d7597f6de80a70805469029ff4aa9e021a632c9c4cdffa56b8e50cbe7af0b8dc7f18d1376323c0ffd7bf90a161c90ae011fa8c23cd165bcdd
+    "@clawject/core": "npm:1.1.2"
+  checksum: 10c0/bf5160e4dd0c7d1329d36dcee374d9ac1e5ae1bf09acbecff798271d99f437f8b6ca44b458ce86f2c759a049a2774e377aab716397753232e0a3d890a7c1fa9d
   languageName: node
   linkType: hard
 
@@ -3750,7 +3750,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tests_di_compiletime@workspace:."
   dependencies:
-    "@clawject/di": "npm:^1.1.1"
+    "@clawject/di": "npm:^1.1.2"
     "@typescript/vfs": "npm:^1.5.3"
     jest: "npm:^29.7.0"
     ts-jest: "npm:^29.2.3"
