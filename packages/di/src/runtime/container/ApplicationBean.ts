@@ -34,7 +34,7 @@ export class ApplicationBean {
     public readonly classConstructor: ClassConstructor<any> | null,
     public readonly scopeRegister: InternalScopeRegister,
   ) {
-    this.name = `${parentConfiguration.index}_${id}_${beanMetadata.qualifiedName}`;
+    this.name = `${parentConfiguration.id}_${id}_${beanMetadata.qualifiedName}`;
   }
 
   init(objectFactory: ObjectFactoryImpl): void {

@@ -21,15 +21,19 @@ import { BeanKind } from '@clawject/core/core/bean/BeanKind';
 export class ApplicationBeanFactory {
   exposedBeanNameToApplicationBeanDependency = new Map<string, ApplicationBeanDependency>();
   applicationBeans: ApplicationBean[] = [];
-  configurationIndexToBeanClassPropertyToApplicationBean = new Map<number, Map<string, ApplicationBean>>();
-  applicationBeanFinder = new ApplicationBeanFinder(this.configurationIndexToBeanClassPropertyToApplicationBean);
+  configurationIdToBeanClassPropertyToApplicationBean = new Map<number, Map<string, ApplicationBean>>();
   scopeToScopedApplicationBeans = new Map<Scope, ApplicationBean[]>();
+  applicationBeanFinder: ApplicationBeanFinder;
 
   constructor(
     private readonly applicationConfigurationFactory: ApplicationConfigurationFactory,
     public readonly beanProcessors: BeanProcessor[],
     public readonly scopeRegister: InternalScopeRegister,
   ) {
+    this.applicationBeanFinder = new ApplicationBeanFinder(
+      this.configurationIdToBeanClassPropertyToApplicationBean,
+      applicationConfigurationFactory
+    );
   }
 
   async init(applicationMetadata: RuntimeApplicationMetadata): Promise<void> {
@@ -110,8 +114,8 @@ export class ApplicationBeanFactory {
         throw new RuntimeErrors.IllegalUsageError('No bean dependencies metadata found');
       }
 
-      const configurationIndexToBeanClassPropertyToApplicationBean = new Map<string, ApplicationBean>();
-      this.configurationIndexToBeanClassPropertyToApplicationBean.set(applicationConfiguration.index, configurationIndexToBeanClassPropertyToApplicationBean);
+      const beanClassPropertyToApplicationBean = new Map<string, ApplicationBean>();
+      this.configurationIdToBeanClassPropertyToApplicationBean.set(applicationConfiguration.id, beanClassPropertyToApplicationBean);
 
       const beanNameToDependenciesMetadata = new Map<string, ApplicationBeanDependency[]>(Object.values(
         beanDependenciesMetadataByConfiguration.map(it => {
@@ -146,7 +150,7 @@ export class ApplicationBeanFactory {
           beanClassConstructor,
           this.scopeRegister,
         );
-        configurationIndexToBeanClassPropertyToApplicationBean.set(beanClassProperty, applicationBean);
+        beanClassPropertyToApplicationBean.set(beanClassProperty, applicationBean);
         this.applicationBeans.push(applicationBean);
 
         if (!applicationBean.isLifecycleFunction) {

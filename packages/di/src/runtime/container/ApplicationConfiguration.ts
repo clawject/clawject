@@ -6,6 +6,7 @@ import { RuntimeConfigurationMetadata } from '@clawject/core/runtime-metadata/Ru
 export class ApplicationConfiguration {
   private _instance: any | null = null;
   private _index: number | null = null;
+  private _id: number | null = null;
 
   get index(): number {
     if (this._index === null) {
@@ -15,13 +16,22 @@ export class ApplicationConfiguration {
     return this._index;
   }
 
+  get id(): number {
+    if (this._id === null) {
+      throw new RuntimeErrors.IllegalStateError('Id not initialized in application configuration');
+    }
+
+    return this._id;
+  }
+
   constructor(
     public readonly classConstructor: ClassConstructor<any>,
     public readonly applicationClassConstructorParameters: any[],
   ) {}
 
-  init(index: number): void {
+  init(index: number, id: number): void {
     this._index = index;
+    this._id = id;
   }
 
   get metadata(): RuntimeConfigurationMetadata {
