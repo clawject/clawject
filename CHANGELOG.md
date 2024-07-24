@@ -1,3 +1,14 @@
+## 1.1.3 (2024-07-24)
+
+
+### 🩹 Fixes
+
+- **di:** decorators are not removed from imports in configurations ([6b3f73a0](https://github.com/clawject/clawject/commit/6b3f73a0))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.1.2 (2024-07-24)
 
 
