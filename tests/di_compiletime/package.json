@@ -11,6 +11,6 @@
   },
   "packageManager": "yarn@4.2.2",
   "dependencies": {
-    "@clawject/di": "^1.1.2"
+    "@clawject/di": "^1.1.3"
   }
 }
