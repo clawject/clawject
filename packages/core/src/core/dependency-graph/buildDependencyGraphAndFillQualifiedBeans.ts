@@ -14,7 +14,7 @@ export const buildDependencyGraphAndFillQualifiedBeans = (application: Applicati
 
     //Skipping beans that are embedded (really embedded)
     if (bean.embeddedParent !== null) {
-      break;
+      continue;
     }
 
     const beanCandidates = getBeanCandidates(bean, beans, application);
