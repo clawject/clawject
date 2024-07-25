@@ -1448,7 +1448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:1.1.3, @clawject/core@workspace:packages/core":
+"@clawject/core@npm:1.1.4, @clawject/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@clawject/core@workspace:packages/core"
   dependencies:
@@ -1477,11 +1477,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@clawject/di@npm:*, @clawject/di@npm:1.1.3, @clawject/di@workspace:packages/di":
+"@clawject/di@npm:*, @clawject/di@npm:1.1.4, @clawject/di@workspace:packages/di":
   version: 0.0.0-use.local
   resolution: "@clawject/di@workspace:packages/di"
   dependencies:
-    "@clawject/core": "npm:1.1.3"
+    "@clawject/core": "npm:1.1.4"
     ts-patch: "npm:^3.2.1"
     typescript: "npm:5.5.3"
   languageName: unknown
@@ -1491,7 +1491,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@clawject/language-service@workspace:packages/language-service"
   dependencies:
-    "@clawject/di": "npm:1.1.3"
+    "@clawject/di": "npm:1.1.4"
   languageName: unknown
   linkType: soft
 

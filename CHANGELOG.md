@@ -1,3 +1,14 @@
+## 1.1.4 (2024-07-25)
+
+
+### 🩹 Fixes
+
+- **di:** skipping dependency resolution when have embedded beans with imported configurations ([0c78c640](https://github.com/clawject/clawject/commit/0c78c640))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.1.3 (2024-07-24)
 
 
