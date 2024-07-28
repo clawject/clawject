@@ -4,12 +4,13 @@
   "license": "MIT",
   "scripts": {
     "lint": "nx run-many --target=lint",
-    "test": "node tests/runTests.js",
+    "test": "yarn run clear-yarn-clawject-cache && node tests/runTests.js",
     "build": "nx run-many --target=build",
     "registry:start": "ts-node scripts/registry",
     "registry:stop": "ts-node scripts/registry/stop",
     "release": "nx release --skip-publish",
-    "publish:local": "nx release publish --registry http://localhost:4873"
+    "publish:local": "nx release publish --registry http://localhost:4873",
+    "clear-yarn-clawject-cache": "rm $(yarn config get cacheFolder)/@clawject* || true"
   },
   "private": true,
   "devDependencies": {

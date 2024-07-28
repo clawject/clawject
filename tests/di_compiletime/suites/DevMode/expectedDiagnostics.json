@@ -1,0 +1,25 @@
+[
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 160,
+    "file": {
+      "fileName": "/C.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'C' is declared here.",
+        "start": 96,
+        "file": {
+          "fileName": "/C.ts"
+        }
+      },
+      {
+        "messageText": "'A' is declared here.",
+        "start": 119,
+        "file": {
+          "fileName": "/A.ts"
+        }
+      }
+    ]
+  }
+]

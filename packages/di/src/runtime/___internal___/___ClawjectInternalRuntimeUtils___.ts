@@ -1,4 +1,5 @@
 import { MetadataStorage } from '../MetadataStorage';
+import { RuntimeApplicationMetadata } from '@clawject/core/runtime-metadata/RuntimeApplicationMetadata';
 
 export class ___ClawjectInternalRuntimeUtils___ {
   public static defineComponentMetadata(classConstructor: any, metadata: any): void {
@@ -11,5 +12,9 @@ export class ___ClawjectInternalRuntimeUtils___ {
 
   public static defineApplicationMetadata(classConstructor: any, metadata: any): void {
     MetadataStorage.setApplicationMetadata(classConstructor, metadata);
+  }
+
+  public static defineDevelopmentApplicationMetadata(developmentId: string, projectVersion: number, metadata: RuntimeApplicationMetadata): void {
+    MetadataStorage.setDevelopmentApplicationMetadata(developmentId, projectVersion, metadata);
   }
 }

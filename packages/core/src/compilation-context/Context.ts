@@ -5,9 +5,8 @@ import { AbstractCompilationMessage } from './messages/AbstractCompilationMessag
 export class Context {
   static areErrorsHandled = false;
   static languageServiceMode = false;
-  private static _contextualFileName: string | null = null;
-  private static _cancellationToken: () => boolean = () => false;
-  private static pathToMessages = new Map<string, AbstractCompilationMessage[]>();
+  private static _cancellationToken = () => false;
+  private static messages: AbstractCompilationMessage[] = [];
 
   private static _program: ts.Program | null = null;
   private static _factory: ts.NodeFactory | null = null;
@@ -34,28 +33,16 @@ export class Context {
     return this.program.getTypeChecker();
   }
 
-  static get contextualFileName(): string {
-    if (!this._contextualFileName) {
-      throw new Error('Current file is not assigned in compilation context, it is an internal error, please report it on github https://github.com/clawject/clawject/issues/new.');
-    }
-
-    return this._contextualFileName;
-  }
-
   static isCancellationRequested(): boolean {
     return this._cancellationToken() ?? false;
   }
 
   static getAllMessages(): AbstractCompilationMessage[] {
-    return Array.from(this.pathToMessages.values()).flat();
-  }
-
-  static getMessages(fileName: string): AbstractCompilationMessage[] {
-    return this.pathToMessages.get(fileName) ?? [];
+    return this.messages;
   }
 
   static get errors(): AbstractCompilationMessage[] {
-    return Array.from(this.pathToMessages.values()).flat()
+    return this.messages
       .filter(it => it.type === MessageType.ERROR);
   }
 
@@ -71,24 +58,11 @@ export class Context {
     this._cancellationToken = token;
   }
 
-  static assignContextualFileName(fileName: string | null): void {
-    this._contextualFileName = fileName;
-  }
-
   static report(message: AbstractCompilationMessage): void {
-    const messagesByPath = this.pathToMessages.get(message.contextualFileName) ?? [];
-    messagesByPath.push(message);
-
-    if (!this.pathToMessages.has(message.contextualFileName)) {
-      this.pathToMessages.set(message.contextualFileName, messagesByPath);
-    }
+    this.messages.push(message);
   }
 
-  static clearMessagesByFileName(fileName: string): void {
-    this.pathToMessages.delete(fileName);
-  }
-
-  static clear(): void {
-    this.pathToMessages.clear();
+  static clearMessages(): void {
+    this.messages = [];
   }
 }

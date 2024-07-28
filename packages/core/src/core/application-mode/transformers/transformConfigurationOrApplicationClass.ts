@@ -10,6 +10,9 @@ import { BeanKind } from '../../bean/BeanKind';
 import { RuntimeMetadataBuilder } from './RuntimeMetadataBuilder';
 import { compact } from 'lodash';
 import { Context } from '../../../compilation-context/Context';
+import { ApplicationRepository } from '../../application/ApplicationRepository';
+import { Compiler } from '../../compiler/Compiler';
+import { ConfigLoader } from '../../../config/ConfigLoader';
 
 export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclaration, configuration: Configuration, application: Application | null): ts.ClassDeclaration | ts.ClassLikeDeclaration => {
   const factory = Context.factory;
@@ -32,6 +35,37 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
     true
   ));
   const metadataStaticInitBlock = addDoNotEditComment(staticInitBlock, DoNotEditElement.STATIC_INIT_BLOCK);
+
+  const developmentMetadataStaticInitBlocks: ts.ClassStaticBlockDeclaration[] = [];
+
+  if (ConfigLoader.get().mode === 'development') {
+    ApplicationRepository.applicationIdToApplication.forEach(application => {
+      if (!application.resolvedImports.has(configuration)) {
+        return;
+      }
+
+      const applicationMetadata = RuntimeMetadataBuilder.metadata(application.rootConfiguration, application);
+      const staticInitBlock = factory.createClassStaticBlockDeclaration(factory.createBlock(
+        [
+          factory.createExpressionStatement(factory.createCallExpression(
+            factory.createPropertyAccessExpression(
+              InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ClawjectInternalRuntimeUtils),
+              factory.createIdentifier('defineDevelopmentApplicationMetadata')
+            ),
+            undefined,
+            compact([
+              valueToASTExpression(application.id),
+              valueToASTExpression(Compiler.projectVersion),
+              valueToASTExpression(applicationMetadata)
+            ]),
+          ))
+        ],
+        true
+      ));
+
+      developmentMetadataStaticInitBlocks.push(staticInitBlock);
+    });
+  }
 
   const updatedMembers = node.members.map(node => {
     const bean = configuration.beanRegister.getByNode(node as BeanNode);
@@ -112,7 +146,8 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
     node.heritageClauses,
     [
       ...updatedMembers,
-      metadataStaticInitBlock
+      metadataStaticInitBlock,
+      ...developmentMetadataStaticInitBlocks,
     ]
   );
 };

@@ -1,12 +1,13 @@
+import { Compiler } from '../core/compiler/Compiler';
 import tsServer, { DiagnosticCategory } from 'typescript/lib/tsserverlibrary';
-import { Compiler } from './Compiler';
-import { LanguageServiceReportBuilder } from './LanguageServiceReportBuilder';
 import { CONSTANTS } from '../constants';
+import { Context } from '../compilation-context/Context';
+import { DiagnosticsBuilder } from '../ts-diagnostics/DiagnosticsBuilder';
+import { ConfigLoader } from '../config/ConfigLoader';
 
 export class LanguageService {
-  private static pluginInfo: tsServer.server.PluginCreateInfo | null = null;
+  public static pluginInfo: tsServer.server.PluginCreateInfo | null = null;
   declare private static originalGetSemanticDiagnostics: tsServer.LanguageService['getSemanticDiagnostics'];
-  static configFileErrors: string[] = [];
 
   static assignPluginInfo(pluginInfo: tsServer.server.PluginCreateInfo): void {
     this.pluginInfo = pluginInfo;
@@ -20,9 +21,11 @@ export class LanguageService {
       return [];
     }
 
+    this.assignContext(this.pluginInfo);
+
     const prior = this.originalGetSemanticDiagnostics(fileName);
 
-    if (this.configFileErrors.length > 0) {
+    if (ConfigLoader.configFileErrors.length > 0) {
       return [
         ...prior,
         {
@@ -31,19 +34,29 @@ export class LanguageService {
           start: 0,
           length: 1,
           file: this.pluginInfo.languageService.getProgram()?.getSourceFile(fileName),
-          messageText: 'Configuration file errors: \n' + this.configFileErrors.join('\n'),
+          messageText: 'Configuration file errors: \n' + ConfigLoader.configFileErrors.join('\n'),
           code: 0,
         }
       ];
     }
 
-    Compiler.ensureCompiled();
+    Compiler.compile(undefined, undefined);
 
-    const diagnostics = LanguageServiceReportBuilder.buildSemanticDiagnostics(fileName);
+    const diagnostics = DiagnosticsBuilder.getDiagnostics(fileName) as tsServer.Diagnostic[];
 
     return [
       ...prior,
       ...diagnostics,
     ];
   };
+
+  private static assignContext(pluginInfo: tsServer.server.PluginCreateInfo): void {
+    const program = pluginInfo.languageService.getProgram();
+
+    if (!program) {
+      return;
+    }
+
+    Context.assignProgram(program as any);
+  }
 }

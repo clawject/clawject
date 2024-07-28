@@ -1,8 +1,6 @@
 import tsServer from 'typescript/lib/tsserverlibrary';
-import { Compiler } from './Compiler';
 import { LanguageServiceLogger } from './LanguageServiceLogger';
 import { LanguageService } from './LanguageService';
-import { ModificationTracker } from './ModificationTracker';
 import { isTSVersionValid } from '../ts-version/isTSVersionValid';
 import { disposeLanguageService } from './disposeLanguageService';
 import { Context } from '../compilation-context/Context';
@@ -18,8 +16,6 @@ export function ClawjectLanguageServicePlugin(modules: {
 
   function create(info: tsServer.server.PluginCreateInfo) {
     LanguageServiceLogger.assignPluginInfo(info);
-    Compiler.assignPluginInfo(info);
-    ModificationTracker.assignPluginInfo(info);
     LanguageService.assignPluginInfo(info);
     Context.assignCancellationToken(() => info.languageServiceHost.getCancellationToken?.().isCancellationRequested() ?? false);
 

@@ -5,6 +5,7 @@ import { MaybeResolvedDependency } from '../../dependency-resolver/MaybeResolved
 import { RuntimeConfigurationMetadata } from '../../../runtime-metadata/RuntimeConfigurationMetadata';
 import { LifecycleKind } from '../../../runtime-metadata/LifecycleKind';
 import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExposedBeanMetadata, RuntimeApplicationMetadata } from '../../../runtime-metadata/RuntimeApplicationMetadata';
+import { ConfigLoader } from '../../../config/ConfigLoader';
 
 export class RuntimeMetadataBuilder {
 
@@ -103,11 +104,17 @@ export class RuntimeMetadataBuilder {
       }
     });
 
-    return {
+    const metadata: RuntimeApplicationMetadata = {
       ...configurationMetadata,
       beanDependenciesMetadata,
       exposedBeansMetadata,
     };
+
+    if (ConfigLoader.get().mode === 'development') {
+      metadata.developmentId = application.id;
+    }
+
+    return metadata;
   }
 
   private static getDependencyMetadata(application: Application, maybeResolvedDependency: MaybeResolvedDependency): ApplicationBeanDependencyMetadata | null {

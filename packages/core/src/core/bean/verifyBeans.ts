@@ -12,13 +12,6 @@ import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Application } from '../application/Application';
 import { Context } from '../../compilation-context/Context';
 
-const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
-  [Context.ts.SyntaxKind.AbstractKeyword, 'abstract'],
-  [Context.ts.SyntaxKind.StaticKeyword, 'static'],
-  [Context.ts.SyntaxKind.DeclareKeyword, 'declare'],
-  [Context.ts.SyntaxKind.PrivateKeyword, 'private'],
-]);
-
 export const verifyBeans = (configuration: Configuration): void => {
   const beans = configuration.beanRegister.elements;
 
@@ -141,6 +134,13 @@ function verifyName(bean: Bean): void {
 }
 
 function verifyModifiers(bean: Bean): void {
+  const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
+    [Context.ts.SyntaxKind.AbstractKeyword, 'abstract'],
+    [Context.ts.SyntaxKind.StaticKeyword, 'static'],
+    [Context.ts.SyntaxKind.DeclareKeyword, 'declare'],
+    [Context.ts.SyntaxKind.PrivateKeyword, 'private'],
+  ]);
+
   const restrictedModifier = bean.node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
 
   if (!restrictedModifier) {
