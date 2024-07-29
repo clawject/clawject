@@ -40,7 +40,7 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
 
   if (ConfigLoader.get().mode === 'development') {
     ApplicationRepository.applicationIdToApplication.forEach(application => {
-      if (!application.resolvedImports.has(configuration)) {
+      if (!application.resolvedImports.has(configuration) && application.rootConfiguration !== configuration) {
         return;
       }
 

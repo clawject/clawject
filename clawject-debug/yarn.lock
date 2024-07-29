@@ -34,9 +34,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:1.1.4":
-  version: 1.1.4
-  resolution: "@clawject/core@npm:1.1.4"
+"@clawject/core@npm:1.1.5":
+  version: 1.1.5
+  resolution: "@clawject/core@npm:1.1.5"
   dependencies:
     cosmiconfig: "npm:^9.0.0"
     cosmiconfig-typescript-loader: "npm:^5.0.0"
@@ -49,25 +49,25 @@ __metadata:
     winston: "npm:^3.12.0"
   peerDependencies:
     typescript: ">=5.0 <=5.5"
-  checksum: 10c0/34f675215282290a94fcab7b7d54538dd8bc4c515614e55f562ad2145af8777758d777030e256e1da700482a55d881b4ca9bd7d038c92cb3da0c42a78b79a719
+  checksum: 10c0/4f354036c0c7b9bde3de77aeb90156cb08e476d06fc8c49454a070ba910f4a3000d6155542e3915d2ab10198dfeed6fcab2bab18c1308d561f86480625ec4d54
   languageName: node
   linkType: hard
 
-"@clawject/di@npm:1.1.4, @clawject/di@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "@clawject/di@npm:1.1.4"
+"@clawject/di@npm:1.1.5, @clawject/di@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@clawject/di@npm:1.1.5"
   dependencies:
-    "@clawject/core": "npm:1.1.4"
-  checksum: 10c0/8ea92505c3e84a53a516fbc8bf5ab0ca37f22e718ab64737278f14428c2a0cb489c461d230eacfb51aee614932f9a221bb40e4c879e6e597716c9fd6e165a5bb
+    "@clawject/core": "npm:1.1.5"
+  checksum: 10c0/3611c9865702fef3037794a9a4dc6de9edf59da56786592aeec02ea9345f65f06ad54173fc5d2c37ea949df8170247b9e6ac2b8603caa1f4f581658c6183ad2a
   languageName: node
   linkType: hard
 
-"@clawject/language-service@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "@clawject/language-service@npm:1.1.4"
+"@clawject/language-service@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@clawject/language-service@npm:1.1.5"
   dependencies:
-    "@clawject/di": "npm:1.1.4"
-  checksum: 10c0/b2c6f1300633adc323dff2fd61e258b3c7276012fbb60c2bb57fb8ee63f2f8ecddb5add45cb3bad94ccd4c88e9477827f727b5923e2d154c5e8b8c89c09020b5
+    "@clawject/di": "npm:1.1.5"
+  checksum: 10c0/c04d6985bb2a2b94b62653fdd5ff5317036da362d7c5ad463949dee9520b5d360c51253436c8ae0011b08e5733bf81b107b970f1c3e9b704aee7e038a7665967
   languageName: node
   linkType: hard
 
@@ -726,8 +726,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "clawject-debug@workspace:."
   dependencies:
-    "@clawject/di": "npm:^1.1.4"
-    "@clawject/language-service": "npm:^1.1.4"
+    "@clawject/di": "npm:^1.1.5"
+    "@clawject/language-service": "npm:^1.1.5"
     "@nestjs/common": "npm:^10"
     "@nestjs/core": "npm:^10"
     cross-env: "npm:^7.0.3"

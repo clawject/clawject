@@ -1,11 +1,7 @@
-import { Bean, Configuration } from '@clawject/di';
+import { Bean, ClawjectApplication, Import } from '@clawject/di';
+import { A } from "./A";
 
-const BeanName = 'a';
-const UniqSymbol = Symbol.for('UniqSymbol');
-
-@Configuration
-class MyConfiguration {
-  @Bean ['computed' + 'property'] = 'a';
-  @Bean [BeanName] = 'b';
-  @Bean [UniqSymbol] = 'c';
+@ClawjectApplication
+class App {
+ a = Import(A);
 }

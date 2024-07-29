@@ -1,0 +1,171 @@
+import * as claw_1 from "@clawject/di/runtime/___internal___";
+import { Bean, ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { B } from './B';
+class A {
+    b = Import(B);
+    a = 'a';
+    allBeans(all) {
+        console.log(all);
+    }
+    /** The content of this static initialization block is auto-generated, editing it could lead to unexpected behavior.*/
+    static {
+        claw_1.___ClawjectInternalRuntimeUtils___.defineApplicationMetadata(A, {
+            className: "A",
+            lifecycle: {
+                POST_CONSTRUCT: [
+                    "allBeans"
+                ],
+                PRE_DESTROY: []
+            },
+            imports: [
+                {
+                    classPropertyName: "b",
+                    lazy: null
+                }
+            ],
+            beans: {
+                a: {
+                    scope: null,
+                    lazy: null,
+                    kind: 4,
+                    qualifiedName: "a"
+                },
+                allBeans: {
+                    scope: null,
+                    lazy: null,
+                    kind: 5,
+                    qualifiedName: "allBeans"
+                }
+            },
+            lazy: false,
+            scope: "singleton",
+            beanDependenciesMetadata: [
+                [
+                    {
+                        classPropertyName: "a",
+                        dependencies: []
+                    },
+                    {
+                        classPropertyName: "allBeans",
+                        dependencies: [
+                            {
+                                kind: "map",
+                                metadata: [
+                                    {
+                                        configurationIndex: 0,
+                                        classPropertyName: "a",
+                                        nestedProperty: null
+                                    },
+                                    {
+                                        configurationIndex: 1,
+                                        classPropertyName: "b",
+                                        nestedProperty: null
+                                    },
+                                    {
+                                        configurationIndex: 2,
+                                        classPropertyName: "c",
+                                        nestedProperty: null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        classPropertyName: "b",
+                        dependencies: []
+                    }
+                ],
+                [
+                    {
+                        classPropertyName: "c",
+                        dependencies: []
+                    }
+                ]
+            ],
+            exposedBeansMetadata: [],
+            developmentId: "/A.ts_1"
+        });
+    }
+    static {
+        claw_1.___ClawjectInternalRuntimeUtils___.defineDevelopmentApplicationMetadata("/A.ts_1", 7, {
+            className: "A",
+            lifecycle: {
+                POST_CONSTRUCT: [
+                    "allBeans"
+                ],
+                PRE_DESTROY: []
+            },
+            imports: [
+                {
+                    classPropertyName: "b",
+                    lazy: false
+                }
+            ],
+            beans: {
+                a: {
+                    scope: null,
+                    lazy: null,
+                    kind: 4,
+                    qualifiedName: "a"
+                },
+                allBeans: {
+                    scope: null,
+                    lazy: null,
+                    kind: 5,
+                    qualifiedName: "allBeans"
+                }
+            },
+            lazy: false,
+            scope: "singleton",
+            beanDependenciesMetadata: [
+                [
+                    {
+                        classPropertyName: "a",
+                        dependencies: []
+                    },
+                    {
+                        classPropertyName: "allBeans",
+                        dependencies: [
+                            {
+                                kind: "map",
+                                metadata: [
+                                    {
+                                        configurationIndex: 0,
+                                        classPropertyName: "a",
+                                        nestedProperty: null
+                                    },
+                                    {
+                                        configurationIndex: 1,
+                                        classPropertyName: "b",
+                                        nestedProperty: null
+                                    },
+                                    {
+                                        configurationIndex: 2,
+                                        classPropertyName: "c",
+                                        nestedProperty: null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        classPropertyName: "b",
+                        dependencies: []
+                    }
+                ],
+                [
+                    {
+                        classPropertyName: "c",
+                        dependencies: []
+                    }
+                ]
+            ],
+            exposedBeansMetadata: [],
+            developmentId: "/A.ts_1"
+        });
+    }
+}

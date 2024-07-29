@@ -1,0 +1,73 @@
+import * as claw_1 from "@clawject/di/runtime/___internal___";
+import { Bean, Configuration } from '@clawject/di';
+export class C {
+    c = 'c';
+    /** The content of this static initialization block is auto-generated, editing it could lead to unexpected behavior.*/
+    static {
+        claw_1.___ClawjectInternalRuntimeUtils___.defineConfigurationMetadata(C, {
+            className: "C",
+            lifecycle: {
+                POST_CONSTRUCT: [],
+                PRE_DESTROY: []
+            },
+            imports: [],
+            beans: {
+                c: {
+                    scope: null,
+                    lazy: null,
+                    kind: 4,
+                    qualifiedName: "c"
+                }
+            },
+            lazy: false,
+            scope: "singleton"
+        });
+    }
+    static {
+        claw_1.___ClawjectInternalRuntimeUtils___.defineDevelopmentApplicationMetadata("/A.ts_1", 6, {
+            className: "A",
+            lifecycle: {
+                POST_CONSTRUCT: [],
+                PRE_DESTROY: []
+            },
+            imports: [
+                {
+                    classPropertyName: "b",
+                    lazy: null
+                }
+            ],
+            beans: {
+                a: {
+                    scope: null,
+                    lazy: null,
+                    kind: 4,
+                    qualifiedName: "a"
+                }
+            },
+            lazy: false,
+            scope: "singleton",
+            beanDependenciesMetadata: [
+                [
+                    {
+                        classPropertyName: "a",
+                        dependencies: []
+                    }
+                ],
+                [
+                    {
+                        classPropertyName: "b",
+                        dependencies: []
+                    }
+                ],
+                [
+                    {
+                        classPropertyName: "c",
+                        dependencies: []
+                    }
+                ]
+            ],
+            exposedBeansMetadata: [],
+            developmentId: "/A.ts_1"
+        });
+    }
+}
