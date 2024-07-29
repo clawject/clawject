@@ -42,6 +42,7 @@ Configuration schema is:
 ```typescript
 interface ClawjectConfig {
   unsafeTSVersion?: boolean; // Default: false
+  mode?: 'development' | 'production'; // Default: check docs for default value
   typeSystem?: 'nominal' | 'structural'; // Default: 'nominal'
   beans?: {
     defaultExternal?: boolean; // Default: true
@@ -60,6 +61,18 @@ Allows using TypeScript version not officially supported by this version of Claw
 - When **`false`**, Clawject will check your TypeScript version to ensure it's officially compatible with the versions supported by Clawject.
 
 **Default value** is `false`.
+
+### `mode`
+
+Allows choosing between `development` and `production` modes.
+Development mode is created for development purposes, it emits more clawject metadata to support watch mode of compilers.
+When development mode is on - Clawject can emit some full file paths.
+
+If mode is not defined in configuration file - mode is determined by the `NODE_ENV` environment variable.
+- If not set or set to anything other than `development`, the mode will be `production`.
+- If set to `development`, the mode will be `development`.
+
+If mode is defined in configuration file - environment variable `NODE_ENV` will be ignored.
 
 ### `typeSystem`
 
