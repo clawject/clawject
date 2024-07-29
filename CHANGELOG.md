@@ -1,3 +1,14 @@
+## 1.1.5 (2024-07-29)
+
+
+### 🩹 Fixes
+
+- **di:** metadata is not updated in watch mode when have deep imports of configurations, language service is more stable now ([e6a90332](https://github.com/clawject/clawject/commit/e6a90332))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.1.4 (2024-07-25)
 
 

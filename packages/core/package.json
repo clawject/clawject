@@ -1,6 +1,6 @@
 {
   "name": "@clawject/core",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "This is a core library of @clawject/di package, and it's not intended to be used directly.",
   "keywords": [
     "clawject",
