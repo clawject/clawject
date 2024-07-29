@@ -6,7 +6,6 @@ import { getNodeDetails, NodeDetails } from '../../core/ts/utils/getNodeDetails'
 import { Application } from '../../core/application/Application';
 import { WarningCode } from './WarningCode';
 import { InfoCode } from './InfoCode';
-import { Context } from '../Context';
 
 export interface IRelatedConfigurationOrApplicationMetadata {
   name: string;
@@ -37,8 +36,6 @@ export abstract class AbstractCompilationMessage {
   public readonly relatedConfigurationMetadata: IRelatedConfigurationOrApplicationMetadata | null;
   public readonly relatedApplicationMetadata: IRelatedConfigurationOrApplicationMetadata | null;
 
-  contextualFileName: string;
-
   public constructor(
     public readonly details: string | null,
     place: ts.Node,
@@ -58,8 +55,6 @@ export abstract class AbstractCompilationMessage {
     this.relatedApplicationMetadata = relatedApplication
       ? this.getRelatedConfigurationMetadata(relatedApplication.rootConfiguration)
       : null;
-
-    this.contextualFileName = Context.contextualFileName;
   }
 
   private getRelatedConfigurationMetadata(relatedConfiguration: Configuration | null): IRelatedConfigurationOrApplicationMetadata | null {

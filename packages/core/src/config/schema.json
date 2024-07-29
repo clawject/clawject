@@ -14,6 +14,15 @@
         false
       ]
     },
+    "mode": {
+      "type": "string",
+      "default": "production",
+      "title": "Defines how clawject emit metadata, in development mode for support of watch mode - clawject will emit additional metadata with information about the source file (e.g full file name), in production mode - clawject will not emit \"extra\" metadata.",
+      "examples": [
+        "development",
+        "production"
+      ]
+    },
     "typeSystem": {
       "type": "string",
       "default": "nominal",

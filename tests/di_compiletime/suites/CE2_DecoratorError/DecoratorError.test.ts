@@ -32,7 +32,7 @@ describe('DecoratorError', () => {
       compiler.loadFile('/index.ts', fileContent);
 
       //When
-      const diagnostics = compiler.compile();
+      const diagnostics = compiler.getDiagnostics();
 
       //Then
       expect(diagnostics).toHaveLength(1);
@@ -49,7 +49,7 @@ describe('DecoratorError', () => {
     compiler.loadFile('/index.ts', fileContent);
 
     //When
-    const diagnostics = compiler.compile();
+    const diagnostics = compiler.getDiagnostics();
 
     //Then
     const searchedDiagnostic = diagnostics
@@ -64,7 +64,7 @@ describe('DecoratorError', () => {
     compiler.loadFile('/index.ts', fileContent);
 
     //When
-    const diagnostics = compiler.compile();
+    const diagnostics = compiler.getDiagnostics();
 
     //Then
     const searchedDiagnostic = diagnostics

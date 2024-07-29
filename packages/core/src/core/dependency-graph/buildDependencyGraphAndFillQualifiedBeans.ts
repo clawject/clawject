@@ -9,7 +9,7 @@ import { Context } from '../../compilation-context/Context';
 export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[]) => {
   for (const bean of beans) {
     if (Context.isCancellationRequested()) {
-      break;
+      return;
     }
 
     //Skipping beans that are embedded (really embedded)

@@ -16,8 +16,15 @@ class MetadataStorageState {
   [MetadataKind.APPLICATION_METADATA] = new WeakMap<ClassConstructor<any>, RuntimeApplicationMetadata>();
 }
 
+class DevelopmentApplicationMetadataStorageState {
+  developmentIdToClassConstructor = new Map<string, ClassConstructor<any>>();
+  developmentIdToProjectVersion = new Map<string, number>();
+  developmentIdToMetadata = new Map<string, RuntimeApplicationMetadata>();
+}
+
 export class MetadataStorage {
   private static storage = Utils.createVersionedStorageOrGetIfExisted('metadata_storage', 0, new MetadataStorageState());
+  private static developmentStorage = Utils.createVersionedStorageOrGetIfExisted('development_metadata_storage', 0, new DevelopmentApplicationMetadataStorageState());
   private static componentMetadata = this.storage[MetadataKind.COMPONENT];
   private static configurationMetadata = this.storage[MetadataKind.CONFIGURATION_METADATA];
   private static applicationMetadata = this.storage[MetadataKind.APPLICATION_METADATA];
@@ -49,10 +56,32 @@ export class MetadataStorage {
   }
 
   static getApplicationMetadata(clazz: ClassConstructor<any>): RuntimeApplicationMetadata | null {
-    return this.applicationMetadata.get(clazz) ?? null;
+    const baseApplicationMetadata = this.applicationMetadata.get(clazz) ?? null;
+    const developmentId = baseApplicationMetadata?.developmentId;
+
+    if (!developmentId) {
+      return baseApplicationMetadata;
+    }
+
+    return this.developmentStorage.developmentIdToMetadata.get(developmentId) ?? baseApplicationMetadata;
   }
 
   static setApplicationMetadata(clazz: ClassConstructor<any>, metadata: RuntimeApplicationMetadata): void {
     this.applicationMetadata.set(clazz, metadata);
+
+    if (metadata.developmentId !== undefined) {
+      this.developmentStorage.developmentIdToClassConstructor.set(metadata.developmentId, clazz);
+    }
+  }
+
+  static setDevelopmentApplicationMetadata(developmentId: string, projectVersion: number, metadata: RuntimeApplicationMetadata): void {
+    const oldProjectVersion = this.developmentStorage.developmentIdToProjectVersion.get(developmentId);
+
+    if (oldProjectVersion !== undefined && oldProjectVersion >= projectVersion) {
+      return;
+    }
+
+    this.developmentStorage.developmentIdToProjectVersion.set(developmentId, projectVersion);
+    this.developmentStorage.developmentIdToMetadata.set(developmentId, metadata);
   }
 }

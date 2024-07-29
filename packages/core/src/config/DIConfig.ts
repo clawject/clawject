@@ -1,5 +1,6 @@
 export interface DIConfig {
   unsafeTSVersion: boolean;
+  mode: 'development' | 'production';
   typeSystem: 'nominal' | 'structural';
   beans: {
     defaultExternal: boolean;

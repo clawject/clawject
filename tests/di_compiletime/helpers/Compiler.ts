@@ -3,6 +3,7 @@ import * as tsvfs from '@typescript/vfs';
 import { createDefaultMapFromNodeModules, createVirtualTypeScriptEnvironment } from '@typescript/vfs';
 import * as path from 'path';
 import * as fs from 'node:fs';
+import { Diagnostic, OutputFile } from 'typescript';
 
 const compilerOptions: ts.CompilerOptions = {
   experimentalDecorators: ts.versionMajorMinor.startsWith('4'),
@@ -14,6 +15,12 @@ const compilerOptions: ts.CompilerOptions = {
     }
   ] as any[]
 };
+
+interface EmitOutput {
+  outputFiles: OutputFile[];
+  emitSkipped: boolean;
+  diagnostics: readonly Diagnostic[];
+}
 
 export class Compiler {
   private virtualFSMap = createDefaultMapFromNodeModules({target: compilerOptions.target});
@@ -54,11 +61,14 @@ export class Compiler {
     }
   }
 
-  compile(fileName?: string): ts.Diagnostic[] {
-    // Any is for CI, because for some reason it's not working with the correct type on CI
-    const emitResult: any = this.environment.languageService.getEmitOutput(fileName ?? '/index.ts');
+  getDiagnostics(fileName?: string): ts.Diagnostic[] {
+    const emitResult = this.environment.languageService.getEmitOutput(fileName ?? '/index.ts') as EmitOutput;
 
     return Array.from(emitResult.diagnostics);
+  }
+
+  compile(fileName?: string): EmitOutput {
+    return this.environment.languageService.getEmitOutput(fileName ?? '/index.ts') as EmitOutput;
   }
 }
 

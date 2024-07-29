@@ -4,14 +4,15 @@
   "scripts": {
     "ts-patch": "ts-patch install -s",
     "tsc": "tsc",
+    "tsc:w": "tsc -w",
     "tsc:debug": "ts-node --project ./tsconfig.debug.json ./scripts/debug.ts",
     "run:compiled": "yarn run tsc && node dist",
     "upgrade": "yarn cache clean && yarn --cwd ../ run registry:start && yarn --cwd ../ run publish:local && yarn run upgrade:clawject && yarn --cwd ../ run registry:stop",
     "upgrade:clawject": "yarn remove @clawject/di @clawject/language-service && yarn add @clawject/di @clawject/language-service && yarn run ts-patch"
   },
   "dependencies": {
-    "@clawject/di": "^1.1.2",
-    "@clawject/language-service": "^1.1.2",
+    "@clawject/di": "^1.1.4",
+    "@clawject/language-service": "^1.1.4",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
@@ -19,6 +20,7 @@
     "@nestjs/core": "^10",
     "cross-env": "^7.0.3",
     "exec-sh": "^0.4.0",
+    "nodemon": "^3.1.4",
     "pm2": "^5.3.1",
     "readline": "^1.3.0",
     "ts-node": "^10.9.2",

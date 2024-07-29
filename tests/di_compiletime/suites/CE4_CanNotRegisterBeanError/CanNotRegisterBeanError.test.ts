@@ -67,7 +67,7 @@ describe('CanNotRegisterBeanError', () => {
     ];
 
     //When
-    const diagnostics = compiler.compile();
+    const diagnostics = compiler.getDiagnostics();
 
     //Then
     const searchedDiagnostic = diagnostics

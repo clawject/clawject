@@ -11,14 +11,16 @@ export const CONSTANTS = {
   //nx-ignore-next-line
   typeReferenceTablePath: upath.resolve(upath.dirname(require.resolve('@clawject/di')), 'index.d.ts'),
   tsVersionRange: TS_VERSION_RANGE,
+  debugMode: process.env['CLAWJECT_DEBUG_MODE'] === 'a605c4e7fe80432fb637fabef15263b1',
+  testMode: process.env['CLAWJECT_TEST_MODE'] === 'true',
 };
 
-if (process.env['CLAWJECT_DEBUG_MODE'] === 'a605c4e7fe80432fb637fabef15263b1') {
+if (CONSTANTS.debugMode) {
   //nx-ignore-next-line
   CONSTANTS.typeReferenceTablePath = upath.resolve(upath.dirname(require.resolve('@clawject/di')), 'runtime/api/___TypeReferenceTable___.ts');
 }
 
-if (process.env['CLAWJECT_TEST_MODE'] === 'true') {
+if (CONSTANTS.testMode) {
   CONSTANTS.packageRootDir = '/node_modules/@clawject/di';
   CONSTANTS.typeReferenceTablePath = '/node_modules/@clawject/di/index.d.ts';
 }

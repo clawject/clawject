@@ -2,7 +2,6 @@ import winston from 'winston';
 import { ConfigLoader } from '../config/ConfigLoader';
 import { performance } from 'perf_hooks';
 
-
 export class Logger {
   private static logger = winston.createLogger({
     format: winston.format.combine(

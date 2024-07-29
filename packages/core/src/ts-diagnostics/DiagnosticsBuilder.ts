@@ -16,7 +16,7 @@ export class DiagnosticsBuilder {
   private static formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
     getCurrentDirectory: () => Context.program.getCurrentDirectory(),
     getCanonicalFileName: (fileName) => Context.program.getCanonicalFileName(fileName),
-    getNewLine: () => '\n',
+    getNewLine: () => Context.ts.sys.newLine,
   };
 
   static diagnosticsToString(diagnostics: ts.Diagnostic[]): string {
@@ -24,9 +24,11 @@ export class DiagnosticsBuilder {
   }
 
   static getDiagnostics(fileName?: string): ts.Diagnostic[] {
-    const messages = fileName ?
-      Context.getMessages(fileName)
-      : Context.getAllMessages();
+    let messages = Context.getAllMessages();
+
+    if (fileName) {
+      messages = messages.filter(it => it.place.filePath === fileName);
+    }
 
     return compact(messages
       .map(it => this.compilationMessageToDiagnostic(it)));

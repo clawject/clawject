@@ -11,7 +11,7 @@ describe('ConfigurationImportError', () => {
     compiler.loadFile('/index.ts', fileContent);
 
     //When
-    const diagnostics = compiler.compile();
+    const diagnostics = compiler.getDiagnostics();
 
     //Then
     const searchedDiagnostic = diagnostics

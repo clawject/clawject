@@ -11,13 +11,6 @@ import { ConfigurationAlreadyImportedInfo } from '../../compilation-context/mess
 import { getLazyExpressionValue } from '../bean/getLazyExpressionValue';
 import { Context } from '../../compilation-context/Context';
 
-const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
-  [Context.ts.SyntaxKind.AbstractKeyword, 'abstract'],
-  [Context.ts.SyntaxKind.StaticKeyword, 'static'],
-  [Context.ts.SyntaxKind.DeclareKeyword, 'declare'],
-  [Context.ts.SyntaxKind.PrivateKeyword, 'private'],
-]);
-
 export const registerImports = (configuration: Configuration): void => {
   configuration.node.members.forEach(member => {
     if (isImportClassProperty(member)) {
@@ -165,6 +158,13 @@ export function registerImportForClassElementNode(configuration: Configuration, 
 }
 
 function verifyModifiers(node: ts.PropertyDeclaration, parentConfiguration: Configuration): boolean {
+  const RESTRICTED_MODIFIERS = new Map<ts.SyntaxKind, string>([
+    [Context.ts.SyntaxKind.AbstractKeyword, 'abstract'],
+    [Context.ts.SyntaxKind.StaticKeyword, 'static'],
+    [Context.ts.SyntaxKind.DeclareKeyword, 'declare'],
+    [Context.ts.SyntaxKind.PrivateKeyword, 'private'],
+  ]);
+
   const compilationContext = Context;
   const restrictedModifier = node.modifiers?.find(it => RESTRICTED_MODIFIERS.has(it.kind));
 

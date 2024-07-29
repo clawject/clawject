@@ -1,6 +1,8 @@
 import { RuntimeConfigurationMetadata } from './RuntimeConfigurationMetadata';
 
 export interface RuntimeApplicationMetadata extends RuntimeConfigurationMetadata {
+  developmentId?: string;
+
   beanDependenciesMetadata: ApplicationBeanDependenciesMetadata[][];
   exposedBeansMetadata: ExposedBeanMetadata[];
 }

@@ -1,11 +1,13 @@
 import type * as ts from 'typescript';
 import { Context } from '../../compilation-context/Context';
 import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
-import { processClassDeclaration } from './processClassDeclaration';
-import { getDecoratorVerificationErrors } from './getDecoratorVerificationErrors';
 import { Logger } from '../../logger/Logger';
 import { Value } from '../utils/Value';
 import { CONSTANTS } from '../../constants/index';
+import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
+import { ApplicationRepository } from '../application/ApplicationRepository';
+import { processImplicitComponents } from './processImplicitComponents';
+import { transformConfigurationOrApplicationClass } from './transformers/transformConfigurationOrApplicationClass';
 
 export const processApplicationMode = (tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
@@ -21,20 +23,23 @@ export const processApplicationMode = (tsContext: ts.TransformationContext, sour
       return Context.ts.visitEachChild(node, visitor, tsContext);
     }
 
-    const label = `Get decorator verification errors, file: ${sourceFile.fileName}, nodeName: "${node.name?.getText()}"`;
-    Logger.verboseDuration(label);
-    const decoratorVerificationErrors = getDecoratorVerificationErrors(node);
-    Logger.verboseDuration(label);
+    const configuration = ConfigurationRepository.nodeToConfiguration.get(node);
+    const application = ApplicationRepository.nodeToApplication.get(node) ?? null;
 
-    //Skipping processing anything because of errors
-    if (decoratorVerificationErrors.length !== 0) {
-      decoratorVerificationErrors.forEach(it => Context.report(it));
-      return node;
+    if (!configuration) {
+      const transformed = processImplicitComponents(node, shouldAddInternalImport);
+
+      return Context.ts.visitEachChild(transformed, visitor, tsContext);
     }
 
-    const transformedNode = processClassDeclaration(node, shouldAddInternalImport);
+    shouldAddInternalImport.value = true;
 
-    return Context.ts.visitEachChild(transformedNode, visitor, tsContext);
+    const transformConfigurationOrApplicationLabel = `Transforming configuration or application class, file: ${node.getSourceFile().fileName}, class: ${node.name?.text}`;
+    Logger.verboseDuration(transformConfigurationOrApplicationLabel);
+    const transformed = transformConfigurationOrApplicationClass(node, configuration, application);
+    Logger.verboseDuration(transformConfigurationOrApplicationLabel);
+
+    return Context.ts.visitEachChild(transformed, visitor, tsContext);
   };
 
   const transformedFile = Context.ts.visitNode(sourceFile, visitor) as ts.SourceFile;

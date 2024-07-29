@@ -7,7 +7,6 @@ import { Entity } from '../Entity';
 import { DisposableNodeHolder } from '../DisposableNodeHolder';
 import { ConfigLoader } from '../../config/ConfigLoader';
 import { CType } from '../type-system/CType';
-import { FileGraph } from '../file-graph/FileGraph';
 import { capitalizeFirstLetter } from '../utils/captializeFirstLetter';
 import { LifecycleKind } from '../../runtime-metadata/LifecycleKind';
 
@@ -43,9 +42,6 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
 
   registerDependency(dependency: Dependency): void {
     this.dependencies.add(dependency);
-    dependency.cType.relatedFileNames.forEach(it => {
-      FileGraph.add(this.parentConfiguration.fileName, it);
-    });
   }
 
   get cType(): CType {
@@ -62,9 +58,6 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
 
   registerType(cType: CType): void {
     this._cType = cType;
-    cType.relatedFileNames.forEach(it => {
-      FileGraph.add(this.parentConfiguration.fileName, it);
-    });
   }
 
   get fullName(): string {

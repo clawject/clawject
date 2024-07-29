@@ -1,15 +1,11 @@
-import { Bean, ClawjectApplication, ClawjectFactory, Configuration, ExposeBeans, External, Import, Internal } from "@clawject/di";
+import { Bean, Configuration } from '@clawject/di';
+
+const BeanName = 'a';
+const UniqSymbol = Symbol.for('UniqSymbol');
 
 @Configuration
-class Foo {
-  @Bean bar = 123
+class MyConfiguration {
+  @Bean ['computed' + 'property'] = 'a';
+  @Bean [BeanName] = 'b';
+  @Bean [UniqSymbol] = 'c';
 }
-
-@ClawjectApplication
-class Application {
-  @External foo = Import(Foo)
-}
-
-(async() => {
-  const application = await ClawjectFactory.createApplicationContext(Application);
-})()
