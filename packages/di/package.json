@@ -1,6 +1,6 @@
 {
   "name": "@clawject/di",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "keywords": [
     "dependency-injection",
     "framework",
@@ -28,7 +28,7 @@
     "url": "https://buymeacoffee.com/clawject"
   },
   "dependencies": {
-    "@clawject/core": "1.1.5"
+    "@clawject/core": "1.1.6"
   },
   "devDependencies": {
     "ts-patch": "^3.2.1",

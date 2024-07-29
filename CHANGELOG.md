@@ -1,3 +1,14 @@
+## 1.1.6 (2024-07-29)
+
+
+### 🩹 Fixes
+
+- **di:** missing additional metadata on application classes in dev mode ([e623ff41](https://github.com/clawject/clawject/commit/e623ff41))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.1.5 (2024-07-29)
 
 
