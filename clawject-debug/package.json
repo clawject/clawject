@@ -11,8 +11,8 @@
     "upgrade:clawject": "yarn remove @clawject/di @clawject/language-service && yarn add @clawject/di @clawject/language-service && yarn run ts-patch"
   },
   "dependencies": {
-    "@clawject/di": "^1.1.4",
-    "@clawject/language-service": "^1.1.4",
+    "@clawject/di": "^1.1.5",
+    "@clawject/language-service": "^1.1.5",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
