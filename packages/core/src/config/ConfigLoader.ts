@@ -5,21 +5,22 @@ import { Validator } from 'jsonschema';
 import schema from './schema.json';
 import { merge } from 'lodash';
 import { Context } from '../compilation-context/Context';
-import * as process from 'node:process';
 
 export class ConfigLoader {
-  private static defaultConfig: DIConfig = {
-    unsafeTSVersion: false,
-    mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
-    typeSystem: 'nominal',
-    beans: {
-      defaultExternal: true,
-    },
-    imports: {
-      defaultExternal: true,
-    },
-    logLevel: 'error',
-  };
+  private static getDefaultConfig(): DIConfig {
+    return {
+      unsafeTSVersion: false,
+      mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
+      typeSystem: 'nominal',
+      beans: {
+        defaultExternal: true,
+      },
+      imports: {
+        defaultExternal: true,
+      },
+      logLevel: 'error',
+    };
+  }
   static cachedConfig: DIConfig | null = null;
   static onConfigLoaded: ((configFilename: string) => void) | null = null;
 
@@ -40,7 +41,7 @@ export class ConfigLoader {
     const config: Partial<DIConfig | null> = loaderResult?.config ?? null;
 
     if (config === null) {
-      this.cachedConfig = this.defaultConfig;
+      this.cachedConfig = this.getDefaultConfig();
 
       return this.cachedConfig;
     }
@@ -59,7 +60,7 @@ export class ConfigLoader {
     });
 
     this.configFileErrors = validatorResult.errors.map(it => it.toString());
-    this.cachedConfig = merge(this.defaultConfig, config);
+    this.cachedConfig = merge(this.getDefaultConfig(), config);
   }
 
   static clear(): void {

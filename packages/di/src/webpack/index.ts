@@ -1,11 +1,18 @@
-import * as webpackModule from '@clawject/core/webpack';
 import { Compiler } from 'webpack';
+import { unpluginFactory } from '../unplugin/index';
+import { createWebpackPlugin } from 'unplugin';
 
-/** @public */
+/**
+ * @deprecated This class will be removed in the next major release, please use @clawject/di/unplugin instead
+ *
+ * @public
+ * */
 export class ClawjectWebpackPlugin {
-  apply(compiler: Compiler) {
-    const ClawjectWebpackPlugin = new webpackModule.ClawjectWebpackPlugin();
+  constructor() {
+    return createWebpackPlugin(unpluginFactory);
+  }
 
-    return ClawjectWebpackPlugin.apply(compiler);
+  apply(compiler: Compiler) {
+
   }
 }

@@ -56,5 +56,5 @@
   "nx": {
     "includedScripts": []
   },
-  "packageManager": "yarn@4.2.2"
+  "packageManager": "yarn@4.4.0"
 }

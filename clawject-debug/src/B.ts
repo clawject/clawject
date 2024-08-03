@@ -5,5 +5,7 @@ import { C } from "./C";
 export class B {
   c = Import(C);
 
-  @Bean b = 'b' as const;
+  @Bean b = 'bbb' as const;
 }
+
+console.log('B.ts')
