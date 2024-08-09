@@ -1,3 +1,18 @@
+## 1.2.0 (2024-08-09)
+
+
+### 🚀 Features
+
+- **di:** unplugin ([1d7d5350](https://github.com/clawject/clawject/commit/1d7d5350))
+
+### 🩹 Fixes
+
+- **di:** empty javascript set is injected when dependency type is never ([fd3d1add](https://github.com/clawject/clawject/commit/fd3d1add))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.1.6 (2024-07-29)
 
 

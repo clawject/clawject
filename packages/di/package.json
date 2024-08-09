@@ -1,6 +1,6 @@
 {
   "name": "@clawject/di",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "keywords": [
     "dependency-injection",
     "framework",
@@ -28,7 +28,7 @@
     "url": "https://buymeacoffee.com/clawject"
   },
   "dependencies": {
-    "@clawject/core": "1.1.6",
+    "@clawject/core": "1.2.0",
     "@rollup/pluginutils": "^5.1.0",
     "@ts-morph/bootstrap": "^0.24.0",
     "unplugin": "^1.12.1"
