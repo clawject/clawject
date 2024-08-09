@@ -57,6 +57,36 @@ export default defineConfig({
 })
 ```
 
+If you are using a bundler with a typescript loader, e.g. `webpack` and `ts-loader` you can use the following configuration:
+
+```ts title="webpack.config.js"
+import { ClawjectTransformer } from '@clawject/di/transformer';
+import { ClawjectMetadataTransformer } from '@clawject/di/transformer/metadata';
+import ClawjectUnplugin from '@clawject/di/unplugin/webpack';
+
+export default {
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      loader: 'ts-loader',
+      options: {
+        compiler: 'ts-patch/compiler',
+        // or if you're not using ts-patch
+        getCustomTransformers: (program, getProgram) => ({
+          before: [ClawjectTransformer(getProgram)],
+          afterDeclarations: [ClawjectMetadataTransformer(getProgram)]
+        })
+      }
+    }]
+  },
+  plugins: [
+    // skipCompilation tells clawject to do not process
+    // files additionally to the typescript compilation
+    ClawjectUnplugin({ skipCompilation: true })
+  ]
+};
+```
+
 ### tsc and ts-patch
 
 It's possible to use clawject as a typescript compiler plugin.
@@ -88,33 +118,3 @@ For detailed ts-patch configuration guide - please refer to [ts-patch documentat
 `@clawject/di/transformer/metadata` is optional, it's used to generate metadata for your configuration classes which allows you to share configuration via npm packages.
 Visit [**sharing configurations**](./guides/sharing-configurations) section to learn more about it.
 :::
-
-### Bundler with typescript loader
-
-If you are using a bundler with a typescript loader, e.g. `webpack` and `ts-loader` you can use the following configuration:
-
-```ts title="webpack.config.js"
-import { ClawjectTransformer } from '@clawject/di/transformer';
-import { ClawjectMetadataTransformer } from '@clawject/di/transformer/metadata';
-import ClawjectUnplugin from '@clawject/di/unplugin/webpack';
-
-export default {
-  module: {
-    rules: [{
-      test: /\.ts$/,
-      loader: 'ts-loader',
-      options: {
-        compiler: 'ts-patch/compiler',
-        // or if you're not using ts-patch
-        getCustomTransformers: (program, getProgram) => ({
-          before: [ClawjectTransformer(getProgram)],
-          afterDeclarations: [ClawjectMetadataTransformer(getProgram)]
-        })
-      }
-    }]
-  },
-  plugins: [
-    ClawjectUnplugin({ skipCompilation: true })
-  ]
-};
-```
