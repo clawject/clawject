@@ -8,14 +8,14 @@
     "relatedInformation": [
       {
         "messageText": "'beanFunction' is declared here.",
-        "start": 272,
+        "start": 363,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -31,28 +31,28 @@
     "relatedInformation": [
       {
         "messageText": "'str0' matched by type.",
-        "start": 225,
+        "start": 316,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'str1' matched by type.",
-        "start": 248,
+        "start": 339,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'beanFunction' is declared here.",
-        "start": 272,
+        "start": 363,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -68,14 +68,14 @@
     "relatedInformation": [
       {
         "messageText": "'beanFunction' is declared here.",
-        "start": 272,
+        "start": 363,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -84,14 +84,14 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
-    "start": 330,
+    "start": 421,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -100,28 +100,28 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
-    "start": 347,
+    "start": 438,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'str0' matched by type.",
-        "start": 225,
+        "start": 316,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'str1' matched by type.",
-        "start": 248,
+        "start": 339,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -130,14 +130,14 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
-    "start": 364,
+    "start": 455,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -146,14 +146,14 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
-    "start": 462,
+    "start": 553,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -162,28 +162,28 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
-    "start": 479,
+    "start": 570,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'str0' matched by type.",
-        "start": 225,
+        "start": 316,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'str1' matched by type.",
-        "start": 248,
+        "start": 339,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -192,14 +192,14 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
-    "start": 496,
+    "start": 587,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -208,14 +208,46 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
-    "start": 548,
+    "start": 604,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 620,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 301,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 689,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -224,28 +256,28 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 2 injection candidates.",
-    "start": 565,
+    "start": 706,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'str0' matched by type.",
-        "start": 225,
+        "start": 316,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'str1' matched by type.",
-        "start": 248,
+        "start": 339,
         "file": {
           "fileName": "/index.ts"
         }
       },
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
         "file": {
           "fileName": "/index.ts"
         }
@@ -254,14 +286,124 @@
   },
   {
     "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
-    "start": 582,
+    "start": 723,
     "file": {
       "fileName": "/index.ts"
     },
     "relatedInformation": [
       {
         "messageText": "'Aplication' is declared here.",
-        "start": 210,
+        "start": 301,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 740,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 301,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 756,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'Aplication' is declared here.",
+        "start": 301,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 218,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'classWithNever' is declared here.",
+        "start": 844,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'ApplicationNever' is declared here.",
+        "start": 823,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 234,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'classWithNever' is declared here.",
+        "start": 844,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      },
+      {
+        "messageText": "'ApplicationNever' is declared here.",
+        "start": 823,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 915,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'ApplicationNever' is declared here.",
+        "start": 823,
+        "file": {
+          "fileName": "/index.ts"
+        }
+      }
+    ]
+  },
+  {
+    "messageText": "Could not qualify bean candidate. Found 0 injection candidates.",
+    "start": 931,
+    "file": {
+      "fileName": "/index.ts"
+    },
+    "relatedInformation": [
+      {
+        "messageText": "'ApplicationNever' is declared here.",
+        "start": 823,
         "file": {
           "fileName": "/index.ts"
         }
