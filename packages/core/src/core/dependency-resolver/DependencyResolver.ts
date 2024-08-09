@@ -14,6 +14,11 @@ export class DependencyResolver {
     relatedApplication: Application,
   ): MaybeResolvedDependency {
     switch (true) {
+    case dependency.cType.isNever(): {
+      this.reportPossibleCandidates(relatedBean, dependency, beansToSearch, relatedApplication);
+      return new MaybeResolvedDependency(dependency);
+    }
+
     case dependency.cType.isEmptyValue():
       return new MaybeResolvedDependency(dependency);
 

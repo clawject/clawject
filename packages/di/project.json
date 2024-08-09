@@ -14,9 +14,17 @@
         "additionalEntryPoints": [
           { "route": "lsp", "filePath": "lsp/index" },
           { "route": "runtime/___internal___", "filePath": "runtime/___internal___/index" },
-          { "route": "webpack", "filePath": "webpack/index" },
           { "route": "transformer", "filePath": "transformer/index" },
-          { "route": "transformer/metadata", "filePath": "transformer/metadata/index" }
+          { "route": "transformer/metadata", "filePath": "transformer/metadata/index" },
+          { "route": "unplugin", "filePath": "unplugin/index" },
+          { "route": "unplugin/esbuild", "filePath": "unplugin/esbuild" },
+          { "route": "unplugin/farm", "filePath": "unplugin/farm" },
+          { "route": "unplugin/rolldown", "filePath": "unplugin/rolldown" },
+          { "route": "unplugin/rollup", "filePath": "unplugin/rollup" },
+          { "route": "unplugin/rspack", "filePath": "unplugin/rspack" },
+          { "route": "unplugin/vite", "filePath": "unplugin/vite" },
+          { "route": "unplugin/webpack", "filePath": "unplugin/webpack" },
+          { "route": "webpack", "filePath": "webpack/index" }
         ],
         "extractApi": true,
         "generateExportsFields": true,

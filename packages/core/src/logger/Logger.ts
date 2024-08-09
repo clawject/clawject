@@ -3,21 +3,27 @@ import { ConfigLoader } from '../config/ConfigLoader';
 import { performance } from 'perf_hooks';
 
 export class Logger {
-  private static logger = winston.createLogger({
-    format: winston.format.combine(
-      winston.format.colorize({ all: true }),
-      winston.format.align(),
-      winston.format.timestamp({ format: 'DD/MM/YYYY, HH:mm:ss' }),
-      winston.format.label({ label: '[clawject]' }),
-      winston.format.printf(({ level, message, label, timestamp }) => {
-        return `${label} - ${timestamp} [${level}] ${message}`;
-      })
-    ),
-    level: ConfigLoader.get().logLevel,
-    transports: [
-      new winston.transports.Console(),
-    ]
-  });
+  //Should not create logger eagerly because it's calling ConfigLoader, and it may cause not taking the correct config
+  private static _logger: winston.Logger | null = null;
+  private static get logger() {
+    this._logger = this._logger ?? winston.createLogger({
+      format: winston.format.combine(
+        winston.format.colorize({ all: true }),
+        winston.format.align(),
+        winston.format.timestamp({ format: 'DD/MM/YYYY, HH:mm:ss' }),
+        winston.format.label({ label: '[clawject]' }),
+        winston.format.printf(({ level, message, label, timestamp }) => {
+          return `${label} - ${timestamp} [${level}] ${message}`;
+        })
+      ),
+      level: ConfigLoader.get().logLevel,
+      transports: [
+        new winston.transports.Console(),
+      ]
+    });
+
+    return this._logger;
+  }
 
   static info(message: string, details?: any) {
     this.logger.info(message, details);

@@ -8,8 +8,15 @@ class Class {
   ) {}
 }
 
+class ClassWithNever {
+  constructor(
+    nev: never,
+    nevComputed: string & number,
+  ) {}
+}
+
 @ClawjectApplication
-export class Aplication {
+class Aplication {
   @Bean str0 = 'str0';
   @Bean str1 = 'str1';
 
@@ -26,11 +33,26 @@ export class Aplication {
     num: number,
     str: string,
     sym: symbol,
+    nev: never,
+    nevComputed: string & number,
   ) {}
   @PreDestroy
   preDestroy(
     num: number,
     str: string,
     sym: symbol,
+    nev: never,
+    nevComputed: string & number,
+  ) {}
+}
+
+@ClawjectApplication
+class ApplicationNever {
+  classWithNever = Bean(ClassWithNever)
+
+  @PreDestroy
+  preDestroy(
+    nev: never,
+    nevComputed: string & number,
   ) {}
 }
