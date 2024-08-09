@@ -16,7 +16,6 @@ tags:
 
 ## Installation
 
-
 import {InstallCommands} from '../src/components/InstallCommands';
 
 <InstallCommands
@@ -30,15 +29,45 @@ Remember to [install language service plugin](./language-service) to get support
 
 :::
 
-## tsconfig.json
+### Clawject unplugin (*recommended way*)
 
-Firstly, you need to define custom transformers in your tsconfig.json.
+Clawject provides unplugins for various bundlers (all bundlers that are supported by [unplugin](https://unplugin.unjs.io/)):
+- [Vite](https://vitejs.dev/)
+- [Rollup](https://rollupjs.org/)
+- [webpack](https://webpack.js.org/)
+- [esbuild](https://esbuild.github.io/)
+- [Rspack](https://rspack.dev/)
+- [Rolldown](https://rolldown.rs/)
+- [Farm](https://www.farmfe.org/)
+
+You can import unplugin in the following ways:
+```ts
+import ClawjectUnplugin from '@clawject/di/unplugin';
+
+export default defineConfig({
+  plugins: [ClawjectUnplugin.vite()]
+})
+```
+Or
+```ts
+import ClawjectUnplugin from '@clawject/di/unplugin/${bundler_name}';
+
+export default defineConfig({
+  plugins: [ClawjectUnplugin.bundler_name()]
+})
+```
+
+### tsc and ts-patch
+
+It's possible to use clawject as a typescript compiler plugin.
+To do so, you need to add transformers in your tsconfig.json.
 
 :::tip
+*ts-patch patches typescript to allow custom transformers (plugins) during build.*
 
-`@clawject/di/transformer/metadata` is optional, it's used to generate metadata for your configuration classes which allows you to share configuration via npm packages.
-Visit [**sharing configurations**](./guides/sharing-configurations) section to learn more about it.
+It allows you to use **Clawject** with any build tool that uses **typescript** compiler.
 
+For detailed ts-patch configuration guide - please refer to [ts-patch documentation](https://github.com/nonara/ts-patch#readme).
 :::
 
 ```json title="tsconfig.json"
@@ -55,82 +84,19 @@ Visit [**sharing configurations**](./guides/sharing-configurations) section to l
 }
 ```
 
-## ts-patch
-*Patches typescript to allow custom transformers (plugins) during build.*
-
-ts-patch is the best way to utilize **Clawject** features.
-It allows you to use **Clawject** with any build tool that uses **typescript** compiler.
-
-For detailed ts-patch configuration guide - please refer to [ts-patch documentation](https://github.com/nonara/ts-patch#readme).
-
-### ts-patch, webpack, ts-loader
-
-:::warning
-When using webpack with **ts-loader** - make sure **transpileOnly** mode is disabled.
-Basically, **transpileOnly** disables the ability to perform static type checking,
-which is required for **Clawject** to work.
-Also, if you're using **Babel** - please make sure that it's applied **after** ts-loader.
-[ts-loader#transpileOnly](https://github.com/TypeStrong/ts-loader#transpileonly)
+:::note
+`@clawject/di/transformer/metadata` is optional, it's used to generate metadata for your configuration classes which allows you to share configuration via npm packages.
+Visit [**sharing configurations**](./guides/sharing-configurations) section to learn more about it.
 :::
 
-```js title="webpack.config.js"
-import { ClawjectWebpackPlugin } from '@clawject/di/webpack';
+### Bundler with typescript loader
 
-export default {
-  module: {
-    rules: [{
-      test: /\.ts$/,
-      loader: 'ts-loader',
-      options: {
-        // This option needed if you have typescript >= 5 and using
-        // live-compiler method of ts-patch
-        // https://github.com/nonara/ts-patch#method-1-live-compiler
-        compiler: 'ts-patch/compiler'
-      }
-    }]
-  },
-  plugins: [
-    new ClawjectWebpackPlugin()
-  ]
-};
-```
+If you are using a bundler with a typescript loader, e.g. `webpack` and `ts-loader` you can use the following configuration:
 
-### ts-patch, vite, rollup-plugin-typescript2
-
-:::danger
-Currently **Vite** or **rollup-plugin-typescript2** not correctly utilizes ts-patch,
-it's ignoring compilation errors produced by Clawject, so it could lead to runtime errors.
-:::
-
-```ts title="vite.config.ts"
-import { defineConfig } from 'vite';
-import typescript from 'rollup-plugin-typescript2';
-
-export default defineConfig({
-  esbuild: false,
-  plugins: [
-    typescript(),
-  ],
-});
-```
-
-### ts-patch, pure typescript (tsc)
-
-To make Clawject work with pure typescript (tsc), you need to define custom transformers in your [tsconfig.json](#tsconfigjson), and that's all.
-
-:::tip About typescript watch mode
-Clawject will work pretty well in **native tsc watch mode** as well!
-:::
-
-## Without ts-patch
-If you don't want to use ts-patch for some reason - you can utilize Clawject features without it.
-
-### webpack, ts-loader
-
-```js title="webpack.config.js"
+```ts title="webpack.config.js"
 import { ClawjectTransformer } from '@clawject/di/transformer';
 import { ClawjectMetadataTransformer } from '@clawject/di/transformer/metadata';
-import { ClawjectWebpackPlugin } from '@clawject/di/webpack'
+import ClawjectUnplugin from '@clawject/di/unplugin/webpack';
 
 export default {
   module: {
@@ -138,6 +104,8 @@ export default {
       test: /\.ts$/,
       loader: 'ts-loader',
       options: {
+        compiler: 'ts-patch/compiler',
+        // or if you're not using ts-patch
         getCustomTransformers: (program, getProgram) => ({
           before: [ClawjectTransformer(getProgram)],
           afterDeclarations: [ClawjectMetadataTransformer(getProgram)]
@@ -146,7 +114,7 @@ export default {
     }]
   },
   plugins: [
-    new ClawjectWebpackPlugin()
+    ClawjectUnplugin({ skipCompilation: true })
   ]
 };
 ```

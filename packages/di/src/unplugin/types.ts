@@ -29,7 +29,7 @@ export type Options = {
    *
    * If you're already using TypeScript compiler to compile your code, you can set this to `true`
    * to skip the additional compilation by this plugin
-   * and utilize clawject transformer as a typescript compiler plugin https://clawject.com/docs/setup#tsc-and-ts-patch.
+   * and utilize clawject transformer as a typescript compiler plugin https://clawject.com/docs/setup#bundler-with-typescript-loader
    *
    * Default: false
    */
