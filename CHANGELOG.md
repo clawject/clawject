@@ -1,3 +1,14 @@
+## 1.2.1 (2024-08-14)
+
+
+### 🩹 Fixes
+
+- **di:** add default value for tsconfig path ([da051b42](https://github.com/clawject/clawject/commit/da051b42))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.0 (2024-08-09)
 
 
