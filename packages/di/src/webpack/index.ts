@@ -1,4 +1,4 @@
-import { Compiler } from 'webpack';
+import type { Compiler } from 'webpack';
 import { unpluginFactory } from '../unplugin/index';
 import { createWebpackPlugin } from 'unplugin';
 
