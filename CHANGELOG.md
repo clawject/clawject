@@ -1,3 +1,14 @@
+## 1.2.2 (2024-08-30)
+
+
+### 🩹 Fixes
+
+- **di:** WebpackError required for vite unplugin ([5bcd74e7](https://github.com/clawject/clawject/commit/5bcd74e7))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.1 (2024-08-14)
 
 
