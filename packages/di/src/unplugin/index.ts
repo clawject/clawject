@@ -4,7 +4,6 @@ import { createFilter } from '@rollup/pluginutils';
 import { PluginCompiler } from './core/PluginCompiler';
 import { ProgramStorage } from './core/ProgramStorage';
 import { ErrorsReporter } from './core/ErrorsReporter';
-import WebpackError from 'webpack/lib/WebpackError';
 import { Context } from '@clawject/core/compilation-context/Context';
 
 const excludedFrameworksForReportingErrorsDuringTransform = new Set<UnpluginContextMeta['framework']>([
@@ -55,14 +54,14 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (maybeOptio
     webpack(compiler) {
       compiler.hooks.afterEmit.tap('clawject-unplugin', async (compilation) => {
         errorsReporter.reportErrors(error => {
-          compilation.errors.push(new WebpackError(error.message));
+          compilation.errors.push(new Error(error.message) as any);
         });
       });
     },
     rspack(compiler) {
       compiler.hooks.afterEmit.tap('clawject-unplugin', async (compilation) => {
         errorsReporter.reportErrors(error => {
-          compilation.errors.push(new WebpackError(error.message));
+          compilation.errors.push(new Error(error.message));
         });
       });
     }
