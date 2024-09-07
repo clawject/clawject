@@ -34,27 +34,6 @@ export class C {
     }
     static {
         claw_1.___ClawjectInternalRuntimeUtils___.defineDevelopmentApplicationMetadata("/A.ts_1", 4, {
-            className: "A",
-            lifecycle: {
-                POST_CONSTRUCT: [],
-                PRE_DESTROY: []
-            },
-            imports: [
-                {
-                    classPropertyName: "b",
-                    lazy: null
-                }
-            ],
-            beans: {
-                a: {
-                    scope: null,
-                    lazy: null,
-                    kind: 4,
-                    qualifiedName: "a"
-                }
-            },
-            lazy: false,
-            scope: "singleton",
             beanDependenciesMetadata: [
                 [
                     {
@@ -98,8 +77,7 @@ export class C {
                     }
                 ]
             ],
-            exposedBeansMetadata: [],
-            developmentId: "/A.ts_1"
+            exposedBeansMetadata: []
         });
     }
 }

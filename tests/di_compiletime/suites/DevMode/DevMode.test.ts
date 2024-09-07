@@ -236,4 +236,46 @@ class A {
     expect(getFile(__dirname, 'dev1/emittedC2', {})).toEqual(emitCUpdated.outputFiles[0].text);
     expect(getFile(__dirname, 'dev1/emittedA2', {})).toEqual(emitAUpdated.outputFiles[0].text);
   });
+
+  it('should emit additional metadata for file in which class is located when class is registered as a bean', () => {
+    //Given
+    const contentA = `
+import { Bean, ClawjectApplication, Import, PostConstruct } from '@clawject/di';
+import { B } from './B';
+
+@ClawjectApplication
+class A {
+  @Bean dep = 'dep';
+  b = Bean(B);
+}
+    `.trim();
+    const contentB = `
+export class B {}
+`.trim();
+
+    compiler.loadFile('/B.ts', contentB);
+    compiler.loadFile('/A.ts', contentA);
+
+    //When
+    const emitA = compiler.compile('/A.ts');
+    const emitB = compiler.compile('/B.ts');
+
+    //Then
+    expect(getFile(__dirname, 'dev2/emittedA', {})).toEqual(emitA.outputFiles[0].text);
+    expect(getFile(__dirname, 'dev2/emittedB1', {})).toEqual(emitB.outputFiles[0].text);
+
+    //When
+    const contentBUpdated = `
+export class B {
+  constructor(dep: string) {}
+}
+`.trim();
+
+    compiler.loadFile('/B.ts', contentBUpdated);
+
+    const emitBUpdated = compiler.compile('/B.ts');
+
+    //Then
+    expect(getFile(__dirname, 'dev2/emittedB2', {})).toEqual(emitBUpdated.outputFiles[0].text);
+  });
 });

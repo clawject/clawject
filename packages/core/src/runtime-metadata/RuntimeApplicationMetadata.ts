@@ -7,6 +7,8 @@ export interface RuntimeApplicationMetadata extends RuntimeConfigurationMetadata
   exposedBeansMetadata: ExposedBeanMetadata[];
 }
 
+export type RuntimeDevelopmentApplicationMetadata = Pick<RuntimeApplicationMetadata, 'beanDependenciesMetadata' | 'exposedBeansMetadata'>;
+
 export interface ExposedBeanMetadata {
   qualifiedName: string;
   metadata: ApplicationBeanDependencyMetadata;

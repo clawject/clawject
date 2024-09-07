@@ -73,6 +73,9 @@ function registerBeanDependenciesFromBeanConstructSignature(bean: Bean) {
   }
   const constructSignature = constructSignatures[0];
 
+  constructSignature.getReturnType().getSymbol()?.getDeclarations()?.forEach(declaration => {
+    bean.constructSignatureFileNames.add(declaration.getSourceFile().fileName);
+  });
   constructSignature.parameters.forEach(parameter => {
     const parameterDeclarations = parameter.getDeclarations() ?? [];
 

@@ -34,6 +34,9 @@ export class Bean<T extends BeanNode = BeanNode> extends Entity<T> {
   scopeExpression = new DisposableNodeHolder<ts.Expression>();
   lazyExpression = new DisposableNodeHolder<ts.Expression>();
 
+  //Filled only when bean kind is CLASS_CONSTRUCTOR
+  constructSignatureFileNames = new Set<string>();
+
   constructor(values: Partial<Bean> = {}) {
     super();
 

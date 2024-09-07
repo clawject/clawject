@@ -2,7 +2,7 @@ import { ClassConstructor } from './api/ClassConstructor';
 import { Utils } from './Utils';
 import { RuntimeComponentMetadata } from '@clawject/core/runtime-metadata/RuntimeComponentMetadata';
 import { RuntimeConfigurationMetadata } from '@clawject/core/runtime-metadata/RuntimeConfigurationMetadata';
-import { RuntimeApplicationMetadata } from '@clawject/core/runtime-metadata/RuntimeApplicationMetadata';
+import { RuntimeApplicationMetadata, RuntimeDevelopmentApplicationMetadata } from '@clawject/core/runtime-metadata/RuntimeApplicationMetadata';
 
 export enum MetadataKind {
   COMPONENT = 'COMPONENT_METADATA',
@@ -19,7 +19,7 @@ class MetadataStorageState {
 class DevelopmentApplicationMetadataStorageState {
   developmentIdToClassConstructor = new Map<string, ClassConstructor<any>>();
   developmentIdToProjectVersion = new Map<string, number>();
-  developmentIdToMetadata = new Map<string, RuntimeApplicationMetadata>();
+  developmentIdToMetadata = new Map<string, RuntimeDevelopmentApplicationMetadata>();
 }
 
 export class MetadataStorage {
@@ -63,7 +63,16 @@ export class MetadataStorage {
       return baseApplicationMetadata;
     }
 
-    return this.developmentStorage.developmentIdToMetadata.get(developmentId) ?? baseApplicationMetadata;
+    const developmentMetadata = this.developmentStorage.developmentIdToMetadata.get(developmentId);
+
+    if (developmentMetadata) {
+      return {
+        ...baseApplicationMetadata,
+        ...developmentMetadata,
+      };
+    }
+
+    return baseApplicationMetadata;
   }
 
   static setApplicationMetadata(clazz: ClassConstructor<any>, metadata: RuntimeApplicationMetadata): void {
@@ -74,7 +83,7 @@ export class MetadataStorage {
     }
   }
 
-  static setDevelopmentApplicationMetadata(developmentId: string, projectVersion: number, metadata: RuntimeApplicationMetadata): void {
+  static setDevelopmentApplicationMetadata(developmentId: string, projectVersion: number, metadata: RuntimeDevelopmentApplicationMetadata): void {
     const oldProjectVersion = this.developmentStorage.developmentIdToProjectVersion.get(developmentId);
 
     if (oldProjectVersion !== undefined && oldProjectVersion >= projectVersion) {
