@@ -1,3 +1,14 @@
+## 1.2.3 (2024-09-07)
+
+
+### 🩹 Fixes
+
+- **core:** provider only needed development metadata and provide metadata in files with bean class declarations ([62d0d587](https://github.com/clawject/clawject/commit/62d0d587))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.2 (2024-08-30)
 
 
