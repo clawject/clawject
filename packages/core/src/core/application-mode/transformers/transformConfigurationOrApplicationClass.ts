@@ -44,7 +44,7 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
         return;
       }
 
-      const applicationMetadata = RuntimeMetadataBuilder.metadata(application.rootConfiguration, application);
+      const applicationMetadata = RuntimeMetadataBuilder.developmentApplicationMetadata(application.rootConfiguration, application);
       const staticInitBlock = factory.createClassStaticBlockDeclaration(factory.createBlock(
         [
           factory.createExpressionStatement(factory.createCallExpression(
@@ -53,11 +53,11 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
               factory.createIdentifier('defineDevelopmentApplicationMetadata')
             ),
             undefined,
-            compact([
+            [
               valueToASTExpression(application.id),
               valueToASTExpression(Compiler.projectVersion),
               valueToASTExpression(applicationMetadata)
-            ]),
+            ],
           ))
         ],
         true

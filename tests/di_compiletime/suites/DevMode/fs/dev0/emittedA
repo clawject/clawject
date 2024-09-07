@@ -54,27 +54,6 @@ class A {
     }
     static {
         claw_1.___ClawjectInternalRuntimeUtils___.defineDevelopmentApplicationMetadata("/A.ts_1", 3, {
-            className: "A",
-            lifecycle: {
-                POST_CONSTRUCT: [],
-                PRE_DESTROY: []
-            },
-            imports: [
-                {
-                    classPropertyName: "b",
-                    lazy: false
-                }
-            ],
-            beans: {
-                a: {
-                    scope: null,
-                    lazy: null,
-                    kind: 4,
-                    qualifiedName: "a"
-                }
-            },
-            lazy: false,
-            scope: "singleton",
             beanDependenciesMetadata: [
                 [
                     {
@@ -95,8 +74,7 @@ class A {
                     }
                 ]
             ],
-            exposedBeansMetadata: [],
-            developmentId: "/A.ts_1"
+            exposedBeansMetadata: []
         });
     }
 }

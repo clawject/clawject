@@ -1,0 +1,26 @@
+import * as claw_1 from "@clawject/di/runtime/___internal___";
+export class B {
+    constructor(dep) { }
+}
+claw_1.___ClawjectInternalRuntimeUtils___.defineDevelopmentApplicationMetadata("/A.ts_1", 9, {
+    beanDependenciesMetadata: [
+        [
+            {
+                classPropertyName: "dep",
+                dependencies: []
+            },
+            {
+                classPropertyName: "b",
+                dependencies: [
+                    {
+                        kind: "plain",
+                        configurationIndex: 0,
+                        classPropertyName: "dep",
+                        nestedProperty: null
+                    }
+                ]
+            }
+        ]
+    ],
+    exposedBeansMetadata: []
+});

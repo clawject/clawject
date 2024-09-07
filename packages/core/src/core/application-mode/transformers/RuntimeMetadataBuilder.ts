@@ -4,16 +4,28 @@ import { compact } from 'lodash';
 import { MaybeResolvedDependency } from '../../dependency-resolver/MaybeResolvedDependency';
 import { RuntimeConfigurationMetadata } from '../../../runtime-metadata/RuntimeConfigurationMetadata';
 import { LifecycleKind } from '../../../runtime-metadata/LifecycleKind';
-import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExposedBeanMetadata, RuntimeApplicationMetadata } from '../../../runtime-metadata/RuntimeApplicationMetadata';
+import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExposedBeanMetadata, RuntimeApplicationMetadata, RuntimeDevelopmentApplicationMetadata } from '../../../runtime-metadata/RuntimeApplicationMetadata';
 import { ConfigLoader } from '../../../config/ConfigLoader';
 
 export class RuntimeMetadataBuilder {
 
+  static metadata(configuration: Configuration, application: null): RuntimeConfigurationMetadata;
+  static metadata(configuration: Configuration, application: Application): RuntimeApplicationMetadata;
+  static metadata(configuration: Configuration, application: Application | null): RuntimeConfigurationMetadata | RuntimeApplicationMetadata;
   static metadata(configuration: Configuration, application: Application | null): RuntimeConfigurationMetadata | RuntimeApplicationMetadata {
     const runtimeConfigurationMetadata = this.configuration(configuration);
     const runtimeApplicationMetadata = application === null ? null : this.application(runtimeConfigurationMetadata, application);
 
     return runtimeApplicationMetadata ?? runtimeConfigurationMetadata;
+  }
+
+  static developmentApplicationMetadata(configuration: Configuration, application: Application): RuntimeDevelopmentApplicationMetadata {
+    const metadata = this.metadata(configuration, application);
+
+    return {
+      beanDependenciesMetadata: metadata.beanDependenciesMetadata,
+      exposedBeansMetadata: metadata.exposedBeansMetadata,
+    };
   }
 
   private static configuration(configuration: Configuration): RuntimeConfigurationMetadata {

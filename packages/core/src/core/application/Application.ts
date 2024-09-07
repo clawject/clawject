@@ -7,6 +7,7 @@ import { Bean } from '../bean/Bean';
 import { MaybeResolvedDependency } from '../dependency-resolver/MaybeResolvedDependency';
 import { ResolvedConfigurationImport } from './ResolvedConfigurationImport';
 import { Context } from '../../compilation-context/Context';
+import { BeanKind } from '../bean/BeanKind';
 
 export class Application extends Entity<ts.ClassDeclaration> {
   constructor(
@@ -18,6 +19,7 @@ export class Application extends Entity<ts.ClassDeclaration> {
   declare id: string;
   declare fileName: string;
   dependencyGraph = new DependencyGraph();
+  additionalFilesToAddDevelopmentMetadata = new Set<string>();
 
   resolvedBeanDependencies = new Map<Bean, MaybeResolvedDependency[]>();
   registerResolvedDependency(bean: Bean, resolvedDependency: MaybeResolvedDependency): void {
@@ -40,7 +42,12 @@ export class Application extends Entity<ts.ClassDeclaration> {
 
       this.forEachConfiguration(configuration => {
         configuration.beanRegister.elements.forEach(bean => {
+          //It's a good place to make additional actions over beans, here we're avoiding additional iterations over all beans
           beans.add(bean);
+
+          bean.constructSignatureFileNames.forEach(fileName => {
+            this.additionalFilesToAddDevelopmentMetadata.add(fileName);
+          });
         });
       });
       return beans;

@@ -1,6 +1,6 @@
 import type * as ts from 'typescript';
 import { Context } from '../../compilation-context/Context';
-import { InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
+import { InternalElementKind, InternalsAccessBuilder } from '../internals-access/InternalsAccessBuilder';
 import { Logger } from '../../logger/Logger';
 import { Value } from '../utils/Value';
 import { CONSTANTS } from '../../constants/index';
@@ -8,12 +8,18 @@ import { ConfigurationRepository } from '../configuration/ConfigurationRepositor
 import { ApplicationRepository } from '../application/ApplicationRepository';
 import { processImplicitComponents } from './processImplicitComponents';
 import { transformConfigurationOrApplicationClass } from './transformers/transformConfigurationOrApplicationClass';
+import { ConfigLoader } from '../../config/ConfigLoader';
+import { RuntimeMetadataBuilder } from './transformers/RuntimeMetadataBuilder';
+import { compact } from 'lodash';
+import { valueToASTExpression } from '../ts/utils/valueToASTExpression';
+import { Compiler } from '../compiler/Compiler';
 
 export const processApplicationMode = (tsContext: ts.TransformationContext, sourceFile: ts.SourceFile): ts.SourceFile => {
   //Skipping declaration files
   if (sourceFile.isDeclarationFile) {
     return sourceFile;
   }
+  const factory = Context.factory;
 
   const shouldAddInternalImport = new Value(false);
   InternalsAccessBuilder.setCurrentIdentifier(tsContext.factory.createUniqueName(CONSTANTS.libraryImportName));
@@ -49,6 +55,30 @@ export const processApplicationMode = (tsContext: ts.TransformationContext, sour
   }
 
   const updatedStatements = Array.from(transformedFile.statements);
+
+  if (ConfigLoader.get().mode === 'development') {
+    ApplicationRepository.applicationIdToApplication.forEach((application) => {
+      if (application.additionalFilesToAddDevelopmentMetadata.has(transformedFile.fileName)) {
+        shouldAddInternalImport.value = true;
+        const metadata = RuntimeMetadataBuilder.developmentApplicationMetadata(application.rootConfiguration, application);
+
+        updatedStatements.push(
+          factory.createExpressionStatement(factory.createCallExpression(
+            factory.createPropertyAccessExpression(
+              InternalsAccessBuilder.internalPropertyAccessExpression(InternalElementKind.ClawjectInternalRuntimeUtils),
+              factory.createIdentifier('defineDevelopmentApplicationMetadata')
+            ),
+            undefined,
+            [
+              valueToASTExpression(application.id),
+              valueToASTExpression(Compiler.projectVersion),
+              valueToASTExpression(metadata)
+            ],
+          ))
+        );
+      }
+    });
+  }
 
   if (shouldAddInternalImport.value) {
     updatedStatements.unshift(InternalsAccessBuilder.importDeclarationToInternal());

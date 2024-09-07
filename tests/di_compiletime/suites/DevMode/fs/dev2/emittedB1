@@ -1,0 +1,18 @@
+import * as claw_1 from "@clawject/di/runtime/___internal___";
+export class B {
+}
+claw_1.___ClawjectInternalRuntimeUtils___.defineDevelopmentApplicationMetadata("/A.ts_1", 8, {
+    beanDependenciesMetadata: [
+        [
+            {
+                classPropertyName: "dep",
+                dependencies: []
+            },
+            {
+                classPropertyName: "b",
+                dependencies: []
+            }
+        ]
+    ],
+    exposedBeansMetadata: []
+});
