@@ -37,15 +37,15 @@
     "@types/lodash": "^4.17.0",
     "@types/node": "^20.11.30",
     "@types/semver": "^7.5.8",
-    "@types/ts-expose-internals": "npm:ts-expose-internals@5.5",
+    "@types/ts-expose-internals": "npm:ts-expose-internals@5.6",
     "copyfiles": "^2.4.1",
-    "ts-patch": "^3.1.2",
-    "tslib": "^2.6.2",
-    "typescript": "5.5.3",
+    "ts-patch": "^3.2.1",
+    "tslib": "^2.7.0",
+    "typescript": "5.6.2",
     "webpack": "^5.91.0"
   },
   "peerDependencies": {
-    "typescript": ">=5.0 <=5.5"
+    "typescript": ">=5.0 <=5.6"
   },
   "engines": {
     "node": ">=18"

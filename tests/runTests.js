@@ -4,7 +4,7 @@ const path = require('path');
 const {readdir} = require('fs').promises;
 
 (async () => {
-  const tsVersion = process.env['TS_VERSION'] || '5.5';
+  const tsVersion = process.env['TS_VERSION'] || '5.6';
 
   if (!tsVersion) {
     console.error('TS_VERSION environment variable is not set');
