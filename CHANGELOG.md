@@ -1,3 +1,14 @@
+## 1.2.4 (2024-09-11)
+
+
+### 🩹 Fixes
+
+- bump ts 5.6 ([6503c94d](https://github.com/clawject/clawject/commit/6503c94d))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.3 (2024-09-07)
 
 
