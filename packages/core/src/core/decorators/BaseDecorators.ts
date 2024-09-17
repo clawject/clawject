@@ -10,9 +10,11 @@ import { PreDestroyDecorator } from './base/PreDestroyDecorator';
 import { PrimaryDecorator } from './base/PrimaryDecorator';
 import { QualifierDecorator } from './base/QualifierDecorator';
 import { ScopeDecorator } from './base/ScopeDecorator';
+import { FactoryDecorator } from './base/FactoryDecorator';
 
 export const BaseDecorators = {
   Bean: new BeanDecorator(),
+  Factory: new FactoryDecorator(),
   ClawjectApplication: new ClawjectApplicationDecorator(),
   Configuration: new ConfigurationDecorator(),
   Embedded: new EmbeddedDecorator(),

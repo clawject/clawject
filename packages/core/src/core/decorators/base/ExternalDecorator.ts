@@ -37,6 +37,7 @@ export class ExternalDecorator extends BaseCustomDecorator {
 
   protected compatibleDecorators = new Set([
     'Bean',
+    'Factory',
     'Configuration',
     'Embedded',
     'Lazy',

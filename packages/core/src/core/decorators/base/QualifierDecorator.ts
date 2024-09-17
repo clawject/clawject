@@ -43,6 +43,7 @@ export class QualifierDecorator extends BaseCustomDecorator {
 
   protected compatibleDecorators= new Set([
     'Bean',
+    'Factory',
     'Embedded',
     'Lazy',
     'Scope',

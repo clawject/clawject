@@ -21,6 +21,7 @@ export class PrimaryDecorator extends BaseCustomDecorator {
 
   protected compatibleDecorators= new Set([
     'Bean',
+    'Factory',
     'Embedded',
     'Lazy',
     'Scope',

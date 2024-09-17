@@ -36,6 +36,7 @@ export class LazyDecorator extends BaseCustomDecorator {
 
   protected compatibleDecorators= new Set([
     'Bean',
+    'Factory',
     'Configuration',
     'Embedded',
     'Scope',

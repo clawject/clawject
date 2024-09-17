@@ -3,13 +3,14 @@ import { DecoratorTarget } from '../../../api/decorators/DecoratorTarget';
 import { BaseCustomDecorator } from './BaseCustomDecorator';
 import { ClawjectDecoratorArgumentError } from '../../../api/decorators/DecoratorArgumentConstraint';
 
-export class BeanDecorator extends BaseCustomDecorator {
-  name = 'Bean';
+export class FactoryDecorator extends BaseCustomDecorator {
+  name = 'Factory';
   uniq = true;
-  parents = [DecoratorParent.ConfigurationClass, DecoratorParent.ApplicationClass];
+  parents = [
+    DecoratorParent.ConfigurationClass,
+    DecoratorParent.ApplicationClass,
+  ];
   targets = [
-    DecoratorTarget.ClassProperty,
-    DecoratorTarget.ClassFunction,
     DecoratorTarget.Bean,
   ];
   argumentConstraints = [];
@@ -18,14 +19,14 @@ export class BeanDecorator extends BaseCustomDecorator {
     return [];
   }
 
-  protected compatibleDecorators = new Set([
-    'Factory',
-    'Embedded',
+  protected compatibleDecorators= new Set([
+    'Bean',
     'Lazy',
     'Scope',
     'Primary',
     'Qualifier',
     'Internal',
     'External',
+    'Embedded',
   ]);
 }

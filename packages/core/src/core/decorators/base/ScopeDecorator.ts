@@ -25,6 +25,7 @@ export class ScopeDecorator extends BaseCustomDecorator {
 
   protected compatibleDecorators= new Set([
     'Bean',
+    'Factory',
     'Configuration',
     'Embedded',
     'Lazy',
