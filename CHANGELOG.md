@@ -1,3 +1,14 @@
+## 1.2.5 (2024-09-17)
+
+
+### 🩹 Fixes
+
+- **di:** remove wrong export ([c7700ae0](https://github.com/clawject/clawject/commit/c7700ae0))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.4 (2024-09-11)
 
 
