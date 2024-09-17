@@ -9,5 +9,3 @@ export { ClawjectApplication, ClawjectApplicationTarget } from './ClawjectApplic
 export { External, Internal, InternalExternalTarget } from './InternalExternal';
 export { DecoratorWithoutArguments, ModernClassDecorator, ModernClassGetterDecorator, ModernClassFieldDecorator, ModernClassMethodDecorator } from './DecoratorTypes';
 export { ClawjectDecorator } from './ClawjectDecorator';
-
-export { MyCustomBeanTarget, MyCustomBean } from './MyCustomBean';
