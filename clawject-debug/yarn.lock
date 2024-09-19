@@ -1394,11 +1394,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:1.1.6":
-  version: 1.1.6
-  resolution: "@clawject/core@npm:1.1.6"
+"@clawject/core@npm:1.2.5":
+  version: 1.2.5
+  resolution: "@clawject/core@npm:1.2.5"
   dependencies:
-    "@rollup/pluginutils": "npm:^5.1.0"
     cosmiconfig: "npm:^9.0.0"
     cosmiconfig-typescript-loader: "npm:^5.0.0"
     graph-cycles: "npm:^1.2.1"
@@ -1406,33 +1405,38 @@ __metadata:
     jsonschema: "npm:^1.4.1"
     lodash: "npm:^4.17.21"
     semver: "npm:^7.6.0"
-    unplugin: "npm:^1.12.0"
     upath: "npm:^2.0.1"
     winston: "npm:^3.12.0"
   peerDependencies:
-    typescript: ">=5.0 <=5.5"
-  checksum: 10c0/91918d8de5271479c142b0924f6b1e3cff8107764bd01e126fbc90cd710f09f5a6246065e2235350d9222784f97b93f3c481800987b422eb9d328aa4e7e52077
+    typescript: ">=5.0 <=5.6"
+  checksum: 10c0/e437e060202232372ba6a90c191b93950f0e912948412e6ea5918c90553d52b5ebc65b1a24daa0aa18ecb4e31d46849c1d7a5cbf8cc39987de888c9bb6cc8049
   languageName: node
   linkType: hard
 
-"@clawject/di@npm:1.1.6, @clawject/di@npm:^1.1.6":
-  version: 1.1.6
-  resolution: "@clawject/di@npm:1.1.6"
+"@clawject/di@npm:1.2.5, @clawject/di@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "@clawject/di@npm:1.2.5"
   dependencies:
-    "@clawject/core": "npm:1.1.6"
+    "@clawject/core": "npm:1.2.5"
     "@rollup/pluginutils": "npm:^5.1.0"
     "@ts-morph/bootstrap": "npm:^0.24.0"
+    ts-morph-bootstrap-ts50: "npm:@ts-morph/bootstrap@0.19.0"
+    ts-morph-bootstrap-ts51: "npm:@ts-morph/bootstrap@0.20.0"
+    ts-morph-bootstrap-ts52: "npm:@ts-morph/bootstrap@0.21.0"
+    ts-morph-bootstrap-ts53: "npm:@ts-morph/bootstrap@0.22.0"
+    ts-morph-bootstrap-ts54: "npm:@ts-morph/bootstrap@0.23.0"
+    ts-morph-bootstrap-ts55-56: "npm:@ts-morph/bootstrap@0.24.0"
     unplugin: "npm:^1.12.1"
-  checksum: 10c0/6650b2f283da10088976df29149652003ed344acfc8cd7ad7308db855951830c0fc94f1e7b3314e2bb9db899460e1ac0ee4f92ff19a4a70680d6c92c0d97ac13
+  checksum: 10c0/b163cd89ae5cd9222ee803b6f2378ae953a787891b67652ab496ff503e2631012657292d89fc418da20f47cbbe0abee7b753e6beddad6ed304937d364789bc3c
   languageName: node
   linkType: hard
 
-"@clawject/language-service@npm:^1.1.6":
-  version: 1.1.6
-  resolution: "@clawject/language-service@npm:1.1.6"
+"@clawject/language-service@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "@clawject/language-service@npm:1.2.5"
   dependencies:
-    "@clawject/di": "npm:1.1.6"
-  checksum: 10c0/2e07280eced199c68a7fe82b076577bfcbbe55adee5dd0b1005c3b3e714bc07a84ad15a7cdbc69af7023aee7abcbc4b6e06b5a3b4a52432e984f2f4a04d6e3b8
+    "@clawject/di": "npm:1.2.5"
+  checksum: 10c0/6aa2deb7bca793152fc6438e1e38b5103d99e3ee21dd9c97961fe330d0ec3ec2d4efb7141ec00f454771313bcd647c97aadd883c224878022c9d99a952dba826
   languageName: node
   linkType: hard
 
@@ -2110,12 +2114,72 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/bootstrap@npm:^0.24.0":
+"@ts-morph/bootstrap@npm:^0.24.0, ts-morph-bootstrap-ts55-56@npm:@ts-morph/bootstrap@0.24.0":
   version: 0.24.0
   resolution: "@ts-morph/bootstrap@npm:0.24.0"
   dependencies:
     "@ts-morph/common": "npm:~0.24.0"
   checksum: 10c0/cdda8e42ca7d183e5c07b1ec55ed226abfd21aa8eeeb0578c37daf97dbe3ddbbcc4564bd2f47ca3960e810ec8b532a30739656071eb3ca1cf111790ce6b3f00a
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.19.0":
+  version: 0.19.0
+  resolution: "@ts-morph/common@npm:0.19.0"
+  dependencies:
+    fast-glob: "npm:^3.2.12"
+    minimatch: "npm:^7.4.3"
+    mkdirp: "npm:^2.1.6"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/e25fd46158d72be238ab1dda74e7ee284085895b12b9ab279f37d50f1cd71b2be95a56f3efa19d5f52986534e9f34ae4a294467cd1637b27cf4fb82bd7318bb7
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.20.0":
+  version: 0.20.0
+  resolution: "@ts-morph/common@npm:0.20.0"
+  dependencies:
+    fast-glob: "npm:^3.2.12"
+    minimatch: "npm:^7.4.3"
+    mkdirp: "npm:^2.1.6"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/d15bbbf3573d25357c75a1f8725c87d60f03f76b6bec1838b4f699ed00c4e0ff44912d226286fa74e9af2be903c87bd08f43716297bf6250bad319fdf4949cc2
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.21.0":
+  version: 0.21.0
+  resolution: "@ts-morph/common@npm:0.21.0"
+  dependencies:
+    fast-glob: "npm:^3.2.12"
+    minimatch: "npm:^7.4.3"
+    mkdirp: "npm:^2.1.6"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/1d7f544d6235b3cd14cf4a7eb4f567bf1aeb9907e0932ee636c53fd7988dc4488b4c8901eaf862f726d87a2f7c074e598b518b447a8521a5c5713216b20a8596
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.22.0":
+  version: 0.22.0
+  resolution: "@ts-morph/common@npm:0.22.0"
+  dependencies:
+    fast-glob: "npm:^3.3.2"
+    minimatch: "npm:^9.0.3"
+    mkdirp: "npm:^3.0.1"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/1f1ff7fee54414e09803b1ba559ff51881b821c19bc97cb19d06fc46c58957dea4a58e6a83e9f2e30e08c8179d6d142e45be329d9242f410323795b5c1e04806
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.23.0":
+  version: 0.23.0
+  resolution: "@ts-morph/common@npm:0.23.0"
+  dependencies:
+    fast-glob: "npm:^3.3.2"
+    minimatch: "npm:^9.0.3"
+    mkdirp: "npm:^3.0.1"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/80d8f230618b022537846b515cb928c636004f216821bec7fea289fd37533b4eaa783d276cc5838b4b6be867fec60fdee5795baac3ed98f1ab7cdd6b35a85179
   languageName: node
   linkType: hard
 
@@ -2224,10 +2288,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:*, @types/estree@npm:1.0.5, @types/estree@npm:^1.0.0, @types/estree@npm:^1.0.5":
+"@types/estree@npm:*, @types/estree@npm:1.0.5, @types/estree@npm:^1.0.5":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
   checksum: 10c0/b3b0e334288ddb407c7b3357ca67dbee75ee22db242ca7c56fe27db4e1a31989cb8af48a84dd401deb787fe10cc6b2ab1ee82dc4783be87ededbe3d53c79c70d
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:^1.0.0":
+  version: 1.0.6
+  resolution: "@types/estree@npm:1.0.6"
+  checksum: 10c0/cdfd751f6f9065442cd40957c07fd80361c962869aa853c1c2fd03e101af8b9389d8ff4955a43a6fcfa223dd387a089937f95be0f3eec21ca527039fd2d9859a
   languageName: node
   linkType: hard
 
@@ -2851,10 +2922,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^3.2.0, async@npm:^3.2.3, async@npm:~3.2.0":
+"async@npm:^3.2.0, async@npm:~3.2.0":
   version: 3.2.5
   resolution: "async@npm:3.2.5"
   checksum: 10c0/1408287b26c6db67d45cb346e34892cee555b8b59e6c68e6f8c3e495cad5ca13b4f218180e871f3c2ca30df4ab52693b66f2f6ff43644760cab0b2198bda79c1
+  languageName: node
+  linkType: hard
+
+"async@npm:^3.2.3":
+  version: 3.2.6
+  resolution: "async@npm:3.2.6"
+  checksum: 10c0/36484bb15ceddf07078688d95e27076379cc2f87b10c03b6dd8a83e89475a3c8df5848859dd06a4c95af1e4c16fc973de0171a77f18ea00be899aca2a4f85e70
   languageName: node
   linkType: hard
 
@@ -3212,8 +3290,8 @@ __metadata:
     "@babel/plugin-proposal-decorators": "npm:^7.24.7"
     "@babel/preset-env": "npm:^7.25.2"
     "@babel/preset-typescript": "npm:^7.24.7"
-    "@clawject/di": "npm:^1.1.6"
-    "@clawject/language-service": "npm:^1.1.6"
+    "@clawject/di": "npm:^1.2.5"
+    "@clawject/language-service": "npm:^1.2.5"
     "@nestjs/common": "npm:^10"
     "@nestjs/core": "npm:^10"
     babel-loader: "npm:^9.1.3"
@@ -3227,7 +3305,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     ts-patch: "npm:^3.2.1"
     tsconfig-paths: "npm:^4.2.0"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.6"
     vite: "npm:^5.3.5"
     webpack: "npm:^5.93.0"
     webpack-cli: "npm:^5.1.4"
@@ -4255,7 +4333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.12, fast-glob@npm:^3.3.2":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -5582,13 +5660,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:^4.0.2, micromatch@npm:^4.0.4":
+"micromatch@npm:^4.0.2":
   version: 4.0.7
   resolution: "micromatch@npm:4.0.7"
   dependencies:
     braces: "npm:^3.0.3"
     picomatch: "npm:^2.3.1"
   checksum: 10c0/58fa99bc5265edec206e9163a1d2cec5fabc46a5b473c45f4a700adce88c2520456ae35f2b301e4410fb3afb27e9521fb2813f6fc96be0a48a89430e0916a772
+  languageName: node
+  linkType: hard
+
+"micromatch@npm:^4.0.4":
+  version: 4.0.8
+  resolution: "micromatch@npm:4.0.8"
+  dependencies:
+    braces: "npm:^3.0.3"
+    picomatch: "npm:^2.3.1"
+  checksum: 10c0/166fa6eb926b9553f32ef81f5f531d27b4ce7da60e5baf8c021d043b27a388fb95e46a8038d5045877881e673f8134122b59624d5cecbd16eb50a42e7a6b5ca8
   languageName: node
   linkType: hard
 
@@ -5647,6 +5735,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^7.4.3":
+  version: 7.4.6
+  resolution: "minimatch@npm:7.4.6"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 10c0/e587bf3d90542555a3d58aca94c549b72d58b0a66545dd00eef808d0d66e5d9a163d3084da7f874e83ca8cc47e91c670e6c6f6593a3e7bb27fcc0e6512e87c67
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^9.0.1":
   version: 9.0.4
   resolution: "minimatch@npm:9.0.4"
@@ -5656,7 +5753,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.4":
+"minimatch@npm:^9.0.3, minimatch@npm:^9.0.4":
   version: 9.0.5
   resolution: "minimatch@npm:9.0.5"
   dependencies:
@@ -5769,6 +5866,15 @@ __metadata:
   bin:
     mkdirp: bin/cmd.js
   checksum: 10c0/46ea0f3ffa8bc6a5bc0c7081ffc3907777f0ed6516888d40a518c5111f8366d97d2678911ad1a6882bf592fa9de6c784fea32e1687bb94e1f4944170af48a5cf
+  languageName: node
+  linkType: hard
+
+"mkdirp@npm:^2.1.6":
+  version: 2.1.6
+  resolution: "mkdirp@npm:2.1.6"
+  bin:
+    mkdirp: dist/cjs/src/bin.js
+  checksum: 10c0/96f551c651dd8f5f9435d53df1a7b9bfc553be769ee6da5192c37c1f303a376ef1c6996f96913d4a8d357060451d4526a346031d1919f92c58806a5fa3cd8dfe
   languageName: node
   linkType: hard
 
@@ -6940,9 +7046,9 @@ __metadata:
   linkType: hard
 
 "safe-stable-stringify@npm:^2.3.1":
-  version: 2.4.3
-  resolution: "safe-stable-stringify@npm:2.4.3"
-  checksum: 10c0/81dede06b8f2ae794efd868b1e281e3c9000e57b39801c6c162267eb9efda17bd7a9eafa7379e1f1cacd528d4ced7c80d7460ad26f62ada7c9e01dec61b2e768
+  version: 2.5.0
+  resolution: "safe-stable-stringify@npm:2.5.0"
+  checksum: 10c0/baea14971858cadd65df23894a40588ed791769db21bafb7fd7608397dbdce9c5aac60748abae9995e0fc37e15f2061980501e012cd48859740796bea2987f49
   languageName: node
   linkType: hard
 
@@ -7616,6 +7722,51 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-morph-bootstrap-ts50@npm:@ts-morph/bootstrap@0.19.0":
+  version: 0.19.0
+  resolution: "@ts-morph/bootstrap@npm:0.19.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.19.0"
+  checksum: 10c0/da7e045753afcd71fa1111d41ef7c356a4830aa365f1e2156dbbd3a17a29b70df8c3479d15b740a537fd8c9718c3d6b4b54bd3a4d17d79187b8978c837b2512b
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts51@npm:@ts-morph/bootstrap@0.20.0":
+  version: 0.20.0
+  resolution: "@ts-morph/bootstrap@npm:0.20.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.20.0"
+  checksum: 10c0/13608e8bb4fb2c6c29f7c725a8832f8ac8e4a48b355c5bb9fa764f34202989caf040d10008c3b8923908041b1a6fb007370e90efe5bf032f32aa050a028486cd
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts52@npm:@ts-morph/bootstrap@0.21.0":
+  version: 0.21.0
+  resolution: "@ts-morph/bootstrap@npm:0.21.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.21.0"
+  checksum: 10c0/04a1d1aafa909db88cfba7ebef758e0fe94c08660a1bd78ca86a5f4e926b936fe772746b70b61d4dce95775f29862e9c9c0ee67201e210e8ff5100773bd4f885
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts53@npm:@ts-morph/bootstrap@0.22.0":
+  version: 0.22.0
+  resolution: "@ts-morph/bootstrap@npm:0.22.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.22.0"
+  checksum: 10c0/4765b1f172303936a8a414b65e3f7b57562c6608400a9512122bba7afafd56fe0020f8e7834f82711cb035798a892407ad3aa8317d773b498b786a44f3551a6f
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts54@npm:@ts-morph/bootstrap@0.23.0":
+  version: 0.23.0
+  resolution: "@ts-morph/bootstrap@npm:0.23.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.23.0"
+  checksum: 10c0/423c7c1d77aa3bebd45765df714603d7617a3834e0da8ad07cdee70c519e308cda70b2711c2e1d07c4ad8e055edb972cdede01dacea6688e5b1f646fe723957c
+  languageName: node
+  linkType: hard
+
 "ts-node@npm:^10.9.2":
   version: 10.9.2
   resolution: "ts-node@npm:10.9.2"
@@ -7729,23 +7880,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.5.3":
-  version: 5.5.3
-  resolution: "typescript@npm:5.5.3"
+"typescript@npm:5.6":
+  version: 5.6.2
+  resolution: "typescript@npm:5.6.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/f52c71ccbc7080b034b9d3b72051d563601a4815bf3e39ded188e6ce60813f75dbedf11ad15dd4d32a12996a9ed8c7155b46c93a9b9c9bad1049766fe614bbdd
+  checksum: 10c0/3ed8297a8c7c56b7fec282532503d1ac795239d06e7c4966b42d4330c6cf433a170b53bcf93a130a7f14ccc5235de5560df4f1045eb7f3550b46ebed16d3c5e5
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.5.3#optional!builtin<compat/typescript>":
-  version: 5.5.3
-  resolution: "typescript@patch:typescript@npm%3A5.5.3#optional!builtin<compat/typescript>::version=5.5.3&hash=b45daf"
+"typescript@patch:typescript@npm%3A5.6#optional!builtin<compat/typescript>":
+  version: 5.6.2
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=b45daf"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/5a437c416251334deeaf29897157032311f3f126547cfdc4b133768b606cb0e62bcee733bb97cf74c42fe7268801aea1392d8e40988cdef112e9546eba4c03c5
+  checksum: 10c0/e6c1662e4852e22fe4bbdca471dca3e3edc74f6f1df043135c44a18a7902037023ccb0abdfb754595ca9028df8920f2f8492c00fc3cbb4309079aae8b7de71cd
   languageName: node
   linkType: hard
 
@@ -7835,15 +7986,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^1.12.0, unplugin@npm:^1.12.1":
-  version: 1.12.1
-  resolution: "unplugin@npm:1.12.1"
+"unplugin@npm:^1.12.1":
+  version: 1.14.1
+  resolution: "unplugin@npm:1.14.1"
   dependencies:
     acorn: "npm:^8.12.1"
-    chokidar: "npm:^3.6.0"
-    webpack-sources: "npm:^3.2.3"
     webpack-virtual-modules: "npm:^0.6.2"
-  checksum: 10c0/85dca6ea362f23af36597119e12b8bf022164f6efaf8027cfe10f07ff53d7722f4b58572447d77f64e27c9d657d8937e6d8c9a66884f3189379f2c3184fd1836
+  peerDependencies:
+    webpack-sources: ^3
+  peerDependenciesMeta:
+    webpack-sources:
+      optional: true
+  checksum: 10c0/a74342b8f0cbbdc7b1da1f78f1898c0c915e3f67b22281fcd61a5495a585f4a1fd0fc270a7e59643a41c138c94c852cb69ea17af72965fb15f86f18ee76c2ed1
   languageName: node
   linkType: hard
 
@@ -8248,8 +8402,8 @@ __metadata:
   linkType: hard
 
 "winston@npm:^3.12.0":
-  version: 3.14.1
-  resolution: "winston@npm:3.14.1"
+  version: 3.14.2
+  resolution: "winston@npm:3.14.2"
   dependencies:
     "@colors/colors": "npm:^1.6.0"
     "@dabh/diagnostics": "npm:^2.0.2"
@@ -8262,7 +8416,7 @@ __metadata:
     stack-trace: "npm:0.0.x"
     triple-beam: "npm:^1.3.0"
     winston-transport: "npm:^4.7.0"
-  checksum: 10c0/2d0f75a8110c00be97f71adee9f1afdba40a329659b98c6169062171304e34fe78877a9983a9dbd5755bbed3515a51f91cf582004e3781f1eb54de5b507e5207
+  checksum: 10c0/3f8fe505ea18310982e60452f335dd2b22fdbc9b25839b6ad882971b2416d5adc94a1f1a46e24cb37d967ad01dfe5499adaf5e53575626b5ebb2a25ff30f4e1d
   languageName: node
   linkType: hard
 

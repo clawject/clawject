@@ -1717,6 +1717,12 @@ __metadata:
     esbuild: "npm:^0.23.0"
     rolldown: "npm:^0.12.2"
     rollup: "npm:^4.20.0"
+    ts-morph-bootstrap-ts50: "npm:@ts-morph/bootstrap@0.19.0"
+    ts-morph-bootstrap-ts51: "npm:@ts-morph/bootstrap@0.20.0"
+    ts-morph-bootstrap-ts52: "npm:@ts-morph/bootstrap@0.21.0"
+    ts-morph-bootstrap-ts53: "npm:@ts-morph/bootstrap@0.22.0"
+    ts-morph-bootstrap-ts54: "npm:@ts-morph/bootstrap@0.23.0"
+    ts-morph-bootstrap-ts55-56: "npm:@ts-morph/bootstrap@0.24.0"
     ts-patch: "npm:^3.2.1"
     typescript: "npm:5.6.2"
     unplugin: "npm:^1.12.1"
@@ -4032,12 +4038,72 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/bootstrap@npm:^0.24.0":
+"@ts-morph/bootstrap@npm:^0.24.0, ts-morph-bootstrap-ts55-56@npm:@ts-morph/bootstrap@0.24.0":
   version: 0.24.0
   resolution: "@ts-morph/bootstrap@npm:0.24.0"
   dependencies:
     "@ts-morph/common": "npm:~0.24.0"
   checksum: 10c0/cdda8e42ca7d183e5c07b1ec55ed226abfd21aa8eeeb0578c37daf97dbe3ddbbcc4564bd2f47ca3960e810ec8b532a30739656071eb3ca1cf111790ce6b3f00a
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.19.0":
+  version: 0.19.0
+  resolution: "@ts-morph/common@npm:0.19.0"
+  dependencies:
+    fast-glob: "npm:^3.2.12"
+    minimatch: "npm:^7.4.3"
+    mkdirp: "npm:^2.1.6"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/e25fd46158d72be238ab1dda74e7ee284085895b12b9ab279f37d50f1cd71b2be95a56f3efa19d5f52986534e9f34ae4a294467cd1637b27cf4fb82bd7318bb7
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.20.0":
+  version: 0.20.0
+  resolution: "@ts-morph/common@npm:0.20.0"
+  dependencies:
+    fast-glob: "npm:^3.2.12"
+    minimatch: "npm:^7.4.3"
+    mkdirp: "npm:^2.1.6"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/d15bbbf3573d25357c75a1f8725c87d60f03f76b6bec1838b4f699ed00c4e0ff44912d226286fa74e9af2be903c87bd08f43716297bf6250bad319fdf4949cc2
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.21.0":
+  version: 0.21.0
+  resolution: "@ts-morph/common@npm:0.21.0"
+  dependencies:
+    fast-glob: "npm:^3.2.12"
+    minimatch: "npm:^7.4.3"
+    mkdirp: "npm:^2.1.6"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/1d7f544d6235b3cd14cf4a7eb4f567bf1aeb9907e0932ee636c53fd7988dc4488b4c8901eaf862f726d87a2f7c074e598b518b447a8521a5c5713216b20a8596
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.22.0":
+  version: 0.22.0
+  resolution: "@ts-morph/common@npm:0.22.0"
+  dependencies:
+    fast-glob: "npm:^3.3.2"
+    minimatch: "npm:^9.0.3"
+    mkdirp: "npm:^3.0.1"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/1f1ff7fee54414e09803b1ba559ff51881b821c19bc97cb19d06fc46c58957dea4a58e6a83e9f2e30e08c8179d6d142e45be329d9242f410323795b5c1e04806
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.23.0":
+  version: 0.23.0
+  resolution: "@ts-morph/common@npm:0.23.0"
+  dependencies:
+    fast-glob: "npm:^3.3.2"
+    minimatch: "npm:^9.0.3"
+    mkdirp: "npm:^3.0.1"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10c0/80d8f230618b022537846b515cb928c636004f216821bec7fea289fd37533b4eaa783d276cc5838b4b6be867fec60fdee5795baac3ed98f1ab7cdd6b35a85179
   languageName: node
   linkType: hard
 
@@ -7935,7 +8001,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.5, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.5, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -10776,7 +10842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:7.4.6":
+"minimatch@npm:7.4.6, minimatch@npm:^7.4.3":
   version: 7.4.6
   resolution: "minimatch@npm:7.4.6"
   dependencies:
@@ -10918,6 +10984,15 @@ __metadata:
   bin:
     mkdirp: bin/cmd.js
   checksum: 10c0/46ea0f3ffa8bc6a5bc0c7081ffc3907777f0ed6516888d40a518c5111f8366d97d2678911ad1a6882bf592fa9de6c784fea32e1687bb94e1f4944170af48a5cf
+  languageName: node
+  linkType: hard
+
+"mkdirp@npm:^2.1.6":
+  version: 2.1.6
+  resolution: "mkdirp@npm:2.1.6"
+  bin:
+    mkdirp: dist/cjs/src/bin.js
+  checksum: 10c0/96f551c651dd8f5f9435d53df1a7b9bfc553be769ee6da5192c37c1f303a376ef1c6996f96913d4a8d357060451d4526a346031d1919f92c58806a5fa3cd8dfe
   languageName: node
   linkType: hard
 
@@ -13882,6 +13957,51 @@ __metadata:
   bin:
     ts-jest: cli.js
   checksum: 10c0/3be57a9f0e9cf0d0de235f5543dc1f2a33da4380bf46e660f79d050a15a6e7bab71a7a80ba9559761ce1203248b40d0f9386c19356718165575f32192e32140e
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts50@npm:@ts-morph/bootstrap@0.19.0":
+  version: 0.19.0
+  resolution: "@ts-morph/bootstrap@npm:0.19.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.19.0"
+  checksum: 10c0/da7e045753afcd71fa1111d41ef7c356a4830aa365f1e2156dbbd3a17a29b70df8c3479d15b740a537fd8c9718c3d6b4b54bd3a4d17d79187b8978c837b2512b
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts51@npm:@ts-morph/bootstrap@0.20.0":
+  version: 0.20.0
+  resolution: "@ts-morph/bootstrap@npm:0.20.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.20.0"
+  checksum: 10c0/13608e8bb4fb2c6c29f7c725a8832f8ac8e4a48b355c5bb9fa764f34202989caf040d10008c3b8923908041b1a6fb007370e90efe5bf032f32aa050a028486cd
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts52@npm:@ts-morph/bootstrap@0.21.0":
+  version: 0.21.0
+  resolution: "@ts-morph/bootstrap@npm:0.21.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.21.0"
+  checksum: 10c0/04a1d1aafa909db88cfba7ebef758e0fe94c08660a1bd78ca86a5f4e926b936fe772746b70b61d4dce95775f29862e9c9c0ee67201e210e8ff5100773bd4f885
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts53@npm:@ts-morph/bootstrap@0.22.0":
+  version: 0.22.0
+  resolution: "@ts-morph/bootstrap@npm:0.22.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.22.0"
+  checksum: 10c0/4765b1f172303936a8a414b65e3f7b57562c6608400a9512122bba7afafd56fe0020f8e7834f82711cb035798a892407ad3aa8317d773b498b786a44f3551a6f
+  languageName: node
+  linkType: hard
+
+"ts-morph-bootstrap-ts54@npm:@ts-morph/bootstrap@0.23.0":
+  version: 0.23.0
+  resolution: "@ts-morph/bootstrap@npm:0.23.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.23.0"
+  checksum: 10c0/423c7c1d77aa3bebd45765df714603d7617a3834e0da8ad07cdee70c519e308cda70b2711c2e1d07c4ad8e055edb972cdede01dacea6688e5b1f646fe723957c
   languageName: node
   linkType: hard
 
