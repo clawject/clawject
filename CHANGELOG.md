@@ -1,3 +1,14 @@
+## 1.2.6 (2024-09-19)
+
+
+### 🩹 Fixes
+
+- **di:** versions of ts 5.0 - 5.4 is not working with unplugin ([b442918b](https://github.com/clawject/clawject/commit/b442918b))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.5 (2024-09-17)
 
 
