@@ -15,26 +15,26 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.3.2",
-    "@docusaurus/preset-classic": "^3.3.2",
-    "@mdx-js/react": "^3.0.0",
-    "antd": "^5.15.1",
+    "@docusaurus/core": "^3.6.0",
+    "@docusaurus/preset-classic": "^3.6.0",
+    "@mdx-js/react": "^3.1.0",
+    "antd": "^5.21.6",
     "classnames": "^2.5.1",
     "lodash": "^4.17.21",
-    "prism-react-renderer": "^2.1.0",
+    "prism-react-renderer": "^2.4.0",
     "raw-loader": "^4.0.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-type-animation": "^3.2.0",
-    "react-use": "^17.5.0",
-    "styled-components": "^6.0.3"
+    "react-use": "^17.5.1",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.3.2",
-    "@docusaurus/tsconfig": "^3.3.2",
-    "@types/lodash": "^4.14.202",
-    "@types/react-dom": "^18.2.22",
-    "typescript": "5.5.3"
+    "@docusaurus/module-type-aliases": "^3.6.0",
+    "@docusaurus/tsconfig": "^3.6.0",
+    "@types/lodash": "^4.17.13",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "5.6.3"
   },
   "browserslist": {
     "production": [
