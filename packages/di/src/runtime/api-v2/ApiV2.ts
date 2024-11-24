@@ -1,3 +1,4 @@
+//TODO narrowing
 export interface DependencyDefinition<Value, Primary extends boolean = false, Internal extends boolean = false, External extends boolean = true, Embedded extends boolean = false, Lazy extends boolean = false, Scope extends string = 'singleton'> {
   readonly value: Value;
 
@@ -20,8 +21,6 @@ export interface DependencyDefinition<Value, Primary extends boolean = false, In
 
 export const Dep = <T>(value: T): DependencyDefinition<T> => ({} as any);
 
-export const myDep = Dep(new Map<string, number>()).primary(true).primary(false);
-
 interface ConfigurationDefinition<Primary extends boolean = false, Internal extends boolean = false, External extends boolean = true, Lazy extends boolean = false, Scope extends string = 'singleton'> {
   readonly metadata: {
     readonly primary: Primary;
@@ -39,9 +38,3 @@ interface ConfigurationDefinition<Primary extends boolean = false, Internal exte
 }
 
 export const Conf = (): ConfigurationDefinition => ({} as any);
-
-export class MyConfiguration {
-  definition = Conf().primary(true).primary(false).scope('test');
-
-  bean1 = Dep(new Map<string, number>()).primary().lazy().scope('test');
-}
