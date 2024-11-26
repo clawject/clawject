@@ -1676,7 +1676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clawject/core@npm:1.2.6, @clawject/core@workspace:packages/core":
+"@clawject/core@npm:1.2.7, @clawject/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@clawject/core@workspace:packages/core"
   dependencies:
@@ -1705,11 +1705,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@clawject/di@npm:*, @clawject/di@npm:1.2.6, @clawject/di@workspace:packages/di":
+"@clawject/di@npm:*, @clawject/di@npm:1.2.7, @clawject/di@workspace:packages/di":
   version: 0.0.0-use.local
   resolution: "@clawject/di@workspace:packages/di"
   dependencies:
-    "@clawject/core": "npm:1.2.6"
+    "@clawject/core": "npm:1.2.7"
     "@farmfe/core": "npm:^1.3.12"
     "@rollup/pluginutils": "npm:^5.1.0"
     "@rspack/core": "npm:^0.7.5"
@@ -1736,7 +1736,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@clawject/language-service@workspace:packages/language-service"
   dependencies:
-    "@clawject/di": "npm:1.2.6"
+    "@clawject/di": "npm:1.2.7"
   languageName: unknown
   linkType: soft
 
