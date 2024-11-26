@@ -7,8 +7,9 @@ const ImportMap = {
   '5.2': 'ts-morph-bootstrap-ts52',
   '5.3': 'ts-morph-bootstrap-ts53',
   '5.4': 'ts-morph-bootstrap-ts54',
-  '5.5': 'ts-morph-bootstrap-ts55-56',
-  '5.6': 'ts-morph-bootstrap-ts55-56',
+  '5.5': 'ts-morph-bootstrap-ts55',
+  '5.6': 'ts-morph-bootstrap-ts56-57',
+  '5.7': 'ts-morph-bootstrap-ts56-57',
 };
 
 export const createTSMorphProject: typeof createProject = async (...args: any[]) => {
