@@ -2,8 +2,8 @@ import type ts from 'typescript';
 import { UnpluginMessage } from 'unplugin';
 import { DiagnosticsBuilder } from '@clawject/core/ts-diagnostics/DiagnosticsBuilder';
 import { Context } from '@clawject/core/compilation-context/Context';
-import { compact } from 'lodash';
 import { AbstractCompilationMessage } from '@clawject/core/compilation-context/messages/AbstractCompilationMessage';
+import { compact } from '../compact';
 
 export class ErrorsReporter {
   reportErrors(cb: (message: UnpluginMessage) => void): void {
