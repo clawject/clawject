@@ -93,16 +93,7 @@ export class DiagnosticsBuilder {
         category: this.getDiagnosticCategory(message),
       }));
 
-      const candidatesByName: ts.DiagnosticRelatedInformation[] = message.candidatesByName.map(it => ({
-        messageText: `'${it.declarationName ?? '<anonymous>'}' matched by name.`,
-        start: it.startOffset,
-        length: it.length,
-        code: diagnosticsCode,
-        file: this.getSourceFile(it.filePath),
-        category: this.getDiagnosticCategory(message),
-      }));
-
-      relatedInformation.push(...candidatesByType, ...candidatesByName);
+      relatedInformation.push(...candidatesByType);
 
       if (message.beanKind === BeanKind.CLASS_CONSTRUCTOR && message.beanDeclarationNodeDetails !== null) {
         relatedInformation.push({

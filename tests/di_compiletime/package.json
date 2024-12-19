@@ -7,10 +7,10 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.2.3",
     "ts-patch": "3.2.1",
-    "typescript": "5.5"
+    "typescript": "5.6"
   },
   "packageManager": "yarn@4.2.2",
   "dependencies": {
-    "@clawject/di": "^1.2.2"
+    "@clawject/di": "^1.2.7"
   }
 }

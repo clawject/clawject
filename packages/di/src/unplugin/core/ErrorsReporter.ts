@@ -2,7 +2,6 @@ import type ts from 'typescript';
 import { UnpluginMessage } from 'unplugin';
 import { DiagnosticsBuilder } from '@clawject/core/ts-diagnostics/DiagnosticsBuilder';
 import { Context } from '@clawject/core/compilation-context/Context';
-import { compact } from 'lodash';
 import { AbstractCompilationMessage } from '@clawject/core/compilation-context/messages/AbstractCompilationMessage';
 
 export class ErrorsReporter {
@@ -23,7 +22,7 @@ export class ErrorsReporter {
   }
 
   private getDiagnostics(messages: AbstractCompilationMessage[]): ts.Diagnostic[] {
-    return compact(messages.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it)));
+    return this.compact(messages.map(it => DiagnosticsBuilder.compilationMessageToDiagnostic(it)));
   }
 
   private transformDiagnostic(diagnostic: ts.Diagnostic): UnpluginMessage {
@@ -39,5 +38,9 @@ export class ErrorsReporter {
         column: loc.character,
       } : undefined
     };
+  }
+
+  private compact<T>(array: (T | undefined | null)[]): T[] {
+    return array.filter(it => it !== undefined && it !== null) as T[];
   }
 }
