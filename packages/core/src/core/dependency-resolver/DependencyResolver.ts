@@ -68,7 +68,6 @@ export class DependencyResolver {
         `Found ${matchedByTypeAndPrimary.length} Primary injection candidates.`,
         dependency.node,
         relatedBean,
-        [],
         matchedByTypeAndPrimary,
         relatedApplication,
       ));
@@ -136,17 +135,13 @@ export class DependencyResolver {
     beansToSearch: Bean[],
     relatedApplication: Application,
   ): void {
-    const [
-      byName,
-      byType,
-    ] = getPossibleBeanCandidates(dependency.parameterName, dependency.cType, beansToSearch);
+    const possibleBeanCandidates = getPossibleBeanCandidates(dependency.cType, beansToSearch);
 
     Context.report(new BeanCandidateNotFoundError(
-      `Found ${byName.length + byType.length} injection candidates.`,
+      `Found ${possibleBeanCandidates.length} injection candidates.`,
       dependency.node,
       bean,
-      byName,
-      byType,
+      possibleBeanCandidates,
       relatedApplication,
     ));
   }

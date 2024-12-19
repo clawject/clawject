@@ -129,10 +129,14 @@ export class CType {
   }
 
   isCompatible(to: CType): boolean {
-    return TypeComparator.compareType(to.tsType, this.tsType);
+    const sourceType = to.tsType;
+    const targetType = this.tsType;
+    return TypeComparator.compareType(sourceType, targetType);
   }
 
   isCompatibleNominally(to: CType): boolean {
-    return TypeComparator.compareTypeNominally(to.tsType, this.tsType);
+    const sourceType = to.tsType;
+    const targetType = this.tsType;
+    return TypeComparator.compareTypeNominally(sourceType, targetType);
   }
 }
