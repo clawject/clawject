@@ -6,6 +6,7 @@ import { ClassPropertyWithCallExpressionInitializer } from '../ts/types';
 import { CType } from '../type-system/CType';
 import { Bean } from './Bean';
 import { Context } from '../../compilation-context/Context';
+import { ObjectTypeExpander } from '../type-system/ObjectTypeExpander';
 
 export const fillBeanTypes = (configuration: Configuration) => {
   configuration.beanRegister.elements.forEach(bean => {

@@ -12,6 +12,7 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "noEmit": false,
+    "jsx": "preserve",
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -28,7 +29,6 @@
     "declaration": true,
     "sourceMap": true,
     "plugins": [
-      { "name": "@clawject/language-service" },
       { "transform": "@clawject/di/transformer" },
       { "transform": "@clawject/di/transformer/metadata", "afterDeclarations": true }
     ]

@@ -10,7 +10,8 @@
     "registry:stop": "ts-node scripts/registry/stop",
     "release": "nx release --skip-publish",
     "publish:local": "nx release publish --registry http://localhost:4873",
-    "clear-yarn-clawject-cache": "rm $(yarn config get cacheFolder)/@clawject* || true"
+    "clear-yarn-clawject-cache": "rm $(yarn config get cacheFolder)/@clawject* || true",
+    "local:test": "yarn run build && yarn run registry:start && yarn run publish:local && yarn run test"
   },
   "private": true,
   "devDependencies": {

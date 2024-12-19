@@ -628,14 +628,29 @@ describe('TypeSystem', () => {
     const postConstructSpy = sinon.spy();
     const preDestroySpy = sinon.spy();
 
+    type NestedTypeObject<T> = { nestedTypeObject: true; counter: number, data: T };
     type TypeObject<T> = { typeObject: true; counter: number, data: T };
 
+    interface NestedInterfaceObject<T> {
+      nestedInterfaceObject: true;
+      counter: number,
+      data: T
+    }
     interface InterfaceObject<T> {
       interfaceObject: true;
       counter: number,
       data: T
     }
 
+    class NestedClassObject<T> {
+      private static counter = 0;
+      nestedClassObject = true;
+      counter = NestedClassObject.counter++;
+
+      constructor(
+        public readonly data: T,
+      ) {}
+    }
     class ClassObject<T> {
       private static counter = 0;
       classObject = true;
@@ -643,8 +658,7 @@ describe('TypeSystem', () => {
 
       constructor(
         public readonly data: T,
-      ) {
-      }
+      ) {}
     }
 
     class DependencyHolder {
@@ -655,8 +669,13 @@ describe('TypeSystem', () => {
         public readonly interfaceObjectNumber: InterfaceObject<number>,
         public readonly classObjectString: ClassObject<string>,
         public readonly classObjectNumber: ClassObject<number>,
-      ) {
-      }
+        public readonly typeObjectNestedString: TypeObject<NestedTypeObject<string>>,
+        public readonly typeObjectNestedNumber: TypeObject<NestedTypeObject<number>>,
+        public readonly interfaceObjectNestedString: InterfaceObject<NestedInterfaceObject<string>>,
+        public readonly interfaceObjectNestedNumber: InterfaceObject<NestedInterfaceObject<number>>,
+        public readonly classObjectNestedString: ClassObject<NestedClassObject<string>>,
+        public readonly classObjectNestedNumber: ClassObject<NestedClassObject<number>>,
+      ) {}
     }
 
     @ClawjectApplication
@@ -665,36 +684,62 @@ describe('TypeSystem', () => {
       @Bean num = 42;
 
       @Bean @Primary typeObjectStringProperty: TypeObject<string> = {typeObject: true, counter: 0, data: 'string'};
+      @Bean @Primary typeObjectNestedStringProperty: TypeObject<NestedTypeObject<string>> = {typeObject: true, counter: 0, data: { nestedTypeObject: true, counter: 0, data: 'string' }};
       @Bean @Primary typeObjectNumberProperty: TypeObject<number> = {typeObject: true, counter: 0, data: 42};
+      @Bean @Primary typeObjectNestedNumberProperty: TypeObject<NestedTypeObject<number>> = {typeObject: true, counter: 0, data: { nestedTypeObject: true, counter: 0, data: 42 }};
 
       @Bean typeObjectStringMethod(): TypeObject<string> {
         return {typeObject: true, counter: 1, data: 'string'};
+      }
+      @Bean typeObjectNestedStringMethod(): TypeObject<NestedTypeObject<string>> {
+        return {typeObject: true, counter: 1, data: { nestedTypeObject: true, counter: 1, data: 'string' }};
       }
 
       @Bean typeObjectNumberMethod(): TypeObject<number> {
         return {typeObject: true, counter: 1, data: 42};
       }
+      @Bean typeObjectNestedNumberMethod(): TypeObject<NestedTypeObject<number>> {
+        return {typeObject: true, counter: 1, data: { nestedTypeObject: true, counter: 1, data: 42 }};
+      }
 
       @Bean typeObjectStringArrowFunction = (): TypeObject<string> => ({typeObject: true, counter: 2, data: 'string'});
+      @Bean typeObjectNestedStringArrowFunction = (): TypeObject<NestedTypeObject<string>> => ({typeObject: true, counter: 2, data: { nestedTypeObject: true, counter: 2, data: 'string' }});
       @Bean typeObjectNumberArrowFunction = (): TypeObject<number> => ({typeObject: true, counter: 2, data: 42});
+      @Bean typeObjectNestedNumberArrowFunction = (): TypeObject<NestedTypeObject<number>> => ({typeObject: true, counter: 2, data: { nestedTypeObject: true, counter: 2, data: 42 }});
 
       @Bean @Primary interfaceObjectStringProperty: InterfaceObject<string> = {
         interfaceObject: true,
         counter: 0,
         data: 'string'
       };
+      @Bean @Primary interfaceObjectNestedStringProperty: InterfaceObject<NestedInterfaceObject<string>> = {
+        interfaceObject: true,
+        counter: 0,
+        data: { nestedInterfaceObject: true, counter: 0, data: 'string' }
+      };
       @Bean @Primary interfaceObjectNumberProperty: InterfaceObject<number> = {
         interfaceObject: true,
         counter: 0,
         data: 42
       };
+      @Bean @Primary interfaceObjectNestedNumberProperty: InterfaceObject<NestedInterfaceObject<number>> = {
+        interfaceObject: true,
+        counter: 0,
+        data: { nestedInterfaceObject: true, counter: 0, data: 42 }
+      };
 
       @Bean interfaceObjectStringMethod(): InterfaceObject<string> {
         return {interfaceObject: true, counter: 1, data: 'string'};
       }
+      @Bean interfaceObjectNestedStringMethod(): InterfaceObject<NestedInterfaceObject<string>> {
+        return {interfaceObject: true, counter: 1, data: { nestedInterfaceObject: true, counter: 1, data: 'string' }};
+      }
 
       @Bean interfaceObjectNumberMethod(): InterfaceObject<number> {
         return {interfaceObject: true, counter: 1, data: 42};
+      }
+      @Bean interfaceObjectNestedNumberMethod(): InterfaceObject<NestedInterfaceObject<number>> {
+        return {interfaceObject: true, counter: 1, data: { nestedInterfaceObject: true, counter: 1, data: 42 }};
       }
 
       @Bean interfaceObjectStringArrowFunction = (): InterfaceObject<string> => ({
@@ -702,25 +747,46 @@ describe('TypeSystem', () => {
         counter: 2,
         data: 'string'
       });
+      @Bean interfaceObjectNestedStringArrowFunction = (): InterfaceObject<NestedInterfaceObject<string>> => ({
+        interfaceObject: true,
+        counter: 2,
+        data: { nestedInterfaceObject: true, counter: 2, data: 'string' }
+      });
       @Bean interfaceObjectNumberArrowFunction = (): InterfaceObject<number> => ({
         interfaceObject: true,
         counter: 2,
         data: 42
       });
+      @Bean interfaceObjectNestedNumberArrowFunction = (): InterfaceObject<NestedInterfaceObject<number>> => ({
+        interfaceObject: true,
+        counter: 2,
+        data: { nestedInterfaceObject: true, counter: 2, data: 42 }
+      });
 
       @Bean @Primary classObjectStringProperty = new ClassObject('string');
+      @Bean @Primary classObjectNestedStringProperty = new ClassObject(new NestedClassObject('string'));
       @Bean @Primary classObjectNumberProperty = new ClassObject(42);
+      @Bean @Primary classObjectNestedNumberProperty = new ClassObject(new NestedClassObject(42));
 
       @Bean classObjectStringMethod(): ClassObject<string> {
         return new ClassObject('string');
+      }
+      @Bean classObjectNestedStringMethod(): ClassObject<NestedClassObject<string>> {
+        return new ClassObject(new NestedClassObject('string'));
       }
 
       @Bean classObjectNumberMethod(): ClassObject<number> {
         return new ClassObject(42);
       }
+      @Bean classObjectNestedNumberMethod(): ClassObject<NestedClassObject<number>> {
+        return new ClassObject(new NestedClassObject(42));
+      }
 
       @Bean classObjectStringArrowFunction = () => new ClassObject('string');
+      @Bean classObjectNestedStringArrowFunction = () => new ClassObject(new NestedClassObject('string'));
       @Bean classObjectNumberArrowFunction = () => new ClassObject(42);
+      @Bean classObjectNestedNumberArrowFunction = () => new ClassObject(new NestedClassObject(42));
+
       classObjectStringBeanConstructor = Bean(ClassObject<string>);
       classObjectNumberBeanConstructor = Bean(ClassObject<number>);
 

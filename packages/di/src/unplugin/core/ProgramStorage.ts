@@ -16,9 +16,25 @@ export class ProgramStorage {
     this.fileNameToFileContent.set(fileName, content);
 
     if (project.getSourceFile(fileName)) {
-      project.updateSourceFile(fileName, content);
+      project.updateSourceFile(fileName, content, { scriptKind: this.getScriptKind(fileName) });
     } else {
-      project.createSourceFile(fileName, content);
+      project.createSourceFile(fileName, content, { scriptKind: this.getScriptKind(fileName) });
+    }
+  }
+
+  private getScriptKind(fileName: string): ts.ScriptKind {
+    const ext = fileName.split('.').pop()?.toLowerCase();
+    switch (ext) {
+    case 'ts':
+      return ts.ScriptKind.TS;
+    case 'tsx':
+      return ts.ScriptKind.TSX;
+    case 'js':
+      return ts.ScriptKind.JS;
+    case 'jsx':
+      return ts.ScriptKind.JSX;
+    default:
+      return ts.ScriptKind.Unknown;
     }
   }
 

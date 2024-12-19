@@ -11,7 +11,6 @@ import { Application } from '../../../core/application/Application';
 export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
   public code = ErrorCode.CE5;
   public description = 'Bean candidate not found.';
-  public candidatesByName: NodeDetails[];
   public candidatesByType: NodeDetails[];
   public beanDeclarationNodeDetails: NodeDetails | null;
   public beanKind: BeanKind | null;
@@ -20,13 +19,11 @@ export class BeanCandidateNotFoundError extends AbstractCompilationMessage {
     details: string | null,
     place: ts.Node,
     relatedBean: Bean | null,
-    candidatesByName: Bean[],
     candidatesByType: Bean[],
     relatedApplication: Application,
   ) {
     super(details, place, relatedBean?.parentConfiguration ?? null, relatedApplication);
 
-    this.candidatesByName = mapAndFilter(candidatesByName, it => this.getNodeDetails(it), isNotEmpty);
     this.candidatesByType = mapAndFilter(candidatesByType, it => this.getNodeDetails(it), isNotEmpty);
     this.beanDeclarationNodeDetails = relatedBean === null ? null : getNodeDetails(relatedBean.node);
     this.beanKind = relatedBean?.kind ?? null;
