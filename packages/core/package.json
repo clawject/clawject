@@ -1,6 +1,6 @@
 {
   "name": "@clawject/core",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "This is a core library of @clawject/di package, and it's not intended to be used directly.",
   "keywords": [
     "clawject",
@@ -45,7 +45,7 @@
     "webpack": "^5.91.0"
   },
   "peerDependencies": {
-    "typescript": ">=5.0 <=5.6"
+    "typescript": ">=5.0 <=5.7"
   },
   "engines": {
     "node": ">=18"

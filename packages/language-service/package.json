@@ -1,6 +1,6 @@
 {
   "name": "@clawject/language-service",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "license": "MIT",
   "author": "Artem Korniev artemkakornev1@gmail.com",
   "repository": {
@@ -20,6 +20,6 @@
     }
   },
   "dependencies": {
-    "@clawject/di": "1.2.6"
+    "@clawject/di": "1.2.7"
   }
 }
