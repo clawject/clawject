@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { DecoratorEntity } from '../../decorators/DecoratorEntity';
 import { DecoratorProcessor } from '../../decorators/DecoratorProcessor';
 import { BaseDecorators } from '../../decorators/BaseDecorators';

@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { ClassPropertyWithExpressionInitializer } from '../types';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { getNodeSourceDescriptor } from '../utils/getNodeSourceDescriptor';

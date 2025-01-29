@@ -1,5 +1,14 @@
-import { ImportedConfiguration } from './Import';
 import { BeanConstructorFactory, ClawjectDecorator } from './decorators';
+import { ImportDefinition } from './import/ImportDefinition';
+import { BeanDefinition } from './bean/BeanDefinition';
+import { ConfigurationDefinition } from './configuration/ConfigurationDefinition';
+import { ApplicationDefinition } from './application/ApplicationDefinition';
+import { ExposeDefinition } from './expose/ExposeDefinition';
+import { LifecycleDefinition } from './lifecycle/LifecycleDefinition';
+import { ApplicationRef } from './special/ApplicationRef';
+import { ConfigurationRef } from './special/ConfigurationRef';
+import { Lazy } from './special/Lazy';
+import { LazyConfigurationLoader } from './special/LazyConfigurationLoader';
 
 /**
  * @internalApi It's a part of API used by clawject internally,
@@ -14,7 +23,18 @@ export interface ___TypeReferenceTable___ {
   MapStringToAny: ReadonlyMap<string, any> | Map<string, any>;
   Promise: Promise<any> | PromiseLike<any>;
 
-  ImportedConfiguration: ImportedConfiguration<any, any>;
   BeanConstructorFactory: BeanConstructorFactory<any, any>;
   ClawjectDecorator: ClawjectDecorator<any>;
+
+  ApplicationDefinition: ApplicationDefinition<any, any, any>;
+  ConfigurationDefinition: ConfigurationDefinition<any, any, any>;
+  BeanDefinition: BeanDefinition<any, any, any, any, any, any, any, any>;
+  LifecycleDefinition: LifecycleDefinition<any, any>;
+  ImportDefinition: ImportDefinition<any, any>;
+  ExposeDefinition: ExposeDefinition<any>;
+
+  ApplicationRef: ApplicationRef;
+  ConfigurationRef: ConfigurationRef<any>;
+  Lazy: Lazy<any>;
+  LazyConfigurationLoader: LazyConfigurationLoader<any>;
 }

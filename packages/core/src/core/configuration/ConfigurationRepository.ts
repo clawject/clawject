@@ -1,17 +1,21 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { Configuration } from './Configuration';
 import { unquoteString } from '../utils/unquoteString';
-import { getExternalValueFromNode } from '../ts/utils/getExternalValueFromNode';
-import { getConfigurationScopeExpressionValue } from './getConfigurationScopeExpressionValue';
-import { getConfigurationLazyExpressionValue } from './getConfigurationLazyExpressionValue';
+import { ConfigurationDefinitionMetadata } from '../metadata/v2/configuration/ConfigurationDefinitionMetadata';
 
 export class ConfigurationRepository {
   static fileNameToLastConfigurationCounter = new Map<string, number>();
   static fileNameToConfigurations = new Map<string, Configuration[]>();
   static configurationIdToConfiguration = new Map<string, Configuration>();
-  static nodeToConfiguration = new WeakMap<ts.ClassDeclaration, Configuration>();
+  static nodeToConfiguration = new WeakMap<
+    ts.ClassDeclaration,
+    Configuration
+  >();
 
-  static register(classDeclaration: ts.ClassDeclaration): Configuration {
+  static register(
+    classDeclaration: ts.ClassDeclaration,
+    metadata: ConfigurationDefinitionMetadata
+  ): Configuration {
     const sourceFile = classDeclaration.getSourceFile();
 
     const configuration = new Configuration();
@@ -19,15 +23,14 @@ export class ConfigurationRepository {
     configuration.id = this.buildId(classDeclaration);
     configuration.fileName = classDeclaration.getSourceFile().fileName;
     configuration.node = classDeclaration;
-    configuration.external = getExternalValueFromNode(classDeclaration);
-    configuration.scopeExpression.value = getConfigurationScopeExpressionValue(configuration);
-    configuration.lazyExpression.value = getConfigurationLazyExpressionValue(configuration);
+    configuration.definitionMetadata = metadata;
 
     if (classDeclaration.name !== undefined) {
       configuration.className = unquoteString(classDeclaration.name.getText());
     }
 
-    const configurations = this.fileNameToConfigurations.get(sourceFile.fileName) ?? [];
+    const configurations =
+      this.fileNameToConfigurations.get(sourceFile.fileName) ?? [];
     this.fileNameToConfigurations.set(sourceFile.fileName, configurations);
     configurations.push(configuration);
 
@@ -58,7 +61,7 @@ export class ConfigurationRepository {
 
     this.fileNameToConfigurations.delete(fileName);
     this.fileNameToLastConfigurationCounter.delete(fileName);
-    configurations.forEach(configuration => {
+    configurations.forEach((configuration) => {
       this.configurationIdToConfiguration.delete(configuration.id);
 
       const configurationNode = configuration.getNodeSafe();
@@ -71,10 +74,14 @@ export class ConfigurationRepository {
 
   private static buildId(classDeclaration: ts.ClassDeclaration): string {
     const sourceFile = classDeclaration.getSourceFile();
-    const lastConfigurationCounter = this.fileNameToLastConfigurationCounter.get(sourceFile.fileName);
+    const lastConfigurationCounter =
+      this.fileNameToLastConfigurationCounter.get(sourceFile.fileName);
     const newCounter = (lastConfigurationCounter ?? 0) + 1;
-    this.fileNameToLastConfigurationCounter.set(sourceFile.fileName, newCounter);
+    this.fileNameToLastConfigurationCounter.set(
+      sourceFile.fileName,
+      newCounter
+    );
 
-    return `${sourceFile.fileName}_${newCounter}`;
+    return `${sourceFile.fileName}_${newCounter}_${classDeclaration.name?.getText()}`;
   }
 }

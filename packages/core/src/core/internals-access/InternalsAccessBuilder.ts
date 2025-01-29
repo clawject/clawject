@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import upath from 'upath';
 import { Context } from '../../compilation-context/Context';
 import { CONSTANTS } from '../../constants/index';

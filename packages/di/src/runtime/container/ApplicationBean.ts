@@ -6,7 +6,7 @@ import { RuntimeErrors } from '../api/RuntimeErrors';
 import { ClassConstructor } from '../api/ClassConstructor';
 import { ApplicationBeanDependency } from './ApplicationBeanDependency';
 import { ApplicationConfiguration } from './ApplicationConfiguration';
-import { MaybeAsync } from '../types/MaybeAsync';
+import { MaybePromise } from '../types/MaybePromise';
 import { ProxyBuilder } from './ProxyBuilder';
 import { BeanMetadata } from '../api/BeanMetadata';
 import { RuntimeBeanMetadata } from '@clawject/core/runtime-metadata/MetadataTypes';
@@ -41,7 +41,7 @@ export class ApplicationBean {
     this._objectFactory = objectFactory;
   }
 
-  getInjectionValue(): MaybeAsync<ObjectFactoryResult> {
+  getInjectionValue(): MaybePromise<ObjectFactoryResult> {
     if (this.isProxy) {
       return this.getProxyBean();
     }
@@ -75,7 +75,7 @@ export class ApplicationBean {
     return this.scopeRegister.getScope(this.scopeName);
   }
 
-  getScopedBeanValue = (): MaybeAsync<ObjectFactoryResult> => {
+  getScopedBeanValue = (): MaybePromise<ObjectFactoryResult> => {
     return this.getScope().get(this.name, this.objectFactory);
   };
 

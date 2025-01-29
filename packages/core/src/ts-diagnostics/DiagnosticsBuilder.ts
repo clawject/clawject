@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { AbstractCompilationMessage, IRelatedConfigurationOrApplicationMetadata } from '../compilation-context/messages/AbstractCompilationMessage';
 import { NodeDetails } from '../core/ts/utils/getNodeDetails';
 import { CircularDependenciesError } from '../compilation-context/messages/errors/CircularDependenciesError';
@@ -92,17 +92,7 @@ export class DiagnosticsBuilder {
         file: this.getSourceFile(it.filePath),
         category: this.getDiagnosticCategory(message),
       }));
-
-      const candidatesByName: ts.DiagnosticRelatedInformation[] = message.candidatesByName.map(it => ({
-        messageText: `'${it.declarationName ?? '<anonymous>'}' matched by name.`,
-        start: it.startOffset,
-        length: it.length,
-        code: diagnosticsCode,
-        file: this.getSourceFile(it.filePath),
-        category: this.getDiagnosticCategory(message),
-      }));
-
-      relatedInformation.push(...candidatesByType, ...candidatesByName);
+      relatedInformation.push(...candidatesByType);
 
       if (message.beanKind === BeanKind.CLASS_CONSTRUCTOR && message.beanDeclarationNodeDetails !== null) {
         relatedInformation.push({

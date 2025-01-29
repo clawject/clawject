@@ -1,12 +1,11 @@
+import type ts from 'typescript';
 import { IncorrectTypeError } from '../../compilation-context/messages/errors/IncorrectTypeError';
 import { Configuration } from '../configuration/Configuration';
 import { Bean } from './Bean';
 import { NotSupportedError } from '../../compilation-context/messages/errors/NotSupportedError';
 import { isStaticallyKnownPropertyName } from '../ts/predicates/isStaticallyKnownPropertyName';
-import type * as ts from 'typescript';
 import { DuplicateNameError } from '../../compilation-context/messages/errors/DuplicateNameError';
 import { BeanKind } from './BeanKind';
-import { MissingInitializerError } from '../../compilation-context/messages/errors/MissingInitializerError';
 import { NotStaticallyKnownError } from '../../compilation-context/messages/errors/NotStaticallyKnownError';
 import { ClassPropertyWithArrowFunctionInitializer } from '../ts/types';
 import { Application } from '../application/Application';
@@ -21,29 +20,28 @@ export const verifyBeans = (configuration: Configuration): void => {
     verifyBeanType(bean);
     verifyName(bean);
     verifyModifiers(bean);
-    verifyBeanInitializers(bean);
   });
 };
 
-export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[], application: Application | null): void {
+export function verifyBeanNameUniqueness(beans: Iterable<Bean>, application: Application | null): void {
   const nameToBeans = new Map<string, Bean[]>();
 
-  beans.forEach(bean => {
+  for (const bean of beans) {
     const name = bean.fullName;
 
     const beans = nameToBeans.get(name) ?? [];
     beans.push(bean);
     nameToBeans.set(name, beans);
-  });
+  }
 
-  beans.forEach(bean => {
+  for (const bean of beans) {
     const beanParentConfiguration = bean.parentConfiguration;
     const beansByName = nameToBeans.get(bean.fullName) ?? [];
     let duplicatedBeans: Bean[];
 
-    if (bean.getExternalValue()) {
+    if (bean.isExternal()) {
       duplicatedBeans = beansByName.filter(it => {
-        const isInternal = !it.getExternalValue();
+        const isInternal = it.isInternal();
         if (isInternal && it.parentConfiguration !== beanParentConfiguration) {
           return false;
         }
@@ -65,7 +63,7 @@ export function verifyBeanNameUniqueness(beans: Set<Bean> | Bean[], application:
         duplicatedBeans,
       ));
     }
-  });
+  }
 }
 
 export function verifyBeanType(bean: Bean): void {
@@ -154,31 +152,4 @@ function verifyModifiers(bean: Bean): void {
     null
   ));
   bean.parentConfiguration.beanRegister.deregister(bean);
-}
-
-function verifyBeanInitializers(bean: Bean): void {
-
-  if (!Context.ts.isPropertyDeclaration(bean.node)) {
-    return;
-  }
-
-  if (
-    bean.kind === BeanKind.FACTORY_ARROW_FUNCTION
-    || bean.kind === BeanKind.VALUE_EXPRESSION
-    || bean.kind === BeanKind.LIFECYCLE_ARROW_FUNCTION
-  ) {
-    const initializer = bean.node.initializer;
-
-    if (initializer) {
-      return;
-    }
-
-    Context.report(new MissingInitializerError(
-      null,
-      bean.node,
-      bean.parentConfiguration,
-      null
-    ));
-    bean.parentConfiguration.beanRegister.deregister(bean);
-  }
 }

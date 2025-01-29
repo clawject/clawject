@@ -1,16 +1,13 @@
 import { ErrorCode } from '../ErrorCode';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { Configuration } from '../../../core/configuration/Configuration';
 import { NodeDetails } from '../../../core/ts/utils/getNodeDetails';
-import { Dependency } from '../../../core/dependency/Dependency';
 import { Application } from '../../../core/application/Application';
+import { UnresolvedDependency } from '../../../core/dependency-resolver/ResolvedDependency';
 
 class MissingCandidate {
-  constructor(
-    public name: string,
-    public nodeDetails: NodeDetails,
-  ) {}
+  constructor(public name: string, public nodeDetails: NodeDetails) {}
 }
 
 export class CanNotRegisterBeanError extends AbstractCompilationMessage {
@@ -23,14 +20,14 @@ export class CanNotRegisterBeanError extends AbstractCompilationMessage {
     place: ts.Node,
     relatedConfiguration: Configuration | null,
     relatedApplication: Application | null,
-    missingCandidates: Dependency[],
+    missingCandidates: UnresolvedDependency[]
   ) {
     super(details, place, relatedConfiguration, relatedApplication);
 
-    this.missingCandidates = missingCandidates.map(it => {
+    this.missingCandidates = missingCandidates.map((it) => {
       return new MissingCandidate(
-        it.parameterName,
-        it.nodeDetails,
+        it.relatedDependency.parameterName,
+        it.relatedDependency.nodeDetails
       );
     });
   }

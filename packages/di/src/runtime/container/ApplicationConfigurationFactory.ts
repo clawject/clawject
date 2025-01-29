@@ -1,8 +1,8 @@
 import { ClassConstructor } from '../api/ClassConstructor';
-import { ImportedConfiguration } from '../api/Import';
 import { ApplicationConfiguration } from './ApplicationConfiguration';
-import { MaybeAsync } from '../types/MaybeAsync';
+import { MaybePromise } from '../types/MaybePromise';
 import { Utils } from '../Utils';
+import { ImportDefinition } from '../api/import/ImportDefinition';
 
 export class ApplicationConfigurationFactory {
   private applicationConfigurations: ApplicationConfiguration[] = [];
@@ -31,31 +31,35 @@ export class ApplicationConfigurationFactory {
       this.applicationConfigurations.push(current);
 
       const elements = configurationMetadata.imports.map(it => it.classPropertyName);
-      const importedConfigurationsClasses: MaybeAsync<{
+      const importedConfigurationsClasses: MaybePromise<{
         constructor: ClassConstructor<any>;
-        args: MaybeAsync<any[]>;
+        args: MaybePromise<any[]>;
       }>[] = [];
 
       for (let i = elements.length - 1; i >= 0; i--) {
         const importPropertyName = elements[i];
-        const importedConfiguration = instance[importPropertyName] as MaybeAsync<ImportedConfiguration<any, any>>;
+        const importedConfiguration = instance[importPropertyName] as MaybePromise<ImportDefinition<any, any>>;
 
-        let importedConfigurationConstruction: MaybeAsync<{
+        let importedConfigurationConstruction: MaybePromise<{
           constructor: ClassConstructor<any>;
-          args: MaybeAsync<any[]>;
+          args: MaybePromise<any[]>;
         }>;
 
         if (Utils.isPromise(importedConfiguration)) {
           importedConfigurationConstruction = importedConfiguration
             .then((importedConfiguration) => {
               return {
-                constructor: importedConfiguration.constructor,
+                constructor: importedConfiguration.classConstructor,
+                //TODO
+                // @ts-ignore
                 args: Utils.getResolvedConstructorParameters(importedConfiguration.constructorParameters),
               };
             });
         } else {
           importedConfigurationConstruction = {
-            constructor: importedConfiguration.constructor,
+            constructor: importedConfiguration.classConstructor,
+            //TODO
+            // @ts-ignore
             args: Utils.getResolvedConstructorParameters(importedConfiguration.constructorParameters),
           };
         }

@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { get } from 'lodash';
 import { isNotEmpty } from '../utils/isNotEmpty';
 import { ConfigLoader } from '../../config/ConfigLoader';

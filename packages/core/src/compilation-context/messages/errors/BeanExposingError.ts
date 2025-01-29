@@ -1,5 +1,5 @@
 import { ErrorCode } from '../ErrorCode';
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { getNodeDetails, NodeDetails } from '../../../core/ts/utils/getNodeDetails';
 import { AbstractCompilationMessage } from '../AbstractCompilationMessage';
 import { Application } from '../../../core/application/Application';

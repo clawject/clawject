@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { isNamedDeclaration } from '../predicates/isNamedDeclaration';
 import upath from 'upath';
 import { Context } from '../../../compilation-context/Context';

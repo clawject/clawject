@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { TypeComparator } from './TypeComparator';
 import { BaseTypesRepository } from './BaseTypesRepository';
 import { Context } from '../../compilation-context/Context';
@@ -74,6 +74,18 @@ export class CType {
 
   isSymbol(): boolean {
     return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.ESSymbol);
+  }
+
+  isAny(): boolean {
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Any);
+  }
+
+  isUnknown(): boolean {
+    return TypeComparator.checkFlag(this.tsType, Context.ts.TypeFlags.Unknown);
+  }
+
+  isAnyOrUnknown(): boolean {
+    return this.isAny() || this.isUnknown();
   }
 
   isArray(): boolean {

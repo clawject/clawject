@@ -1,9 +1,11 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { Entity } from '../Entity';
 import { CType } from '../type-system/CType';
+import { Bean } from '../bean/Bean';
 
 export class Dependency extends Entity<ts.ParameterDeclaration | ts.PropertyDeclaration> {
   declare parameterName: string;
+  declare parentBean: Bean;
   private _cType: CType | null = null;
 
   get cType(): CType {

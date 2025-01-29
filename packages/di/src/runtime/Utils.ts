@@ -1,5 +1,5 @@
 import { ClassConstructor } from './api/ClassConstructor';
-import { MaybeAsync } from './types/MaybeAsync';
+import { MaybePromise } from './types/MaybePromise';
 import { InstantiationConstructorParameters } from './api/InstantiationConstructorParameters';
 import { ObjectStorage } from './ObjectStorage';
 
@@ -44,7 +44,7 @@ export class Utils {
 
   static capitalizeFirstLetter = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1);
 
-  static isPromise = <T>(value: MaybeAsync<T>): value is Promise<T> => {
+  static isPromise = <T>(value: MaybePromise<T>): value is Promise<T> => {
     return value instanceof Promise;
   };
 
@@ -67,5 +67,13 @@ export class Utils {
     }
 
     return constructorParameters;
+  }
+
+  static setDiff<T>(setA: Set<T>, setB: Set<T>): Set<T> {
+    const difference = new Set<T>(setA);
+    for (const elem of setB) {
+      difference.delete(elem);
+    }
+    return difference;
   }
 }

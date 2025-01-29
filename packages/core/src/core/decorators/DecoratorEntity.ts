@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { WeakNodeHolder } from '../WeakNodeHolder';
 import { Decorator } from '../../api/decorators/Decorator';
 

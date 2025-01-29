@@ -1,74 +1,74 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { CType } from './CType';
 import { Context } from '../../compilation-context/Context';
 import { CONSTANTS } from '../../constants';
-
-type TypeReferenceTableKeys = 'Array' | 'Set' | 'Map' | 'MapStringToAny' | 'ImportedConfiguration' | 'BeanConstructorFactory' | 'Promise' | 'ClawjectDecorator';
 
 type BaseTypes = {
   CArray: CType;
   CSet: CType;
   CMap: CType;
   CMapStringToAny: CType;
-  CImportedConfiguration: CType;
-  CBeanConstructorFactory: CType;
   CPromise: CType;
+
+  CBeanConstructorFactory: CType;
   CClawjectDecorator: CType;
+
+  CApplicationDefinition: CType;
+  CConfigurationDefinition: CType;
+  CBeanDefinition: CType;
+  CLifecycleDefinition: CType;
+  CImportDefinition: CType;
+  CExposeDefinition: CType;
+
+  CApplicationRef: CType;
+  CConfigurationRef: CType;
+  CLazy: CType;
+  CLazyConfigurationLoader: CType;
 };
 
 export class BaseTypesRepository {
-  private static baseTypes: BaseTypes | null = null;
-
-  static clear(): void {
-    this.baseTypes = null;
-  }
-
-  static init(): void {
-    if (this.baseTypes !== null) {
-      return;
-    }
-
-    const libraryDeclarationFile = Context.program.getSourceFile(CONSTANTS.typeReferenceTablePath);
-
-    if (!libraryDeclarationFile) {
-      throw new Error(`${CONSTANTS.libraryName} library declaration file (${CONSTANTS.typeReferenceTablePath}) not found\n${JSON.stringify(Context.program.getSourceFiles().map(it => it.fileName), null, 2)}\n`);
-    }
-
-    const typeTableDeclaration = libraryDeclarationFile.statements
-      .find((it): it is ts.InterfaceDeclaration => Context.ts.isInterfaceDeclaration(it) && it.name.getText() === '___TypeReferenceTable___');
+  private static baseTypes = new WeakMap<ts.SourceFile, BaseTypes>();
+  private static init(sourceFile: ts.SourceFile): BaseTypes {
+    const typeTableDeclaration = sourceFile.statements.find(
+      (it): it is ts.InterfaceDeclaration =>
+        Context.ts.isInterfaceDeclaration(it) &&
+        it.name.getText() === '___TypeReferenceTable___'
+    );
 
     if (!typeTableDeclaration) {
-      throw new Error(`${CONSTANTS.libraryName} type table declaration not found`);
+      throw new Error(
+        `${CONSTANTS.libraryName} type table declaration not found`
+      );
     }
 
-    const typesMap = typeTableDeclaration.members
-      .reduce((acc, curr) => {
-        acc[curr.name?.getText() ?? ''] = curr;
+    const baseTypes = typeTableDeclaration.members.reduce((acc, curr) => {
+      acc[`C${curr.name?.getText() ?? ''}`] = new CType(
+        Context.typeChecker.getTypeAtLocation(curr)
+      );
 
-        return acc;
-      }, {} as Record<TypeReferenceTableKeys, ts.TypeElement>);
+      return acc;
+    }, {} as BaseTypes);
 
-    this.baseTypes = {
-      CArray: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Array'])),
-      CSet: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Set'])),
-      CMap: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Map'])),
-      CMapStringToAny: new CType(Context.typeChecker.getTypeAtLocation(typesMap['MapStringToAny'])),
-      CImportedConfiguration: new CType(Context.typeChecker.getTypeAtLocation(typesMap['ImportedConfiguration'])),
-      CBeanConstructorFactory: new CType(Context.typeChecker.getTypeAtLocation(typesMap['BeanConstructorFactory'])),
-      CPromise: new CType(Context.typeChecker.getTypeAtLocation(typesMap['Promise'])),
-      CClawjectDecorator: new CType(Context.typeChecker.getTypeAtLocation(typesMap['ClawjectDecorator'])),
-    };
+    this.baseTypes.set(sourceFile, baseTypes);
+
+    return baseTypes;
   }
 
   static getBaseTypes(): BaseTypes {
-    if (this.baseTypes === null) {
-      this.init();
-
-      if (this.baseTypes === null) {
-        throw new Error('Base types are not initialized');
-      }
+    const libraryDeclarationFile = Context.program.getSourceFile(
+      CONSTANTS.typeReferenceTablePath
+    );
+    if (!libraryDeclarationFile) {
+      throw new Error(
+        `${CONSTANTS.libraryName} library declaration file (${CONSTANTS.typeReferenceTablePath}) not found`
+      );
     }
 
-    return this.baseTypes;
+    const baseTypes = this.baseTypes.get(libraryDeclarationFile);
+    if (!baseTypes) {
+      return this.init(libraryDeclarationFile);
+    }
+
+    return baseTypes;
   }
 }

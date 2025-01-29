@@ -13,11 +13,12 @@
     "vite:dev": "cross-env NODE_ENV='development' vite",
     "vite:prod": "vite build",
     "upgrade": "yarn cache clean && yarn --cwd ../ run registry:start && yarn --cwd ../ run publish:local && yarn run upgrade:clawject && yarn --cwd ../ run registry:stop",
-    "upgrade:clawject": "yarn remove @clawject/di @clawject/language-service && yarn add @clawject/di @clawject/language-service && yarn run ts-patch"
+    "upgrade:clawject": "yarn remove @clawject/di @clawject/language-service && yarn add @clawject/di @clawject/language-service && yarn run ts-patch",
+    "testgraph": "yarn run tsc && node dist/testGraph"
   },
   "dependencies": {
-    "@clawject/di": "^1.2.5",
-    "@clawject/language-service": "^1.2.5",
+    "@clawject/di": "^1.2.7",
+    "@clawject/language-service": "^1.2.7",
     "cross-env": "^7.0.3",
     "reflect-metadata": "^0.2.2"
   },

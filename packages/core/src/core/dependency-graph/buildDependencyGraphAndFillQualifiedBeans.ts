@@ -1,92 +1,124 @@
-import { Dependency } from '../dependency/Dependency';
 import { Bean } from '../bean/Bean';
 import { CanNotRegisterBeanError } from '../../compilation-context/messages/errors/CanNotRegisterBeanError';
 import { BeanKind } from '../bean/BeanKind';
 import { Application } from '../application/Application';
 import { DependencyResolver } from '../dependency-resolver/DependencyResolver';
 import { Context } from '../../compilation-context/Context';
+import {
+  ResolvedDependency,
+  ResolvedDependencyKind,
+  UnresolvedDependency,
+} from '../dependency-resolver/ResolvedDependency';
+import { compact } from 'lodash';
 
-export const buildDependencyGraphAndFillQualifiedBeans = (application: Application, beans: Bean[]) => {
+export const buildDependencyGraphAndFillQualifiedBeans = (
+  application: Application,
+  beans: Bean[]
+) => {
   for (const bean of beans) {
     if (Context.isCancellationRequested()) {
       return;
     }
 
-    //Skipping beans that are embedded (really embedded)
+    //Skipping beans that are embedded (not embedded parent)
     if (bean.embeddedParent !== null) {
       continue;
     }
 
-    const beanCandidates = getBeanCandidates(bean, beans, application);
-    const missingDependencies: Dependency[] = [];
+    const beanCandidates = getBeanCandidates(bean, beans);
+    const missingDependencies: UnresolvedDependency[] = [];
+    const resolvedDependencies: ResolvedDependency[] = [];
 
-    bean.dependencies.forEach(dependency => {
-      const maybeResolvedDependency = DependencyResolver.resolveDependencies(dependency, beanCandidates, bean, application);
+    bean.dependencies.forEach((dependency) => {
+      const result = DependencyResolver.resolveDependency(
+        bean,
+        dependency,
+        beanCandidates,
+        application
+      );
 
-      if (!maybeResolvedDependency.isResolved()) {
-        missingDependencies.push(dependency);
+      switch (result.kind) {
+      case ResolvedDependencyKind.Unresolved: {
+        missingDependencies.push(result);
+        return;
+      }
+      case ResolvedDependencyKind.Bean: {
+        application.dependencyGraph.addNodeWithEdges(bean, [result.target]);
+        break;
+      }
+      case ResolvedDependencyKind.Map:
+      case ResolvedDependencyKind.Set:
+      case ResolvedDependencyKind.Array: {
+        application.dependencyGraph.addNodeWithEdges(bean, result.target);
+      }
       }
 
-      application.dependencyGraph.addNodeWithEdges(bean, maybeResolvedDependency.getAllResolvedBeans());
-      application.registerResolvedDependency(bean, maybeResolvedDependency);
+      resolvedDependencies.push(result);
     });
+    //TODO report about missing dependencies for all cases
 
-    if (missingDependencies.length > 0 && bean.kind === BeanKind.CLASS_CONSTRUCTOR) {
-      Context.report(new CanNotRegisterBeanError(
-        null,
-        bean.node,
-        bean.parentConfiguration,
-        application,
-        missingDependencies,
-      ));
+    if (missingDependencies.length > 0 && bean.kind === BeanKind.V2_CLASS) {
+      Context.report(
+        new CanNotRegisterBeanError(
+          null,
+          bean.node,
+          bean.parentConfiguration,
+          application,
+          missingDependencies
+        )
+      );
     }
+
+    application.resolvedBeanDependencies.set(
+      bean,
+      compact(resolvedDependencies)
+    );
   }
 };
 
-function getBeanCandidates(bean: Bean, beans: Bean[], application: Application): Bean[] {
+function getBeanCandidates(bean: Bean, beans: Bean[]): Bean[] {
   const beanParentConfiguration = bean.parentConfiguration;
 
   if (bean.dependencies.size === 0) {
     return [];
   }
 
-  return beans.filter(it => {
+  return beans.filter((candidateBean) => {
     //Filtering out the bean itself
-    if (it === bean) {
+    if (candidateBean === bean) {
       return false;
     }
 
-    //Filtering out beans that are embeddeds from current bean
-    if (it.embeddedParent === bean) {
+    //Filtering out beans that are embedded from the current bean
+    if (candidateBean.embeddedParent === bean) {
       return false;
     }
 
-    if (it.isLifecycle()) {
+    //Filtering out lifecycle beans
+    if (candidateBean.isLifecycle()) {
       return false;
     }
 
     //Accepting all beans from the current configuration
-    if (it.parentConfiguration === beanParentConfiguration) {
+    if (candidateBean.parentConfiguration === beanParentConfiguration) {
       return true;
     }
 
-    if (!it.getExternalValue()) {
-      return false;
-    }
+    //Declining all beans from other configurations that are internal
+    return !candidateBean.isInternal();
 
-    const itConfiguration = it.parentConfiguration;
-    const resolvedConfigurationImport = application.resolvedImports.get(itConfiguration);
-
-    if (!resolvedConfigurationImport) {
-      return true;
-    }
-
-    const isItImportedAsExternal = resolvedConfigurationImport.getExternalValue();
-
-    if (isItImportedAsExternal) {
-      return true;
-    }
-
-    return resolvedConfigurationImport.imports.some(imported => beanParentConfiguration.importRegister.hasElement(imported));
+    // TODO Maybe in future introduce hierarchical configuration imports
+    // const parentConfiguration = candidateBean.parentConfiguration;
+    // const resolvedConfigurationImport = application.resolvedImports.get(parentConfiguration);
+    // if (!resolvedConfigurationImport) {
+    //   return true;
+    // }
+    //
+    // const isItImportedAsExternal = resolvedConfigurationImport.getExternalValue();
+    // if (isItImportedAsExternal) {
+    //   return true;
+    // }
+    //
+    // return resolvedConfigurationImport.imports.some(imported => beanParentConfiguration.importRegister.hasElement(imported));
   });
 }

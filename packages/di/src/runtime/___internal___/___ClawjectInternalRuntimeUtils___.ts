@@ -17,4 +17,16 @@ export class ___ClawjectInternalRuntimeUtils___ {
   public static defineDevelopmentApplicationMetadata(developmentId: string, projectVersion: number, metadata: RuntimeDevelopmentApplicationMetadata): void {
     MetadataStorage.setDevelopmentApplicationMetadata(developmentId, projectVersion, metadata);
   }
+
+  public static createSizedSymbolArray(size: number): symbol[] {
+    const array = new Array(size);
+    for (let i = 0; i < size; i++) {
+      array[i] = Symbol();
+    }
+    return array;
+  }
+
+  public static createMap(entries: [any, any][]): Map<any, any> {
+    return new Map(entries);
+  }
 }

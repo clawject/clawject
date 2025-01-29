@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { ClassPropertyWithArrowFunctionInitializer } from '../types';
 import { unwrapExpressionFromRoundBrackets } from '../utils/unwrapExpressionFromRoundBrackets';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';

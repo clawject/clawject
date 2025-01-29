@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import type { TransformerExtras } from 'ts-patch';
 import * as metadataTransformerModule from '@clawject/core/transformer/metadata';
 

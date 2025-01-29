@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { getNodeDetails, NodeDetails } from './ts/utils/getNodeDetails';
 import { Context } from '../compilation-context/Context';
 

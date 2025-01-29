@@ -1,9 +1,9 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { ConfigurationRepository } from '../../core/configuration/ConfigurationRepository';
 import { ApplicationRepository } from '../../core/application/ApplicationRepository';
 import { Context } from '../../compilation-context/Context';
-import { DeclarationMetadataBuilder } from '../../core/declaration-metadata/DeclarationMetadataBuilder';
-import { CompileTimeElement } from '../../core/declaration-metadata/CompileTimeElement';
+import { DeclarationMetadataBuilder } from '../../core/metadata/DeclarationMetadataBuilder';
+import { CompileTimeElement } from '../../core/metadata/CompileTimeElement';
 
 /** @public */
 const transformer = (program: ts.Program): ts.TransformerFactory<ts.SourceFile> => {

@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { isArray, isObject } from 'lodash';
 import { createBoolean } from './createBoolean';
 import { Context } from '../../../compilation-context/Context';

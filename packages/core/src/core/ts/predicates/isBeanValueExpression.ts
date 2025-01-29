@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { MissingInitializerError } from '../../../compilation-context/messages/errors/MissingInitializerError';
 import { Context } from '../../../compilation-context/Context';
 import { DecoratorProcessor } from '../../decorators/DecoratorProcessor';

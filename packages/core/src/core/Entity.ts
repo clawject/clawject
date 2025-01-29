@@ -1,7 +1,4 @@
-import type * as ts from 'typescript';
-import { IDProvider } from './utils/IDProvider';
+import type ts from 'typescript';
 import { WeakNodeHolder } from './WeakNodeHolder';
 
-export class Entity<N extends ts.Node = ts.Node> extends WeakNodeHolder<N> {
-  public readonly runtimeId = IDProvider.next();
-}
+export class Entity<N extends ts.Node = ts.Node> extends WeakNodeHolder<N> {}

@@ -1,9 +1,9 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import type { TransformerExtras } from 'ts-patch';
 import { verifyTSVersion } from './verifyTSVersion';
 import { Compiler } from '../core/compiler/Compiler';
 import { Context } from '../compilation-context/Context';
-import { processApplicationMode } from '../core/application-mode/processApplicationMode';
+import { transformProcessedFiles } from '../core/application-mode/transformProcessedFiles';
 
 /** @public */
 const transformer = (program: ts.Program, config: unknown, transformerExtras?: TransformerExtras): ts.TransformerFactory<ts.SourceFile> => {
@@ -20,7 +20,7 @@ const transformer = (program: ts.Program, config: unknown, transformerExtras?: T
     Context.assignFactory(context.factory);
     Compiler.compile(context, transformerExtras);
 
-    const transformedSourceFile = processApplicationMode(context, sourceFile);
+    const transformedSourceFile = transformProcessedFiles(context, sourceFile);
 
     return transformedSourceFile;
   };

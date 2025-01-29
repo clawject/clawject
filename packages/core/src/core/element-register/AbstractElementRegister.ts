@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 
 export abstract class AbstractElementRegister<T extends { id: string, node: N }, N extends object = ts.Node> {
   counter = 0;

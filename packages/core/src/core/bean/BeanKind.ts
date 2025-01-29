@@ -29,4 +29,9 @@ export const enum BeanKind {
    * @PostConstruct @PreDestroy lifecycleArrowFunction = (): any => {}
    * */
   LIFECYCLE_ARROW_FUNCTION = 6,
+
+  V2_CLASS = 7,
+  V2_FACTORY = 8,
+  V2_VALUE = 9,
+  V2_LIFECYCLE = 10,
 }

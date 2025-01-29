@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { Application } from '../application/Application';
 import { isExposeBeansClassProperty } from '../ts/predicates/isExposeBeansClassProperty';
 import { TypeQualifyError } from '../../compilation-context/messages/errors/TypeQualifyError';
@@ -113,22 +113,22 @@ function fillExposedBeansForClassElementNode(application: Application, member: C
 }
 
 function fillApplicationExposedBeans(application: Application, exposedBeans: Map<string, ExposedBean>): void {
-  const externalBeans = application.beansArray.filter(it => it.getExternalValue() && !it.isLifecycle());
+  const externalBeans = application.beansArray.filter(it => it.isExternal() && !it.isLifecycle());
   const notResolvedExposings = new Map<ClassPropertyWithExpressionInitializer, ExposedBean[]>();
 
   exposedBeans.forEach((dependency, propertyName) => {
-    const resolvedDependency = DependencyResolver.resolveDependencies(dependency.dependency, externalBeans, null, application);
-
-    application.exposedBeans.set(propertyName, resolvedDependency);
-
-    if (!resolvedDependency.isResolved()) {
-      const notResolved = notResolvedExposings.get(dependency.exposeDeclaration) ?? [];
-      notResolved.push(dependency);
-
-      if (!notResolvedExposings.has(dependency.exposeDeclaration)) {
-        notResolvedExposings.set(dependency.exposeDeclaration, notResolved);
-      }
-    }
+    // const resolvedDependency = DependencyResolver.resolveDependencies(dependency.dependency, externalBeans, null, application);
+    //
+    // application.exposedBeans.set(propertyName, resolvedDependency);
+    //
+    // if (!resolvedDependency.isResolved()) {
+    //   const notResolved = notResolvedExposings.get(dependency.exposeDeclaration) ?? [];
+    //   notResolved.push(dependency);
+    //
+    //   if (!notResolvedExposings.has(dependency.exposeDeclaration)) {
+    //     notResolvedExposings.set(dependency.exposeDeclaration, notResolved);
+    //   }
+    // }
   });
 
   notResolvedExposings.forEach((notExposedElements, exposeDeclaration) => {

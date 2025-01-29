@@ -1,4 +1,3 @@
-import { LifecycleKind } from './LifecycleKind';
 import { BeanKind } from '../core/bean/BeanKind';
 
 export interface RuntimeBeanMetadata {
@@ -14,6 +13,6 @@ export interface RuntimeImportMetadata {
 }
 
 export interface RuntimeLifecycleMetadata {
-  [LifecycleKind.POST_CONSTRUCT]: string[];
-  [LifecycleKind.PRE_DESTROY]: string[];
+  POST_CONSTRUCT: string[];
+  PRE_DESTROY: string[];
 }

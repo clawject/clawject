@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { Configuration } from '../../configuration/Configuration';
 import { Application } from '../../application/Application';
 import { valueToASTExpression } from '../../ts/utils/valueToASTExpression';
@@ -40,9 +40,10 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
 
   if (ConfigLoader.get().mode === 'development') {
     ApplicationRepository.applicationIdToApplication.forEach(application => {
-      if (!application.resolvedImports.has(configuration) && application.rootConfiguration !== configuration) {
-        return;
-      }
+      return;
+      // if (!application.resolvedImports.has(configuration) && application.rootConfiguration !== configuration) {
+      //   return;
+      // }
 
       const applicationMetadata = RuntimeMetadataBuilder.developmentApplicationMetadata(application.rootConfiguration, application);
       const staticInitBlock = factory.createClassStaticBlockDeclaration(factory.createBlock(
@@ -75,6 +76,7 @@ export const transformConfigurationOrApplicationClass = (node: ts.ClassDeclarati
       switch (bean.kind) {
       case BeanKind.FACTORY_METHOD:
       case BeanKind.LIFECYCLE_METHOD: {
+        // @ts-ignore
         const typedNode = bean.node as ts.MethodDeclaration;
 
         return factory.updateMethodDeclaration(

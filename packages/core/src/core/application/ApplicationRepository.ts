@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { Application } from './Application';
 import { ConfigurationRepository } from '../configuration/ConfigurationRepository';
 import { Configuration } from '../configuration/Configuration';
@@ -9,7 +9,10 @@ export class ApplicationRepository {
   static applicationIdToApplication = new Map<string, Application>();
   static nodeToApplication = new WeakMap<ts.ClassDeclaration, Application>();
 
-  static register(classDeclaration: ts.ClassDeclaration, rootConfiguration: Configuration): Application {
+  static register(
+    classDeclaration: ts.ClassDeclaration,
+    rootConfiguration: Configuration
+  ): Application {
     const sourceFile = classDeclaration.getSourceFile();
 
     const application = new Application(rootConfiguration);
@@ -18,7 +21,8 @@ export class ApplicationRepository {
     application.fileName = classDeclaration.getSourceFile().fileName;
     application.node = classDeclaration;
 
-    const applications = this.fileNameToApplications.get(sourceFile.fileName) ?? [];
+    const applications =
+      this.fileNameToApplications.get(sourceFile.fileName) ?? [];
     this.fileNameToApplications.set(sourceFile.fileName, applications);
     applications.push(application);
 
@@ -39,21 +43,19 @@ export class ApplicationRepository {
 
     this.fileNameToApplications.delete(fileName);
     this.fileNameToLastApplicationCounter.delete(fileName);
-    applications.forEach(application => {
+    applications.forEach((application) => {
       this.applicationIdToApplication.delete(application.id);
-
-      const configurationsFileNames = new Set<string>();
-      application.forEachConfiguration(configuration => {
-        configurationsFileNames.add(configuration.fileName);
-      });
-
-      configurationsFileNames.forEach(it => ConfigurationRepository.clearByFileName(it));
+      application.configurationsArray.forEach((it) =>
+        ConfigurationRepository.clearByFileName(it.fileName)
+      );
     });
   }
 
   private static buildId(classDeclaration: ts.ClassDeclaration): string {
     const sourceFile = classDeclaration.getSourceFile();
-    const lastApplicationCounter = this.fileNameToLastApplicationCounter.get(sourceFile.fileName);
+    const lastApplicationCounter = this.fileNameToLastApplicationCounter.get(
+      sourceFile.fileName
+    );
     const newCounter = (lastApplicationCounter ?? 0) + 1;
     this.fileNameToLastApplicationCounter.set(sourceFile.fileName, newCounter);
 

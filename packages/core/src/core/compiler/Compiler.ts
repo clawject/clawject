@@ -1,6 +1,5 @@
 import type ts from 'typescript';
 import { Context } from '../../compilation-context/Context';
-import { getDecoratorVerificationErrors } from '../application-mode/getDecoratorVerificationErrors';
 import { processClassDeclaration } from '../application-mode/processClassDeclaration';
 import { cleanup } from '../cleaner/cleanup';
 import type { TransformerExtras } from 'ts-patch';
@@ -59,13 +58,14 @@ export class Compiler {
         return Context.ts.visitEachChild(node, visitor, transformationContext);
       }
 
-      const decoratorVerificationErrors = getDecoratorVerificationErrors(node);
+
+      // const decoratorVerificationErrors = getDecoratorVerificationErrors(node);
 
       //Skipping processing anything because of errors
-      if (decoratorVerificationErrors.length !== 0) {
-        decoratorVerificationErrors.forEach(it => Context.report(it));
-        return node;
-      }
+      // if (decoratorVerificationErrors.length !== 0) {
+      //   decoratorVerificationErrors.forEach(it => Context.report(it));
+      //   return node;
+      // }
 
       processClassDeclaration(node);
 

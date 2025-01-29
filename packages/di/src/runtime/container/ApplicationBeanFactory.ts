@@ -7,14 +7,13 @@ import { MetadataStorage } from '../MetadataStorage';
 import { ClassConstructor } from '../api/ClassConstructor';
 import { ApplicationBeanDependency } from './ApplicationBeanDependency';
 import { ApplicationBeanFinder } from './ApplicationBeanFinder';
-import { MaybeAsync } from '../types/MaybeAsync';
+import { MaybePromise } from '../types/MaybePromise';
 import { Utils } from '../Utils';
 import { RuntimeErrors } from '../api/RuntimeErrors';
 import { Scope } from '../api/Scope';
 import { InternalScopeRegister } from '../scope/InternalScopeRegister';
 
 import { BeanProcessor } from '../api/BeanProcessor';
-import { LifecycleKind } from '@clawject/core/runtime-metadata/LifecycleKind';
 import { RuntimeApplicationMetadata } from '@clawject/core/runtime-metadata/RuntimeApplicationMetadata';
 import { BeanKind } from '@clawject/core/core/bean/BeanKind';
 
@@ -48,7 +47,7 @@ export class ApplicationBeanFactory {
 
     const lifecycleInit = this.applicationBeans.map(async (applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
-        if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.POST_CONSTRUCT].includes(applicationBean.beanClassProperty)) {
+        if (applicationBean.parentConfiguration.metadata.lifecycle.POST_CONSTRUCT.includes(applicationBean.beanClassProperty)) {
           await applicationBean.getInjectionValue();
         }
       }
@@ -60,7 +59,7 @@ export class ApplicationBeanFactory {
   async destroy(): Promise<void> {
     await Promise.all(this.applicationBeans.map(async (applicationBean) => {
       if (applicationBean.isLifecycleFunction) {
-        if (applicationBean.parentConfiguration.metadata.lifecycle[LifecycleKind.PRE_DESTROY].includes(applicationBean.beanClassProperty)) {
+        if (applicationBean.parentConfiguration.metadata.lifecycle.PRE_DESTROY.includes(applicationBean.beanClassProperty)) {
           await applicationBean.getInjectionValue();
         }
       }
@@ -79,7 +78,7 @@ export class ApplicationBeanFactory {
       }
 
       //TODO: check warning
-      await this.onLifecycle(await removedScopedObject, LifecycleKind.PRE_DESTROY);
+      await this.onLifecycle(await removedScopedObject, 'POST_CONSTRUCT');
     }));
   }
 
@@ -131,7 +130,7 @@ export class ApplicationBeanFactory {
         let beanClassConstructor: ClassConstructor<any> | null = null;
 
         if (beanMetadata.kind === BeanKind.CLASS_CONSTRUCTOR) {
-          const classProperty = applicationConfiguration.instance[beanClassProperty] as MaybeAsync<BeanConstructorFactory<any, any>>;
+          const classProperty = applicationConfiguration.instance[beanClassProperty] as MaybePromise<BeanConstructorFactory<any, any>>;
 
           if (Utils.isPromise(classProperty)) {
             const resolvedClassProperty = await classProperty;
@@ -225,12 +224,13 @@ export class ApplicationBeanFactory {
     const result = await factory(...dependencyInjectionValues.map(it => it.value));
 
     this.registerDestructionCallbackIfNeeded(applicationBean, result);
-    await this.onLifecycle(result, LifecycleKind.POST_CONSTRUCT);
+    await this.onLifecycle(result, 'POST_CONSTRUCT');
 
     return result;
   }
 
-  private getBeanFactoryFunction(applicationBean: ApplicationBean): MaybeAsync<(...args: unknown[]) => any> {
+  // @ts-ignore
+  private getBeanFactoryFunction(applicationBean: ApplicationBean): MaybePromise<(...args: unknown[]) => any> {
     const configurationInstance = applicationBean.parentConfiguration.instance;
 
     switch (applicationBean.beanMetadata.kind) {
@@ -238,7 +238,7 @@ export class ApplicationBeanFactory {
     case BeanKind.LIFECYCLE_METHOD:
       return configurationInstance[applicationBean.beanClassProperty].bind(configurationInstance);
     case BeanKind.CLASS_CONSTRUCTOR: {
-      const classPropertyValue = configurationInstance[applicationBean.beanClassProperty] as MaybeAsync<BeanConstructorFactory<any, any>>;
+      const classPropertyValue = configurationInstance[applicationBean.beanClassProperty] as MaybePromise<BeanConstructorFactory<any, any>>;
 
       if (Utils.isPromise(classPropertyValue)) {
         return classPropertyValue.then(it => it.factory);
@@ -264,12 +264,12 @@ export class ApplicationBeanFactory {
 
     if (hasLifecyclePreDestroy) {
       applicationBean.getScope().registerDestructionCallback(applicationBean.name, async () => {
-        await this.onLifecycle(instance, LifecycleKind.PRE_DESTROY);
+        await this.onLifecycle(instance, 'PRE_DESTROY');
       });
     }
   }
 
-  private async onLifecycle(beanInstance: any, lifecycleKind: LifecycleKind): Promise<void> {
+  private async onLifecycle(beanInstance: any, lifecycleKind: 'POST_CONSTRUCT' | 'PRE_DESTROY'): Promise<void> {
     await Promise.all(
       MetadataStorage.getComponentMetadataByClassInstance(beanInstance)?.lifecycle[lifecycleKind].map(async methodName => {
         await (beanInstance[methodName] as Function).call(beanInstance);

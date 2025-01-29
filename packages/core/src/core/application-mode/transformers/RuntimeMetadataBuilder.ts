@@ -3,7 +3,6 @@ import { Application } from '../../application/Application';
 import { compact } from 'lodash';
 import { MaybeResolvedDependency } from '../../dependency-resolver/MaybeResolvedDependency';
 import { RuntimeConfigurationMetadata } from '../../../runtime-metadata/RuntimeConfigurationMetadata';
-import { LifecycleKind } from '../../../runtime-metadata/LifecycleKind';
 import { ApplicationBeanDependenciesMetadata, ApplicationBeanDependencyCollectionMetadata, ApplicationBeanDependencyMetadata, ApplicationBeanDependencyPlainMetadata, ApplicationBeanDependencyValueMetadata, ExposedBeanMetadata, RuntimeApplicationMetadata, RuntimeDevelopmentApplicationMetadata } from '../../../runtime-metadata/RuntimeApplicationMetadata';
 import { ConfigLoader } from '../../../config/ConfigLoader';
 
@@ -13,10 +12,7 @@ export class RuntimeMetadataBuilder {
   static metadata(configuration: Configuration, application: Application): RuntimeApplicationMetadata;
   static metadata(configuration: Configuration, application: Application | null): RuntimeConfigurationMetadata | RuntimeApplicationMetadata;
   static metadata(configuration: Configuration, application: Application | null): RuntimeConfigurationMetadata | RuntimeApplicationMetadata {
-    const runtimeConfigurationMetadata = this.configuration(configuration);
-    const runtimeApplicationMetadata = application === null ? null : this.application(runtimeConfigurationMetadata, application);
-
-    return runtimeApplicationMetadata ?? runtimeConfigurationMetadata;
+    return {} as any;
   }
 
   static developmentApplicationMetadata(configuration: Configuration, application: Application): RuntimeDevelopmentApplicationMetadata {
@@ -27,82 +23,8 @@ export class RuntimeMetadataBuilder {
       exposedBeansMetadata: metadata.exposedBeansMetadata,
     };
   }
-
-  private static configuration(configuration: Configuration): RuntimeConfigurationMetadata {
-    const beans = configuration.beanRegister.elements;
-    const imports = configuration.importRegister.elements;
-
-    const lifecycleMetadata: RuntimeConfigurationMetadata['lifecycle'] = {
-      [LifecycleKind.POST_CONSTRUCT]: [],
-      [LifecycleKind.PRE_DESTROY]: [],
-    };
-    const importsMetadata: RuntimeConfigurationMetadata['imports'] = [];
-    const beansMetadata: RuntimeConfigurationMetadata['beans'] = {};
-
-    beans.forEach(bean => {
-      if (bean.nestedProperty !== null) {
-        return;
-      }
-
-      if (bean.lifecycle.includes(LifecycleKind.POST_CONSTRUCT)) {
-        lifecycleMetadata[LifecycleKind.POST_CONSTRUCT].push(bean.classMemberName);
-      }
-
-      if (bean.lifecycle.includes(LifecycleKind.PRE_DESTROY)) {
-        lifecycleMetadata[LifecycleKind.PRE_DESTROY].push(bean.classMemberName);
-      }
-
-      beansMetadata[bean.classMemberName] = {
-        scope: bean.scopeExpression.getAndDisposeSafe() as any,
-        lazy: bean.lazyExpression.getAndDisposeSafe() as any,
-        kind: bean.kind,
-        qualifiedName: bean.fullName,
-      };
-    });
-
-    imports.forEach(it => {
-      importsMetadata.push({
-        classPropertyName: it.classMemberName,
-        lazy: it.lazyExpression.getAndDisposeSafe() as any ?? false,
-      });
-    });
-
-    return {
-      className: configuration.className ?? '<anonymous>',
-      lifecycle: lifecycleMetadata,
-      imports: importsMetadata,
-      beans: beansMetadata,
-      lazy: configuration.lazyExpression.getAndDisposeSafe() as any ?? false,
-      scope: configuration.scopeExpression.getAndDisposeSafe() as any ?? 'singleton',
-    };
-  }
-
   private static application(configurationMetadata: RuntimeConfigurationMetadata, application: Application): RuntimeApplicationMetadata {
     const beanDependenciesMetadata: ApplicationBeanDependenciesMetadata[][] = [];
-
-    application.forEachConfiguration((configuration) => {
-      const beanDependencies: ApplicationBeanDependenciesMetadata[] = [];
-
-      configuration.beanRegister.elements.forEach((bean) => {
-        // Skip nested beans
-        if (bean.embeddedParent !== null) {
-          return;
-        }
-
-        const resolvedDependencies = application.resolvedBeanDependencies.get(bean) ?? [];
-
-        const beanDependencyMetadata: (ApplicationBeanDependencyMetadata | null)[] = resolvedDependencies.map((resolvedDependency) => {
-          return this.getDependencyMetadata(application, resolvedDependency);
-        });
-
-        beanDependencies.push({
-          classPropertyName: bean.classMemberName,
-          dependencies: compact(beanDependencyMetadata),
-        });
-      });
-
-      beanDependenciesMetadata.push(beanDependencies);
-    });
 
     const exposedBeansMetadata: ExposedBeanMetadata[] = [];
     application.exposedBeans.forEach((maybeResolvedDependency, name) => {
@@ -159,27 +81,7 @@ export class RuntimeMetadataBuilder {
 
         return null;
       }
-
-      const metadata: ApplicationBeanDependencyCollectionMetadata = {
-        kind,
-        metadata: compact(qualifiedCollectionBeans.map((qualifiedBean) => {
-          const parentConfigurationIndex = application.getConfigurationIndexUnsafe(qualifiedBean.parentConfiguration);
-
-          if (parentConfigurationIndex === undefined) {
-            return null;
-          }
-
-          const metadata: ApplicationBeanDependencyCollectionMetadata['metadata'][0] = {
-            configurationIndex: parentConfigurationIndex,
-            classPropertyName: qualifiedBean.classMemberName,
-            nestedProperty: qualifiedBean.nestedProperty,
-          };
-
-          return metadata;
-        })),
-      };
-
-      return metadata;
+      throw new Error('Not implemented');
     }
 
     case 'value': {
@@ -205,8 +107,8 @@ export class RuntimeMetadataBuilder {
       return null;
     }
 
-    const parentConfigurationIndex = application.getConfigurationIndexUnsafe(qualifiedBean.parentConfiguration);
-    if (parentConfigurationIndex === undefined) {
+    const parentConfigurationIndex: number | null = null;
+    if (parentConfigurationIndex === null) {
       return null;
     }
 

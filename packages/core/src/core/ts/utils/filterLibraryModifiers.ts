@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import type ts from 'typescript';
 import { DecoratorProcessor } from '../../decorators/DecoratorProcessor';
 
 export const filterLibraryModifiers = (modifiers: ts.ModifierLike[] | ts.NodeArray<ts.ModifierLike> | undefined): ts.ModifierLike[] | undefined => {
