@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # needed for provenance data generation
+      id-token: write # Required for OIDC
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,12 +28,8 @@ jobs:
       - name: Build
         run: npx nx run-many --target=build
 
-      - name: Create npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
       - name: Publish packages
         run: yarn run nx release publish
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

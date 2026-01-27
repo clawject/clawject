@@ -25,27 +25,27 @@
     "cosmiconfig-typescript-loader": "^5.0.0",
     "graph-cycles": "^1.2.1",
     "graphlib": "^2.1.8",
-    "jsonschema": "^1.4.1",
-    "lodash": "^4.17.21",
-    "semver": "^7.6.0",
+    "jsonschema": "^1.5.0",
+    "lodash": "^4.17.23",
+    "semver": "^7.7.3",
     "upath": "^2.0.1",
-    "winston": "^3.12.0"
+    "winston": "^3.19.0"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.43.0",
+    "@microsoft/api-extractor": "^7.55.2",
     "@types/graphlib": "^2.1.12",
-    "@types/lodash": "^4.17.0",
+    "@types/lodash": "^4.17.23",
     "@types/node": "^20.11.30",
-    "@types/semver": "^7.5.8",
+    "@types/semver": "^7.7.1",
     "@types/ts-expose-internals": "npm:ts-expose-internals@5.6",
     "copyfiles": "^2.4.1",
     "ts-patch": "^3.2.1",
     "tslib": "^2.7.0",
-    "typescript": "5.6.2",
-    "webpack": "^5.91.0"
+    "typescript": "5.9.3",
+    "webpack": "^5.104.1"
   },
   "peerDependencies": {
-    "typescript": ">=5.0 <=5.7"
+    "typescript": ">=5.0 <=5.9"
   },
   "engines": {
     "node": ">=18"
