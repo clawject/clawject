@@ -29,4 +29,5 @@ jobs:
         run: npx nx run-many --target=build
 
       - name: Publish packages
-        run: yarn run nx release publish -- --yes --provenance
+        run: |
+          NODE_AUTH_TOKEN="" yarn run nx release publish -- --yes --provenance
