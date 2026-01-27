@@ -27,6 +27,10 @@
     "type": "buymeacoffee",
     "url": "https://buymeacoffee.com/clawject"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "dependencies": {
     "@clawject/core": "1.2.7",
     "@rollup/pluginutils": "^5.1.0",

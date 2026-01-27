@@ -20,6 +20,10 @@
     "type": "buymeacoffee",
     "url": "https://buymeacoffee.com/clawject"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "dependencies": {
     "cosmiconfig": "^9.0.0",
     "cosmiconfig-typescript-loader": "^5.0.0",

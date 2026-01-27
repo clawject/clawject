@@ -12,6 +12,10 @@
     "type": "buymeacoffee",
     "url": "https://buymeacoffee.com/clawject"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "exports": {
     ".": {
       "require": "./index.js",

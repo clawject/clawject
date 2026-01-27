@@ -32,4 +32,5 @@ jobs:
         run: yarn run nx release publish
         shell: bash
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
