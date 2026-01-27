@@ -29,7 +29,4 @@ jobs:
         run: npx nx run-many --target=build
 
       - name: Publish packages
-        run: yarn run nx release publish
-        shell: bash
-        env:
-          NPM_CONFIG_PROVENANCE: true
+        run: yarn run nx release publish -- --yes --provenance
