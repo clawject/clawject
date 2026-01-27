@@ -1,14 +1,3 @@
-## 1.2.8 (2026-01-27)
-
-
-### 🩹 Fixes
-
-- bump ts 5.9 ([#22](https://github.com/clawject/clawject/pull/22))
-
-### ❤️  Thank You
-
-- Artem Korniev @artem1458
-
 ## 1.2.7 (2024-11-26)
 
 
