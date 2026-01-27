@@ -12,14 +12,20 @@ import { ImportDefinitionImpl } from './ImportDefinitionImpl';
  *
  * @public
  * */
-export function Import<C extends ClassConstructor<any, []>>(value: MaybePromise<C>): ImportDefinition<C>;
+export function Import<C extends ClassConstructor<any, []>>(value: () => MaybePromise<C>): ImportDefinition<() => C>;
+export function Import<C extends ClassConstructor<any>>(
+  value: () => MaybePromise<C>,
+  params: InstantiationConstructorParameters<ConstructorParameters<Awaited<C>>>
+): ImportDefinition<() => C>;
+export function Import<C extends ClassConstructor<any, []>>(value: MaybePromise<C>): ImportDefinition<() => C>;
 export function Import<C extends ClassConstructor<any>>(
   value: MaybePromise<C>,
   params: InstantiationConstructorParameters<ConstructorParameters<Awaited<C>>>
-): ImportDefinition<C>;
-export function Import(clazz: any, params?: any): any {
+): ImportDefinition<() => C>;
+export function Import(clazz: any, params?: any) {
   return new ImportDefinitionImpl(
     clazz,
     Utils.isFunction(params) ? params : () => (params ?? []),
+    false,
   );
 }

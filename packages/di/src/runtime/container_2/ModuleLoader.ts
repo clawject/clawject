@@ -22,7 +22,7 @@ export class ModuleLoader {
 
   async resolveWithImport(
     moduleSymbol: symbol,
-    importDefinition: ImportDefinition<any>
+    importDefinition: ImportDefinition<any, any>
   ): Promise<ResolvedModule> {
     const resolvedModules = new Set<symbol>();
     const resolvedModule = await this.resolveWithImportCached(
@@ -127,7 +127,7 @@ export class ModuleLoader {
     const parentImportSymbols =
       this.container.metadataAccessor.moduleImportSymbols(parentImportSymbol);
 
-    let moduleImportDefinition: ImportDefinition<any> | undefined = undefined;
+    let moduleImportDefinition: ImportDefinition<any, any> | undefined = undefined;
     for (const parentImportSymbol of parentImportSymbols) {
       const importMetadata =
         this.container.metadataAccessor.importSymbolMetadata(
@@ -159,7 +159,7 @@ export class ModuleLoader {
 
   private resolveWithImportCached(
     moduleSymbol: symbol,
-    importDefinition: ImportDefinition<any>,
+    importDefinition: ImportDefinition<any, any>,
     resolvedModules: Set<symbol>
   ): Promise<ResolvedModule> {
     if (!this.resolvedModules.has(moduleSymbol)) {
@@ -181,12 +181,12 @@ export class ModuleLoader {
 
   private async _resolveWithImport(
     moduleSymbol: symbol,
-    importDefinition: ImportDefinition<any>,
+    importDefinition: ImportDefinition<any, any>,
     resolvedModules: Set<symbol>
   ): Promise<ResolvedModule> {
     resolvedModules.add(moduleSymbol);
     const [moduleCls, params] = await Promise.all([
-      importDefinition.classConstructor,
+      importDefinition.value(),
       importDefinition.constructorParams(),
     ]);
 
@@ -234,7 +234,7 @@ export class ModuleLoader {
 
   private collectImportDefinitions(
     resolvedModule: ResolvedModule
-  ): [targetModuleSymbol: symbol, importDefinition: ImportDefinition<any>][] {
+  ): [targetModuleSymbol: symbol, importDefinition: ImportDefinition<any, any>][] {
     const importSymbols = this.container.metadataAccessor.moduleImportSymbols(
       resolvedModule.moduleSymbol
     );

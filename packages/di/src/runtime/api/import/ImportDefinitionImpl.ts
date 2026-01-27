@@ -6,41 +6,36 @@ import { Symbols } from '../Symbols';
 import { JustReturn } from '../JustReturn';
 
 export class ImportDefinitionImpl<
-  Constructor extends MaybePromise<ClassConstructor<any>>,
+  Value extends () => MaybePromise<ClassConstructor<any>>,
   Lazy extends boolean = any
-> implements ImportDefinition<Constructor, Lazy>
+> implements ImportDefinition<Value, Lazy>
 {
   [Symbols.Import] = undefined;
 
-  classConstructor: Constructor;
-  constructorParams: () => MaybePromise<ConstructorParameters<Awaited<Constructor>>>;
+  value: () => Value;
+  constructorParams: () => MaybePromise<
+    ConstructorParameters<Awaited<ReturnType<Value>>>
+  >;
   metadata: {
-    readonly type: TypeHolder<InstanceType<Awaited<Constructor>>>;
+    readonly type: TypeHolder<InstanceType<Awaited<ReturnType<Value>>>>;
     readonly lazy: Lazy;
   };
+
   constructor(
-    classConstructor: Constructor,
+    value: () => Value,
     constructorParams: (typeof this)['constructorParams'],
-    metadata?: (typeof this)['metadata']
+    lazy: Lazy
   ) {
-    this.classConstructor = classConstructor;
+    this.value = value;
     this.constructorParams = constructorParams;
 
-    this.metadata = metadata ?? {
+    this.metadata = {
       type: JustReturn,
-      internal: true,
-      lazy: false
+      lazy: lazy,
     } as any;
   }
 
-  lazy<V extends boolean = true>(v?: V): any {
-    return new ImportDefinitionImpl(
-      this.classConstructor,
-      this.constructorParams,
-      {
-        ...this.metadata,
-        lazy: v ?? true,
-      } as any
-    );
+  lazy<V extends boolean = true>(v?: V): ImportDefinition<Value, V> {
+    return new ImportDefinitionImpl(this.value, this.constructorParams, v ?? true) as any;
   }
 }

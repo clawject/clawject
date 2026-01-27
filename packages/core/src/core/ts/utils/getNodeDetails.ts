@@ -21,10 +21,6 @@ export class NodeDetails {
   declare endOffset: number;
   declare length: number;
   declare text: string;
-
-  positionInRange(position: number): boolean {
-    return position >= this.startOffset && position <= this.endOffset;
-  }
 }
 
 export const getNodeDetails = (node: ts.Node): NodeDetails => {

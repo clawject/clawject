@@ -1427,7 +1427,7 @@ __metadata:
     winston: "npm:^3.12.0"
   peerDependencies:
     typescript: ">=5.0 <=5.7"
-  checksum: 10c0/0e9e0214bf8b6fee3763e62e7ac140fb58a8805cd8c222c45bb65494fddacdf8a923e23ceb158c091cc35464e1fdd18af54bb0b05a118e81058c216004af68d7
+  checksum: 10c0/1a3d8e90a19939d4b0009a09751bc490c4be72d591b59988a9d19d60e7679f0dbffdb16780e7884484072bc754aaf42645857db121e03a7741a9b24c974aae9f
   languageName: node
   linkType: hard
 
@@ -1446,7 +1446,7 @@ __metadata:
     ts-morph-bootstrap-ts55: "npm:@ts-morph/bootstrap@0.24.0"
     ts-morph-bootstrap-ts56-57: "npm:@ts-morph/bootstrap@0.25.0"
     unplugin: "npm:^1.12.1"
-  checksum: 10c0/c7fbda7da55981ffedf44bbcc235a265774a0c26a3e009e20d558ea5cc88a860958f5edcadfbbef59c1d474d7f2f6e242275970dc77652749e56396a8d5e8133
+  checksum: 10c0/b5b702b86371123792016692b6060748eb520d7b476e25b54d2629b8b08ea1840725487bdd7420d475a554272cdd30b3d1c6f37286b264e80ab17a4b3b89baf0
   languageName: node
   linkType: hard
 
@@ -4428,11 +4428,11 @@ __metadata:
   linkType: hard
 
 "fastq@npm:^1.6.0":
-  version: 1.19.0
-  resolution: "fastq@npm:1.19.0"
+  version: 1.19.1
+  resolution: "fastq@npm:1.19.1"
   dependencies:
     reusify: "npm:^1.0.4"
-  checksum: 10c0/d6a001638f1574a696660fcbba5300d017760432372c801632c325ca7c16819604841c92fd3ccadcdacec0966ca336363a5ff57bc5f0be335d8ea7ac6087b98f
+  checksum: 10c0/ebc6e50ac7048daaeb8e64522a1ea7a26e92b3cee5cd1c7f2316cdca81ba543aa40a136b53891446ea5c3a67ec215fbaca87ad405f102dd97012f62916905630
   languageName: node
   linkType: hard
 
@@ -6979,9 +6979,9 @@ __metadata:
   linkType: hard
 
 "reusify@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "reusify@npm:1.0.4"
-  checksum: 10c0/c19ef26e4e188f408922c46f7ff480d38e8dfc55d448310dfb518736b23ed2c4f547fb64a6ed5bdba92cd7e7ddc889d36ff78f794816d5e71498d645ef476107
+  version: 1.1.0
+  resolution: "reusify@npm:1.1.0"
+  checksum: 10c0/4eff0d4a5f9383566c7d7ec437b671cc51b25963bd61bf127c3f3d3f68e44a026d99b8d2f1ad344afff8d278a8fe70a8ea092650a716d22287e8bef7126bb2fa
   languageName: node
   linkType: hard
 

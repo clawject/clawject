@@ -3,11 +3,6 @@ import { BeanKind } from '../../core/bean/BeanKind';
 
 export type ApplicationMetadataV2 = {
   rootConfigurationSymbol: symbol;
-  //Array should be sorted by distance from root configuration and possible lazy values (if known during compile time)
-  configurationImportPaths: Map<
-    symbol,
-    [targetConfiguration: symbol, property: string][][]
-  >;
 
   /**
    * Configuration symbol to configuration symbols that are importing this configuration.
@@ -31,7 +26,6 @@ export type ApplicationMetadataV2 = {
 
   /**
    * Bean symbol to property name inside configuration class instance mapping.
-   * If property is a symbol, it means that it is a reference to it's embedded parent;
    * */
   beanSymbolToMetadata: Map<symbol, BeanMetadata>;
 

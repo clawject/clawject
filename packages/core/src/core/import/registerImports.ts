@@ -55,6 +55,7 @@ export function registerImportForClassElementNode(
     return;
   }
 
+  //TODO support class expressions?: Import(class {...});
   const importMemberClassDeclarations = importedClassDeclarations.filter(Context.ts.isClassDeclaration);
 
   if (importMemberClassDeclarations.length === 0) {

@@ -1,53 +1,5 @@
-import { ApplicationRunner, Bean, BeanDefinition, ClawjectApplication, Configuration, ContainerScope, Import, LazyConfigurationLoader, ProviderRegistrationRequest } from "@clawject/di";
-
-class Foo {
-  constructor() {
-    console.log('Foo constructor');
-  }
-}
-
-class Foo1 {
-  constructor(private bar1: Bar1) {
-    console.log('Foo1 constructor');
-  }
-}
-
-class Bar {
-  constructor(
-    private foo: Foo
-  ) {
-    console.log('Bar constructor');
-  }
-}
-
-class Bar1 {
-  constructor() {
-    console.log('Bar1 constructor');
-  }
-}
-
-class Baz {
-  constructor(
-    private fooConfiguration: LazyConfigurationLoader<FooConfig>,
-    private barConfiguration: LazyConfigurationLoader<BarConfig>
-  ) {
-    console.log('Baz constructor, scheduling init of barConfiguration');
-    setTimeout(() => {
-      console.log('Init of barConfiguration');
-      barConfiguration.load()
-    },5000)
-  }
-}
-
-class FooConfig {
-  foo = Bean(Foo).scope('request').lazy().external();
-  foo1 = Bean(Foo1).scope('request').lazy();
-}
-
-class BarConfig {
-  bar = Bean(Bar).scope('request').lazy();
-  bar1 = Bean(Bar1).scope('request').lazy().external();
-}
+import { ApplicationRunner, Bean, BeanDefinition, ClawjectApplication, Configuration, ContainerScope, Import, LazyConfigurationLoader, LazyImport, ProviderRegistrationRequest } from "@clawject/di";
+import { BarConfiguration } from "./BarConfiguration";
 
 export class Application {
   constructor() {
@@ -55,10 +7,12 @@ export class Application {
   }
 
   app = ClawjectApplication();
-  fooConfig = Import(FooConfig).lazy();
-  barConfig = Import(BarConfig).lazy();
+  barConfig = Import(BarConfiguration);
+  fooConfig = LazyImport(async() => {
+    const { FooConfiguration } = await import('./FooConfiguration');
 
-  baz = Bean(Baz);
+    return FooConfiguration;
+  })
 }
 
 class RequestScope implements ContainerScope<string> {
@@ -132,7 +86,7 @@ class RequestScope implements ContainerScope<string> {
 }
 
 (async () => {
-  const requestScope = new RequestScope()
-  await new ApplicationRunner().run(Application, new Map([['request', requestScope]]));
-  await requestScope.beginScope('context1');
+  // const requestScope = new RequestScope()
+  await new ApplicationRunner().run(Application, new Map());
+  // await requestScope.beginScope('context1');
 })();

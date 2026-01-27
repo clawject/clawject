@@ -36,36 +36,20 @@ export class ApplicationConfigurationFactory {
         args: MaybePromise<any[]>;
       }>[] = [];
 
-      for (let i = elements.length - 1; i >= 0; i--) {
-        const importPropertyName = elements[i];
-        const importedConfiguration = instance[importPropertyName] as MaybePromise<ImportDefinition<any, any>>;
-
-        let importedConfigurationConstruction: MaybePromise<{
-          constructor: ClassConstructor<any>;
-          args: MaybePromise<any[]>;
-        }>;
-
-        if (Utils.isPromise(importedConfiguration)) {
-          importedConfigurationConstruction = importedConfiguration
-            .then((importedConfiguration) => {
-              return {
-                constructor: importedConfiguration.classConstructor,
-                //TODO
-                // @ts-ignore
-                args: Utils.getResolvedConstructorParameters(importedConfiguration.constructorParameters),
-              };
-            });
-        } else {
-          importedConfigurationConstruction = {
-            constructor: importedConfiguration.classConstructor,
-            //TODO
-            // @ts-ignore
-            args: Utils.getResolvedConstructorParameters(importedConfiguration.constructorParameters),
-          };
-        }
-
-        importedConfigurationsClasses.push(importedConfigurationConstruction);
-      }
+      // for (let i = elements.length - 1; i >= 0; i--) {
+      //   const importPropertyName = elements[i];
+      //   const importedConfiguration = instance[importPropertyName] as ImportDefinition<any, any>;
+      //   const configurationConstructor = importedConfiguration.classConstructor();
+      //
+      //   importedConfigurationConstruction = {
+      //     constructor: importedConfiguration.classConstructor,
+      //     //TODO
+      //     // @ts-ignore
+      //     args: Utils.getResolvedConstructorParameters(importedConfiguration.constructorParameters),
+      //   };
+      //
+      //   importedConfigurationsClasses.push(importedConfigurationConstruction);
+      // }
 
       const configurationClasses = await Promise.all(importedConfigurationsClasses.map(async(it) => {
         const awaitedIt = await it;

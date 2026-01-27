@@ -3,7 +3,7 @@ import { Symbols } from './api/Symbols';
 import { BeanDefinition } from './api/bean/BeanDefinition';
 
 export class Predicates {
-  static isImportDefinition(value: unknown): value is ImportDefinition<any> {
+  static isImportDefinition(value: unknown): value is ImportDefinition<any, any> {
     if (!value) {
       return false;
     }

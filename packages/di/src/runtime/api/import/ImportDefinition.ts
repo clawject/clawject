@@ -9,19 +9,19 @@ import { Symbols } from '../Symbols';
  * @public
  */
 export interface ImportDefinition<
-  Constructor extends MaybePromise<ClassConstructor<any>>,
-  Lazy extends boolean = any
+  Value extends () => MaybePromise<ClassConstructor<any>>,
+  Lazy extends boolean = false,
 > {
   readonly [Symbols.Import]: void;
 
-  readonly classConstructor: Constructor;
+  readonly value: () => Value;
   readonly constructorParams: () => MaybePromise<
-    ConstructorParameters<Awaited<Constructor>>
+    ConstructorParameters<Awaited<ReturnType<Value>>>
   >;
   readonly metadata: {
-    readonly type: TypeHolder<InstanceType<Awaited<Constructor>>>;
+    readonly type: TypeHolder<InstanceType<Awaited<ReturnType<Value>>>>;
     readonly lazy: Lazy;
   };
 
-  lazy<V extends boolean = true>(v?: V): ImportDefinition<Constructor, V>;
+  lazy<V extends boolean = true>(v?: V): ImportDefinition<Value, V>;
 }

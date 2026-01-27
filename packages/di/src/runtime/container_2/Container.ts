@@ -14,7 +14,6 @@ export class Container {
 
   //TODO
   public readonly applicationId = 'TODO RANDOM ID HERE OR ID FROM CONSTRUCTOR';
-  public readonly container = this;
   public readonly moduleResolver = new ModuleLoader(this);
   public readonly scopeManager = new ContainerScopeManager(this);
   public readonly metadataAccessor = new MetadataAccessor(this.metadata);
