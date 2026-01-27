@@ -21,7 +21,8 @@
     },
     "nx-release-publish": {
       "options": {
-        "packageRoot": "{projectRoot}/dist"
+        "packageRoot": "{projectRoot}/dist",
+        "npmPublishArgs": ["--provenance"]
       }
     }
   }

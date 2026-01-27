@@ -36,7 +36,8 @@
   "targetDefaults": {
     "nx-release-publish": {
       "options": {
-        "packageRoot": "packages/{projectName}/dist"
+        "packageRoot": "packages/{projectName}/dist",
+        "npmPublishArgs": ["--provenance"]
       }
     }
   }
