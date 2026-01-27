@@ -9,6 +9,7 @@ runs:
       with:
         node-version: 20
         registry-url: "https://registry.npmjs.org"
+        scope: "@clawject"
 
     - name: Setup Yarn
       shell: bash
