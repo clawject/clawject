@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[1893],{2672:s=>{s.exports=JSON.parse('{"tag":{"label":"nestjs","permalink":"/docs/tags/nestjs","allTagsPath":"/docs/tags","count":1,"items":[{"id":"integrations/nestjs","title":"NestJS","description":"NestJS","permalink":"/docs/integrations/nestjs"}],"unlisted":false}}')}}]);
