@@ -7,6 +7,22 @@ const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+  future: {
+    v4: {
+      removeLegacyPostBuildHeadAttribute: true,
+    },
+    experimental_faster: {
+      rspackBundler: true,
+      swcJsLoader: true,
+      swcJsMinimizer: true,
+      swcHtmlMinimizer: true,
+      lightningCssMinimizer: true,
+      ssgWorkerThreads: true,
+      mdxCrossCompilerCache: false,
+      rspackPersistentCache: false,
+    }
+  },
+
   title: 'Clawject | DI made easy',
   tagline: 'TypeScript DI made easy',
   favicon: 'img/logo.svg',
@@ -27,8 +43,13 @@ const config = {
   projectName: 'clawject', // Usually your repo name.
   deploymentBranch: 'gh-pages', // The branch of your docs repo that you are going to deploy to GitHub pages.
 
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw'
+    }
+  },
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
+  onBrokenAnchors: 'throw',
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -103,7 +124,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: 'Copyright © 2023-2024 MIT by <a href="https://github.com/artem1458">Artem Korniev</a>',
+        copyright: 'Copyright © 2023-2026 MIT by <a href="https://github.com/artem1458">Artem Korniev</a>',
         links: [
           {
             html: '<a alt="Github repository link" href="https://github.com/clawject/clawject" class="footer-icon-link github-icon-link-white"></a>'
