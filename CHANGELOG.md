@@ -1,3 +1,14 @@
+## 1.2.9 (2026-02-24)
+
+
+### 🩹 Fixes
+
+- remove ts-morph package ([#23](https://github.com/clawject/clawject/pull/23))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.8 (2026-01-27)
 
 
