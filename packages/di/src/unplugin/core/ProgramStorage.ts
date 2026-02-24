@@ -1,7 +1,6 @@
 import ts from 'typescript';
 import { Options } from '../types';
-import { Project } from '@ts-morph/bootstrap';
-import { createTSMorphProject } from './createTSMorphProject';
+import { createProject, Project } from './ts-morph';
 
 //TODO add tests for different version with unplugin
 export class ProgramStorage {
@@ -32,10 +31,14 @@ export class ProgramStorage {
   private project: Promise<Project> | undefined = undefined;
 
   getProject(): Promise<Project> {
-    this.project = this.project ?? createTSMorphProject({
-      tsConfigFilePath: this.options.tsconfig,
-      skipAddingFilesFromTsConfig: true
-    });
+    this.project =
+      this.project ??
+      Promise.resolve(
+        createProject(ts, {
+          tsConfigFilePath: this.options.tsconfig,
+          skipAddingFilesFromTsConfig: true,
+        })
+      );
 
     return this.project;
   }

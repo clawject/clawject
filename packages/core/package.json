@@ -22,12 +22,12 @@
   },
   "dependencies": {
     "cosmiconfig": "^9.0.0",
-    "cosmiconfig-typescript-loader": "^5.0.0",
+    "cosmiconfig-typescript-loader": "^6.2.0",
     "graph-cycles": "^1.2.1",
     "graphlib": "^2.1.8",
     "jsonschema": "^1.5.0",
     "lodash": "^4.17.23",
-    "semver": "^7.7.3",
+    "semver": "^7.7.4",
     "upath": "^2.0.1",
     "winston": "^3.19.0"
   },

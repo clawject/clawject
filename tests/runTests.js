@@ -35,8 +35,8 @@ const {readdir} = require('fs').promises;
       `yarn add ${clawjectPackagesToInstall} typescript@${tsVersion} ts-patch@3.2.1`,
       'yarn run ts-patch install -s',
       'jest --clear-cache',
-      'jest'
-    ]
+      'jest --runInBand',
+    ];
 
     const command = commands.join(' && ');
 

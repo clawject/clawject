@@ -29,18 +29,7 @@
   },
   "dependencies": {
     "@clawject/core": "1.2.8",
-    "@rollup/pluginutils": "^5.1.0",
-    "@ts-morph/bootstrap": "0.28.1",
-    "ts-morph-bootstrap-ts50": "npm:@ts-morph/bootstrap@0.19.0",
-    "ts-morph-bootstrap-ts51": "npm:@ts-morph/bootstrap@0.20.0",
-    "ts-morph-bootstrap-ts52": "npm:@ts-morph/bootstrap@0.21.0",
-    "ts-morph-bootstrap-ts53": "npm:@ts-morph/bootstrap@0.22.0",
-    "ts-morph-bootstrap-ts54": "npm:@ts-morph/bootstrap@0.23.0",
-    "ts-morph-bootstrap-ts55": "npm:@ts-morph/bootstrap@0.24.0",
-    "ts-morph-bootstrap-ts56": "npm:@ts-morph/bootstrap@0.25.0",
-    "ts-morph-bootstrap-ts57": "npm:@ts-morph/bootstrap@0.26.1",
-    "ts-morph-bootstrap-ts58": "npm:@ts-morph/bootstrap@0.27.0",
-    "ts-morph-bootstrap-ts59": "npm:@ts-morph/bootstrap@0.28.1",
+    "@rollup/pluginutils": "^5.3.0",
     "unplugin": "^1.12.1"
   },
   "devDependencies": {
