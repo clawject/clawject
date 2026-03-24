@@ -1,3 +1,14 @@
+## 1.2.10 (2026-03-24)
+
+
+### 🩹 Fixes
+
+- bump ts 6.0 ([#24](https://github.com/clawject/clawject/pull/24))
+
+### ❤️  Thank You
+
+- Artem Korniev @artem1458
+
 ## 1.2.9 (2026-02-24)
 
 

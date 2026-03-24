@@ -1,6 +1,6 @@
 {
   "name": "@clawject/di",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "keywords": [
     "dependency-injection",
     "framework",
@@ -28,7 +28,7 @@
     "url": "https://buymeacoffee.com/clawject"
   },
   "dependencies": {
-    "@clawject/core": "1.2.9",
+    "@clawject/core": "1.2.10",
     "@rollup/pluginutils": "^5.3.0",
     "unplugin": "^1.12.1"
   },
