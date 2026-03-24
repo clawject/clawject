@@ -5,6 +5,10 @@
   },
   "compileOnSave": false,
   "compilerOptions": {
+    "types": [
+      "ts-expose-internals"
+    ],
+    "ignoreDeprecations": "6.0",
     "rootDir": ".",
     "sourceMap": false,
     "declaration": false,

@@ -11,10 +11,14 @@ const compilerOptions: ts.CompilerOptions = {
   moduleResolution: ts.ModuleResolutionKind.NodeJs,
   plugins: [
     {
-      transform: '@clawject/di/transformer'
-    }
-  ] as any[]
+      transform: '@clawject/di/transformer',
+    },
+  ] as any[],
 };
+
+if (ts.versionMajorMinor.startsWith('6')) {
+  compilerOptions.ignoreDeprecations = '6.0';
+}
 
 interface EmitOutput {
   outputFiles: OutputFile[];
