@@ -1,7 +1,7 @@
 import upath from 'upath';
 
 /** this line is parsed by the build script */
-const TS_VERSION_RANGE = '>=5.0 <=5.9';
+const TS_VERSION_RANGE = '>=5.0 <=6.0';
 
 export const CONSTANTS = {
   libraryName: '@clawject/di',

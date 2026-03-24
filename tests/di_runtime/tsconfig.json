@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "types": ["jest", "node"],
     "target": "ESNext",
     "lib": ["ESNext"],
     "module": "commonjs",

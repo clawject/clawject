@@ -41,11 +41,11 @@
     "copyfiles": "^2.4.1",
     "ts-patch": "^3.2.1",
     "tslib": "^2.7.0",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "webpack": "^5.104.1"
   },
   "peerDependencies": {
-    "typescript": ">=5.0 <=5.9"
+    "typescript": ">=5.0 <=6.0"
   },
   "engines": {
     "node": ">=18"
